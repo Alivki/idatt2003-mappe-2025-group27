@@ -1,7 +1,8 @@
 package ntnu.idatt2003.group27.models;
 
-import scala.tools.nsc.interactive.Replayer;
-
+/**
+ * A class that represents a tile on the game board.
+ */
 public class Tile {
     public Tile nextTile;
     public int tileId;
@@ -11,7 +12,7 @@ public class Tile {
         this.tileId = tileId;
     }
 
-    public void landPlayer(Replayer player) {
+    public void landPlayer(Player player) {
 
     }
 

@@ -1,5 +1,8 @@
 package ntnu.idatt2003.group27.models;
 
+/**
+ * A class that represents a ladder's behaviour on the game board.
+ */
 public class LadderAction implements TileAction {
 
     public int destinationTileId;
