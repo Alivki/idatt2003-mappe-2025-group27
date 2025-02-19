@@ -12,6 +12,10 @@ public class Tile {
         this.tileId = tileId;
     }
 
+    public int getTileId(){
+        return tileId;
+    }
+
     public void landPlayer(Player player) {
 
     }

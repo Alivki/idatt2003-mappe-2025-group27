@@ -24,7 +24,7 @@ public class BoardGame {
   }
 
   public void createBoard() {
-    board = new Board();
+    this.board = new Board();
   }
 
   public void createDice() {
@@ -42,6 +42,12 @@ public class BoardGame {
   }
 
   public Player getWinner() {
-    throw new UnsupportedOperationException("Not implemented yet.");
+    for (Player player : players) {
+      if (player.getCurrentTile().getTileId() == 90) {
+        return player;
+      }
+    }
+
+    return null;
   }
 }
