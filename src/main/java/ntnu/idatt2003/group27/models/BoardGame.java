@@ -43,16 +43,28 @@ public class BoardGame {
   }
 
   /**
-   * Method to play a turn in the game.
+   * Method to start the game.
    */
   public void play() {
     if (currentPlayer == null) {
       throw new IllegalStateException("No players in the game");
     }
 
-    int roll = dice.roll();
-    System.out.println(currentPlayer.getName() + " rolled a" + roll);
-    currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
+    System.out.println("Game has started!");
+
+    while (true) {
+      int roll = dice.roll();
+      System.out.println(currentPlayer.getName() + " rolled a" + roll);
+      // needs to call the player class to move the player. logic has to be implemented in the player class
+
+      if (getWinner() != null) {
+        System.out.println(getWinner().getName() + " has won the game!");
+        break;
+      }
+
+      currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
+    }
+
   }
 
   /**
