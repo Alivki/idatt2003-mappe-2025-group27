@@ -1,32 +1,47 @@
 package ntnu.idatt2003.group27.models;
 
 import java.util.ArrayList;
-import java.util.List;
 
+/**
+ * A class representing a board game.
+ */
 public class BoardGame {
-    private Board board;
-    private Player currentPlayer;
-    private ArrayList<Player> players = new ArrayList<Player>();
-    private Dice dice;
+  private Board board;
+  private Player currentPlayer;
+  private ArrayList<Player> players = new ArrayList<Player>();
+  private Dice dice;
 
-    public void addPlayer(Player player){
-        players.add(player);
+  public void addPlayer(Player player) {
+    if (players.contains(player)) {
+      throw new IllegalArgumentException("Player already exists");
     }
 
-    public void createBoard(){
-        
+    players.add(player);
+
+    if (player == null) {
+      currentPlayer = player;
+    }
+  }
+
+  public void createBoard() {
+    board = new Board();
+  }
+
+  public void createDice() {
+    dice = new Dice(1, 6);
+  }
+
+  public void play() {
+    if (currentPlayer == null) {
+      throw new IllegalStateException("No players in the game");
     }
 
-    public void createDice(){
-        dice = new Dice(1, 6);
+    int roll = dice.roll();
+    System.out.println(currentPlayer.getName() + " rolled a" + roll);
+    currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
+  }
 
-    }
-
-    public void play(){
-
-    }
-
-    public Player getWinner(){
-        throw new UnsupportedOperationException("Not implemented yet.");
-    }
+  public Player getWinner() {
+    throw new UnsupportedOperationException("Not implemented yet.");
+  }
 }
