@@ -11,6 +11,11 @@ public class BoardGame {
   private ArrayList<Player> players = new ArrayList<Player>();
   private Dice dice;
 
+  /**
+   * Add player method to add a player to the game.
+   *
+   * @param player The player to add.
+   */
   public void addPlayer(Player player) {
     if (players.contains(player)) {
       throw new IllegalArgumentException("Player already exists");
@@ -23,14 +28,23 @@ public class BoardGame {
     }
   }
 
+  /**
+   * Create board method to create a new board.
+   */
   public void createBoard() {
     this.board = new Board();
   }
 
+  /**
+   * Create dice method to create a new set of dice.
+   */
   public void createDice() {
     dice = new Dice(1, 6);
   }
 
+  /**
+   * Method to play a turn in the game.
+   */
   public void play() {
     if (currentPlayer == null) {
       throw new IllegalStateException("No players in the game");
@@ -41,6 +55,11 @@ public class BoardGame {
     currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
   }
 
+  /**
+   * Method to get the winner of the game.
+   *
+   * @return Player The winner of the game.
+   */
   public Player getWinner() {
     for (Player player : players) {
       if (player.getCurrentTile().getTileId() == 90) {
