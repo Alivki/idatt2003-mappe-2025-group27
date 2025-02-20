@@ -13,8 +13,20 @@ public class Player {
         this.game = game;
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public Tile getCurrentTile(){
+        return currentTile;
+    }
+
     public void placeOnTile(Tile tile){
-        
+        if (currentTile == tile) {
+            throw new IllegalArgumentException("Player already on this tile");
+        }
+
+        currentTile = tile;
     }
 
     public void move(int steps){
