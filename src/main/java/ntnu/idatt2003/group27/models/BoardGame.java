@@ -8,8 +8,17 @@ import java.util.ArrayList;
 public class BoardGame {
   private Board board;
   private Player currentPlayer;
-  private ArrayList<Player> players = new ArrayList<Player>();
+  private final ArrayList<Player> players = new ArrayList<Player>();
   private Dice dice;
+
+  /**
+   * getBoard method to get the board of the game.
+   *
+   * @return The current game board.
+   */
+  public Board getBoard() {
+    return board;
+  }
 
   /**
    * Add player method to add a player to the game.
@@ -32,7 +41,7 @@ public class BoardGame {
    * Create board method to create a new board.
    */
   public void createBoard() {
-    this.board = new Board();
+    this.board = new Board(90);
   }
 
   /**
@@ -55,7 +64,7 @@ public class BoardGame {
     while (true) {
       int roll = dice.roll();
       System.out.println(currentPlayer.getName() + " rolled a" + roll);
-      // needs to call the player class to move the player. logic has to be implemented in the player class
+      currentPlayer.move(roll);
 
       if (getWinner() != null) {
         System.out.println(getWinner().getName() + " has won the game!");
@@ -64,7 +73,6 @@ public class BoardGame {
 
       currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
     }
-
   }
 
   /**
