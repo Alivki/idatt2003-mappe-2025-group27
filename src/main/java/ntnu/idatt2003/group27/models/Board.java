@@ -1,18 +1,44 @@
 package ntnu.idatt2003.group27.models;
 
 import java.util.Map;
+import java.util.stream.IntStream;
 
-/*
- * A class representing a game board with a number of tiles.
+/**
+ * A class representing the game board.
  */
 public class Board {
-    public Map<Integer, Tile> tiles;
+  private Map<Integer, Tile> tiles;
 
-    public void addTile(){
+  /**
+   * Constructor for the Board class.
+   *
+   * @param numberOfTiles The number of tiles on the board.
+   */
+  public Board(int numberOfTiles) {
+    addTile(numberOfTiles);
+  }
 
-    }
+  /**
+   * Adds the specified number of tiles to the board.
+   *
+   * @param numberOfTiles The number of tiles to add.
+   */
+  public void addTile(int numberOfTiles) {
+    IntStream.range(0, numberOfTiles).forEach(i -> {
+      if (tiles.containsKey(i)) {
+        throw new IllegalArgumentException("Tile with ID " + i + " already exists");
+      }
+      tiles.put(i, new Tile(i));
+    });
+  }
 
-    public Tile getTile(int tileId){
-        return tiles.get(tileId);
-    }
+  /**
+   * Returns the tile with the specified ID.
+   *
+   * @param tileId The ID of the tile to return.
+   * @return The tile with the specified ID.
+   */
+  public Tile getTile(int tileId) {
+    return tiles.get(tileId);
+  }
 }
