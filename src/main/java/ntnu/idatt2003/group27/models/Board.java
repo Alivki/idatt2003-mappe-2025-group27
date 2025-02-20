@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
@@ -7,7 +8,16 @@ import java.util.stream.IntStream;
  * A class representing the game board.
  */
 public class Board {
-  private Map<Integer, Tile> tiles;
+  private final Map<Integer, Tile> tiles;
+
+  /**
+   * getTiles method to get the tiles of the board.
+   *
+   * @return The tiles of the board.
+   */
+  public Map<Integer, Tile> getTiles() {
+    return tiles;
+  }
 
   /**
    * Constructor for the Board class.
@@ -15,6 +25,8 @@ public class Board {
    * @param numberOfTiles The number of tiles on the board.
    */
   public Board(int numberOfTiles) {
+    this.tiles = new HashMap<Integer, Tile>();
+
     addTile(numberOfTiles);
   }
 
