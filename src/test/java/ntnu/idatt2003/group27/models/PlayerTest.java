@@ -31,6 +31,8 @@ public class PlayerTest {
         Board board = new Board(90);
         BoardGame game = new BoardGame(90, 1, 6);
         Player player = new Player("Player_1", game);
+        game.addPlayer(player);
+        game.setUpGame();
         player.move(2);
     }
 }
