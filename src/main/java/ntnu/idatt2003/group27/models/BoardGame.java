@@ -8,24 +8,51 @@ import java.util.ArrayList;
 public class BoardGame {
   private Board board;
   private Player currentPlayer;
-  private final ArrayList<Player> players = new ArrayList<Player>();
+  private final ArrayList<Player> players = new ArrayList<>();
   private Dice dice;
 
   /**
    * Constructor for the BoardGame class.
    */
-  public BoardGame() {
-    createBoard();
-    createDice();
+  public BoardGame(int numberOfTiles, int numberOfDice, int numberOfSides) {
+    createBoard(numberOfTiles);
+    createDice(numberOfDice, numberOfSides);
   }
 
   /**
-   * getBoard method to get the board of the game.
+   * method to return the game board.
    *
    * @return The current game board.
    */
   public Board getBoard() {
     return board;
+  }
+
+  /**
+   * method to return the array of players in the game.
+   *
+   * @return ArrayList of the players in the game.
+   */
+  public ArrayList<Player> getPlayers() {
+    return new ArrayList<>(players);
+  }
+
+  /**
+   * method to return the current player of the game.
+   *
+   * @return Player
+   */
+  public Player getCurrentPlayer() {
+    return currentPlayer;
+  }
+
+  /**
+   * method to return the currect game dice.
+   *
+   * @return Dice
+   */
+  public Dice getDice() {
+    return dice;
   }
 
   /**
@@ -39,53 +66,54 @@ public class BoardGame {
     }
 
     players.add(player);
-
-    if (currentPlayer == null) {
-      currentPlayer = player;
-    }
   }
 
   /**
-   * Create board method to create a new board.
+   * CreateBoard method to create a new game board with a specific number of tiles.
    */
-  public void createBoard() {
-    this.board = new Board(90);
+  private void createBoard(int numberOfTiles) {
+    this.board = new Board(numberOfTiles);
   }
 
   /**
    * Create dice method to create a new set of dice.
+   * With specific number of dice and sides on each dice.
    */
-  public void createDice() {
-    dice = new Dice(1, 6);
+  private void createDice(int numberOfDice, int numberOfSides) {
+    dice = new Dice(numberOfDice, numberOfSides);
+  }
+
+  /**
+   * Method to set up the game and make it ready to play.
+   * Removes initialization out from game loop method.
+   */
+  public void setUpGame() {
+    if (players.isEmpty()) {
+      throw new IllegalArgumentException("No players on the game");
+    }
+
+    players.forEach(player -> player.placeOnTile(board.getTile(0)));
+
+    currentPlayer = players.getFirst();
   }
 
   /**
    * Method to start the game.
    */
   public void play() {
-    int round = 0;
-
-    if (currentPlayer == null) {
-      throw new IllegalStateException("No players in the game");
+    if (players.size() < 2) {
+      throw new IllegalArgumentException("Must be two players to start the game");
     }
 
-    players.forEach(player -> player.placeOnTile(board.getTile(0)));
-
     while (true) {
-      round++;
       int roll = dice.roll();
 
       System.out.println(currentPlayer.getName() + " rolled a " + roll);
 
-      if (currentPlayer.currentTile.tileId + roll > board.getTiles().size() - 1) {
-        int move = -1 * (roll - ((board.getTiles().size() - 1) - currentPlayer.currentTile.tileId));
-        currentPlayer.move(move);
-        System.out.println(currentPlayer.getName() + "rolled to much and moved back \n");
-      } else {
-        currentPlayer.move(roll);
-        System.out.println(
-            currentPlayer.getName() + "moved to tile " + (currentPlayer.getCurrentTile().getTileId() + 1) + "\n");
-      }
+      currentPlayer.move(roll);
+      System.out.println(
+          currentPlayer.getName() + "moved to tile "
+              + (currentPlayer.getCurrentTile().getTileId() + 1) + "\n");
 
       if (getWinner() != null) {
         System.out.println("\n" + getWinner().getName() + " has won the game!");
