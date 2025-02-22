@@ -7,9 +7,10 @@ import ntnu.idatt2003.group27.models.Player;
 
 public class Main {
   public static void main(String[] args) {
-    BoardGame game =  new BoardGame();
+    BoardGame game =  new BoardGame(90, 1, 6);
     game.addPlayer(new Player("Alice", game));
     game.addPlayer(new Player("Test", game));
+    game.setUpGame();
     game.play();
   }
 }
