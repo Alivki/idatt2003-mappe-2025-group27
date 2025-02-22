@@ -47,7 +47,7 @@ public class BoardGame {
   }
 
   /**
-   * method to return the currect game dice.
+   * method to return the current game dice.
    *
    * @return Dice
    */
