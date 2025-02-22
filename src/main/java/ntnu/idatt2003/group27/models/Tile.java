@@ -5,7 +5,7 @@ package ntnu.idatt2003.group27.models;
  */
 public class Tile {
   public Tile nextTile;
-  public int tileId;
+  private int tileId;
   public TileAction landAction;
 
   public Tile(int tileId) {
