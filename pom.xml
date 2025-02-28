@@ -46,7 +46,7 @@
                 <version>0.0.8</version>
                 <configuration>
                     <!-- TODO: Replace with your own main-class -->
-                    <mainClass>ntnu.idatt2003.group27.Main</mainClass>
+                    <mainClass>ntnu.idatt2003.group27.BoardGameApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
