@@ -9,7 +9,7 @@ import ntnu.idatt2003.group27.view.BoardgameGUI;
 public class Main {
   public static void main(String[] args) {
     // to start the GUI for the application. Run main or mvn javafx:run for no error
-    //BoardgameGUI.main(args);
+    BoardgameGUI.main(args);
 
     BoardGame game =  new BoardGame(90, 1, 6);
     game.addPlayer(new Player("Alice", game));
