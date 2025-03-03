@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 public class JsonFileWriterTest {
   @Test
-  public void WriteBoardToJson(){
+  public void WriteBoardToJsonTest(){
     Board board = new Board(10);
     JsonFileWriter jsonFileWriter = new JsonFileWriter();
     JsonObject jsonObject = jsonFileWriter.serializeBoard(board);
