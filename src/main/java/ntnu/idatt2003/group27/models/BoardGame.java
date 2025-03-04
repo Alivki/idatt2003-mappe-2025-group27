@@ -20,6 +20,17 @@ public class BoardGame {
   }
 
   /**
+   * Alternative constructor for the BoardGame class. Uses a pre-initialized board as input.
+   * @param board
+   * @param numberOfDice
+   * @param numberOfSides
+   */
+  public BoardGame(Board board, int numberOfDice, int numberOfSides){
+    this.board = board;
+    createDice(numberOfDice, numberOfSides);
+  }
+
+  /**
    * method to return the game board.
    *
    * @return The current game board.
