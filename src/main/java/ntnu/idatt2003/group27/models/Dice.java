@@ -13,7 +13,7 @@ public class Dice {
   /**
    * Constructor for the Dice class.
    *
-   * @param numberOfDice The number of dice in the set
+   * @param numberOfDice  The number of dice in the set
    * @param numberOfSides The number of sides each die should have
    */
   public Dice(int numberOfDice, int numberOfSides) {
@@ -22,8 +22,8 @@ public class Dice {
     }
 
     this.dice = IntStream.range(0, numberOfDice)
-      .mapToObj(i -> new Die(numberOfSides))
-      .collect(Collectors.toList());
+        .mapToObj(i -> new Die(numberOfSides))
+        .collect(Collectors.toList());
   }
 
   /**
@@ -33,17 +33,18 @@ public class Dice {
    */
   public int roll() {
     return dice.stream()
-      .mapToInt(Die::roll)
-      .sum();
+        .mapToInt(Die::roll)
+        .sum();
   }
 
   /**
-   * Returns the value of a specific die in the set.
+   * Returns the value of a specific die in the set. No modifier to make it package-private for
+   * unit testing.
    *
    * @param dieNumber The number of the die to get the value of
    * @return The value of the die
    */
-  public int getDie(int dieNumber) {
+  int getDie(int dieNumber) {
     if (dieNumber >= 0 && dieNumber < dice.size()) {
       return dice.get(dieNumber).getRoll();
     } else {
