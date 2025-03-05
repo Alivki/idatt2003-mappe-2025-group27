@@ -65,11 +65,11 @@ public class BoardGame {
   }
 
   /**
-   * method to return the game board.
+   * method to return the game board. No modifier to make it package-private for unit tests.
    *
    * @return The current game board.
    */
-  public Board getBoard() {
+  Board getBoard() {
     return board;
   }
 
