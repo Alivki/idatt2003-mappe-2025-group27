@@ -47,7 +47,7 @@ public class BoardGame {
   }
 
   /**
-   * Method to notifo observers that a player has moved.
+   * Method to notify observers that a player has moved.
    *
    * @param player The player that has moved.
    */
@@ -74,29 +74,29 @@ public class BoardGame {
   }
 
   /**
-   * method to return the array of players in the game.
+   * method to return the array of players in the game. No modifier to make it package-private for
    *
    * @return ArrayList of the players in the game.
    */
-  public ArrayList<Player> getPlayers() {
+  ArrayList<Player> getPlayers() {
     return new ArrayList<>(players);
   }
 
   /**
-   * method to return the current player of the game.
+   * method to return the current player of the game. No modifier to make it package-private for
    *
    * @return Player
    */
-  public Player getCurrentPlayer() {
+  Player getCurrentPlayer() {
     return currentPlayer;
   }
 
   /**
-   * method to return the current game dice.
+   * method to return the current game dice. No modifier to make it package-private for unit tests.
    *
    * @return Dice
    */
-  public Dice getDice() {
+  Dice getDice() {
     return dice;
   }
 
