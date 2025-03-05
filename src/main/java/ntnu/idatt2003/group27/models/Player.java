@@ -43,10 +43,6 @@ public class Player {
    * @param tile The tile to place the player on.
    */
   public void placeOnTile(Tile tile) {
-    if (currentTile == tile) {
-      throw new IllegalArgumentException("Player already on this tile");
-    }
-
     currentTile = tile;
   }
 
@@ -56,11 +52,16 @@ public class Player {
    * @param steps the number of steps to move the player.
    */
   public void move(int steps) {
-    if (this.getCurrentTile().getTileId() + steps > game.getBoard().getTiles().size() - 1) {
-      int move = -1 * (steps - ((game.getBoard().getTiles().size() - 1) - this.getCurrentTile().getTileId()));
-      game.getBoard().getTile(currentTile.getTileId() + move).landPlayer(this);
+    int newPosition = currentTile.getTileId() + steps;
+    int lastTileIndex = game.getBoard().getTiles().size() - 1;
+
+    if (newPosition > lastTileIndex) {
+      int overshoot = newPosition - lastTileIndex;
+      newPosition = lastTileIndex - overshoot;
+      game.getBoard().getTile(newPosition).landPlayer(this);
+      return;
     }
 
-    game.getBoard().getTile(currentTile.getTileId() + steps).landPlayer(this);
+    game.getBoard().getTile(newPosition).landPlayer(this);
   }
 }

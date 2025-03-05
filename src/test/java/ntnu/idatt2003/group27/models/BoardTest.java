@@ -8,6 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class for the Board class.
+ *
+ * <p>Testing initialization of the board class,<br>
+ * getting a tile from the board</p>
+ */
 public class BoardTest {
   @Test
   @DisplayName("test initialization of the board")

@@ -7,8 +7,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class for the Dice class.
+ *
+ * <p>Testing the roll method,<br>
+ * testing the constructor with zero inputs,<br>
+ * testing the getDie method</p>
+ */
 class DiceTest {
-
   @Test
   @DisplayName("Test that the roll method returns the correct sum of rolls")
   void testRoll() {

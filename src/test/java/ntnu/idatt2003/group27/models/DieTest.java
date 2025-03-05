@@ -9,6 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class for the Die class.
+ *
+ * <p>Testing the roll method,<br>
+ * testing the constructor with zero sides,<br>
+ * testing the getRoll method</p>
+ */
 class DieTest {
   @Test
   @DisplayName("Test that the dies rolls and returns a correct value with a given number of sides")
