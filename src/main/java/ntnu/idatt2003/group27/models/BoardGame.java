@@ -1,11 +1,13 @@
 package ntnu.idatt2003.group27.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A class representing a board game.
  */
 public class BoardGame {
+  private List<BoardGameObserver> observers = new ArrayList<>();
   private Board board;
   private Player currentPlayer;
   private final ArrayList<Player> players = new ArrayList<>();
@@ -13,6 +15,10 @@ public class BoardGame {
 
   /**
    * Constructor for the BoardGame class.
+   *
+   * @param numberOfTiles The number of tiles on the board.
+   * @param numberOfDice  The number of dice to use in the game.
+   * @param numberOfSides The number of sides on each dice.
    */
   public BoardGame(int numberOfTiles, int numberOfDice, int numberOfSides) {
     createBoard(numberOfTiles);
@@ -21,13 +27,41 @@ public class BoardGame {
 
   /**
    * Alternative constructor for the BoardGame class. Uses a pre-initialized board as input.
-   * @param board
-   * @param numberOfDice
-   * @param numberOfSides
+   *
+   * @param board         The board to use in the game.
+   * @param numberOfDice  The number of dice to use in the game.
+   * @param numberOfSides The number of sides on each dice.
    */
-  public BoardGame(Board board, int numberOfDice, int numberOfSides){
+  public BoardGame(Board board, int numberOfDice, int numberOfSides) {
     this.board = board;
     createDice(numberOfDice, numberOfSides);
+  }
+
+  /**
+   * Method to add an observer to the list. Class that wants to listen to the changes.
+   *
+   * @param observer The observer to add.
+   */
+  public void addObserver(BoardGameObserver observer) {
+    observers.add(observer);
+  }
+
+  /**
+   * Method to notifo observers that a player has moved.
+   *
+   * @param player The player that has moved.
+   */
+  public void notifyPlayerMoved(Player player) {
+    observers.forEach(observer -> observer.onPlayerMoved(player));
+  }
+
+  /**
+   * Method to notify observers that a player has won the game.
+   *
+   * @param player The player that has won.
+   */
+  public void notifyPlayerWon(Player player) {
+    observers.forEach(observer -> observer.onPlayerWon(player));
   }
 
   /**
