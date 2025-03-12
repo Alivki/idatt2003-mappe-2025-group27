@@ -9,7 +9,7 @@ import ntnu.idatt2003.group27.models.Tile;
 /**
  * A class for writing data to files using the JSON format.
  */
-public class JsonFileWriter {
+public class JsonFileWriter implements ntnu.idatt2003.group27.filehandler.FileWriter {
   /**
    * Serializes the board object given as a parameter.
    * @param board
@@ -39,12 +39,26 @@ public class JsonFileWriter {
    * @param data
    * @throws IOException
    */
-  public void writeFile(String filePath, JsonObject data) throws IOException {
+  public void writeFile(String filePath, Object data) throws IOException {
+    JsonObject jsonData = null;
+    try {
+      jsonData = (JsonObject) data;
+    }
+    catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+
     try (FileWriter file = new FileWriter(filePath)) {
-      file.write(data.toString());
-      file.flush();
+      if (jsonData != null) {
+        file.write(jsonData.toString());
+        file.flush();
+      }
+      else{
+        System.out.println("JsonData is null!");
+      }
     } catch (Exception e) {
       throw new IOException(e.getMessage());
     }
   }
+
 }
