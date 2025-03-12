@@ -7,7 +7,7 @@ import java.io.IOException;
  *
  * @param <T> .
  */
-public interface FileReader<T> {
+public interface CustomFileReader<T> {
 
   /**
    *.
