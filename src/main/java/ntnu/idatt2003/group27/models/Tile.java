@@ -37,6 +37,6 @@ public class Tile {
   }
 
   public void setNextTile(int nextTile) {
-
+    this.nextTile = nextTile;
   }
 }
