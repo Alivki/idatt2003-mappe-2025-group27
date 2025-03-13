@@ -13,13 +13,12 @@ import ntnu.idatt2003.group27.view.BoardgameGUI;
 public class BoardGameApp {
   public static void main(String[] args) {
     // to start the GUI for the application. Run main or mvn javafx:run for no error
-    BoardgameGUI.main(args);
+    //BoardgameGUI.main(args);
 
-    //BoardGame game = BoardGameFactory.createGameFromJson(
-      //  "src/main/java/ntnu/idatt2003/group27/resources/boards/Board.json");
+    BoardGame game = BoardGameFactory.createGameFromJson(
+        "src/main/java/ntnu/idatt2003/group27/resources/boards/Board.json");
 
-
-    BoardGame game = BoardGameFactory.createDefaultGame();
+    System.out.println(game.getBoard().getTiles().size());
 
     game.addPlayer(new Player("Alice", game));
     game.addPlayer(new Player("Test", game));
