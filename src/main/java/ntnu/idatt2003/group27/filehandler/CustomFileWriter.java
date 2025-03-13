@@ -16,5 +16,5 @@ public interface CustomFileWriter<T> {
    * @return .
    * @throws IOException .
    */
-  T readFile(String filePath) throws IOException;
+  T writeFile(String filePath, Object data) throws IOException;
 }
