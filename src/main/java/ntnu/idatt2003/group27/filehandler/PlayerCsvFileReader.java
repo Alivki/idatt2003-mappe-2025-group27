@@ -6,27 +6,26 @@ import java.io.IOException;
 import java.util.List;
 import ntnu.idatt2003.group27.models.Player;
 
-public class PlayerCsvFileReader implements FileReader {
+public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
   /**
    * Reads the csv file from filepath and returns a player array containing all players.
-   * The returned 2-dimensional string array is on the format [Player_name][Player_piece].
    * @param filePath .
    * @return Returns a Player array containing all players found in the csv file.
    * @throws IOException
    */
   @Override
-  public String[][] readFile(String filePath) throws IOException {
+  public Player[] readFile(String filePath) throws IOException {
     try (CSVReader reader = new CSVReader(new java.io.FileReader(filePath))) {
       List<String[]> contents = reader.readAll();
 
-      String[][] playerData = new String[contents.size()][2];
+      Player[] players = new Player[contents.size()];
       //Loop starts at i = 1 to skip the titles for each column in the csv file.
-      for (int i = 1; i < contents.size(); i++) {
+      for (int i = 1; i < contents.size()-1; i++) {
         String[] row = contents.get(i);
-        playerData[i-1][0] = row[0];
-        playerData[i-1][1] = row[1];
+        Player newPlayer = new Player(row[0], null);
+        players[i-1] = newPlayer;
       }
-      return playerData;
+      return players;
     }
 
     catch (IOException e){
