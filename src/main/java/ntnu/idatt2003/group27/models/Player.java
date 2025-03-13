@@ -6,7 +6,6 @@ package ntnu.idatt2003.group27.models;
 public class Player {
   private final String name;
   private Tile currentTile;
-  private final BoardGame game;
 
   /**
    * Constructor for the player class.
@@ -16,7 +15,6 @@ public class Player {
    */
   public Player(String name, BoardGame game) {
     this.name = name;
-    this.game = game;
   }
 
   /**
@@ -53,15 +51,17 @@ public class Player {
    */
   public void move(int steps) {
     int newPosition = currentTile.getTileId() + steps;
-    int lastTileIndex = game.getBoard().getTiles().size() - 1;
 
-    if (newPosition > lastTileIndex) {
-      int overshoot = newPosition - lastTileIndex;
-      newPosition = lastTileIndex - overshoot;
-      game.getBoard().getTile(newPosition).landPlayer(this);
-      return;
+    if (steps < 0) {
+      while (currentTile.getTileId() > newPosition) {
+        currentTile = currentTile.getPreviousTile();
+      }
     }
 
-    game.getBoard().getTile(newPosition).landPlayer(this);
+    while (currentTile.getTileId() < newPosition) {
+      currentTile = currentTile.getNextTile();
+    }
+
+    currentTile.landPlayer(this);
   }
 }
