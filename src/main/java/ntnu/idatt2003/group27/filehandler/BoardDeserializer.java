@@ -37,6 +37,7 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
         int nextTileId = tileObject.get("nextTile").getAsInt();
         Tile nextTile = tiles.computeIfAbsent(nextTileId, Tile::new);
         currentTile.setNextTile(nextTile);
+        currentTile.setPreviousTile(tiles.get(currentTile.getTileId() - 1));
       }
 
       if (tileObject.has("action")) {

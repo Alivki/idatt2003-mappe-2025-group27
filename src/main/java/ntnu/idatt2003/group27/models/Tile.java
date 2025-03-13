@@ -5,6 +5,7 @@ package ntnu.idatt2003.group27.models;
  */
 public class Tile {
   public Tile nextTile;
+  public Tile previousTile;
   private final int tileId;
   public TileAction landAction;
 
@@ -16,8 +17,12 @@ public class Tile {
     return tileId;
   }
 
-  public Tile getNextTileId() {
+  public Tile getNextTile() {
     return nextTile;
+  }
+
+  public Tile getPreviousTile() {
+    return previousTile;
   }
 
   public TileAction getLandAction() {
@@ -42,5 +47,9 @@ public class Tile {
 
   public void setNextTile(Tile nextTile) {
     this.nextTile = nextTile;
+  }
+
+  public void setPreviousTile(Tile previousTile) {
+    this.previousTile = previousTile;
   }
 }
