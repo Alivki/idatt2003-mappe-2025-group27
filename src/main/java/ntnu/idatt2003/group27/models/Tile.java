@@ -4,7 +4,7 @@ package ntnu.idatt2003.group27.models;
  * A class that represents a tile on the game board.
  */
 public class Tile {
-  public int nextTile;
+  public Tile nextTile;
   private final int tileId;
   public TileAction landAction;
 
@@ -16,7 +16,7 @@ public class Tile {
     return tileId;
   }
 
-  public int getNextTileId() {
+  public Tile getNextTileId() {
     return nextTile;
   }
 
@@ -25,18 +25,22 @@ public class Tile {
   }
 
   public void landPlayer(Player player) {
-    player.placeOnTile(this);
-  }
-
-  public void setLandAction(TileAction landAction) {
-    this.landAction = landAction;
+    if (landAction != null) {
+      landAction.Perform(player);
+    } else {
+      player.placeOnTile(this);
+    }
   }
 
   public void leavePlayer(Player player) {
 
   }
 
-  public void setNextTile(int nextTile) {
+  public void setLandAction(TileAction landAction) {
+    this.landAction = landAction;
+  }
+
+  public void setNextTile(Tile nextTile) {
     this.nextTile = nextTile;
   }
 }

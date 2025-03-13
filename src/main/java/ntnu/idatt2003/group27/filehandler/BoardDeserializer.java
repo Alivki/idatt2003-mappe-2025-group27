@@ -26,10 +26,16 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
     JsonArray tilesJsonArray = jsonObject.getAsJsonArray("tiles");
 
     Map<Integer, Tile> tiles = new HashMap<>();
+    Tile newTile = null;
 
     for (JsonElement tileElement : tilesJsonArray) {
       JsonObject tileObject = tileElement.getAsJsonObject();
       int id = tileObject.get("id").getAsInt();
+
+      if (id == 1) {
+        newTile = new Tile(id);
+        continue;
+      }
 
       int nextTileId = -1;
       if (id > 90) {
@@ -52,11 +58,16 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
         }
       }
 
-      Tile newTile = new Tile(id);
-      newTile.setNextTile(nextTileId);
+      Tile nextTile = new Tile(nextTileId);
+
+      newTile.setNextTile(nextTile);
       newTile.setLandAction(action);
 
-      tiles.put(id, newTile);
+      if (id == 1) {
+        tiles.put(id, newTile);
+      }
+
+      tiles.put(nextTileId, nextTile);
     }
 
     return new Board(tiles);
