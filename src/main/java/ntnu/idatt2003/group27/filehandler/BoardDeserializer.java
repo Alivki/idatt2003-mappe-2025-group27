@@ -26,23 +26,19 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
     JsonArray tilesJsonArray = jsonObject.getAsJsonArray("tiles");
 
     Map<Integer, Tile> tiles = new HashMap<>();
-    Tile newTile = null;
 
     for (JsonElement tileElement : tilesJsonArray) {
       JsonObject tileObject = tileElement.getAsJsonObject();
       int id = tileObject.get("id").getAsInt();
 
-      if (id == 1) {
-        newTile = new Tile(id);
-        continue;
+      Tile currentTile = tiles.computeIfAbsent(id, Tile::new);
+
+      if (tileObject.has("nextTile")) {
+        int nextTileId = tileObject.get("nextTile").getAsInt();
+        Tile nextTile = tiles.computeIfAbsent(nextTileId, Tile::new);
+        currentTile.setNextTile(nextTile);
       }
 
-      int nextTileId = -1;
-      if (id > 90) {
-        nextTileId = tileObject.get("nextTile").getAsInt();
-      }
-
-      TileAction action = null;
       if (tileObject.has("action")) {
         JsonObject actionObject = tileObject.getAsJsonObject("action");
         String type = actionObject.get("type").getAsString();
@@ -51,23 +47,12 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
           case "LadderAction":
             int targetTile = actionObject.get("targetTile").getAsInt();
             String description = actionObject.get("description").getAsString();
-            action = new LadderAction(targetTile, description);
+            currentTile.setLandAction(new LadderAction(targetTile, description));
             break;
           default:
             throw new IllegalArgumentException("Unknown action type: " + type);
         }
       }
-
-      Tile nextTile = new Tile(nextTileId);
-
-      newTile.setNextTile(nextTile);
-      newTile.setLandAction(action);
-
-      if (id == 1) {
-        tiles.put(id, newTile);
-      }
-
-      tiles.put(nextTileId, nextTile);
     }
 
     return new Board(tiles);
