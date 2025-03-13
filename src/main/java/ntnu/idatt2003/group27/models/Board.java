@@ -26,6 +26,19 @@ public class Board {
   }
 
   /**
+   * Constructor for the Board class.
+   *
+   * @param inputTiles The tiles to add to the board.
+   */
+  public Board(Map<Integer, Tile> inputTiles) {
+    if (inputTiles == null) {
+      throw new IllegalArgumentException("Input tiles cannot be null");
+    }
+
+    this.tiles = inputTiles;
+  }
+
+  /**
    * getTiles method to get the tiles of the board.
    *
    * @return The tiles of the board.

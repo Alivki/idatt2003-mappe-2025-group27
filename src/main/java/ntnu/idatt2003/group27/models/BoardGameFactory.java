@@ -27,7 +27,7 @@ public class BoardGameFactory {
   public static BoardGame createGameFromJson(String path) {
     Board board = null;
     try {
-      board = new JsonFileReader().readBoardFile(path);
+      board = new JsonFileReader().readFile(path);
     } catch (IOException e) {
       System.err.println(e.getMessage());
     }

@@ -137,7 +137,7 @@ public class BoardGame {
       throw new IllegalArgumentException("No players on the game");
     }
 
-    players.forEach(player -> player.placeOnTile(board.getTile(0)));
+    players.forEach(player -> player.placeOnTile(board.getTile(1)));
 
     currentPlayer = players.getFirst();
   }
