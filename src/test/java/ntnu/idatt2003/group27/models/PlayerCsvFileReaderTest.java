@@ -1,8 +1,6 @@
 package ntnu.idatt2003.group27.models;
 
 import java.io.IOException;
-import javax.imageio.IIOException;
-import ntnu.idatt2003.group27.filehandler.CsvFileReader;
 import ntnu.idatt2003.group27.filehandler.PlayerCsvFileReader;
 import org.junit.jupiter.api.Test;
 
