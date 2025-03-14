@@ -69,7 +69,7 @@ public class BoardGame {
    *
    * @return The current game board.
    */
-  Board getBoard() {
+  public Board getBoard() {
     return board;
   }
 
@@ -155,10 +155,12 @@ public class BoardGame {
 
       System.out.println(currentPlayer.getName() + " rolled a " + roll);
 
-      currentPlayer.move(roll);
+      int nextPlayerPosition = getNextPlayerPosition(roll);
+
+      currentPlayer.move(nextPlayerPosition);
       System.out.println(
           currentPlayer.getName() + "moved to tile "
-              + (currentPlayer.getCurrentTile().getTileId() + 1) + "\n");
+          + (currentPlayer.getCurrentTile().getTileId()) + "\n");
 
       if (getWinner() != null) {
         System.out.println("\n" + getWinner().getName() + " has won the game!");
@@ -170,13 +172,34 @@ public class BoardGame {
   }
 
   /**
+   * Method to get the next player position after a roll.
+   *
+   * @param roll The roll of the dice.
+   * @return int The next player position.
+   */
+  private int getNextPlayerPosition(int roll) {
+    int lastTileIndex = board.getTiles().size();
+    int currentPosition = currentPlayer.getCurrentTile().getTileId();
+    int newPosition = currentPosition + roll;
+
+    if (newPosition > lastTileIndex) {
+      int overshoot = newPosition - lastTileIndex;
+      int finalPosition = lastTileIndex - overshoot;
+
+      return finalPosition - currentPosition;
+    }
+
+    return roll;
+  }
+
+  /**
    * Method to get the winner of the game.
    *
    * @return Player The winner of the game.
    */
   public Player getWinner() {
     for (Player player : players) {
-      if (player.getCurrentTile().getTileId() == board.getTiles().size() - 1) {
+      if (player.getCurrentTile().getTileId() == board.getTiles().size()) {
         return player;
       }
     }
