@@ -20,8 +20,8 @@ public class BoardGameApp {
 
     System.out.println(game.getBoard().getTiles().size());
 
-    game.addPlayer(new Player("Alice", game));
-    game.addPlayer(new Player("Test", game));
+    game.addPlayer(new Player("Alice"));
+    game.addPlayer(new Player("Test"));
     game.setUpGame();
     game.play();
   }
