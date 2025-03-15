@@ -1,20 +1,25 @@
 package ntnu.idatt2003.group27.models;
 
 /**
- * An interface for observing the state of a board game.
+ * Defines a contract for observing significant events in a {@link BoardGame}. Implementations of
+ * this interface receive notifications when a player moves or wins the game.
+ *
+ * @author Iver Lindholm
+ * @since 1.0
+ * @version 1.0
  */
 public interface BoardGameObserver {
   /**
-   * Called when a player has moved.
+   * Invoked when a player changes position on the board.
    *
-   * @param player The player that has moved.
+   * @param player The {@link Player} who has moved.
    */
   void onPlayerMoved(Player player);
 
   /**
-   * Called when a player has won the game.
+   * Invoked when a player has won the game.
    *
-   * @param player The player that has won.
+   * @param player The {@link Player} who has won.
    */
   void onPlayerWon(Player player);
 }

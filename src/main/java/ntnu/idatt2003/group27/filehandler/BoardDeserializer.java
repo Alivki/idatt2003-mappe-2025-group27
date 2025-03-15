@@ -15,13 +15,31 @@ import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.TileAction;
 
 /**
- * A class that deserializes a JSON object to a Board object.
+ * Deserializes a JSON object into a {@link Board} instance, constructing a game board with tiles
+ * and their associated actions based on the provided JSON structure. This class implements the
+ * {@link JsonDeserializer} interface for custom deserialization logic.
+ *
+ * @author Iver Lindholm
+ * @version 1.1
+ * @since 1.0
  */
 public class BoardDeserializer implements JsonDeserializer<Board> {
 
+  /**
+   * Deserializes a JSON object into a {@link Board} object. The JSON is expected to contain an
+   * array of tile definitions, including tile IDs, connections to next tiles, and optional actions
+   * such as ladders.
+   *
+   * @param json The {@link JsonElement} representing the JSON data to deserialize.
+   * @param typeOfT The type of the object to deserialize to. In this case, a {@link Board} object.
+   * @param context The {@link JsonDeserializationContext} for deserializing nested objects.
+   * @return A new {@link Board} instance populated with tiles and actions based on the JSON data.
+   * @throws JsonParseException if the JSON structure is invalid or cannot be parsed.
+   * @throws IllegalArgumentException if an unknown action type is encountered in the JSON data.
+   */
   @Override
   public Board deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-      throws JsonParseException {
+      throws JsonParseException, IllegalArgumentException {
     JsonObject jsonObject = json.getAsJsonObject();
     JsonArray tilesJsonArray = jsonObject.getAsJsonArray("tiles");
 
