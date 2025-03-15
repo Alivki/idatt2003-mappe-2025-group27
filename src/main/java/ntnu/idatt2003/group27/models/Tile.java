@@ -102,7 +102,7 @@ public class Tile {
    */
   public void landPlayer(Player player) {
     if (landAction != null) {
-      landAction.Perform(player);
+      landAction.perform(player);
     } else {
       player.placeOnTile(this);
     }
