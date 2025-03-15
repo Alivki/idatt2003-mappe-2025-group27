@@ -8,8 +8,16 @@ import java.util.stream.IntStream;
  * A class representing the game board in a tile-based game.
  * The board consists of a number of tiles, each with a unique ID.
  * Tiles are stored in a Map with Integer as tile id key and Tile object as value.
+ *
+ * @author Iver Lindholm, Amadeus Berg
+ * @since 0.0
+ * @version 1.1
  */
 public class Board {
+  /**
+   * The map storing the tiles on the board,
+   * with tile IDs as keys and {@link Tile} objects as values.
+   */
   private final Map<Integer, Tile> tiles;
 
   /**
@@ -50,7 +58,7 @@ public class Board {
    * The returned map is a copy of the internal map,
    * so changes to the returned map will not affect the board.
    *
-   * @return A {@code Map} containing the tiles on the board, with tile IDs as keys and {@code Tile}
+   * @return A {@link Map} containing the tiles on the board, with tile IDs as keys and {@link Tile}
    *     objects as values.
    */
   public Map<Integer, Tile> getTiles() {
@@ -78,7 +86,7 @@ public class Board {
    * Retrieves the tile associated with the specified ID.
    *
    * @param tileId The ID of the tile to retrieve.
-   * @return The {@code Tile} object corresponding to the give {@code tileId},
+   * @return The {@link Tile} object corresponding to the give {@code tileId},
    *      or {@code null} if no tile with the specified ID exists.
    */
   public Tile getTile(int tileId) {
