@@ -31,8 +31,8 @@ public class BoardGameTest {
   @DisplayName("test adding players to the game")
   public void testAddPlayers() {
     BoardGame game = new BoardGame(10, 1, 6);
-    Player player1 = new Player("player1", game);
-    Player player2 = new Player("player2", game);
+    Player player1 = new Player("player1");
+    Player player2 = new Player("player2");
 
     game.addPlayer(player1);
     game.addPlayer(player2);
@@ -44,7 +44,7 @@ public class BoardGameTest {
   @DisplayName("test adding duplicate players to the game")
   public void testAddingDuplicatePlayers() {
     BoardGame game = new BoardGame(10, 1, 6);
-    Player player = new Player("player", game);
+    Player player = new Player("player");
 
     game.addPlayer(player);
 
@@ -65,7 +65,7 @@ public class BoardGameTest {
   @DisplayName("test moving the player")
   public void testPlayerMove() {
     BoardGame game = new BoardGame(10, 1, 6);
-    Player player = new Player("player", game);
+    Player player = new Player("player");
 
     game.addPlayer(player);
 
@@ -80,7 +80,7 @@ public class BoardGameTest {
   @DisplayName("test moving the player past game board")
   public void testPlayerMoveOvershoot() {
     BoardGame game = new BoardGame(10, 1, 6);
-    Player player = new Player("player", game);
+    Player player = new Player("player");
 
     game.addPlayer(player);
 
@@ -96,7 +96,7 @@ public class BoardGameTest {
   @DisplayName("test the game set up method")
   public void testGameSetUp() {
     BoardGame game = new BoardGame(10, 1, 6);
-    Player player = new Player("player", game);
+    Player player = new Player("player");
 
     game.addPlayer(player);
     game.setUpGame();
@@ -119,8 +119,8 @@ public class BoardGameTest {
   @DisplayName("test to check if winner is correctly detected and the game loop working")
   public void testWinnerDetectionAndPlayMethod() {
     BoardGame game = new BoardGame(10, 1, 6);
-    Player player1 = new Player("player1", game);
-    Player player2 = new Player("player2", game);
+    Player player1 = new Player("player1");
+    Player player2 = new Player("player2");
 
     game.addPlayer(player1);
     game.addPlayer(player2);
@@ -135,7 +135,7 @@ public class BoardGameTest {
   @DisplayName("test if game throws error with to few players when starting")
   public void testStartingGameThrowsError() {
     BoardGame game = new BoardGame(10, 1, 6);
-    Player player = new Player("player", game);
+    Player player = new Player("player");
 
     game.addPlayer(player);
 

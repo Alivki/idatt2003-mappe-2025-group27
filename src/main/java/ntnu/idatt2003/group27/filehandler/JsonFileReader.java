@@ -7,14 +7,22 @@ import java.io.IOException;
 import ntnu.idatt2003.group27.models.Board;
 
 /**
- * A class that reads a JSON file and creates a Board object from the contents of the file.
+ * Handles the reading of a JSON file and deserializes it into a {@link Board} object.
+ * This class utilizes the Gson library to parse the JSON data and
+ * construct a {@link Board} instance.
+ *
+ * @author Iver Lindholm
+ * @version 1.0
+ * @since 1.0
  */
-public class JsonFileReader implements CustomFileReader<Board> {
 
+public class JsonFileReader implements CustomFileReader<Board> {
   private final Gson gson;
 
   /**
-   * Creates a new JsonFileReader object.
+   * Constructs a {@link JsonFileReader} instance with a configured Gson object. The Gson instance
+   * is set up to use a custom {@link BoardDeserializer} to handle the deserialization of the JSON
+   * into a {@link Board} object.
    */
   public JsonFileReader() {
     this.gson =
@@ -22,12 +30,11 @@ public class JsonFileReader implements CustomFileReader<Board> {
   }
 
   /**
-   * Reads the board.json file at filepath and returns a new board object with the contents of the
-   * file.
+   * Reads a JSON file from a specifed file path and deserializes it into a {@link Board} object.
    *
-   * @param filePath The path to the file to read.
-   * @return Board
-   * @throws IOException If the file is not found or if the file is not a valid JSON file.
+   * @param filePath The path to the JSON file to read.
+   * @return a {@link Board} object representing the data in the JSON file.
+   * @throws IOException if an error occurs while reading the file or deserializing the JSON data.
    */
   @Override
   public Board readFile(String filePath) throws IOException {

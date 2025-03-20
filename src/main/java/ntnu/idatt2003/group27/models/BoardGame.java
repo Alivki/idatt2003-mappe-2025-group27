@@ -4,19 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class representing a board game.
+ * A class representing a board game with players, a board, and dice.
+ * This class manages game state, player movement, and the game flow using an observer pattern
+ * to notify listeners of significant events such as player movement or victory.
+ *
+ * @author Iver Lindholm, Amadeus Berg
+ * @since 0.0
+ * @version 1.2
  */
 public class BoardGame {
+  /** List of observers monitoring game events . */
   private List<BoardGameObserver> observers = new ArrayList<>();
+
+  /**
+   * The game board storing Tiles.
+   *
+   * @see Board
+   */
   private Board board;
+
+  /**
+   * The current {@link Player} of that round.
+   */
   private Player currentPlayer;
+
+  /** {@link ArrayList} storing all the {@link Player} objects in the game. */
   private final ArrayList<Player> players = new ArrayList<>();
+
+  /** Instace of {@link Dice} class to roll the dice. */
   private Dice dice;
 
   /**
-   * Constructor for the BoardGame class.
+   * Constructs a new board game with a specified board size and dice configuration.
    *
-   * @param numberOfTiles The number of tiles on the board.
+   * @param numberOfTiles The total number of tiles on the game board.
    * @param numberOfDice  The number of dice to use in the game.
    * @param numberOfSides The number of sides on each dice.
    */
@@ -26,9 +47,9 @@ public class BoardGame {
   }
 
   /**
-   * Alternative constructor for the BoardGame class. Uses a pre-initialized board as input.
+   * Constructs a new board game with a pre-initialized board and specified dice configuration.
    *
-   * @param board         The board to use in the game.
+   * @param board         The pre-initialized board to use in the game.
    * @param numberOfDice  The number of dice to use in the game.
    * @param numberOfSides The number of sides on each dice.
    */
@@ -38,16 +59,16 @@ public class BoardGame {
   }
 
   /**
-   * Method to add an observer to the list. Class that wants to listen to the changes.
+   * Adds an observer to receive game event notifications.
    *
-   * @param observer The observer to add.
+   * @param observer The observer to register.
    */
   public void addObserver(BoardGameObserver observer) {
     observers.add(observer);
   }
 
   /**
-   * Method to notify observers that a player has moved.
+   * Notifies all observers that a player has moved.
    *
    * @param player The player that has moved.
    */
@@ -56,7 +77,7 @@ public class BoardGame {
   }
 
   /**
-   * Method to notify observers that a player has won the game.
+   * Notifies all observers that a player has won.
    *
    * @param player The player that has won.
    */
@@ -65,7 +86,7 @@ public class BoardGame {
   }
 
   /**
-   * method to return the game board. No modifier to make it package-private for unit tests.
+   * Retrieves the current game board. This method is package-private for testing purposes.
    *
    * @return The current game board.
    */
@@ -74,38 +95,40 @@ public class BoardGame {
   }
 
   /**
-   * method to return the array of players in the game. No modifier to make it package-private for
+   * Retrieves a copy of the list of players in the game.
+   * The method is package-private for testing purposes.
    *
-   * @return ArrayList of the players in the game.
+   * @return A new {@link ArrayList} containing all players in the game.
    */
   ArrayList<Player> getPlayers() {
     return new ArrayList<>(players);
   }
 
   /**
-   * method to return the current player of the game. No modifier to make it package-private for
+   * Retrieves the current player. The method is package-private for testing purposes.
    *
-   * @return Player
+   * @return The player whose turn is currently active.
    */
   Player getCurrentPlayer() {
     return currentPlayer;
   }
 
   /**
-   * method to return the current game dice. No modifier to make it package-private for unit tests.
+   * Retrieves the dice used in the game. The method is package-private for testing purposes.
    *
-   * @return Dice
+   * @return The dice instance used in the game.
    */
   Dice getDice() {
     return dice;
   }
 
   /**
-   * Add player method to add a player to the game.
+   * Adds players to the game.
    *
-   * @param player The player to add.
+   * @param player The player to be added.
+   * @throws IllegalArgumentException if the player already exists in the game.
    */
-  public void addPlayer(Player player) {
+  public void addPlayer(Player player) throws IllegalArgumentException {
     if (players.contains(player)) {
       throw new IllegalArgumentException("Player already exists");
     }
@@ -114,25 +137,31 @@ public class BoardGame {
   }
 
   /**
-   * CreateBoard method to create a new game board with a specific number of tiles.
+   * Initializes a new game board with the soecified number of tiles.
+   *
+   * @param numberOfTiles The number of tiles to create on the board.
    */
   private void createBoard(int numberOfTiles) {
     this.board = new Board(numberOfTiles);
   }
 
   /**
-   * Create dice method to create a new set of dice.
-   * With specific number of dice and sides on each dice.
+   * Initializes the dice with the specified number of dice and sides on each dice.
+   *
+   * @param numberOfDice The number of dice to create.
+   * @param numberOfSides The number of sides on each dice.
    */
   private void createDice(int numberOfDice, int numberOfSides) {
     dice = new Dice(numberOfDice, numberOfSides);
   }
 
   /**
-   * Method to set up the game and make it ready to play.
-   * Removes initialization out from game loop method.
+   * Prepares the game for play by placing all players on the starting tile and setting the initial
+   * player.
+   *
+   * @throws IllegalArgumentException if no players have been added to the game.
    */
-  public void setUpGame() {
+  public void setUpGame() throws IllegalArgumentException {
     if (players.isEmpty()) {
       throw new IllegalArgumentException("No players on the game");
     }
@@ -143,7 +172,9 @@ public class BoardGame {
   }
 
   /**
-   * Method to start the game.
+   * Starts and runs the game loop until a winner is determined.
+   *
+   * @throws IllegalArgumentException if there are less than two players in the game.
    */
   public void play() {
     if (players.size() < 2) {
@@ -172,10 +203,11 @@ public class BoardGame {
   }
 
   /**
-   * Method to get the next player position after a roll.
+   * Calculates the next position for the current player based on the dice roll, handeling
+   * overshooting beyond the board's end.
    *
-   * @param roll The roll of the dice.
-   * @return int The next player position.
+   * @param roll The result of the dice roll.
+   * @return The relative movement distance for the player.
    */
   private int getNextPlayerPosition(int roll) {
     int lastTileIndex = board.getTiles().size();
@@ -193,9 +225,9 @@ public class BoardGame {
   }
 
   /**
-   * Method to get the winner of the game.
+   * Determines the winner of the game, if any.
    *
-   * @return Player The winner of the game.
+   * @return The winning player, or null if no player has won yet.
    */
   public Player getWinner() {
     for (Player player : players) {
