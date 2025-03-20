@@ -18,19 +18,18 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
    */
   @Override
   public void writeFile(String filePath, Player[] data) throws IOException {
-      try{
-        CSVWriter csvWriter = new CSVWriter(new FileWriter(filePath));
-        String[] header = {"Player_Name", "Player_Piece"};
-        csvWriter.writeNext(header);
-        for (Player player : data) {
-          String[] playerInfo = {player.getName(), player.getPiece()};
-          csvWriter.writeNext(playerInfo);
-        }
-        csvWriter.close();
-      } catch (Exception e) {
-        throw new IOException(e);
+    try{
+      CSVWriter csvWriter = new CSVWriter(new FileWriter(filePath));
+      String[] header = {"Player_Name", "Player_Piece"};
+      csvWriter.writeNext(header);
+      for (Player player : data) {
+        String[] playerInfo = {player.getName(), player.getPiece()};
+        csvWriter.writeNext(playerInfo);
       }
+      csvWriter.close();
+    } catch (Exception e) {
+      throw new IOException(e);
     }
   }
-
 }
+
