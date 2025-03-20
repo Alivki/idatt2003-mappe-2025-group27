@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.IntStream;
 import ntnu.idatt2003.group27.models.Player;
 
 public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
@@ -20,11 +21,9 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
 
       Player[] players = new Player[contents.size()];
       //Loop starts at i = 1 to skip the titles for each column in the csv file.
-      for (int i = 1; i < contents.size()-1; i++) {
-        String[] row = contents.get(i);
-        Player newPlayer = new Player(row[0], null);
-        players[i-1] = newPlayer;
-      }
+      IntStream.range(1, contents.size() - 1)
+          .mapToObj(i -> new Player(contents.get(i)[0], null))
+          .toArray(Player[]::new);
       return players;
     }
 
