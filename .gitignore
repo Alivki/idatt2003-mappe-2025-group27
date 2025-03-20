@@ -12,6 +12,10 @@ target/
 *.iws
 *.iml
 *.ipr
+.idea/
+
+# Other common ignores (optional)
+*.log
 
 ### Eclipse ###
 .apt_generated
