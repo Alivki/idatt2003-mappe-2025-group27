@@ -7,7 +7,12 @@ import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.models.Tile;
 
 /**
- * A class for writing data to files using the JSON format.
+ * Handles the writing of a {@link Board} object and serializes it to a JSON file.
+ * This class utilizes the Gson library to write the JSON data
+ *
+ * @author Iver Lindholm, Amadeus Berg
+ * @since 0.0
+ * @version 1.0
  */
 public class JsonFileWriter implements CustomFileWriter<JsonObject> {
   /**

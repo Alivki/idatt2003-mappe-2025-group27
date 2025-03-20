@@ -5,6 +5,7 @@ import java.util.stream.IntStream;
 import ntnu.idatt2003.group27.filehandler.PlayerCsvFileWriter;
 import org.junit.jupiter.api.Test;
 
+
 public class PlayerCsvFileWriterTest {
   /**
    * A test for writing csv files.
@@ -26,6 +27,31 @@ public class PlayerCsvFileWriterTest {
           players);
     }
     catch (IOException e){
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Test
+  public void testWritePlayerToCsvFile(){
+    PlayerCsvFileWriter playerCsvFileWriter = new PlayerCsvFileWriter();
+    Player player = new Player("WritePlayerToCsvFile_TestPlayer");
+    try {
+      playerCsvFileWriter.writePlayerToFile(
+          "src/test/java/ntnu/idatt2003/group27/models/Players_Test.csv", player);
+    }
+    catch (IOException e){
+      System.out.println(e.getMessage());
+    }
+  }
+
+  @Test
+  public void testRemovePlayerFromCsvFile(){
+    PlayerCsvFileWriter playerCsvFileWriter = new PlayerCsvFileWriter();
+    Player player = new Player("WritePlayerToCsvFile_TestPlayer");
+    try{
+      playerCsvFileWriter.removePlayerFromFile("src/test/java/ntnu/idatt2003/group27/models/Players_Test.csv", player);
+    }
+    catch (Exception e){
       System.out.println(e.getMessage());
     }
   }
