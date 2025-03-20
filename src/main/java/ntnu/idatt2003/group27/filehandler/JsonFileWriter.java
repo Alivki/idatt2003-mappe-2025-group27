@@ -30,6 +30,7 @@ public class JsonFileWriter implements CustomFileWriter<JsonObject> {
    * @param data
    * @throws IOException
    */
+  @Override
   public void writeFile(String filePath, JsonObject data) throws IOException {
     try (FileWriter file = new FileWriter(filePath)) {
       file.write(data.toString());
@@ -37,10 +38,5 @@ public class JsonFileWriter implements CustomFileWriter<JsonObject> {
     } catch (Exception e) {
       throw new IOException(e.getMessage());
     }
-  }
-
-  @Override
-  public JsonObject writeFile(String filePath, Object data) throws IOException {
-    return null;
   }
 }
