@@ -9,6 +9,7 @@ import ntnu.idatt2003.group27.models.Player;
 
 /**
  * A class for writing Players.csv files.
+ * Uses OpenCsv for parsing of csv file data.
  *
  * @author Iver Lindholm, Amadeus Berg
  * @since 0.0
