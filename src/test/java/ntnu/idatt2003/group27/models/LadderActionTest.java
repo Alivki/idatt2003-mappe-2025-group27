@@ -28,7 +28,7 @@ public class LadderActionTest {
   @DisplayName("Test the perform method of the LadderAction class")
   public void testPerform() {
     LadderAction ladderAction = new LadderAction(5, "Test ladder");
-    Player player = new Player("player", new BoardGame(10, 1, 6));
+    Player player = new Player("player");
     Tile tile = new Tile(1);
     Tile destinationTile = new Tile(6);
     tile.setNextTile(destinationTile);

@@ -9,7 +9,7 @@ package ntnu.idatt2003.group27.models;
  * @since 0.0
  */
 public class Player {
-  /** The name of the plyaer. */
+  /** The name of the player. */
   private final String name;
 
   /** The tile currently occupied by the player. */
