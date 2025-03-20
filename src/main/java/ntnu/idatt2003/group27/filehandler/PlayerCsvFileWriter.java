@@ -7,6 +7,13 @@ import java.io.IOException;
 import java.util.Optional;
 import ntnu.idatt2003.group27.models.Player;
 
+/**
+ * A class for writing Players.csv files.
+ *
+ * @author Iver Lindholm, Amadeus Berg
+ * @since 0.0
+ * @version 1.0
+ */
 public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
 
   /**
@@ -28,6 +35,24 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
       }
       csvWriter.close();
     } catch (Exception e) {
+      throw new IOException(e);
+    }
+  }
+
+  /**
+   * Write the specified player to the csv file.
+   * @param filepath
+   * @param player
+   * @throws IOException
+   */
+  public void writePlayerToFile(String filepath, Player player) throws IOException{
+    try{
+      CSVWriter csvWriter = new CSVWriter(new FileWriter(filepath));
+      String[] playerInfo = {player.getName(), player.getPiece()};
+      csvWriter.writeNext(playerInfo);
+      csvWriter.close();
+    }
+    catch (Exception e) {
       throw new IOException(e);
     }
   }
