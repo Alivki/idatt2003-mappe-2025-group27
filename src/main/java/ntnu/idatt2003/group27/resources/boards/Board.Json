@@ -43,7 +43,11 @@
     },
     {
       "id": 10,
-      "nextTile": 11
+      "nextTile": 11,
+      "action": {
+        "type": "BackToStartAction",
+        "description": "You hav been moved back to the start"
+      }
     },
     {
       "id": 11,

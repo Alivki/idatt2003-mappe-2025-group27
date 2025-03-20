@@ -9,6 +9,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import ntnu.idatt2003.group27.models.BackToStartAction;
 import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.models.LadderAction;
 import ntnu.idatt2003.group27.models.Tile;
@@ -65,8 +66,12 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
         switch (type) {
           case "LadderAction":
             int targetTile = actionObject.get("targetTile").getAsInt();
-            String description = actionObject.get("description").getAsString();
-            currentTile.setLandAction(new LadderAction(targetTile, description));
+            String ladderDescription = actionObject.get("description").getAsString();
+            currentTile.setLandAction(new LadderAction(targetTile, ladderDescription));
+            break;
+          case "BackToStartAction":
+            String backToStartDescription = actionObject.get("description").getAsString();
+            currentTile.setLandAction(new BackToStartAction(backToStartDescription));
             break;
           default:
             throw new IllegalArgumentException("Unknown action type: " + type);
