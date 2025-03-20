@@ -10,14 +10,17 @@ package ntnu.idatt2003.group27.models;
  */
 public class ThrowNewDiceAction implements TileAction {
   public String description;
+  public int numberOfDice, numberOfDieSides;
 
   /**
    * Constructs a ladder action with the specified destination tile and description.
    *
    * @param description A textual description of the ladder action.
    */
-  public ThrowNewDiceAction(String description) {
+  public ThrowNewDiceAction(String description, int numberOfDice, int numberOfDieSides) {
     this.description = description;
+    this.numberOfDice = numberOfDice;
+    this.numberOfDieSides = numberOfDieSides;
   }
 
   /**
@@ -27,6 +30,8 @@ public class ThrowNewDiceAction implements TileAction {
    */
   @Override
   public void perform(Player player) {
-
+    Dice dice = new Dice(numberOfDice, numberOfDieSides);
+    int steps = dice.roll();
+    player.move(steps);
   }
 }
