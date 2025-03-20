@@ -6,6 +6,7 @@ package ntnu.idatt2003.group27.models;
 public class Player {
   private final String name;
   private Tile currentTile;
+  private String piece;
 
   /**
    * Constructor for the player class.
@@ -24,6 +25,14 @@ public class Player {
    */
   public String getName() {
     return name;
+  }
+
+  /**
+   * getPiece method to get the name of the player piece.
+   * @return String The name of the piece.
+   */
+  public String getPiece() {
+    return piece;
   }
 
   /**

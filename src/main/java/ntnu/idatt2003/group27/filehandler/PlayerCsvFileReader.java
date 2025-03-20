@@ -23,6 +23,7 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
       Player[] players = IntStream.range(1, contents.size())
           .mapToObj(i -> new Player(contents.get(i)[0], null))
           .toArray(Player[]::new);
+      reader.close();
       return players;
     }
 
