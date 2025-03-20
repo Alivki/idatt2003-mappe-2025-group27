@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,10 +16,19 @@ import org.junit.jupiter.api.Test;
  * testing the getDie method</p>
  */
 class DiceTest {
+  Dice dice;
+
+  /**
+   * Set up a new Dice object before each test.
+   */
+  @BeforeEach
+  public void setUpDice() {
+    dice = new Dice(3, 6);
+  }
+
   @Test
   @DisplayName("Test that the roll method returns the correct sum of rolls")
   void testRoll() {
-    Dice dice = new Dice(3, 6);
     int rollSum = dice.roll();
     assertTrue(rollSum >= 3 && rollSum <= 18, "Roll sum should be between 3 and 18");
     assertFalse(rollSum < 3 || rollSum > 18, "Roll sum should be between 3 and 18");
@@ -34,7 +44,6 @@ class DiceTest {
   @Test
   @DisplayName("Test that getDie returns the correct value for a specific die")
   void testGetDie() {
-    Dice dice = new Dice(3, 6);
     dice.roll();
     int dieValue = dice.getDie(0);
     assertTrue(dieValue >= 1 && dieValue <= 6, "Die value should be between 1 and 6");
@@ -44,7 +53,6 @@ class DiceTest {
   @Test
   @DisplayName("Test that getDie throws an exception for an invalid die number")
   void testGetDieThrowsException() {
-    Dice dice = new Dice(3, 6);
     assertThrows(IndexOutOfBoundsException.class, () -> {
       dice.getDie(3);
     }, "Expected getDie to throw IndexOutOfBoundsException for invalid die number");
