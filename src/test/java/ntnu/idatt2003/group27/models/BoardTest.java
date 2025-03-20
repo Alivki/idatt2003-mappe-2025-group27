@@ -14,7 +14,9 @@ import org.junit.jupiter.api.Test;
  * Test class for the Board class.
  *
  * <p>Testing initialization of the board class,<br>
- * getting a tile from the board</p>
+ * Initialization of the board from json,<br>
+ * Getting a tile from the board with default initialization,
+ * Getting a tile form the board with json initialization</p>
  */
 public class BoardTest {
   @Test
@@ -28,9 +30,14 @@ public class BoardTest {
   @Test
   @DisplayName("test initialization of the board from json")
   public void testInitializeBoardJsonConstructor() {
-    Board board = new Board(10);
+    Board board = null;
+    try {
+      board = new JsonFileReader().readFile("src/main/java/ntnu/idatt2003/group27/resources/boards/Board.json");
+    } catch (IOException e) {
+      System.err.println(e.getMessage());
+    }
 
-    assertEquals(10, board.getTiles().size(), "should be added 10 tiles to the tiles map");
+    assertEquals(90, board.getTiles().size(), "should be added 10 tiles to the tiles map");
   }
 
   @Test
@@ -60,7 +67,6 @@ public class BoardTest {
       System.err.println(e.getMessage());
     }
 
-    assert board != null;
     Tile tile = board.getTile(9);
 
     assertNotNull(tile, "should be a tile on the board");
