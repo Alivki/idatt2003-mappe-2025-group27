@@ -12,10 +12,11 @@ import ntnu.idatt2003.group27.models.Tile;
 public class JsonFileWriter implements CustomFileWriter<JsonObject> {
   /**
    * Serializes the board object given as a parameter.
-   * @param board
+   *
+   * @param board .
    * @return The JsonObject for the board.
    */
-  public JsonObject serializeBoard(Board board){
+  public JsonObject serializeBoard(Board board) {
     JsonObject boardJson = new JsonObject();
 
     int numberOfTiles = board.getTiles().size();
@@ -26,9 +27,10 @@ public class JsonFileWriter implements CustomFileWriter<JsonObject> {
 
   /**
    * Writes JsonObject to file at specified filepath.
-   * @param filePath
-   * @param data
-   * @throws IOException
+   *
+   * @param filePath .
+   * @param data .
+   * @throws IOException .
    */
   public void writeFile(String filePath, JsonObject data) throws IOException {
     try (FileWriter file = new FileWriter(filePath)) {
