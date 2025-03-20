@@ -19,9 +19,8 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
     try (CSVReader reader = new CSVReader(new java.io.FileReader(filePath))) {
       List<String[]> contents = reader.readAll();
 
-      Player[] players = new Player[contents.size()];
       //Loop starts at i = 1 to skip the titles for each column in the csv file.
-      IntStream.range(1, contents.size() - 1)
+      Player[] players = IntStream.range(1, contents.size())
           .mapToObj(i -> new Player(contents.get(i)[0], null))
           .toArray(Player[]::new);
       return players;

@@ -9,10 +9,10 @@ public class PlayerCsvFileReaderTest {
   public void testReadPlayerCsvFile(){
     PlayerCsvFileReader reader = new PlayerCsvFileReader();
     try {
-      Player playerData =
-          reader.readFile("src/main/java/ntnu/idatt2003/group27/filehandler/Players.csv");
-      for(int i = 0; i < playerData.length; i++){
-        System.out.printf("%s %s\n",playerData[i][0], playerData[i][1]);
+      Player[] players =
+          reader.readFile("src/main/java/ntnu/idatt2003/group27/resources/Players.csv");
+      for(int i = 0; i < players.length; i++){
+        System.out.printf(players[i].getName() + "\n");
       }
     }
     catch (IOException e){
