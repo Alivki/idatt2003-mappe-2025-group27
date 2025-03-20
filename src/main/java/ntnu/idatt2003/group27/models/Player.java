@@ -14,6 +14,7 @@ public class Player {
 
   /** The tile currently occupied by the player. */
   private Tile currentTile;
+  private String piece;
 
   /**
    * Constructs a player with the specified name and associates them with the game.
@@ -34,6 +35,15 @@ public class Player {
   }
 
   /**
+   * getPiece method to get the name of the player piece.
+   * @return String The name of the piece.
+   */
+  public String getPiece() {
+    return piece;
+  }
+
+  /**
+   * getCurrentTile method to get the current tile of the player.
    * Retrieves the tile currently occupied by the player.
    *
    * @return The current {@link Tile} occupied by the player, or null if not places on a tile yet.
