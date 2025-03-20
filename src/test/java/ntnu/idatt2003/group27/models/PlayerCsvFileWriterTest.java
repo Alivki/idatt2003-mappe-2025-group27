@@ -12,8 +12,8 @@ public class PlayerCsvFileWriterTest {
   @Test
   public void testPlayerCsvWriteFile(){
     PlayerCsvFileWriter playerCsvFileWriter = new PlayerCsvFileWriter();
-    Player[] players = IntStream.range(1, 11)
-            .mapToObj(i -> new Player("Player " + i, null))
+    Player[] players = IntStream.range(1, 6)
+            .mapToObj(i -> new Player("Player " + i))
             .toArray(Player[]::new);
 
     System.out.println(players.length);
