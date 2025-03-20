@@ -21,7 +21,7 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
 
       //Loop starts at i = 1 to skip the titles for each column in the csv file.
       Player[] players = IntStream.range(1, contents.size())
-          .mapToObj(i -> new Player(contents.get(i)[0], null))
+          .mapToObj(i -> new Player(contents.get(i)[0]))
           .toArray(Player[]::new);
       reader.close();
       return players;
