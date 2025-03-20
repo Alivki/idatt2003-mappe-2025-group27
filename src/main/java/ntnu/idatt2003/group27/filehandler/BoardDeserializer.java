@@ -13,7 +13,6 @@ import ntnu.idatt2003.group27.models.BackToStartAction;
 import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.models.LadderAction;
 import ntnu.idatt2003.group27.models.Tile;
-import ntnu.idatt2003.group27.models.TileAction;
 
 /**
  * Deserializes a JSON object into a {@link Board} instance, constructing a game board with tiles
@@ -31,11 +30,11 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
    * array of tile definitions, including tile IDs, connections to next tiles, and optional actions
    * such as ladders.
    *
-   * @param json The {@link JsonElement} representing the JSON data to deserialize.
+   * @param json    The {@link JsonElement} representing the JSON data to deserialize.
    * @param typeOfT The type of the object to deserialize to. In this case, a {@link Board} object.
    * @param context The {@link JsonDeserializationContext} for deserializing nested objects.
    * @return A new {@link Board} instance populated with tiles and actions based on the JSON data.
-   * @throws JsonParseException if the JSON structure is invalid or cannot be parsed.
+   * @throws JsonParseException       if the JSON structure is invalid or cannot be parsed.
    * @throws IllegalArgumentException if an unknown action type is encountered in the JSON data.
    */
   @Override
@@ -46,8 +45,8 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
 
     Map<Integer, Tile> tiles = new HashMap<>();
 
-    for (JsonElement tileElement : tilesJsonArray) {
-      JsonObject tileObject = tileElement.getAsJsonObject();
+    tilesJsonArray.forEach(tile -> {
+      JsonObject tileObject = tile.getAsJsonObject();
       int id = tileObject.get("id").getAsInt();
 
       Tile currentTile = tiles.computeIfAbsent(id, Tile::new);
@@ -77,7 +76,8 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
             throw new IllegalArgumentException("Unknown action type: " + type);
         }
       }
-    }
+
+    });
 
     return new Board(tiles);
   }
