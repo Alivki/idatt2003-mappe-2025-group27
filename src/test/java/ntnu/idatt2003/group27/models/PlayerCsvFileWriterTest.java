@@ -43,4 +43,16 @@ public class PlayerCsvFileWriterTest {
       System.out.println(e.getMessage());
     }
   }
+
+  @Test
+  public void testRemovePlayerFromCsvFile(){
+    PlayerCsvFileWriter playerCsvFileWriter = new PlayerCsvFileWriter();
+    Player player = new Player("WritePlayerToCsvFile_TestPlayer");
+    try{
+      playerCsvFileWriter.removePlayerFromFile("src/test/java/ntnu/idatt2003/group27/models/Players_Test.csv", player);
+    }
+    catch (Exception e){
+      System.out.println(e.getMessage());
+    }
+  }
 }

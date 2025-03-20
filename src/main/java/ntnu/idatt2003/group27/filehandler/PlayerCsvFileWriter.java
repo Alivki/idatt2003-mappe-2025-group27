@@ -4,10 +4,13 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import ntnu.idatt2003.group27.models.Player;
 
@@ -98,10 +101,15 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
     try{
       PlayerCsvFileReader playerCsvFileReader = new PlayerCsvFileReader();
       Player[] players = playerCsvFileReader.readFile(filepath);
-      ArrayList<Player> playerList = new ArrayList<>(Arrays.asList(players));
-      playerList.remove(player);
-      players = playerList.toArray(new Player[0]);
-      writeFile(filepath, players);
+      List<Player> updatedPlayersList = Arrays.stream(players)
+          .filter(p -> !p.getName().equals(player.getName()))
+          .collect(Collectors.toList());
+
+      Player[] updatedPlayers = updatedPlayersList.toArray(new Player[0]);
+      for(Player p : updatedPlayers) {
+        System.out.println(p.getName());
+      }
+      writeFile(filepath, updatedPlayers);
     }
     catch (Exception e) {
       throw new IOException(e);
