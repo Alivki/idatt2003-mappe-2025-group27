@@ -10,6 +10,7 @@ package ntnu.idatt2003.group27.models;
  */
 public class ThrowNewDiceAction implements TileAction {
   public String description;
+  //Variables for dice to throw
   public int numberOfDice, numberOfDieSides;
 
   /**
@@ -33,5 +34,6 @@ public class ThrowNewDiceAction implements TileAction {
     Dice dice = new Dice(numberOfDice, numberOfDieSides);
     int steps = dice.roll();
     player.move(steps);
+    System.out.println(player.getName() + " threw a new dice and rolled a " + steps);
   }
 }
