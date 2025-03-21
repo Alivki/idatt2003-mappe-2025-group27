@@ -80,6 +80,16 @@ public class Board {
       }
       tiles.put(i, new Tile(i));
     });
+
+    //Sets nextTile and previousTile values for each tile.
+    IntStream.range(0, numberOfTiles).forEach(i -> {
+      if (i > 0 && i < numberOfTiles - 1) {
+        Tile tile = tiles.get(i);
+        tile.setPreviousTile(tiles.get(i - 1));
+        tile.setNextTile(tiles.get(i + 1));
+        System.out.println("Adding tile " + i + ": " + tile);
+      }
+    });
   }
 
   /**
