@@ -1,12 +1,27 @@
 package ntnu.idatt2003.group27.filehandler;
 
+import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-import com.opencsv.bean.CsvToBean;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import ntnu.idatt2003.group27.models.Player;
 
+/**
+ * A class for writing Players.csv files.
+ * Uses OpenCsv for parsing of csv file data.
+ *
+ * @author Iver Lindholm, Amadeus Berg
+ * @since 0.0
+ * @version 1.0
+ */
 public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
 
   /**
@@ -19,15 +34,84 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
   @Override
   public void writeFile(String filePath, Player[] data) throws IOException {
     try{
-      CSVWriter csvWriter = new CSVWriter(new FileWriter(filePath));
-      String[] header = {"Player_Name", "Player_Piece"};
-      csvWriter.writeNext(header);
+      File playerCsvFile = createPlayerCsvFile(filePath);
+      CSVWriter csvWriter = new CSVWriter(new FileWriter(playerCsvFile, true));
       for (Player player : data) {
         String[] playerInfo = {player.getName(), player.getPiece()};
         csvWriter.writeNext(playerInfo);
       }
       csvWriter.close();
     } catch (Exception e) {
+      throw new IOException(e);
+    }
+  }
+
+  /**
+   * Creates a default players.csv file in the correct format.
+   * @param filePath
+   * @throws IOException
+   */
+  public File createPlayerCsvFile(String filePath) throws IOException {
+    try{
+      CSVWriter csvWriter = new CSVWriter(new FileWriter(filePath));
+      String[] header = {"Player_Name", "Player_Piece"};
+      csvWriter.writeNext(header);
+      csvWriter.close();
+      return new File(filePath);
+    } catch (Exception e) {
+      throw new IOException(e);
+    }
+  }
+
+  /**
+   * Write the specified player to the csv file.
+   * @param filepath
+   * @param player
+   * @throws IOException
+   */
+  public void writePlayerToFile(String filepath, Player player) throws IOException{
+    try{
+
+      File playerCsvFile = new File(filepath);
+      if (!playerCsvFile.exists()) {
+        playerCsvFile = createPlayerCsvFile(filepath);
+      }
+      CSVWriter csvWriter = new CSVWriter(new FileWriter(playerCsvFile, true));
+      String[] playerInfo = {player.getName(), player.getPiece()};
+      csvWriter.writeNext(playerInfo);
+      csvWriter.close();
+    }
+    catch (Exception e) {
+      throw new IOException(e);
+    }
+  }
+
+  /**
+   * Removes the specified player from the specified file.
+   * @param filepath
+   * @param player
+   * @throws IOException
+   */
+  public void removePlayerFromFile(String filepath, Player player) throws IOException, FileNotFoundException {
+    File playerCsvFile = new File(filepath);
+    if (!playerCsvFile.exists()) {
+      throw new FileNotFoundException("File not found");
+    }
+
+    try{
+      PlayerCsvFileReader playerCsvFileReader = new PlayerCsvFileReader();
+      Player[] players = playerCsvFileReader.readFile(filepath);
+      List<Player> updatedPlayersList = Arrays.stream(players)
+          .filter(p -> !p.getName().equals(player.getName()))
+          .collect(Collectors.toList());
+
+      Player[] updatedPlayers = updatedPlayersList.toArray(new Player[0]);
+      for(Player p : updatedPlayers) {
+        System.out.println(p.getName());
+      }
+      writeFile(filepath, updatedPlayers);
+    }
+    catch (Exception e) {
       throw new IOException(e);
     }
   }
