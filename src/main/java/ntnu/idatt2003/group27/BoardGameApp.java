@@ -15,6 +15,8 @@ public class BoardGameApp {
     // to start the GUI for the application. Run main or mvn javafx:run for no error
     //BoardgameGUI.main(args);
 
+
+
     BoardGame game = BoardGameFactory.createGameFromJson(
         "src/main/java/ntnu/idatt2003/group27/resources/boards/Board.json");
 

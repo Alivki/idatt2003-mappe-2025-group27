@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models;
 
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,5 +35,22 @@ public class ThrowNewDiceTest {
     player.placeOnTile(board.getTile(startTileId)); //place player on start tile
     throwNewDiceAction.perform(player);
     System.out.println("Player landed on tile " + player.getCurrentTile().getTileId());
+  }
+
+  @Test
+  public void testThrowNewDiceTileAction() {
+    Board board = new Board(10);
+    for (int i = 1; i < 9; i++) {
+      board.getTile(i).setLandAction(new ThrowNewDiceAction("Throw new dice test description", 1, 6));
+    }
+
+    board.getTile(2).setLandAction(new ThrowNewDiceAction("Throw new dice test description", 1, 6));
+    Player player = new Player("Test player");
+    Player player2 = new Player("Test player 2");
+    BoardGame game = new BoardGame(board, 1, 6);
+    game.addPlayer(player);
+    game.addPlayer(player2);
+    game.setUpGame();
+    game.play();
   }
 }
