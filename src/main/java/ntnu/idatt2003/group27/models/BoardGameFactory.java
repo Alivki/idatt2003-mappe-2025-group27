@@ -1,6 +1,12 @@
 package ntnu.idatt2003.group27.models;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.IntStream;
+
+import ntnu.idatt2003.group27.Exceptions.UnknownLadderGameTypeExceptions;
+import ntnu.idatt2003.group27.LadderGameType;
 import ntnu.idatt2003.group27.filehandler.JsonFileReader;
 
 /**
@@ -8,20 +14,42 @@ import ntnu.idatt2003.group27.filehandler.JsonFileReader;
  * tiles or with file-based configuration.
  *
  * @author Iver Lindholm
- * @since 1.0
  * @version 1.0
+ * @since 1.0
  */
 public class BoardGameFactory {
   /**
-   * Creates a default {@link BoardGame} instance with a standards configuration.
-   * The default game includes a board with 90 tiles and a single six sieded die.
+   * Creates a {@link BoardGame} instance with defined configuration.
+   * The game includes a board with tiles and set number of dice.
    *
-   * @return A new {@link BoardGame} instance with default configuration.
+   * @return A new {@link BoardGame} instance with a configuration.
    */
-  public static BoardGame createDefaultGame() {
-    Board board = new Board(90);
+  public static BoardGame createLadderGame(LadderGameType ladderGameType) throws UnknownLadderGameTypeExceptions {
+    int numberOfDice = 1;
+    int numberOfDieSides = 6;
 
-    return new BoardGame(board, 1, 6);
+    int totalTiles = 90;
+    Map<Integer, TileAction> tileActions = new HashMap<>();
+
+    switch (ladderGameType) {
+      case NORMAL:
+        tileActions.put(4, new LadderAction(15, "description"));
+        tileActions.put(10, new BackToStartAction("description"));
+        break;
+      case CRAZY:
+        tileActions.put(4, new LadderAction(15, "description"));
+        tileActions.put(10, new BackToStartAction("description"));
+        break;
+      case IMPOSSIBLE:
+        tileActions.put(4, new LadderAction(15, "description"));
+        tileActions.put(10, new BackToStartAction("description"));
+        break;
+      default:
+        throw new UnknownLadderGameTypeExceptions("Unknown ladder game type: " + ladderGameType);
+    }
+
+    Board board = createBoard(totalTiles, tileActions);
+    return new BoardGame(board, numberOfDice, numberOfDieSides);
   }
 
   /**
@@ -31,7 +59,7 @@ public class BoardGameFactory {
    * @param path The file path to the JSON configuration file.
    * @return A new {@link BoardGame} instance configured based on the JSON file.
    */
-  public static BoardGame createGameFromJson(String path) {
+  public static BoardGame createLadderGameFromJson(String path) {
     Board board = null;
     try {
       board = new JsonFileReader().readFile(path);
@@ -40,5 +68,35 @@ public class BoardGameFactory {
     }
 
     return new BoardGame(board, 1, 6);
+  }
+
+  /**
+   * Creates a {@link Board} object with a specified number of tiles and tile actions.
+   *
+   * @param totalTiles  The total number of tiles on the board.
+   * @param tileActions A map of tile actions, where keys are tile IDs and values are {@link TileAction} objects.
+   * @return A new {@link Board} object with the specified tiles and actions.
+   */
+  private static Board createBoard(int totalTiles, Map<Integer, TileAction> tileActions) {
+    Map<Integer, Tile> tiles = new HashMap<>();
+
+    IntStream.rangeClosed(1, totalTiles).forEach(index -> {
+      Tile currentTile = tiles.computeIfAbsent(index, Tile::new);
+
+      if (index < totalTiles) {
+        Tile nextTile = tiles.computeIfAbsent(index + 1, Tile::new);
+        currentTile.setNextTile(nextTile);
+      }
+
+      if (index > 1) {
+        currentTile.setPreviousTile(tiles.get(currentTile.getTileId() - 1));
+      }
+
+      if (tileActions.containsKey(index)) {
+        currentTile.setLandAction(tileActions.get(index));
+      }
+    });
+
+    return new Board(tiles);
   }
 }
