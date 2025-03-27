@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.beans.Transient;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import ntnu.idatt2003.group27.filehandler.JsonFileReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,45 +26,41 @@ import org.junit.jupiter.api.Test;
  */
 public class BoardGameTest {
   BoardGame gameDefault;
-  BoardGame gameJson;
-
-  @Test
-  @DisplayName("Test the initialization of the BoardGame class")
-  public void testBoardGameDefaultInitialization() {
-    BoardGame game = new BoardGame(10, 1, 6);
-    assertNotNull(game.getBoard(), "The board should exist when board game is initialized");
-    assertEquals(10, game.getBoard().getTiles().size(), "There should be 10 tiles on this board");
-  }
-
-  @Test
-  @DisplayName("Test the initialization of the BoardGame class")
-  public void testBoardGameJsonInitialization() {
-    Board board = null;
-    try {
-      board = new JsonFileReader().readFile("src/main/java/ntnu/idatt2003/group27/resources/boards/Board.json");
-    } catch (IOException e) {
-      System.err.println(e.getMessage());
-    }
-    BoardGame game = new BoardGame(board, 1, 6);
-    assertNotNull(game.getBoard(), "The board should exist when board game is initialized");
-    assertEquals(90, game.getBoard().getTiles().size(), "There should be 10 tiles on this board");
-  }
+  Board board;
 
   /**
    * Creates two games to test with both default and json boards.
    */
   @BeforeEach
   public void createGames() {
-    Board board = null;
-    try {
-      board = new JsonFileReader().readFile("src/main/java/ntnu/idatt2003/group27/resources/boards/Board.json");
-    } catch (IOException e) {
-      System.err.println(e.getMessage());
-    }
+    Map<Integer, Tile> tiles = new HashMap<>();
+    Tile tile1 = new Tile(1);
+    Tile tile2 = new Tile(2);
+    Tile tile3 = new Tile(3);
 
-    gameDefault = new BoardGame(10, 1, 6);
-    gameJson = new BoardGame(board, 1, 6);
+    tile1.setNextTile(tile2);
+    tile2.setNextTile(tile3);
+
+    tile2.setPreviousTile(tile1);
+    tile3.setPreviousTile(tile2);
+
+    tiles.put(1, tile1);
+    tiles.put(2, tile2);
+    tiles.put(3, tile3);
+
+    board = new Board(tiles);
+
+    gameDefault = new BoardGame(board, 1, 6);
   }
+
+  @Test
+  @DisplayName("Test the initialization of the BoardGame class")
+  public void testBoardGameDefaultInitialization() {
+    BoardGame game = new BoardGame(board, 1, 6);
+    assertNotNull(game.getBoard(), "The board should exist when board game is initialized");
+    assertEquals(3, game.getBoard().getTiles().size(), "There should be 3 tiles on this board");
+  }
+
 
   @Test
   @DisplayName("test adding players to the game")
@@ -73,11 +71,7 @@ public class BoardGameTest {
     gameDefault.addPlayer(player1);
     gameDefault.addPlayer(player2);
 
-    gameJson.addPlayer(player1);
-    gameJson.addPlayer(player2);
-
     assertEquals(2, gameDefault.getPlayers().size(), "Should be two players in the game");
-    assertEquals(2, gameJson.getPlayers().size(), "Should be two players in the game");
   }
 
   @Test
@@ -86,18 +80,15 @@ public class BoardGameTest {
     Player player = new Player("player");
 
     gameDefault.addPlayer(player);
-    gameJson.addPlayer(player);
 
     assertThrows(IllegalArgumentException.class, () -> gameDefault.addPlayer(player),
-        "Should throw and exception when adding a duplicate player");
-    assertThrows(IllegalArgumentException.class, () -> gameJson.addPlayer(player),
         "Should throw and exception when adding a duplicate player");
   }
 
   @Test
   @DisplayName("test that dice roll produces valid numbers")
   public void testDiceRoll() {
-    BoardGame game = new BoardGame(10, 1, 6);
+    BoardGame game = new BoardGame(board, 1, 6);
     int roll = game.getDice().roll();
 
     assertTrue(roll >= 1 && roll <= 6, "Roll should be within the valid range for 1 six-sided die");
@@ -108,19 +99,18 @@ public class BoardGameTest {
   public void testPlayerMove() {
     Player player = new Player("player");
 
-    gameJson.addPlayer(player);
+    gameDefault.addPlayer(player);
+    gameDefault.setUpGame();
 
-    gameJson.setUpGame();
-
-    player.move(6);
-    assertEquals(7, player.getCurrentTile().getTileId(),
+    player.move(1);
+    assertEquals(2, player.getCurrentTile().getTileId(),
         "Player should have moved to tile 7 after move method");
   }
 
   @Test
   @DisplayName("test the game set up method")
   public void testGameSetUp() {
-    BoardGame game = new BoardGame(10, 1, 6);
+    BoardGame game = new BoardGame(board, 1, 6);
     Player player = new Player("player");
 
     game.addPlayer(player);
@@ -135,32 +125,42 @@ public class BoardGameTest {
   @Test
   @DisplayName("test that set up method throws error when no players are in the game")
   public void testGameSetUpThrows() {
-    BoardGame game = new BoardGame(10, 1, 6);
+    BoardGame game = new BoardGame(board, 1, 6);
 
     assertThrows(IllegalArgumentException.class, game::setUpGame, "Should throw error as no players are in the game");
   }
 
   @Test
   @DisplayName("test to check if winner is correctly detected and the game loop working")
-  public void testWinnerDetectionAndPlayMethod() {
+  public void testWinnerDetectionMethod() {
+    Board board = null;
+
+    try {
+      board = new JsonFileReader().readFile("src/main/java/ntnu/idatt2003/group27/resources/boards/board.json");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    BoardGame game = new BoardGame(board, 1, 6);
+
     Player player1 = new Player("player1");
     Player player2 = new Player("player2");
     Player player3 = new Player("player3");
 
-    gameJson.addPlayer(player1);
-    gameJson.addPlayer(player2);
-    gameJson.addPlayer(player3);
+    game.addPlayer(player1);
+    game.addPlayer(player2);
+    game.addPlayer(player3);
 
-    gameJson.setUpGame();
-    gameJson.play();
+    game.setUpGame();
+    game.play();
 
-    assertNotNull(gameJson.getWinner(), "A winner should be set after game has been played");
+    assertNotNull(game.getWinner(), "A winner should be set after game has been played");
   }
 
   @Test
   @DisplayName("test if game throws error with to few players when starting")
   public void testStartingGameThrowsError() {
-    BoardGame game = new BoardGame(10, 1, 6);
+    BoardGame game = new BoardGame(board, 1, 6);
     Player player = new Player("player");
 
     game.addPlayer(player);

@@ -6,6 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.IntStream;
+
+import com.sun.tools.jconsole.JConsoleContext;
 import ntnu.idatt2003.group27.filehandler.JsonFileReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,12 +32,16 @@ public class PlayerTest {
    */
   @BeforeEach
   public void setup() {
-    Board board = null;
-    try {
-      board = new JsonFileReader().readFile("src/main/java/ntnu/idatt2003/group27/resources/boards/Board.json");
-    } catch (IOException e) {
-      System.err.println(e.getMessage());
-    }
+    Map<Integer, Tile> tiles = new HashMap<>();
+    Tile tile1 = new Tile(1);
+    Tile tile2 = new Tile(2);
+
+    tile1.setNextTile(tile2);
+
+    tiles.put(1, tile1);
+    tiles.put(2, tile2);
+
+    Board board = new Board(tiles);
 
     game = new BoardGame(board, 1, 6);
   }
@@ -68,7 +77,6 @@ public class PlayerTest {
   @Test
   @DisplayName("Test that placeOnTile method functions properly.")
   public void testPlaceOnTile() {
-    BoardGame game = new BoardGame(90, 1, 6);
     Player player = new Player("Player_1");
     Tile tile = new Tile(0);
     player.placeOnTile(tile);
@@ -82,8 +90,8 @@ public class PlayerTest {
     Player player = new Player("Player_1");
     game.addPlayer(player);
     game.setUpGame();
-    player.move(2);
+    player.move(1);
 
-    assertSame(player.getCurrentTile(), game.getBoard().getTile(3));
+    assertSame(player.getCurrentTile(), game.getBoard().getTile(2));
   }
 }

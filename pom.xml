@@ -7,7 +7,7 @@
     <!-- Grunnleggende prosjektinformasjon -->
     <groupId>ntnu.idatt2003.group27</groupId>
     <artifactId>Boardgame</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>3.0</version>
 
     <!-- Properties for å håndtere versjoner og konfigurasjoner sentralt -->
     <properties>
