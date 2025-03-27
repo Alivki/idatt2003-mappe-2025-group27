@@ -21,23 +21,6 @@ public class Board {
   private final Map<Integer, Tile> tiles;
 
   /**
-   * Constructs a new Board object with the specified number of tiles.
-   * Tile are automatically created and assigned sequential IDs starting from 0.
-   *
-   * @param numberOfTiles The number of tiles to create on the board. Must be a non-negative number.
-   * @throws IllegalArgumentException if {@code numberOfTiles} is negative.
-   */
-  public Board(int numberOfTiles) throws IllegalArgumentException {
-    if (numberOfTiles < 0) {
-      throw new IllegalArgumentException("Number of tiles cannot be negative");
-    }
-
-    this.tiles = new HashMap<Integer, Tile>();
-
-    addTile(numberOfTiles);
-  }
-
-  /**
    * Constructs a new Board using a pre-existing Map of tiles.
    * This constructor allows for custom tile configurations to be passed directly.
    *
@@ -63,23 +46,6 @@ public class Board {
    */
   public Map<Integer, Tile> getTiles() {
     return new HashMap<>(tiles);
-  }
-
-  /**
-   * Adds the specified number of tiles to the board.
-   * Tiles are created with sequential IDs starting from 0 up to {@code numberOfTiles - 1}.
-   * This method is intended for internal use during board initialization.
-   *
-   * @param numberOfTiles The number of tiles to add to the board.
-   * @throws IllegalArgumentException if a tile with an ID already exists in the map.
-   */
-  private void addTile(int numberOfTiles) throws IllegalArgumentException {
-    IntStream.range(0, numberOfTiles).forEach(i -> {
-      if (tiles.containsKey(i)) {
-        throw new IllegalArgumentException("Tile with ID " + i + " already exists");
-      }
-      tiles.put(i, new Tile(i));
-    });
   }
 
   /**
