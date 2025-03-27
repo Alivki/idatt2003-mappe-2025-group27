@@ -2,7 +2,6 @@ package ntnu.idatt2003.group27.models;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 /**
  * A class representing the game board in a tile-based game.
@@ -57,5 +56,14 @@ public class Board {
    */
   public Tile getTile(int tileId) {
     return tiles.get(tileId);
+  }
+
+  /**
+   * Adds a tile to the board.
+   *
+   * @param tile The tile to add to the board.
+   */
+  public void addTile(Tile tile) {
+    tiles.put(tile.getTileId(), tile);
   }
 }
