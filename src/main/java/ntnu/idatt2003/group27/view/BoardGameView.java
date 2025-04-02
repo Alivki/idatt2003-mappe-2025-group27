@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -13,7 +14,7 @@ import ntnu.idatt2003.group27.models.Player;
 /**
  * This class represent the game board in the GUI for our game.
  */
-public class GameScreen implements BoardGameObserver {
+public class BoardGameView implements BoardGameObserver {
   private final StackPane root;
   private BoardGame game;
   private BoardGameController controller;
@@ -21,7 +22,11 @@ public class GameScreen implements BoardGameObserver {
   /**
    *.
    */
-  public GameScreen() {
+  public BoardGameView(BoardGame game, BoardGameController controller) {
+    this.game = game;
+    this.controller = controller;
+    game.addObserver(this);
+
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
     root.setPadding(new Insets(20, 10, 10, 10));
@@ -43,7 +48,10 @@ public class GameScreen implements BoardGameObserver {
 
     Label title = new Label("Stigespillet");
 
-    gameArea.getChildren().addAll(title);
+    Button button = new Button("Start");
+    button.onActionProperty().set(e -> controller.play());
+
+    gameArea.getChildren().addAll(title, button);
     root.getChildren().add(gameArea);
   }
 
@@ -54,7 +62,7 @@ public class GameScreen implements BoardGameObserver {
 
   @Override
   public void onPlayerWon(Player player) {
-    root.setStyle("-fx-background-color: #f1f1f1");
+    root.setStyle("-fx-background-color: #d81414");
   }
 
   /**
