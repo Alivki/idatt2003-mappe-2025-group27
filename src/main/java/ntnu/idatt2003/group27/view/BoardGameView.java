@@ -5,12 +5,18 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import ntnu.idatt2003.group27.models.BoardGame;
+import ntnu.idatt2003.group27.models.BoardGameController;
+import ntnu.idatt2003.group27.models.BoardGameObserver;
+import ntnu.idatt2003.group27.models.Player;
 
 /**
  * This class represent the game board in the GUI for our game.
  */
-public class GameScreen {
+public class GameScreen implements BoardGameObserver {
   private final StackPane root;
+  private BoardGame game;
+  private BoardGameController controller;
 
   /**
    *.
@@ -41,6 +47,16 @@ public class GameScreen {
     root.getChildren().add(gameArea);
   }
 
+  @Override
+  public void onPlayerMoved(Player player) {
+
+  }
+
+  @Override
+  public void onPlayerWon(Player player) {
+    root.setStyle("-fx-background-color: #f1f1f1");
+  }
+
   /**
    * Getter for the root in the GUI.
    *
@@ -49,4 +65,5 @@ public class GameScreen {
   public StackPane getRoot() {
     return root;
   }
+
 }
