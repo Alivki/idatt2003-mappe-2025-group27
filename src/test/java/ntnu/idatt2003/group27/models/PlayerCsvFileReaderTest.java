@@ -1,7 +1,7 @@
 package ntnu.idatt2003.group27.models;
 
 import java.io.IOException;
-import ntnu.idatt2003.group27.filehandler.PlayerCsvFileReader;
+import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileReader;
 import org.junit.jupiter.api.Test;
 
 public class PlayerCsvFileReaderTest {

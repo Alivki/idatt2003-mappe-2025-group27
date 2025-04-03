@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import ntnu.idatt2003.group27.filehandler.JsonFileWriter;
+import ntnu.idatt2003.group27.utils.filehandler.json.JsonFileWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,18 +1,16 @@
-package ntnu.idatt2003.group27.filehandler;
+package ntnu.idatt2003.group27.utils.filehandler.csv;
 
-import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileWriter;
 
 /**
  * A class for writing Players.csv files.

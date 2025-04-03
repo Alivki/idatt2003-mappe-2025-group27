@@ -1,10 +1,10 @@
-package ntnu.idatt2003.group27.filehandler;
+package ntnu.idatt2003.group27.utils.filehandler.json;
 
 import com.google.gson.JsonObject;
 import java.io.FileWriter;
 import java.io.IOException;
 import ntnu.idatt2003.group27.models.Board;
-import ntnu.idatt2003.group27.models.Tile;
+import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileWriter;
 
 /**
  * Handles the writing of a {@link Board} object and serializes it to a JSON file.

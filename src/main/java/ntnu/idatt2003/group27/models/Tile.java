@@ -1,5 +1,7 @@
 package ntnu.idatt2003.group27.models;
 
+import ntnu.idatt2003.group27.models.interfaces.TileAction;
+
 /**
  * Represents a tile on the game board, forming part of a linked structure with next and previous
  * tiles. Each tile has a unique identifier and an optional action that triggers when a player

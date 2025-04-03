@@ -1,4 +1,6 @@
-package ntnu.idatt2003.group27.models;
+package ntnu.idatt2003.group27.models.interfaces;
+
+import ntnu.idatt2003.group27.models.Player;
 
 /**
  * Defines a contract for custom actions that can be executed when a player interacts with a 

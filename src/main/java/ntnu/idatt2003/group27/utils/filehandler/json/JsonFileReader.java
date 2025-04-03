@@ -1,10 +1,11 @@
-package ntnu.idatt2003.group27.filehandler;
+package ntnu.idatt2003.group27.utils.filehandler.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.FileReader;
 import java.io.IOException;
 import ntnu.idatt2003.group27.models.Board;
+import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileReader;
 
 /**
  * Handles the reading of a JSON file and deserializes it into a {@link Board} object.
