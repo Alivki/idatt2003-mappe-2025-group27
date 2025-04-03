@@ -2,7 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.stream.IntStream;
+import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,8 @@ public class ThrowNewDiceTest {
    */
   @Test
   public void testThrowNewDiceConstructor() {
-    ThrowNewDiceAction throwNewDiceAction = new ThrowNewDiceAction("Throw new dice test description", 1, 6);
+    ThrowNewDiceAction
+        throwNewDiceAction = new ThrowNewDiceAction("Throw new dice test description", 1, 6);
     String expectedDescription = "Throw new dice test description";
     int expectedNumberOfDice = 1;
     int expectedNumberOfSides = 6;

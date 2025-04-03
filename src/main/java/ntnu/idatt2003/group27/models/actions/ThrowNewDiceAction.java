@@ -1,4 +1,8 @@
-package ntnu.idatt2003.group27.models;
+package ntnu.idatt2003.group27.models.actions;
+
+import ntnu.idatt2003.group27.models.Dice;
+import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
 /**
  * Represents the behavior of a "throw an extra dice" tile on the game board. This class implements the
