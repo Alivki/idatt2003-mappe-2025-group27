@@ -10,11 +10,12 @@ import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.controllers.BoardGameController;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.view.components.ConfirmationPopup;
 
 /**
  * This class represent the game board in the GUI for our game.
  */
-public class BoardGameView implements BoardGameObserver {
+public class BoardGameMenu implements BoardGameObserver {
   private final StackPane root;
   private BoardGame game;
   private BoardGameController controller;
@@ -22,7 +23,7 @@ public class BoardGameView implements BoardGameObserver {
   /**
    *.
    */
-  public BoardGameView(BoardGame game, BoardGameController controller) {
+  public BoardGameMenu(BoardGame game, BoardGameController controller) {
     this.game = game;
     this.controller = controller;
     game.addObserver(this);
@@ -49,7 +50,21 @@ public class BoardGameView implements BoardGameObserver {
     Label title = new Label("Stigespillet");
 
     Button button = new Button("Start");
-    button.onActionProperty().set(e -> controller.play());
+
+    button.onActionProperty().set(e ->  {
+      ConfirmationPopup popup = new ConfirmationPopup(
+        "Confirm Start",
+        "Are you sure you want to start the game?",
+        "Yes",
+        "No",
+        response -> {
+          if (response) {
+            controller.play();
+          }
+        }
+      );
+      popup.show();
+    });
 
     gameArea.getChildren().addAll(title, button);
     root.getChildren().add(gameArea);
