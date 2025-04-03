@@ -173,6 +173,7 @@ public class BoardGame {
           + (currentPlayer.getCurrentTile().getTileId()) + "\n");
 
       if (getWinner() != null) {
+        notifyPlayerWon(getWinner());
         System.out.println("\n" + getWinner().getName() + " has won the game!");
         break;
       }
