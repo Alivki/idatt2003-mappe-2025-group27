@@ -36,6 +36,7 @@ public class BoardGameGUI extends Application {
 
     BoardGameController controller = new BoardGameController(game);
     BoardGameMenu view = new BoardGameMenu(game, controller);
+    LadderGameView ladderView = new LadderGameView(game, controller);
 
     game.addPlayer(new Player("Alice"));
     game.addPlayer(new Player("Test"));

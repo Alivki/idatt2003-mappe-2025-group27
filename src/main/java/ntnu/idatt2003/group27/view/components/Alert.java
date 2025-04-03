@@ -29,6 +29,7 @@ public class Alert {
 
     alertStage.initModality(Modality.APPLICATION_MODAL);
     alertStage.initStyle(StageStyle.UNDECORATED);
+    alertStage.initStyle(StageStyle.TRANSPARENT);
     alertStage.setResizable(false);
 
     setupUI();
@@ -73,6 +74,7 @@ public class Alert {
     layout.getChildren().addAll(header, main);
 
     Scene scene = new Scene(layout, 350, 150);
+    scene.setFill(null);
     scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
     alertStage.setScene(scene);
   }
