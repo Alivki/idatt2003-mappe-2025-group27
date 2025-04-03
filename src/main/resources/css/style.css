@@ -16,8 +16,19 @@
 .popup {
     -fx-background-color: #ffffff;
     -fx-border-color: #d0d0d0;
-    -fx-border-width: 2px;
-    -fx-padding: 10px;
+    -fx-border-width: 1px;
+    -fx-padding: 20px;
     -fx-border-radius: 10px;
-    -fx-alignment: center;
+    -fx-background-radius: 12px;
+}
+
+.popup-title-text {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.popup-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #555555;
 }

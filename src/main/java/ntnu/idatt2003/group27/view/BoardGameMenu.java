@@ -54,9 +54,9 @@ public class BoardGameMenu implements BoardGameObserver {
     button.onActionProperty().set(e ->  {
       ConfirmationPopup popup = new ConfirmationPopup(
         "Confirm Start",
-        "Are you sure you want to start the game?",
-        "Yes",
-        "No",
+        "Are you sure you want to start the game? \nYou might lose after this game",
+        "Confirm",
+        "cancel",
         response -> {
           if (response) {
             controller.play();
