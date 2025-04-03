@@ -1,4 +1,7 @@
-package ntnu.idatt2003.group27.models;
+package ntnu.idatt2003.group27.models.interfaces;
+
+import ntnu.idatt2003.group27.models.BoardGame;
+import ntnu.idatt2003.group27.models.Player;
 
 /**
  * Defines a contract for observing significant events in a {@link BoardGame}. Implementations of

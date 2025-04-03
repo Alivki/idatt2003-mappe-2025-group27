@@ -1,4 +1,4 @@
-package ntnu.idatt2003.group27.filehandler;
+package ntnu.idatt2003.group27.utils.filehandler.interfaces;
 
 import java.io.IOException;
 

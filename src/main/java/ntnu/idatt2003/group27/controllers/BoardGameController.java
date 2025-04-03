@@ -1,4 +1,6 @@
-package ntnu.idatt2003.group27.models;
+package ntnu.idatt2003.group27.controllers;
+
+import ntnu.idatt2003.group27.models.BoardGame;
 
 public class BoardGameController {
   private BoardGame game;

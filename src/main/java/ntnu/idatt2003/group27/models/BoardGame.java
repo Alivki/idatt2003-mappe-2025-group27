@@ -1,5 +1,7 @@
 package ntnu.idatt2003.group27.models;
 
+import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
+
 import java.util.ArrayList;
 import java.util.List;
 
