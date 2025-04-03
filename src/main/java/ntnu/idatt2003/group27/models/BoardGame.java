@@ -21,7 +21,7 @@ public class BoardGame {
    *
    * @see Board
    */
-  private Board board;
+  private final Board board;
 
   /**
    * The current {@link Player} of that round.
@@ -33,18 +33,6 @@ public class BoardGame {
 
   /** Instace of {@link Dice} class to roll the dice. */
   private Dice dice;
-
-  /**
-   * Constructs a new board game with a specified board size and dice configuration.
-   *
-   * @param numberOfTiles The total number of tiles on the game board.
-   * @param numberOfDice  The number of dice to use in the game.
-   * @param numberOfSides The number of sides on each dice.
-   */
-  public BoardGame(int numberOfTiles, int numberOfDice, int numberOfSides) {
-    createBoard(numberOfTiles);
-    createDice(numberOfDice, numberOfSides);
-  }
 
   /**
    * Constructs a new board game with a pre-initialized board and specified dice configuration.
@@ -137,15 +125,6 @@ public class BoardGame {
   }
 
   /**
-   * Initializes a new game board with the soecified number of tiles.
-   *
-   * @param numberOfTiles The number of tiles to create on the board.
-   */
-  private void createBoard(int numberOfTiles) {
-    this.board = new Board(numberOfTiles);
-  }
-
-  /**
    * Initializes the dice with the specified number of dice and sides on each dice.
    *
    * @param numberOfDice The number of dice to create.
@@ -194,6 +173,7 @@ public class BoardGame {
           + (currentPlayer.getCurrentTile().getTileId()) + "\n");
 
       if (getWinner() != null) {
+        notifyPlayerWon(getWinner());
         System.out.println("\n" + getWinner().getName() + " has won the game!");
         break;
       }

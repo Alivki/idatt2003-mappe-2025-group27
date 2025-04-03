@@ -7,6 +7,14 @@ import java.util.List;
 import java.util.stream.IntStream;
 import ntnu.idatt2003.group27.models.Player;
 
+/**
+ * A class for reading Players.csv files.
+ * Uses OpenCsv for parsing of csv file data.
+ *
+ * @author Iver Lindholm, Amadeus Berg
+ * @since 0.0
+ * @version 1.0
+ */
 public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
   /**
    * Reads the csv file from filepath and returns a player array containing all players.
