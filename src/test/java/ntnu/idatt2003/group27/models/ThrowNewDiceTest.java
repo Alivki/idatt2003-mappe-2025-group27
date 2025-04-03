@@ -26,15 +26,10 @@ public class ThrowNewDiceTest {
   }
 
   /**
-   * Tests that the perform method of the tileaction functions.
+   * Tests the perform method of the ThrowNewDice TileAction.
    */
   @Test
   public void testThrowNewDicePerform() {
-
-  }
-
-  @Test
-  public void testThrowNewDiceTileActionMove() {
     ThrowNewDiceAction throwNewDiceAction = new ThrowNewDiceAction("Throw new dice test description", 1, 2);
     Player player = new Player("player");
     Tile tile = new Tile(1);
@@ -53,7 +48,5 @@ public class ThrowNewDiceTest {
     throwNewDiceAction.perform(player);
 
     System.out.println("Player landed on tile " + player.getCurrentTile().getTileId());
-
-    //assertEquals(tile, player.getCurrentTile(), "");
   }
 }
