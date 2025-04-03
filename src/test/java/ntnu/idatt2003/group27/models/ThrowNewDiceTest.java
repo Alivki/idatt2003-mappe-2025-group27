@@ -1,5 +1,7 @@
 package ntnu.idatt2003.group27.models;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -28,29 +30,30 @@ public class ThrowNewDiceTest {
    */
   @Test
   public void testThrowNewDicePerform() {
-    ThrowNewDiceAction throwNewDiceAction = new ThrowNewDiceAction("Throw new dice test description", 1, 6);
-    Board board = new Board(10);
-    Player player = new Player("Test player");
-    int startTileId = 1;
-    player.placeOnTile(board.getTile(startTileId)); //place player on start tile
-    throwNewDiceAction.perform(player);
-    System.out.println("Player landed on tile " + player.getCurrentTile().getTileId());
+
   }
 
   @Test
-  public void testThrowNewDiceTileAction() {
-    Board board = new Board(10);
-    for (int i = 1; i < 9; i++) {
-      board.getTile(i).setLandAction(new ThrowNewDiceAction("Throw new dice test description", 1, 6));
-    }
+  public void testThrowNewDiceTileActionMove() {
+    ThrowNewDiceAction throwNewDiceAction = new ThrowNewDiceAction("Throw new dice test description", 1, 2);
+    Player player = new Player("player");
+    Tile tile = new Tile(1);
+    Tile tile2 = new Tile(2);
+    Tile tile3 = new Tile(3);
 
-    board.getTile(2).setLandAction(new ThrowNewDiceAction("Throw new dice test description", 1, 6));
-    Player player = new Player("Test player");
-    Player player2 = new Player("Test player 2");
-    BoardGame game = new BoardGame(board, 1, 6);
-    game.addPlayer(player);
-    game.addPlayer(player2);
-    game.setUpGame();
-    game.play();
+    tile.setNextTile(tile2);
+    tile2.setNextTile(tile3);
+
+    tile3.setPreviousTile(tile2);
+    tile2.setPreviousTile(tile);
+
+    player.placeOnTile(tile);
+
+    System.out.println();
+    throwNewDiceAction.perform(player);
+
+    System.out.println("Player landed on tile " + player.getCurrentTile().getTileId());
+
+    //assertEquals(tile, player.getCurrentTile(), "");
   }
 }
