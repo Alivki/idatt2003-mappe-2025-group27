@@ -10,8 +10,6 @@ import ntnu.idatt2003.group27.controllers.BoardGameController;
 import ntnu.idatt2003.group27.models.BoardGameFactory;
 import ntnu.idatt2003.group27.models.Player;
 
-import java.net.URL;
-
 /**
  *.
  */
@@ -37,7 +35,7 @@ public class BoardGameGUI extends Application {
     }
 
     BoardGameController controller = new BoardGameController(game);
-    BoardGameView view = new BoardGameView(game, controller);
+    BoardGameMenu view = new BoardGameMenu(game, controller);
 
     game.addPlayer(new Player("Alice"));
     game.addPlayer(new Player("Test"));
@@ -49,12 +47,6 @@ public class BoardGameGUI extends Application {
     // configure stage
     primaryStage.setTitle("Boardgames");
     primaryStage.setScene(scene);
-    URL url  = getClass().getResource("/css/style.css");
-
-    if (url == null) {
-      System.err.println("Could not find style.css");
-      System.exit(0);
-    }
     scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
     primaryStage.show();
   }

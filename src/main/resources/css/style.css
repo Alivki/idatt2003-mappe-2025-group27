@@ -1,3 +1,23 @@
 .root {
     -fx-background-color: #fafafa;
 }
+
+.action-button {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #333333;
+    -fx-font-size: 13px;
+    -fx-padding: 5 10 5 10;
+}
+
+.action-button:hover {
+    -fx-background-color: #d0d0d0;
+}
+
+.popup {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 2px;
+    -fx-padding: 10px;
+    -fx-border-radius: 10px;
+    -fx-alignment: center;
+}
