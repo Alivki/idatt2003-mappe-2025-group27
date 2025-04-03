@@ -1,4 +1,4 @@
-package ntnu.idatt2003.group27.filehandler;
+package ntnu.idatt2003.group27.utils.filehandler.csv;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.IntStream;
 import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileReader;
 
 /**
  * A class for reading Players.csv files.

@@ -3,12 +3,14 @@ package ntnu.idatt2003.group27.view;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ntnu.idatt2003.group27.Exceptions.UnknownLadderGameTypeExceptions;
-import ntnu.idatt2003.group27.LadderGameType;
+import ntnu.idatt2003.group27.models.exceptions.UnknownLadderGameTypeExceptions;
+import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.BoardGame;
-import ntnu.idatt2003.group27.models.BoardGameController;
+import ntnu.idatt2003.group27.controllers.BoardGameController;
 import ntnu.idatt2003.group27.models.BoardGameFactory;
 import ntnu.idatt2003.group27.models.Player;
+
+import java.net.URL;
 
 /**
  *.
@@ -43,11 +45,17 @@ public class BoardGameGUI extends Application {
 
     // set up scene
     Scene scene = new Scene(view.getRoot(), 1920, 1080);
-    // scene.getStylesheets().add("style.css");
 
     // configure stage
     primaryStage.setTitle("Boardgames");
     primaryStage.setScene(scene);
+    URL url  = getClass().getResource("/css/style.css");
+
+    if (url == null) {
+      System.err.println("Could not find style.css");
+      System.exit(0);
+    }
+    scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
     primaryStage.show();
   }
 

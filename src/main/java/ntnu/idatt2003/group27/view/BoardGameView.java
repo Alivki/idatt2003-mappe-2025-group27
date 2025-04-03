@@ -7,8 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ntnu.idatt2003.group27.models.BoardGame;
-import ntnu.idatt2003.group27.models.BoardGameController;
-import ntnu.idatt2003.group27.models.BoardGameObserver;
+import ntnu.idatt2003.group27.controllers.BoardGameController;
+import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.models.Player;
 
 /**
@@ -30,7 +30,7 @@ public class BoardGameView implements BoardGameObserver {
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
     root.setPadding(new Insets(20, 10, 10, 10));
-    root.setStyle("-fx-background-color: #f1f1f1");
+    root.getStyleClass().add("root");
 
     initializeLayout();
   }

@@ -9,10 +9,10 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-import ntnu.idatt2003.group27.models.BackToStartAction;
+import ntnu.idatt2003.group27.models.actions.BackToStartAction;
 import ntnu.idatt2003.group27.models.Board;
-import ntnu.idatt2003.group27.models.LadderAction;
-import ntnu.idatt2003.group27.models.ThrowNewDiceAction;
+import ntnu.idatt2003.group27.models.actions.LadderAction;
+import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
 import ntnu.idatt2003.group27.models.Tile;
 
 /**

@@ -2,7 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import java.io.IOException;
 import java.util.stream.IntStream;
-import ntnu.idatt2003.group27.filehandler.PlayerCsvFileWriter;
+import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileWriter;
 import org.junit.jupiter.api.Test;
 
 

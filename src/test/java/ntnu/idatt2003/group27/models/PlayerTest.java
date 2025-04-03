@@ -5,14 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.IntStream;
 
-import com.sun.tools.jconsole.JConsoleContext;
-import ntnu.idatt2003.group27.filehandler.JsonFileReader;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

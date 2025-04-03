@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import ntnu.idatt2003.group27.filehandler.JsonFileReader;
+import ntnu.idatt2003.group27.utils.filehandler.json.JsonFileReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

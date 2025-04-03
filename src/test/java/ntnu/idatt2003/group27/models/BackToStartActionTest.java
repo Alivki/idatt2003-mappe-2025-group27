@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import ntnu.idatt2003.group27.models.actions.BackToStartAction;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
