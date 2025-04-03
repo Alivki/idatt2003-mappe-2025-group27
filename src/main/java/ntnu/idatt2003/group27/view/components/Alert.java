@@ -2,7 +2,6 @@ package ntnu.idatt2003.group27.view.components;
 
 import java.util.function.Consumer;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -12,32 +11,32 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.stage.StageStyle;
 
-public class ConfirmationPopup {
-  private final Stage popupStage;
+public class Alert {
+  private final Stage alertStage;
   private final String title;
   private final String message;
   private final String confirmationText;
   private final String denyText;
   private final Consumer<Boolean> onResponse;
 
-  public ConfirmationPopup(String title, String message, String confirmationText, String denyText, Consumer<Boolean> onResponse) {
+  public Alert(String title, String message, String confirmationText, String denyText, Consumer<Boolean> onResponse) {
     this.title = title;
     this.message = message;
     this.confirmationText = confirmationText;
     this.denyText = denyText;
     this.onResponse = onResponse;
-    this.popupStage = new Stage();
+    this.alertStage = new Stage();
 
-    popupStage.initModality(Modality.APPLICATION_MODAL);
-    popupStage.initStyle(StageStyle.UNDECORATED);
-    popupStage.setResizable(false);
+    alertStage.initModality(Modality.APPLICATION_MODAL);
+    alertStage.initStyle(StageStyle.UNDECORATED);
+    alertStage.setResizable(false);
 
     setupUI();
   }
 
   private void setupUI() {
     VBox layout = new VBox(0);
-    layout.getStyleClass().add("popup");
+    layout.getStyleClass().add("alert");
     layout.setFillWidth(true);
 
     StackPane header = new StackPane();
@@ -48,27 +47,24 @@ public class ConfirmationPopup {
     VBox.setVgrow(main, Priority.ALWAYS);
 
     Label titleLabel = new Label(title);
-    titleLabel.getStyleClass().add("popup-title-text");
+    titleLabel.getStyleClass().add("alert-title-text");
 
     Label messageLabel = new Label(message);
-    messageLabel.getStyleClass().add("popup-text");
+    messageLabel.getStyleClass().add("alert-text");
     messageLabel.setWrapText(true);
 
     HBox buttonBox = new HBox(10);
     buttonBox.setAlignment(Pos.BOTTOM_RIGHT);
     VBox.setVgrow(buttonBox, Priority.ALWAYS);
 
-    Button confirmationButton = new Button(confirmationText);
-    confirmationButton.getStyleClass().add("action-button");
-    confirmationButton.setOnAction(e -> {
+    CustomButton confirmationButton = new CustomButton("Confirm start", CustomButton.ButtonType.CONFIRM, e -> {
       onResponse.accept(true);
-      popupStage.close();
+      alertStage.close();
     });
 
-    Button denyButton = new Button(denyText);
-    denyButton.setOnAction(e -> {
+    CustomButton denyButton = new CustomButton("Cancel", CustomButton.ButtonType.PRIMARY, e -> {
       onResponse.accept(false);
-      popupStage.close();
+      alertStage.close();
     });
 
     header.getChildren().addAll(titleLabel);
@@ -76,12 +72,12 @@ public class ConfirmationPopup {
     buttonBox.getChildren().addAll(denyButton, confirmationButton);
     layout.getChildren().addAll(header, main);
 
-    Scene scene = new Scene(layout, 300, 150);
+    Scene scene = new Scene(layout, 350, 150);
     scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-    popupStage.setScene(scene);
+    alertStage.setScene(scene);
   }
 
   public void show() {
-    popupStage.showAndWait();
+    alertStage.showAndWait();
   }
 }
