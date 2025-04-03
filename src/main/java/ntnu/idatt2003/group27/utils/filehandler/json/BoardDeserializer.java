@@ -12,6 +12,7 @@ import java.util.Map;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
 import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.models.actions.LadderAction;
+import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
 import ntnu.idatt2003.group27.models.Tile;
 
 /**
@@ -71,6 +72,12 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
           case "BackToStartAction":
             String backToStartDescription = actionObject.get("description").getAsString();
             currentTile.setLandAction(new BackToStartAction(backToStartDescription));
+            break;
+          case "ThrowNewDiceAction":
+            String throwNewDiceDescription = actionObject.get("description").getAsString();
+            int numberOfDice = actionObject.get("numberOfDice").getAsInt();
+            int numberOfSides = actionObject.get("numberOfSides").getAsInt();
+            currentTile.setLandAction(new ThrowNewDiceAction(throwNewDiceDescription, numberOfDice, numberOfSides));
             break;
           default:
             throw new IllegalArgumentException("Unknown action type: " + type);
