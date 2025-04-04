@@ -67,6 +67,7 @@
     -fx-padding: 20px 35px 20px 35px;
     -fx-border-radius: 10px;
     -fx-background-radius: 12px;
+    -fx-background-insets: 0;
 }
 
 .alert-title-text {
