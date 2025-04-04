@@ -58,12 +58,12 @@ public class Alert {
     buttonBox.setAlignment(Pos.BOTTOM_RIGHT);
     VBox.setVgrow(buttonBox, Priority.ALWAYS);
 
-    CustomButton confirmationButton = new CustomButton("Confirm start", CustomButton.ButtonType.CONFIRM, e -> {
+    CustomButton confirmationButton = new CustomButton(confirmationText, CustomButton.ButtonType.CONFIRM, e -> {
       onResponse.accept(true);
       alertStage.close();
     });
 
-    CustomButton denyButton = new CustomButton("Cancel", CustomButton.ButtonType.PRIMARY, e -> {
+    CustomButton denyButton = new CustomButton(denyText, CustomButton.ButtonType.PRIMARY, e -> {
       onResponse.accept(false);
       alertStage.close();
     });
