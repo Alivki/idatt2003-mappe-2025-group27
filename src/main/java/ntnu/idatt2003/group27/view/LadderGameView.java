@@ -67,8 +67,8 @@ public class LadderGameView implements BoardGameObserver {
     layout.getMainContainer().getChildren().addAll(title, canvasContainer);
 
     layout.getMainContainer().widthProperty().addListener((obs, oldWidth, newWidth) -> {
-      double tileSize = (newWidth.doubleValue() - 50) / ((double) game.getBoard().getTiles().size() / 9);
-      canvas.setWidth(newWidth.doubleValue() - 50);
+      double tileSize = (newWidth.doubleValue() - 100) / ((double) game.getBoard().getTiles().size() / 9);
+      canvas.setWidth(newWidth.doubleValue() - 100);
       canvas.setHeight(tileSize * 9);
       gameBoardCanvas.redrawBoard(tileSize);
     });

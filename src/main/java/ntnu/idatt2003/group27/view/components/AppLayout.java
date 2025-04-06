@@ -40,7 +40,7 @@ public class AppLayout extends VBox {
     HBox.setHgrow(leftContainer, Priority.ALWAYS);
     leftContainer.setAlignment(Pos.TOP_RIGHT);
     //leftContainer.setStyle("-fx-background-color: #bf1616");
-    leftContainer.setPadding(new Insets(62,0,0,0));
+    leftContainer.setPadding(new Insets(63,0,0,0));
 
     mainContainer = new VBox(12);
     mainContainer.setMinWidth(627);
@@ -53,7 +53,7 @@ public class AppLayout extends VBox {
     HBox.setHgrow(rightContainer, Priority.ALWAYS);
     rightContainer.setAlignment(Pos.TOP_LEFT);
     //rightContainer.setStyle("-fx-background-color: #10409a");
-    rightContainer.setPadding(new Insets(62,0,0,0));
+    rightContainer.setPadding(new Insets(63,0,0,0));
 
     header.getChildren().addAll(headerLeftContainer, headerMainContainer, headerRightContainer);
     main.getChildren().addAll(leftContainer, mainContainer, rightContainer);
