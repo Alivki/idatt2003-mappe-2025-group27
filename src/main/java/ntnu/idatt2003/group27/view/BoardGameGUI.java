@@ -43,10 +43,12 @@ public class BoardGameGUI extends Application {
     game.setUpGame();
 
     // set up scene
-    Scene scene = new Scene(view.getRoot(), 1920, 1080);
+    Scene scene = new Scene(view.getRoot(), 1280, 690);
 
     // configure stage
     primaryStage.setTitle("Boardgames");
+    primaryStage.setResizable(true);
+    primaryStage.setFullScreen(true);
     primaryStage.setScene(scene);
     scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
     primaryStage.show();

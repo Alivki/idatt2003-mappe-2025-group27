@@ -56,6 +56,7 @@ public class BoardGameMenu implements BoardGameObserver {
 
     CustomButton button = new CustomButton("Start", CustomButton.ButtonType.PRIMARY, e -> {
       Alert popup = new Alert(
+        root,
         "Confirm Start",
         "Are you sure you want to start the game? \nYou might lose after this game",
         "Start game",

@@ -19,7 +19,7 @@ public class Alert {
   private final String denyText;
   private final Consumer<Boolean> onResponse;
 
-  public Alert(String title, String message, String confirmationText, String denyText, Consumer<Boolean> onResponse) {
+  public Alert(StackPane owner, String title, String message, String confirmationText, String denyText, Consumer<Boolean> onResponse) {
     this.title = title;
     this.message = message;
     this.confirmationText = confirmationText;
@@ -27,9 +27,11 @@ public class Alert {
     this.onResponse = onResponse;
     this.alertStage = new Stage();
 
+    alertStage.initOwner(owner.getScene().getWindow());
     alertStage.initModality(Modality.APPLICATION_MODAL);
     alertStage.initStyle(StageStyle.UNDECORATED);
     alertStage.initStyle(StageStyle.TRANSPARENT);
+    alertStage.setAlwaysOnTop(true);
     alertStage.setResizable(false);
 
     setupUI();
@@ -48,10 +50,10 @@ public class Alert {
     VBox.setVgrow(main, Priority.ALWAYS);
 
     Label titleLabel = new Label(title);
-    titleLabel.getStyleClass().add("alert-title-text");
+    titleLabel.getStyleClass().add("h3");
 
     Label messageLabel = new Label(message);
-    messageLabel.getStyleClass().add("alert-text");
+    messageLabel.getStyleClass().add("p");
     messageLabel.setWrapText(true);
 
     HBox buttonBox = new HBox(10);

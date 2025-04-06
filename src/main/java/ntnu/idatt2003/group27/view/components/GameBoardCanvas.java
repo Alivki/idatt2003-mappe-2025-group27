@@ -7,38 +7,52 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class GameBoardCanvas {
+  private double tileSize;
+  private final Canvas canvas;
+
+  public GameBoardCanvas(double tileSize) {
+    this.tileSize = tileSize;
+    this.canvas = new Canvas();
+  }
+
   public Canvas createBoard() {
-    final Canvas canvas = new Canvas(640, 576.2);
+    drawBoard();
+    return canvas;
+  }
+
+  public void redrawBoard(double tileSize) {
+    this.tileSize = tileSize;
+    drawBoard();
+  }
+
+  private void drawBoard() {
     GraphicsContext gc = canvas.getGraphicsContext2D();
 
-    double squareSize = 63.8;
-    int squaresPerRows = 10;
+    int tilePerRows = 10;
     int rows = 9;
-    double yPos = squareSize * (squaresPerRows - 1) - 63.8;
+    double yPos = tileSize * (tilePerRows - 1) - tileSize;
 
-    IntStream.range(1, squaresPerRows * rows + 1).forEach(i -> {
-      int row = (i - 1) / squaresPerRows;
-      int col = (i - 1) % squaresPerRows;
+    IntStream.range(1, tilePerRows * rows + 1).forEach(i -> {
+      int row = (i - 1) / tilePerRows;
+      int col = (i - 1) % tilePerRows;
 
       double xPos;
       boolean leftToRight = (row % 2 == 0);
       if (leftToRight) {
-        xPos = col * squareSize;
+        xPos = col * tileSize;
       } else {
-        xPos = (squaresPerRows - 1 - col) * squareSize;
+        xPos = (tilePerRows - 1 - col) * tileSize;
       }
 
-      double currentYPos = yPos - (row * squareSize);
+      double currentYPos = yPos - (row * tileSize);
 
       gc.setStroke(Color.BLACK);
       gc.setLineWidth(3.0);
-      gc.strokeRect(xPos, currentYPos, squareSize,squareSize);
+      gc.strokeRect(xPos, currentYPos, tileSize,tileSize);
 
       gc.setFill(Color.BLACK);
       gc.setFont(Font.font("Inter", 14));
       gc.fillText(String.valueOf(i), xPos + 40, currentYPos + 25);
     });
-
-    return canvas;
   }
 }

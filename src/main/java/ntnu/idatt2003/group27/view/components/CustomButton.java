@@ -75,7 +75,6 @@ public class CustomButton extends Button {
     if (action != null) {
       setOnAction(action);
     }
-
   }
 
   public void setIcon(Node icon) {
