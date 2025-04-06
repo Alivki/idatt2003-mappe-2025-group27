@@ -2,6 +2,39 @@
     -fx-background-color: #fafafa;
 }
 
+.header {
+    -fx-background-color: #ffffff;
+    -fx-max-height: 56px;
+    -fx-pref-height: 57px;
+    -fx-border-color: d0d0d0;
+    -fx-border-width: 1;
+    -fx-border-style: none solid none none;
+}
+
+.main-container {
+    -fx-background-color: #fafafa;
+}
+
+.gameAreaCard {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 1px;
+    -fx-padding: 20px 20px 20px 20px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 12px;
+    -fx-background-insets: 0;
+}
+
+.card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 1px;
+    -fx-padding: 15px 15px 14px 14px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 12px;
+    -fx-background-insets: 0;
+}
+
 .button {
     -fx-background-color: #fafafa;
     -fx-border-color: #d0d0d0;
@@ -52,7 +85,7 @@
 }
 
 .ghost-button:hover {
-    -fx-background-color: #d0d0d0;
+    -fx-background-color: #f1f0f0;
 }
 
 .icon-button {
@@ -70,13 +103,35 @@
     -fx-background-insets: 0;
 }
 
-.alert-title-text {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
+.h1 {
+    -fx-font-family: "Inter";
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
     -fx-text-fill: #333333;
 }
 
-.alert-text {
+.h2 {
+    -fx-font-family: "Inter";
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #333333;
+}
+
+.h3 {
+    -fx-font-family: "Inter";
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #333333;
+}
+
+.h4 {
+    -fx-font-family: "Inter";
+    -fx-font-size: 14px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #333333;
+}
+
+.p {
     -fx-font-size: 12px;
-    -fx-text-fill: #555555;
+    -fx-text-fill: #333333;
 }

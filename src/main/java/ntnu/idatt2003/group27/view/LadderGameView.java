@@ -4,13 +4,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ntnu.idatt2003.group27.controllers.BoardGameController;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
-import ntnu.idatt2003.group27.view.components.GameBoardCanvas;
+import ntnu.idatt2003.group27.view.components.*;
 
 public class LadderGameView implements BoardGameObserver {
   private final StackPane root;
@@ -25,26 +27,58 @@ public class LadderGameView implements BoardGameObserver {
 
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
-    root.setPadding(new Insets(20, 10, 10, 10));
     root.getStyleClass().add("root");
 
     initializeLayout();
   }
 
   private void initializeLayout() {
-    VBox gameArea = new VBox(20);
-    gameArea.setMinSize(700, 700);
-    gameArea.setMaxSize(700, 700);
-    gameArea.setStyle("-fx-background-color: #FFFFFF");
-    gameArea.setAlignment(Pos.TOP_LEFT);
-    gameArea.setPadding(new Insets(30, 0, 0, 30));
+    AppLayout layout = new AppLayout();
+
+    CustomButton homeButton = new CustomButton("Hjem", CustomButton.ButtonType.GHOST, e -> {
+      Alert popup = new Alert(
+        root,
+        "Bekreft avslutning",
+        "Er du sikker på at du vil avslutte spillet?",
+        "Ja",
+        "Nei",
+        response -> {
+          if (response) {
+            //controller.exitGame();
+          }
+        }
+      );
+      popup.show();
+    });
+
+    Card playerList = new Card("Spillere", "Spillerne i spillet", 300);
 
     Label title = new Label("Stigespillet");
+    title.getStyleClass().add("h1");
 
-    final Canvas canvas = new GameBoardCanvas().createBoard();
+    final GameBoardCanvas gameBoardCanvas = new GameBoardCanvas(0);
+    final Canvas canvas = gameBoardCanvas.createBoard();
 
-    gameArea.getChildren().addAll(title, canvas);
-    root.getChildren().add(gameArea);
+    VBox canvasContainer = new VBox();
+    canvasContainer.setAlignment(Pos.CENTER);
+    canvasContainer.getStyleClass().add("gameAreaCard");
+
+    canvasContainer.getChildren().add(canvas);
+    layout.getMainContainer().getChildren().addAll(title, canvasContainer);
+
+    layout.getMainContainer().widthProperty().addListener((obs, oldWidth, newWidth) -> {
+      double tileSize = (newWidth.doubleValue() - 100) / ((double) game.getBoard().getTiles().size() / 9);
+      canvas.setWidth(newWidth.doubleValue() - 100);
+      canvas.setHeight(tileSize * 9);
+      gameBoardCanvas.redrawBoard(tileSize);
+    });
+
+    Card test = new Card("Spill info", null, 450);
+
+    layout.getHeader().getChildren().add(homeButton);
+    layout.getLeftContainer().getChildren().add(playerList);
+    layout.getRightContainer().getChildren().add(test);
+    root.getChildren().add(layout);
   }
 
   @Override
