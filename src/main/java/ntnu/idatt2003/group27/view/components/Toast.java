@@ -78,7 +78,7 @@ public class Toast {
         break;
     }
 
-    estimatedWidth = Math.max(title.length() * CHAR_WIDTH, message.length() * CHAR_WIDTH);
+    estimatedWidth = Math.max(title.length() * CHAR_WIDTH, message.length() * CHAR_WIDTH) + 40;
     estimatedWidth = Math.max(MIN_TOAST_WIDTH, Math.min(estimatedWidth, 600));
 
     Scene scene = new Scene(layout, estimatedWidth, TOAST_HEIGHT);

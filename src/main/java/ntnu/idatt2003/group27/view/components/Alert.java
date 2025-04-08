@@ -116,7 +116,7 @@ public class Alert {
     double ownerY = owner.getScene().getWindow().getY();
 
     double centerX = ownerX + (ownerWidth - ALERT_WIDTH) / 2;
-    double centerY = (ownerY + (ownerHeight - ALERT_HEIGHT) / 2) - 25;
+    double centerY = (ownerY + (ownerHeight - ALERT_HEIGHT) / 2);
 
     alertStage.setX(centerX);
     alertStage.setY(centerY);
