@@ -43,7 +43,7 @@ public class LadderGameView implements BoardGameObserver {
           if (response) {
             Toast test = new Toast(
               root,
-              Toast.ToastType.DEFAULT,
+              Toast.ToastType.ERROR,
               "Avsluttet",
               "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
             );
