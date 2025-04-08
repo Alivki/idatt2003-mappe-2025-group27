@@ -62,12 +62,12 @@ public class BoardGameFactory {
    * @param path The file path to the JSON configuration file.
    * @return A new {@link BoardGame} instance configured based on the JSON file.
    */
-  public static BoardGame createLadderGameFromJson(String path) {
+  public static BoardGame createLadderGameFromJson(String path) throws IOException {
     Board board = null;
     try {
       board = new JsonFileReader().readFile(path);
     } catch (IOException e) {
-      System.err.println(e.getMessage());
+      throw new IOException(e.getMessage());
     }
 
     return new BoardGame(board, 1, 6);
