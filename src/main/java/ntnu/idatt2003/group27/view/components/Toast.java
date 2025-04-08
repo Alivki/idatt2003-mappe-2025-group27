@@ -10,7 +10,7 @@ import javafx.scene.control.Label;
 import javafx.stage.StageStyle;
 
 public class Toast {
-  public enum ToastType {
+  public enum ToastVariant {
     DEFAULT,
     ERROR,
     SUCCESS,
@@ -24,9 +24,9 @@ public class Toast {
   private static final double TOAST_HEIGHT = 101;
   private static final double EDGE_OFFSET = 35;
   private static final double CHAR_WIDTH = 5.5;
-  private double estimatedWidth = 0;
+  private double estimatedWidth;
 
-  public Toast(StackPane owner, ToastType type, String title, String message) {
+  public Toast(StackPane owner, ToastVariant type, String title, String message) {
     this.owner = owner;
     this.title = title;
     this.message = message;
@@ -42,7 +42,7 @@ public class Toast {
     setupUI(type);
   }
 
-  private void setupUI(ToastType type) {
+  private void setupUI(ToastVariant type) {
     VBox layout = new VBox(0);
     layout.getStyleClass().add("toast");
     layout.setFillWidth(true);
@@ -94,7 +94,7 @@ public class Toast {
     double ownerY = owner.getScene().getWindow().getY();
 
     double rightEdgeX = ownerX + ownerWidth - estimatedWidth - EDGE_OFFSET;
-    double bottomEdgeY = ownerY + ownerHeight - TOAST_HEIGHT - EDGE_OFFSET;
+    double bottomEdgeY = ownerY + ownerHeight - TOAST_HEIGHT - EDGE_OFFSET + 35;
 
     toastStage.setX(rightEdgeX);
     toastStage.setY(bottomEdgeY);

@@ -32,7 +32,7 @@ public class LadderGameView implements BoardGameObserver {
   private void initializeLayout() {
     AppLayout layout = new AppLayout();
 
-    CustomButton homeButton = new CustomButton("Hjem", CustomButton.ButtonType.GHOST, e -> {
+    CustomButton homeButton = new CustomButton("Hjem", CustomButton.ButtonVariant.GHOST, e -> {
       Alert popup = new Alert(
         root,
         "Bekreft avslutning",
@@ -43,7 +43,7 @@ public class LadderGameView implements BoardGameObserver {
           if (response) {
             Toast test = new Toast(
               root,
-              Toast.ToastType.DEFAULT,
+              Toast.ToastVariant.DEFAULT,
               "Avsluttet",
               "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
             );

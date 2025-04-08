@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 
 public class CustomButton extends Button {
-  public enum ButtonType {
+  public enum ButtonVariant {
     PRIMARY,
     PRIMARY_ICON,
     CONFIRM,
@@ -16,22 +16,22 @@ public class CustomButton extends Button {
     ICON;
   }
 
-  public CustomButton(String text, ButtonType type, EventHandler<ActionEvent> action) {
+  public CustomButton(String text, ButtonVariant type, EventHandler<ActionEvent> action) {
     super(text);
     initialize(type, null, action);
   }
 
-  public CustomButton(String text, ButtonType type, Node icon, EventHandler<ActionEvent> action) {
+  public CustomButton(String text, ButtonVariant type, Node icon, EventHandler<ActionEvent> action) {
     super(text);
     initialize(type, icon, action);
   }
 
-  public CustomButton(Node icon, ButtonType type, EventHandler<ActionEvent> action) {
+  public CustomButton(Node icon, ButtonVariant type, EventHandler<ActionEvent> action) {
     super();
     initialize(type, icon, action);
   }
 
-  private void initialize(ButtonType type, Node icon, EventHandler<ActionEvent> action) {
+  private void initialize(ButtonVariant type, Node icon, EventHandler<ActionEvent> action) {
     getStyleClass().add("button");
 
     switch (type) {

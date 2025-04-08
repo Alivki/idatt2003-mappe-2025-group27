@@ -2,14 +2,9 @@ package ntnu.idatt2003.group27.view;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.SVGPath;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.controllers.BoardGameController;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
@@ -54,7 +49,7 @@ public class BoardGameMenu implements BoardGameObserver {
 
     Label title = new Label("Stigespillet");
 
-    CustomButton button = new CustomButton("Start", CustomButton.ButtonType.PRIMARY, e -> {
+    CustomButton button = new CustomButton("Start", CustomButton.ButtonVariant.PRIMARY, e -> {
       Alert popup = new Alert(
         root,
         "Confirm Start",
