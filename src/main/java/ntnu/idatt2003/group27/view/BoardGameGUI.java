@@ -43,7 +43,7 @@ public class BoardGameGUI extends Application {
     game.setUpGame();
 
     // set up scene
-    Scene scene = new Scene(view.getRoot(), 1280, 690);
+    Scene scene = new Scene(ladderView.getRoot(), 1280, 690);
 
     // configure stage
     primaryStage.setTitle("Boardgames");

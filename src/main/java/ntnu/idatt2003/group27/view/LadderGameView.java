@@ -1,11 +1,8 @@
 package ntnu.idatt2003.group27.view;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ntnu.idatt2003.group27.controllers.BoardGameController;
@@ -44,7 +41,13 @@ public class LadderGameView implements BoardGameObserver {
         "Nei",
         response -> {
           if (response) {
-            //controller.exitGame();
+            Toast test = new Toast(
+              root,
+              Toast.ToastType.DEFAULT,
+              "Avsluttet",
+              "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
+            );
+            test.show();
           }
         }
       );

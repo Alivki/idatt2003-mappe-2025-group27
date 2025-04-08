@@ -103,6 +103,26 @@
     -fx-background-insets: 0;
 }
 
+.toast {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 1px;
+    -fx-padding: 20px 30px 20px 30px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 12px;
+    -fx-background-insets: 0;
+}
+
+.error-toast {
+    -fx-background-color: #f8d7da;
+    -fx-text-fill: #721c24;
+}
+
+.success-toast {
+    -fx-background-color: #d4edda;
+    -fx-text-fill: #155724;
+}
+
 .h1 {
     -fx-font-family: "Inter";
     -fx-font-size: 20px;
