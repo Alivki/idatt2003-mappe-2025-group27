@@ -43,8 +43,9 @@ public class AppLayout extends VBox {
     leftContainer.setPadding(new Insets(63,0,0,0));
 
     mainContainer = new VBox(12);
-    mainContainer.setMinWidth(627);
-    mainContainer.setMaxWidth(627);
+    HBox.setHgrow(mainContainer, Priority.ALWAYS);
+    mainContainer.setMinWidth(630);
+    mainContainer.setMaxWidth(1100);
     //mainContainer.setStyle("-fx-background-color: #46bf16");
     mainContainer.setPadding(new Insets(21,0,0,0));
 
