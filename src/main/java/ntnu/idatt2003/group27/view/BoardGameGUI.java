@@ -3,6 +3,7 @@ package ntnu.idatt2003.group27.view;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.exceptions.UnknownLadderGameTypeExceptions;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.BoardGame;
@@ -39,9 +40,16 @@ public class BoardGameGUI extends Application {
 
     BoardGameController controller = new BoardGameController(game, view, ladderView);
 
+    // move to controller when ready to implement
     game.addPlayer(new Player("Alice"));
     game.addPlayer(new Player("Test"));
-    game.setUpGame();
+
+    // change when being done in controller on game difficult select
+    try {
+      game.setUpGame();
+    } catch (NotEnoughPlayersInGameException e) {
+      System.err.println(e.getMessage());
+    }
 
     // set up scene
     Scene scene = new Scene(ladderView.getRoot(), 1280, 690);

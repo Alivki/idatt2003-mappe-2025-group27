@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.utils.filehandler.json.JsonFileReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -96,7 +97,7 @@ public class BoardGameTest {
 
   @Test
   @DisplayName("test moving the player")
-  public void testPlayerMove() {
+  public void testPlayerMove() throws NotEnoughPlayersInGameException {
     Player player = new Player("player");
 
     gameDefault.addPlayer(player);
@@ -109,7 +110,7 @@ public class BoardGameTest {
 
   @Test
   @DisplayName("test the game set up method")
-  public void testGameSetUp() {
+  public void testGameSetUp() throws NotEnoughPlayersInGameException {
     BoardGame game = new BoardGame(board, 1, 6);
     Player player = new Player("player");
 
@@ -132,7 +133,7 @@ public class BoardGameTest {
 
   @Test
   @DisplayName("test to check if winner is correctly detected and the game loop working")
-  public void testWinnerDetectionMethod() {
+  public void testWinnerDetectionMethod() throws NotEnoughPlayersInGameException {
     Board board = null;
 
     try {
