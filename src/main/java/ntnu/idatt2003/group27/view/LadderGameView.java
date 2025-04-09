@@ -1,11 +1,12 @@
 package ntnu.idatt2003.group27.view;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import ntnu.idatt2003.group27.controllers.BoardGameController;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
@@ -13,13 +14,11 @@ import ntnu.idatt2003.group27.view.components.*;
 
 public class LadderGameView implements BoardGameObserver {
   private final StackPane root;
-
   private final BoardGame game;
-  private final BoardGameController controller;
+  private CustomButton homeButton;
 
-  public LadderGameView(BoardGame game, BoardGameController controller) {
+  public LadderGameView(BoardGame game) {
     this.game = game;
-    this.controller = controller;
     game.addObserver(this);
 
     root = new StackPane();
@@ -32,27 +31,7 @@ public class LadderGameView implements BoardGameObserver {
   private void initializeLayout() {
     AppLayout layout = new AppLayout();
 
-    CustomButton homeButton = new CustomButton("Hjem", CustomButton.ButtonVariant.GHOST, e -> {
-      Alert popup = new Alert(
-        root,
-        "Bekreft avslutning",
-        "Er du sikker på at du vil avslutte spillet?",
-        "Ja",
-        "Nei",
-        response -> {
-          if (response) {
-            Toast test = new Toast(
-              root,
-              Toast.ToastVariant.DEFAULT,
-              "Avsluttet",
-              "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
-            );
-            test.show();
-          }
-        }
-      );
-      popup.show();
-    });
+    homeButton = new CustomButton("Hjem", CustomButton.ButtonType.GHOST, null);
 
     Card playerList = new Card("Spillere", "Spillerne i spillet", 300);
 
@@ -82,6 +61,19 @@ public class LadderGameView implements BoardGameObserver {
     layout.getLeftContainer().getChildren().add(playerList);
     layout.getRightContainer().getChildren().add(test);
     root.getChildren().add(layout);
+  }
+
+  public void setHomeButtonHandler(EventHandler<ActionEvent> action) {
+    homeButton.setOnAction(action);
+  }
+
+  public void setRollDiceHandler(EventHandler<ActionEvent> action) {
+    //diceButton.setOnAction(action);
+  }
+
+  public void showToast(Toast.ToastType type, String title, String message) {
+    Toast toast = new Toast(root, type, title, message);
+    toast.show();
   }
 
   @Override
