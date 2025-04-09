@@ -23,14 +23,12 @@ import ntnu.idatt2003.group27.view.components.CustomButton;
 public class BoardGameMenu implements BoardGameObserver {
   private final StackPane root;
   private BoardGame game;
-  private BoardGameController controller;
 
   /**
    *.
    */
-  public BoardGameMenu(BoardGame game, BoardGameController controller) {
+  public BoardGameMenu(BoardGame game) {
     this.game = game;
-    this.controller = controller;
     game.addObserver(this);
 
     root = new StackPane();
@@ -54,21 +52,7 @@ public class BoardGameMenu implements BoardGameObserver {
 
     Label title = new Label("Stigespillet");
 
-    CustomButton button = new CustomButton("Start", CustomButton.ButtonType.PRIMARY, e -> {
-      Alert popup = new Alert(
-        root,
-        "Confirm Start",
-        "Are you sure you want to start the game? \nYou might lose after this game",
-        "Start game",
-        "Cancel",
-        response -> {
-          if (response) {
-            controller.play();
-          }
-        }
-      );
-      popup.show();
-    });
+    CustomButton button = new CustomButton("Start", CustomButton.ButtonType.PRIMARY, null);
 
     gameArea.getChildren().addAll(title, button);
     root.getChildren().add(gameArea);
