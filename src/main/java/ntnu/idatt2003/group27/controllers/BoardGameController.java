@@ -1,7 +1,9 @@
 package ntnu.idatt2003.group27.controllers;
 
+import java.util.ArrayList;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.view.BoardGameMenu;
 import ntnu.idatt2003.group27.view.LadderGameView;
@@ -38,7 +40,17 @@ public class BoardGameController implements BoardGameObserver {
 
   private void setupLadderViewEventHandlers() {
     ladderView.setRollDiceHandler(e -> {
+      try {
+        game.play();
+      } catch (NotEnoughPlayersInGameException error) {
+        //switch to main menu when possible
 
+        view.showToast(
+          Toast.ToastVariant.ERROR,
+          "Feil",
+          "Det oppstod en feil under spillingen: " + error.getMessage()
+        );
+      }
     });
 
     ladderView.setRestartButtonHandler(e -> {
@@ -67,7 +79,7 @@ public class BoardGameController implements BoardGameObserver {
   }
 
   @Override
-  public void onPlayerMoved(Player player) {
+  public void onRoundPlayed(ArrayList<Player> players , Player currentPlayer, int roll) {
   }
 
   @Override
