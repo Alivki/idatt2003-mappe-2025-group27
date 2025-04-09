@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models.interfaces;
 
+import java.util.ArrayList;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.models.Player;
 
@@ -13,11 +14,13 @@ import ntnu.idatt2003.group27.models.Player;
  */
 public interface BoardGameObserver {
   /**
-   * Invoked when a player changes position on the board.
+   * Invoked when a round has been played with a list of players.
    *
-   * @param player The {@link Player} who has moved.
+   * @param players List of all {@link Player} in the game.
+   * @param currentPlayer The {@link Player} next player to play.
+   * @param roll The result of the dice roll for the round.
    */
-  void onPlayerMoved(Player player);
+  void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll);
 
   /**
    * Invoked when a player has won the game.
