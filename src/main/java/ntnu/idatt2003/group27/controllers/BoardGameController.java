@@ -51,7 +51,7 @@ public class BoardGameController implements BoardGameObserver {
         response -> {
           if (response) {
             ladderView.showToast(
-              Toast.ToastType.DEFAULT,
+              Toast.ToastVariant.DEFAULT,
               "Avsluttet",
               "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
             );

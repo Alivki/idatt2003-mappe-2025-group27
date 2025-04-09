@@ -47,7 +47,7 @@ public class BoardGameMenu implements BoardGameObserver {
 
     Label title = new Label("Stigespillet");
 
-    CustomButton button = new CustomButton("Start", CustomButton.ButtonType.PRIMARY, null);
+    CustomButton button = new CustomButton("Start", CustomButton.ButtonVariant.PRIMARY, null);
 
     gameArea.getChildren().addAll(title, button);
     root.getChildren().add(gameArea);

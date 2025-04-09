@@ -31,7 +31,7 @@ public class LadderGameView implements BoardGameObserver {
   private void initializeLayout() {
     AppLayout layout = new AppLayout();
 
-    homeButton = new CustomButton("Hjem", CustomButton.ButtonType.GHOST, null);
+    homeButton = new CustomButton("Hjem", CustomButton.ButtonVariant.GHOST, null);
 
     Card playerList = new Card("Spillere", "Spillerne i spillet", 300);
 
@@ -71,8 +71,8 @@ public class LadderGameView implements BoardGameObserver {
     //diceButton.setOnAction(action);
   }
 
-  public void showToast(Toast.ToastType type, String title, String message) {
-    Toast toast = new Toast(root, type, title, message);
+  public void showToast(Toast.ToastVariant variant, String title, String message) {
+    Toast toast = new Toast(root, variant, title, message);
     toast.show();
   }
 
