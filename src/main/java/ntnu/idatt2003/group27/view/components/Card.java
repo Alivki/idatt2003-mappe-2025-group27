@@ -23,7 +23,7 @@ public class Card extends VBox {
 
     setSpacing(0);
     setMinSize(168, height);
-    setMaxSize(200, height);
+    setMaxWidth(200);
     getStyleClass().add("card");
   }
 }

@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 public class CustomButton extends Button {
   public enum ButtonVariant {
     PRIMARY,
+    SECONDARY,
     PRIMARY_ICON,
     CONFIRM,
     DESTRUCTIVE,
@@ -31,12 +32,18 @@ public class CustomButton extends Button {
     initialize(type, icon, action);
   }
 
-  private void initialize(ButtonVariant type, Node icon, EventHandler<ActionEvent> action) {
+  private void initialize(ButtonVariant variant, Node icon, EventHandler<ActionEvent> action) {
     getStyleClass().add("button");
 
-    switch (type) {
+    if (variant != ButtonVariant.ICON) {
+      setMaxWidth(Double.MAX_VALUE);
+    }
+
+    switch (variant) {
       case PRIMARY:
-        getStyleClass().add("button");
+        getStyleClass().add("primary-button");
+        break;
+      case SECONDARY:
         break;
       case PRIMARY_ICON:
         getStyleClass().add("icon-primary-button");
