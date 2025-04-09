@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models;
 
+import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 
 import java.util.ArrayList;
@@ -11,11 +12,13 @@ import java.util.List;
  * to notify listeners of significant events such as player movement or victory.
  *
  * @author Iver Lindholm, Amadeus Berg
- * @since 0.0
  * @version 1.2
+ * @since 0.0
  */
 public class BoardGame {
-  /** List of observers monitoring game events . */
+  /**
+   * List of observers monitoring game events .
+   */
   private List<BoardGameObserver> observers = new ArrayList<>();
 
   /**
@@ -30,10 +33,14 @@ public class BoardGame {
    */
   private Player currentPlayer;
 
-  /** {@link ArrayList} storing all the {@link Player} objects in the game. */
+  /**
+   * {@link ArrayList} storing all the {@link Player} objects in the game.
+   */
   private final ArrayList<Player> players = new ArrayList<>();
 
-  /** Instace of {@link Dice} class to roll the dice. */
+  /**
+   * Instace of {@link Dice} class to roll the dice.
+   */
   private Dice dice;
 
   /**
@@ -58,12 +65,15 @@ public class BoardGame {
   }
 
   /**
-   * Notifies all observers that a player has moved.
+   * Notifies all observers that a round has been played and provides the list of players to update
+   * player positions on the board.
    *
-   * @param player The player that has moved.
+   * @param players The list of players in the game.
+   * @param currentPlayer The player whose turn it is after round played.
+   * @param roll The result of the dice roll for the round.
    */
-  public void notifyPlayerMoved(Player player) {
-    observers.forEach(observer -> observer.onPlayerMoved(player));
+  public void notifyRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll) {
+    observers.forEach(observer -> observer.onRoundPlayed(players, currentPlayer, roll));
   }
 
   /**
@@ -129,7 +139,7 @@ public class BoardGame {
   /**
    * Initializes the dice with the specified number of dice and sides on each dice.
    *
-   * @param numberOfDice The number of dice to create.
+   * @param numberOfDice  The number of dice to create.
    * @param numberOfSides The number of sides on each dice.
    */
   private void createDice(int numberOfDice, int numberOfSides) {
@@ -142,9 +152,9 @@ public class BoardGame {
    *
    * @throws IllegalArgumentException if no players have been added to the game.
    */
-  public void setUpGame() throws IllegalArgumentException {
+  public void setUpGame() throws NotEnoughPlayersInGameException {
     if (players.isEmpty()) {
-      throw new IllegalArgumentException("No players on the game");
+      throw new NotEnoughPlayersInGameException("Not enough players in the game to start!");
     }
 
     players.forEach(player -> player.placeOnTile(board.getTile(1)));
@@ -157,35 +167,36 @@ public class BoardGame {
    *
    * @throws IllegalArgumentException if there are less than two players in the game.
    */
-  public void play() {
+  public void play() throws NotEnoughPlayersInGameException {
     if (players.size() < 2) {
-      throw new IllegalArgumentException("Must be two players to start the game");
+      throw new NotEnoughPlayersInGameException("Must be two players to start the game");
     }
 
-    while (true) {
-      int roll = dice.roll();
+    int roll = dice.roll();
 
-      System.out.println(currentPlayer.getName() + " rolled a " + roll);
+    //System.out.println(currentPlayer.getName() + " rolled a " + roll);
 
-      int nextPlayerPosition = getNextPlayerPosition(roll);
+    int nextPlayerPosition = getNextPlayerPosition(roll);
 
-      currentPlayer.move(nextPlayerPosition);
-      System.out.println(
-          currentPlayer.getName() + "moved to tile "
-          + (currentPlayer.getCurrentTile().getTileId()) + "\n");
+    currentPlayer.move(nextPlayerPosition);
 
-      if (getWinner() != null) {
-        notifyPlayerWon(getWinner());
-        System.out.println("\n" + getWinner().getName() + " has won the game!");
-        break;
-      }
+    //System.out.println(
+     //   currentPlayer.getName() + "moved to tile "
+      //      + (currentPlayer.getCurrentTile().getTileId()) + "\n");
 
-      currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
+    if (getWinner() != null) {
+      notifyPlayerWon(getWinner());
+      // System.out.println("\n" + getWinner().getName() + " has won the game!");
+      return;
     }
+
+    currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
+
+    notifyRoundPlayed(players, currentPlayer, roll);
   }
 
   /**
-   * Calculates the next position for the current player based on the dice roll, handeling
+   * Calculates the next position for the current player based on the dice roll, handling
    * overshooting beyond the board's end.
    *
    * @param roll The result of the dice roll.
