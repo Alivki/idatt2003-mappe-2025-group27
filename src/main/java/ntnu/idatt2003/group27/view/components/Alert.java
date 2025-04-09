@@ -73,7 +73,7 @@ public class Alert {
       alertStage.close();
     });
 
-    CustomButton denyButton = new CustomButton(denyText, CustomButton.ButtonVariant.PRIMARY, e -> {
+    CustomButton denyButton = new CustomButton(denyText, CustomButton.ButtonVariant.SECONDARY, e -> {
       onResponse.accept(false);
       removeOverlay();
       alertStage.close();
