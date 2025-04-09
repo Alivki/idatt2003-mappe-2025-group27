@@ -41,6 +41,10 @@ public class BoardGameController implements BoardGameObserver {
 
     });
 
+    ladderView.setRestartButtonHandler(e -> {
+
+    });
+
     ladderView.setHomeButtonHandler(e -> {
       Alert popup = new Alert(
         this.ladderView.getRoot(),
