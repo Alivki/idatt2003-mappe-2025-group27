@@ -80,11 +80,29 @@ public class Canvas extends javafx.scene.canvas.Canvas {
 
     tileActions.forEach((k, v) -> {
       if (v.getLandAction() != null) {
-        switch (v.landAction) {
-          case LadderAction ignored -> gc.setFill(Color.GREEN);
-          case BackToStartAction ignored -> gc.setFill(Color.RED);
-          case ThrowNewDiceAction ignored -> gc.setFill(Color.BLUE);
-          default -> throw new IllegalStateException("Unexpected value: " + v.landAction);
+        switch (v.getLandAction()) {
+          case LadderAction ladderAction -> {
+            if (k < ladderAction.getDestinationTileId()) {
+              gc.setFill(Color.LIGHTGREEN);
+              double[] tileLandPosition = getTilePos(ladderAction.getDestinationTileId() - 1);
+              gc.fillRect(tileLandPosition[0], tileLandPosition[1], tileSize, tileSize);
+              gc.setFill(Color.GREEN);
+            } else {
+              gc.setFill(Color.RED);
+              double[] tileLandPosition = getTilePos(ladderAction.getDestinationTileId() - 1);
+              gc.fillRect(tileLandPosition[0], tileLandPosition[1], tileSize, tileSize);
+              gc.setFill(Color.DARKRED);
+            }
+          }
+          case BackToStartAction backToStartAction -> {
+            gc.setFill(Color.LIGHTPINK);
+            // Draw icon for action
+          }
+          case ThrowNewDiceAction throwNewDiceAction -> {
+            gc.setFill(Color.BLUE);
+            // Draw icon for action
+          }
+          default -> {break;}
         }
 
         double[] tilePosition = getTilePos(k - 1);

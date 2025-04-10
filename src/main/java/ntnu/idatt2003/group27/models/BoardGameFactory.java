@@ -38,6 +38,7 @@ public class BoardGameFactory {
       case NORMAL:
         tileActions.put(4, new LadderAction(15, "description"));
         tileActions.put(10, new BackToStartAction("description"));
+        tileActions.put(69, new LadderAction(47, "description"));
         break;
       case CRAZY:
         tileActions.put(4, new LadderAction(15, "description"));
