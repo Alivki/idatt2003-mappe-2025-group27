@@ -28,6 +28,15 @@ public class LadderAction implements TileAction {
   }
 
   /**
+   * Retrieves the tile id of the destination tile for this ladder action.
+   *
+   * @return the ID of the destination tile.
+   */
+  public int getDestinationTileId() {
+    return destinationTileId;
+  }
+
+  /**
    * Executes the ladder action by moving the specified player to the destination tile.
    *
    * @param player The {@link Player} affected by this ladder action.
