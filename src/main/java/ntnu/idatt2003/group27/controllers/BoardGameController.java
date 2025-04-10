@@ -82,9 +82,10 @@ public class BoardGameController implements BoardGameObserver {
   }
 
   @Override
-  public void onRoundPlayed(ArrayList<Player> players , Player currentPlayer, int roll) {
+  public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll) {
     ladderView.updateCurrentPlayerLabel(currentPlayer.getName());
     ladderView.rotateDice(roll);
+    ladderView.updateBoard(players);
   }
 
   @Override
@@ -95,6 +96,6 @@ public class BoardGameController implements BoardGameObserver {
 
   @Override
   public void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
-    ladderView.createBoard(tiles.size());
+    ladderView.createBoard(players, tiles);
   }
 }
