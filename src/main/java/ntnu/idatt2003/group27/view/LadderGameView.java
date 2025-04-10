@@ -33,9 +33,15 @@ public class LadderGameView implements BoardGameObserver {
   private CustomButton homeButton;
   private CustomButton diceButton;
   private CustomButton restartButton;
-  private Label statusInfo;
+  private Label roundInfo;
   private Label currentPlayerInfo;
+  private Label gradeInfo;
+  private Label statusInfo;
   private Box dice;
+  private Label lastPlayer;
+  private Label movedTo;
+  private Label lastRoll;
+  private Label tileAction;
 
   public LadderGameView(BoardGame game) {
     this.game = game;
@@ -54,6 +60,11 @@ public class LadderGameView implements BoardGameObserver {
     homeButton = new CustomButton("Hjem", CustomButton.ButtonVariant.GHOST, null);
 
     Card playerList = new Card("Spillere", "Spillerne i spillet", 300);
+
+    Card settingsCard = new Card("Innstillinger", "Restart eller slutt spill", 115);
+    VBox settingsButtonContainer = new VBox(12);
+    settingsButtonContainer.setPadding(new Insets(12, 0, 0, 0));
+    restartButton = new CustomButton("Restart", CustomButton.ButtonVariant.SECONDARY, null);
 
     Label title = new Label("Stigespillet");
     title.getStyleClass().add("h1");
@@ -80,54 +91,16 @@ public class LadderGameView implements BoardGameObserver {
     VBox gameInfo = new VBox(5);
     gameInfo.setPadding(new Insets(0, 0, 13, 0));
 
+    roundInfo = new Label("?");
+    currentPlayerInfo = new Label("");
+    gradeInfo = new Label("?");
+    statusInfo = new Label("Pågående");
+
+    Separator separator1 = new Separator();
+
     VBox diceContainer = new VBox();
     diceContainer.setPadding(new Insets(0, 0, 13, 0));
     diceContainer.setAlignment(Pos.CENTER);
-
-    VBox lastRoundInfo = new VBox();
-    lastRoundInfo.setPadding(new Insets(12, 0, 0, 0));
-
-    Region dots1 = new Region();
-    Region dots2 = new Region();
-    Region dots3 = new Region();
-    Region dots4 = new Region();
-    dots1.getStyleClass().add("dotted-separator");
-    dots2.getStyleClass().add("dotted-separator");
-    dots3.getStyleClass().add("dotted-separator");
-    dots4.getStyleClass().add("dotted-separator");
-    HBox.setHgrow(dots1, Priority.ALWAYS);
-    HBox.setHgrow(dots2, Priority.ALWAYS);
-    HBox.setHgrow(dots3, Priority.ALWAYS);
-    HBox.setHgrow(dots4, Priority.ALWAYS);
-
-    HBox gameInfoContainer1 = new HBox(5);
-    gameInfoContainer1.setAlignment(Pos.BOTTOM_LEFT);
-    HBox gameInfoContainer2 = new HBox(5);
-    gameInfoContainer2.setAlignment(Pos.BOTTOM_LEFT);
-    HBox gameInfoContainer3 = new HBox(5);
-    gameInfoContainer3.setAlignment(Pos.BOTTOM_LEFT);
-    HBox gameInfoContainer4 = new HBox(5);
-    gameInfoContainer4.setAlignment(Pos.BOTTOM_LEFT);
-
-    Label round = new Label("Runde:");
-    Label currentPlayer = new Label("Nåværende spiller:");
-    Label grade = new Label("Vansklighetsgrad:");
-    Label status = new Label("Status:");
-    round.getStyleClass().add("p");
-    currentPlayer.getStyleClass().add("p");
-    grade.getStyleClass().add("p");
-    status.getStyleClass().add("p");
-
-    Label roundInfo = new Label("?");
-    currentPlayerInfo = new Label("");
-    Label gradeInfo = new Label("?");
-    statusInfo = new Label("Pågående");
-    roundInfo.getStyleClass().add("p");
-    currentPlayerInfo.getStyleClass().add("p");
-    gradeInfo.getStyleClass().add("p");
-    statusInfo.getStyleClass().add("p");
-
-    Separator separator1 = new Separator();
 
     dice = new Box(5, 5, 5);
     dice.setMaterial(new PhongMaterial(Color.WHITE));
@@ -137,36 +110,48 @@ public class LadderGameView implements BoardGameObserver {
 
     Group root3D = new Group(camera,dice);
 
+    Separator separator2 = new Separator();
+
     SubScene subScene = new SubScene(root3D, 150, 150, true, SceneAntialiasing.BALANCED);
     subScene.setCamera(camera);
 
     diceButton = new CustomButton("Rull terning", CustomButton.ButtonVariant.PRIMARY, null);
 
-    Separator separator2 = new Separator();
+    VBox lastRoundContainer = new VBox();
+    lastRoundContainer.setPadding(new Insets(12, 0, 0, 0));
 
     Label lastRoundTitleLabel = new Label("Siste runde");
     lastRoundTitleLabel.getStyleClass().add("h3");
 
-    Card settingsCard = new Card("Innstillinger", "Restart eller slutt spill", 115);
-    VBox settingsButtonContainer = new VBox(12);
-    settingsButtonContainer.setPadding(new Insets(12, 0, 0, 0));
-    restartButton = new CustomButton("Restart", CustomButton.ButtonVariant.SECONDARY, null);
+    VBox lastRoundInfo = new VBox(5);
+
+    lastPlayer = new Label("?");
+    movedTo = new Label("?");
+    lastRoll = new Label("?");
+    tileAction = new Label("Ingen");
 
     layout.getHeader().getChildren().add(homeButton);
 
-    layout.getLeftContainer().getChildren().add(playerList);
-
-    gameInfoContainer1.getChildren().addAll(round, dots1, roundInfo);
-    gameInfoContainer2.getChildren().addAll(currentPlayer, dots2, currentPlayerInfo);
-    gameInfoContainer3.getChildren().addAll(grade, dots3, gradeInfo);
-    gameInfoContainer4.getChildren().addAll(status, dots4, statusInfo);
-    gameInfo.getChildren().addAll(gameInfoContainer1, gameInfoContainer2, gameInfoContainer3, gameInfoContainer4);
-    diceContainer.getChildren().addAll(subScene, diceButton);
-    lastRoundInfo.getChildren().addAll(lastRoundTitleLabel);
-    rightCard.getChildren().addAll(gameInfo, separator1, diceContainer, separator2, lastRoundInfo);
     settingsButtonContainer.getChildren().addAll(restartButton);
     settingsCard.getChildren().addAll(settingsButtonContainer);
-    layout.getRightContainer().getChildren().addAll(rightCard, settingsCard);
+    layout.getLeftContainer().getChildren().addAll(playerList, settingsCard);
+
+    gameInfo.getChildren().addAll(
+        createGameInfoRow("Runde:", roundInfo),
+        createGameInfoRow("Nåværende spiller:", currentPlayerInfo),
+        createGameInfoRow("Vansklighetsgrad:", gradeInfo),
+        createGameInfoRow("Status:", statusInfo)
+    );
+    diceContainer.getChildren().addAll(subScene, diceButton);
+    lastRoundContainer.getChildren().addAll(lastRoundTitleLabel, lastRoundInfo);
+    lastRoundInfo.getChildren().addAll(
+        createGameInfoRow("Siste spiller:", lastPlayer),
+        createGameInfoRow("Flyttet til:", movedTo),
+        createGameInfoRow("Kastet:", lastRoll),
+        createGameInfoRow("Action", tileAction)
+    );
+    rightCard.getChildren().addAll(gameInfo, separator1, diceContainer, separator2, lastRoundContainer);
+    layout.getRightContainer().getChildren().addAll(rightCard);
 
     root.getChildren().add(layout);
   }
@@ -216,6 +201,21 @@ public class LadderGameView implements BoardGameObserver {
   public void onPlayerWon(Player player) {
     statusInfo.setText("Avsluttet");
     showToast(Toast.ToastVariant.SUCCESS, "Spiller vant", player.getName() + " vant spillet!");
+  }
+
+  private HBox createGameInfoRow(String labelText, Label infoLabel) {
+    Label label = new Label(labelText);
+    Region dots = new Region();
+
+    label.getStyleClass().add("p");
+    infoLabel.getStyleClass().add("p");
+    dots.getStyleClass().add("dotted-separator");
+    HBox.setHgrow(dots, Priority.ALWAYS);
+
+    HBox row = new HBox(5, label, dots, infoLabel);
+    row.setAlignment(Pos.BOTTOM_LEFT);
+
+    return row;
   }
 
   public StackPane getRoot() {
