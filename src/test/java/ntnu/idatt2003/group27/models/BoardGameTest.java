@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.stream.IntStream;
+import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.utils.filehandler.json.JsonFileReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -96,7 +98,7 @@ public class BoardGameTest {
 
   @Test
   @DisplayName("test moving the player")
-  public void testPlayerMove() {
+  public void testPlayerMove() throws NotEnoughPlayersInGameException {
     Player player = new Player("player");
 
     gameDefault.addPlayer(player);
@@ -109,7 +111,7 @@ public class BoardGameTest {
 
   @Test
   @DisplayName("test the game set up method")
-  public void testGameSetUp() {
+  public void testGameSetUp() throws NotEnoughPlayersInGameException {
     BoardGame game = new BoardGame(board, 1, 6);
     Player player = new Player("player");
 
@@ -127,16 +129,16 @@ public class BoardGameTest {
   public void testGameSetUpThrows() {
     BoardGame game = new BoardGame(board, 1, 6);
 
-    assertThrows(IllegalArgumentException.class, game::setUpGame, "Should throw error as no players are in the game");
+    assertThrows(NotEnoughPlayersInGameException.class, game::setUpGame, "Should throw error as no players are in the game");
   }
 
   @Test
   @DisplayName("test to check if winner is correctly detected and the game loop working")
-  public void testWinnerDetectionMethod() {
+  public void testWinnerDetectionMethod() throws NotEnoughPlayersInGameException {
     Board board = null;
 
     try {
-      board = new JsonFileReader().readFile("src/main/java/ntnu/idatt2003/group27/resources/boards/board.json");
+      board = new JsonFileReader().readFile("src/main/resources/boards/board.json");
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -152,7 +154,18 @@ public class BoardGameTest {
     game.addPlayer(player3);
 
     game.setUpGame();
-    game.play();
+
+    IntStream.range(0, 100).forEach(i -> {
+      if(game.getWinner() != null) {
+        return;
+      }
+
+      try {
+        game.play();
+      } catch (NotEnoughPlayersInGameException e) {
+        throw new RuntimeException(e);
+      }
+    });
 
     assertNotNull(game.getWinner(), "A winner should be set after game has been played");
   }
@@ -165,7 +178,7 @@ public class BoardGameTest {
 
     game.addPlayer(player);
 
-    assertThrows(IllegalArgumentException.class, game::play,
+    assertThrows(NotEnoughPlayersInGameException.class, game::play,
         "Game should throw error when starting with to few players");
   }
 }

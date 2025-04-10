@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import java.util.HashMap;
 import java.util.Map;
 
+import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,7 @@ public class PlayerTest {
 
   @Test
   @DisplayName("Test that the startGame method places player on correct tile.")
-  public void startGame() {
+  public void startGame() throws NotEnoughPlayersInGameException {
     Player player = new Player("Player_1");
     game.addPlayer(player);
     game.setUpGame();
@@ -81,7 +82,7 @@ public class PlayerTest {
 
   @Test
   @DisplayName("Test that player Move method function properly.")
-  public void testMove() {
+  public void testMove() throws NotEnoughPlayersInGameException {
     Player player = new Player("Player_1");
     game.addPlayer(player);
     game.setUpGame();

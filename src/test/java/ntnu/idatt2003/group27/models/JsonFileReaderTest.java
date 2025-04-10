@@ -11,7 +11,7 @@ public class JsonFileReaderTest {
     Board board = null;
     try {
       board = jsonFileReader.readFile(
-          "src/main/java/ntnu/idatt2003/group27/resources/boards/Board.json");
+          "src/main/resources/boards/Board.json");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
