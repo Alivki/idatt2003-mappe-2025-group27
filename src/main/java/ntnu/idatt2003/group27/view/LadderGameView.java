@@ -1,9 +1,7 @@
 package ntnu.idatt2003.group27.view;
 
-import java.util.ArrayList;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
-import javafx.animation.Transition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,7 +10,6 @@ import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
@@ -22,21 +19,24 @@ import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
-import ntnu.idatt2003.group27.models.BoardGame;
-import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.view.components.*;
 
 public class LadderGameView {
   private final StackPane root;
+
   private CustomButton homeButton;
   private CustomButton diceButton;
   private CustomButton restartButton;
+
+  private Canvas canvas;
+
   private Label roundInfo;
   private Label currentPlayerInfo;
   private Label gradeInfo;
   private Label statusInfo;
+
   private Box dice;
+
   private Label lastPlayer;
   private Label movedTo;
   private Label lastRoll;
@@ -65,8 +65,7 @@ public class LadderGameView {
     Label title = new Label("Stigespillet");
     title.getStyleClass().add("h1");
 
-    final GameBoardCanvas gameBoardCanvas = new GameBoardCanvas(0);
-    final Canvas canvas = gameBoardCanvas.createBoard();
+    canvas = new Canvas();
 
     VBox canvasContainer = new VBox();
     canvasContainer.setAlignment(Pos.CENTER);
@@ -76,10 +75,10 @@ public class LadderGameView {
     layout.getMainContainer().getChildren().addAll(title, canvasContainer);
 
     layout.getMainContainer().widthProperty().addListener((obs, oldWidth, newWidth) -> {
-      double tileSize = (newWidth.doubleValue() - 100) / ((double) game.getBoard().getTiles().size() / 9);
+      double tileSize = (newWidth.doubleValue() - 100) / ((double) canvas.getBoardSize() / 9);
       canvas.setWidth(newWidth.doubleValue() - 100);
       canvas.setHeight(tileSize * 9);
-      gameBoardCanvas.redrawBoard(tileSize);
+      canvas.updateBoard(tileSize, null, null);
     });
 
     Card rightCard = new Card("Spill info", null, 350);
@@ -196,6 +195,13 @@ public class LadderGameView {
     tileAction.setText(action);
   }
 
+  public void createBoard(int size) {
+    canvas.setBoardSize(size);
+  }
+
+  public void updateBoard() {
+    canvas.updateBoard(10, null, null);
+  }
 
   public void rotateDice(int roll) {
     RotateTransition rotatorY = new RotateTransition(Duration.millis(500), dice);

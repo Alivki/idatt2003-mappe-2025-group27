@@ -1,39 +1,57 @@
 package ntnu.idatt2003.group27.view.components;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.models.Tile;
 
-public class GameBoardCanvas {
+public class Canvas extends javafx.scene.canvas.Canvas {
+  private int boardSize;
   private double tileSize;
-  private final Canvas canvas;
   private final int columns = 10;
   private final int rows = 9;
+  private List<Player> players;
+  private Map<Integer, Tile> tileActions;
 
-  public GameBoardCanvas(double tileSize) {
+  public Canvas() {
+    this.tileSize = 0;
+    this.boardSize = 0;
+    this.players = new ArrayList<>();
+    this.tileActions = new HashMap<>();
+  }
+
+  public int getBoardSize() {
+    return boardSize;
+  }
+
+  public void setBoardSize(int boardSize) {
+    this.boardSize = boardSize;
+  }
+
+  public void updateBoard(double tileSize, List<Player> players, Map<Integer, Tile> tileActions) {
     this.tileSize = tileSize;
-    this.canvas = new Canvas();
+    this.players = players != null ? new ArrayList<>(players) : new ArrayList<>();
+    this.tileActions = tileActions != null ? new HashMap<>(tileActions) : new HashMap<>();
+    redrawBoard();
   }
 
-  public Canvas createBoard() {
-    drawBoard();
-    return canvas;
-  }
+  public void redrawBoard() {
+    GraphicsContext gc = getGraphicsContext2D();
+    gc.clearRect(0, 0, getWidth(), getHeight());
 
-  public void redrawBoard(double tileSize) {
-    this.tileSize = tileSize;
-    drawBoard();
-  }
-
-  private void drawBoard() {
-    GraphicsContext gc = canvas.getGraphicsContext2D();
-    gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-    drawTileActions(gc);
     drawArrows(gc);
+    drawTileActions(gc);
+    drawTiles(gc);
+    drawPlayers(gc);
+  }
 
+  private void drawTiles(GraphicsContext gc) {
     double yPos = tileSize * (columns - 1) - tileSize;
 
     IntStream.range(1, columns * rows + 1).forEach(i -> {
@@ -71,5 +89,9 @@ public class GameBoardCanvas {
     IntStream.range(1, rows + 1).forEach(i -> {
 
     });
+  }
+
+  private void drawPlayers(GraphicsContext gc) {
+
   }
 }

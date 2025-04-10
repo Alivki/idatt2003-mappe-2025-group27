@@ -17,17 +17,13 @@ import ntnu.idatt2003.group27.view.components.Toast;
 /**
  * This class represent the game board in the GUI for our game.
  */
-public class BoardGameMenu implements BoardGameObserver {
+public class BoardGameMenu {
   private final StackPane root;
-  private BoardGame game;
 
   /**
    *.
    */
-  public BoardGameMenu(BoardGame game) {
-    this.game = game;
-    game.addObserver(this);
-
+  public BoardGameMenu() {
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
     root.setPadding(new Insets(20, 10, 10, 10));
@@ -53,16 +49,6 @@ public class BoardGameMenu implements BoardGameObserver {
 
     gameArea.getChildren().addAll(title, button);
     root.getChildren().add(gameArea);
-  }
-
-  @Override
-  public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll) {
-
-  }
-
-  @Override
-  public void onPlayerWon(Player player) {
-    root.setStyle("-fx-background-color: #d81414");
   }
 
   public void showToast(Toast.ToastVariant variant, String title, String message) {

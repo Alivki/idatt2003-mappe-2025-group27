@@ -1,8 +1,11 @@
 package ntnu.idatt2003.group27.models.interfaces;
 
 import java.util.ArrayList;
+import java.util.Map;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.models.Tile;
+
 
 /**
  * Defines a contract for observing significant events in a {@link BoardGame}. Implementations of
@@ -28,4 +31,12 @@ public interface BoardGameObserver {
    * @param player The {@link Player} who has won.
    */
   void onPlayerWon(Player player);
+
+  /**
+   * Invoked when the game is set up and ready to start.
+   *
+   * @param players The list of players participating in the game.
+   * @param tiles The map of tiles on the board, with tile IDs as keys and {@link Tile} objects as values.
+   */
+  void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles);
 }

@@ -1,8 +1,10 @@
 package ntnu.idatt2003.group27.controllers;
 
 import java.util.ArrayList;
+import java.util.Map;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.view.BoardGameMenu;
@@ -19,6 +21,8 @@ public class BoardGameController implements BoardGameObserver {
     this.game = game;
     this.view = view;
     this.ladderView = ladderView;
+
+    game.addObserver(this);
 
     setupMenuViewEventHandler();
     setupLadderViewEventHandlers();
@@ -54,7 +58,6 @@ public class BoardGameController implements BoardGameObserver {
     });
 
     ladderView.setRestartButtonHandler(e -> {
-
     });
 
     ladderView.setHomeButtonHandler(e -> {
@@ -88,5 +91,10 @@ public class BoardGameController implements BoardGameObserver {
   public void onPlayerWon(Player player) {
     ladderView.updateStatusLabel("Avsluttet");
     ladderView.showToast(Toast.ToastVariant.SUCCESS, "Spiller vant", player.getName() + " vant spillet!");
+  }
+
+  @Override
+  public void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
+    ladderView.createBoard(tiles.size());
   }
 }

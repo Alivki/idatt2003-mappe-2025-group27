@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models;
 
+import java.util.Map;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 
@@ -86,6 +87,16 @@ public class BoardGame {
   }
 
   /**
+   * Notifies all observers that the game has been set up and is ready to start.
+   *
+   * @param players The list of players in the game.
+   * @param tiles The map of tiles on the board.
+   */
+  public void notifyGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
+    observers.forEach(observer -> observer.onGameSetup(players, tiles));
+  }
+
+  /**
    * Retrieves the current game board. This method is package-private for testing purposes.
    *
    * @return The current game board.
@@ -160,6 +171,8 @@ public class BoardGame {
     players.forEach(player -> player.placeOnTile(board.getTile(1)));
 
     currentPlayer = players.getFirst();
+
+    notifyGameSetup(players, board.getTiles());
   }
 
   /**
