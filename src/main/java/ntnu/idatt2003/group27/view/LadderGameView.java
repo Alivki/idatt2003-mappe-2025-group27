@@ -169,6 +169,10 @@ public class LadderGameView {
     restartButton.setOnAction(action);
   }
 
+  public void disableDiceButton() {
+    diceButton.setDisable(true);
+  }
+
   public void updateRoundLabel(String round) {
     roundInfo.setText(round);
   }

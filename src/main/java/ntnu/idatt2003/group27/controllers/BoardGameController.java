@@ -28,7 +28,7 @@ public class BoardGameController implements BoardGameObserver {
     setupLadderViewEventHandlers();
   }
 
-  private void setupMenuViewEventHandler(){
+  private void setupMenuViewEventHandler() {
     // add player button
     // upload player button
     // remove player button
@@ -50,9 +50,9 @@ public class BoardGameController implements BoardGameObserver {
         //switch to main menu when possible
 
         view.showToast(
-          Toast.ToastVariant.ERROR,
-          "Feil",
-          "Det oppstod en feil under spillingen: " + error.getMessage()
+            Toast.ToastVariant.ERROR,
+            "Feil",
+            "Det oppstod en feil under spillingen: " + error.getMessage()
         );
       }
     });
@@ -61,23 +61,23 @@ public class BoardGameController implements BoardGameObserver {
     });
 
     ladderView.setHomeButtonHandler(e -> {
-      Alert popup = new Alert(
-        this.ladderView.getRoot(),
-        "Bekreft avslutning",
-        "Er du sikker på at du vil avslutte spillet?",
-        "Ja",
-        "Nei",
-        response -> {
-          if (response) {
-            ladderView.showToast(
-              Toast.ToastVariant.ERROR,
-              "Avsluttet",
-              "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
-            );
+      Alert alert = new Alert(
+          this.ladderView.getRoot(),
+          "Bekreft avslutning",
+          "Er du sikker på at du vil avslutte spillet?",
+          "Ja",
+          "Nei",
+          response -> {
+            if (response) {
+              ladderView.showToast(
+                  Toast.ToastVariant.ERROR,
+                  "Avsluttet",
+                  "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
+              );
+            }
           }
-        }
       );
-      popup.show();
+      alert.show();
     });
   }
 
@@ -90,8 +90,25 @@ public class BoardGameController implements BoardGameObserver {
 
   @Override
   public void onPlayerWon(Player player) {
+    ladderView.disableDiceButton();
     ladderView.updateStatusLabel("Avsluttet");
-    ladderView.showToast(Toast.ToastVariant.SUCCESS, "Spiller vant", player.getName() + " vant spillet!");
+    ladderView.showToast(Toast.ToastVariant.SUCCESS, "Spiller vant",
+        player.getName() + " vant spillet! Gratulerer!");
+    Alert alert = new Alert(
+        this.ladderView.getRoot(),
+        "Spiller vant",
+        player.getName() + " vant spillet!",
+        "Tilabeke til hovedmeny",
+        "Restart",
+        response -> {
+          if (response) {
+            // restart game
+          } else {
+            // go to main menu
+          }
+        }
+    );
+    alert.show();
   }
 
   @Override
