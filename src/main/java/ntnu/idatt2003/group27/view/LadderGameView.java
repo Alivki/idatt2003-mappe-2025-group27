@@ -12,6 +12,8 @@ import javafx.scene.SceneAntialiasing;
 import javafx.scene.SubScene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -84,7 +86,7 @@ public class LadderGameView {
     Card rightCard = new Card("Spill info", null, 350);
 
     VBox gameInfo = new VBox(5);
-    gameInfo.setPadding(new Insets(0, 0, 13, 0));
+    gameInfo.setPadding(new Insets(0, 0, 20, 0));
 
     roundInfo = new Label("?");
     currentPlayerInfo = new Label("");
@@ -94,7 +96,7 @@ public class LadderGameView {
     Separator separator1 = new Separator();
 
     VBox diceContainer = new VBox();
-    diceContainer.setPadding(new Insets(0, 0, 13, 0));
+    diceContainer.setPadding(new Insets(0, 0, 20, 0));
     diceContainer.setAlignment(Pos.CENTER);
 
     dice = new Box(5, 5, 5);
@@ -113,7 +115,7 @@ public class LadderGameView {
     diceButton = new CustomButton("Rull terning", CustomButton.ButtonVariant.PRIMARY, null);
 
     VBox lastRoundContainer = new VBox();
-    lastRoundContainer.setPadding(new Insets(12, 0, 0, 0));
+    lastRoundContainer.setPadding(new Insets(12, 0, 4, 0));
 
     Label lastRoundTitleLabel = new Label("Siste runde");
     lastRoundTitleLabel.getStyleClass().add("h3");

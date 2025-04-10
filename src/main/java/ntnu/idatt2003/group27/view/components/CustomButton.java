@@ -49,8 +49,8 @@ public class CustomButton extends Button {
         getStyleClass().add("icon-primary-button");
         if (icon != null) {
           if (icon instanceof ImageView) {
-            ((ImageView) icon).setFitWidth(14);
-            ((ImageView) icon).setFitHeight(14);
+            ((ImageView) icon).setFitWidth(12);
+            ((ImageView) icon).setFitHeight(12);
           }
           setGraphic(icon);
         }
@@ -73,9 +73,9 @@ public class CustomButton extends Button {
           }
           setGraphic(icon);
         }
-        setMinSize(32, 32);
-        setPrefSize(32, 32);
-        setMaxSize(32, 32);
+        setMinSize(34, 34);
+        setPrefSize(34, 34);
+        setMaxSize(34, 34);
         break;
     }
 
