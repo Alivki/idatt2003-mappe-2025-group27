@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
@@ -119,6 +122,20 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   }
 
   private void drawPlayers(GraphicsContext gc) {
+    gc.setStroke(Color.BLUE);
+    gc.setLineWidth(3.0);
+
+    gc.beginPath();
+    double[] startPos = getTileCenter(0);
+    gc.moveTo(startPos[0], startPos[1]);
+    IntStream.range(0, (columns * rows )).forEach(i -> {
+      double[] tileCenter = getTileCenter(i);
+
+      gc.lineTo(tileCenter[0],tileCenter[1]);
+    });
+    gc.stroke();
+
+
     players.forEach(player -> {
       int i = player.getCurrentTile().getTileId() - 1;
 
