@@ -47,7 +47,7 @@ public class BoardTest {
   public void testGettingTile() {
     Board board = null;
     try {
-      board = new JsonFileReader().readFile("src/main/java/ntnu/idatt2003/group27/resources/boards/Board.json");
+      board = new JsonFileReader().readFile("src/main/resources/boards/Board.json");
     } catch (IOException e) {
       System.err.println(e.getMessage());
     }
