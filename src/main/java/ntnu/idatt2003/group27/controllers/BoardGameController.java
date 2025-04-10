@@ -80,9 +80,13 @@ public class BoardGameController implements BoardGameObserver {
 
   @Override
   public void onRoundPlayed(ArrayList<Player> players , Player currentPlayer, int roll) {
+    ladderView.updateCurrentPlayerLabel(currentPlayer.getName());
+    ladderView.rotateDice(roll);
   }
 
   @Override
   public void onPlayerWon(Player player) {
+    ladderView.updateStatusLabel("Avsluttet");
+    ladderView.showToast(Toast.ToastVariant.SUCCESS, "Spiller vant", player.getName() + " vant spillet!");
   }
 }

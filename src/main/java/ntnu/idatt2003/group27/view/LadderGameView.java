@@ -27,9 +27,8 @@ import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.view.components.*;
 
-public class LadderGameView implements BoardGameObserver {
+public class LadderGameView {
   private final StackPane root;
-  private final BoardGame game;
   private CustomButton homeButton;
   private CustomButton diceButton;
   private CustomButton restartButton;
@@ -43,10 +42,7 @@ public class LadderGameView implements BoardGameObserver {
   private Label lastRoll;
   private Label tileAction;
 
-  public LadderGameView(BoardGame game) {
-    this.game = game;
-    game.addObserver(this);
-
+  public LadderGameView() {
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
     root.getStyleClass().add("root");
@@ -168,6 +164,39 @@ public class LadderGameView implements BoardGameObserver {
     restartButton.setOnAction(action);
   }
 
+  public void updateRoundLabel(String round) {
+    roundInfo.setText(round);
+  }
+
+  public void updateCurrentPlayerLabel(String playerName) {
+    currentPlayerInfo.setText(playerName);
+  }
+
+  public void updateGradeLabel(String grade) {
+    gradeInfo.setText(grade);
+  }
+
+  public void updateStatusLabel(String status) {
+    statusInfo.setText(status);
+  }
+
+  public void updateLastPlayerLabel(String playerName) {
+    lastPlayer.setText(playerName);
+  }
+
+  public void updateMovedToLabel(String tileName) {
+    movedTo.setText(tileName);
+  }
+
+  public void updateLastRollLabel(String roll) {
+    lastRoll.setText(roll);
+  }
+
+  public void updateTileActionLabel(String action) {
+    tileAction.setText(action);
+  }
+
+
   public void rotateDice(int roll) {
     RotateTransition rotatorY = new RotateTransition(Duration.millis(500), dice);
     rotatorY.setAxis(Rotate.Z_AXIS);
@@ -189,18 +218,6 @@ public class LadderGameView implements BoardGameObserver {
   public void showToast(Toast.ToastVariant variant, String title, String message) {
     Toast toast = new Toast(root, variant, title, message);
     toast.show();
-  }
-
-  @Override
-  public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll) {
-    currentPlayerInfo.setText(currentPlayer.getName());
-    rotateDice(roll);
-  }
-
-  @Override
-  public void onPlayerWon(Player player) {
-    statusInfo.setText("Avsluttet");
-    showToast(Toast.ToastVariant.SUCCESS, "Spiller vant", player.getName() + " vant spillet!");
   }
 
   private HBox createGameInfoRow(String labelText, Label infoLabel) {
