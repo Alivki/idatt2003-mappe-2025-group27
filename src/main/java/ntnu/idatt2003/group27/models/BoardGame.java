@@ -187,19 +187,19 @@ public class BoardGame {
 
     int roll = dice.roll();
 
-    //System.out.println(currentPlayer.getName() + " rolled a " + roll);
+    System.out.println(currentPlayer.getName() + " rolled a " + roll);
 
     int nextPlayerPosition = getNextPlayerPosition(roll);
 
     currentPlayer.move(nextPlayerPosition);
 
-    //System.out.println(
-     //   currentPlayer.getName() + "moved to tile "
-      //      + (currentPlayer.getCurrentTile().getTileId()) + "\n");
+    System.out.println(
+        currentPlayer.getName() + "moved to tile "
+            + (currentPlayer.getCurrentTile().getTileId()) + "\n");
 
     if (getWinner() != null) {
       notifyPlayerWon(getWinner());
-      // System.out.println("\n" + getWinner().getName() + " has won the game!");
+       System.out.println("\n" + getWinner().getName() + " has won the game!");
       return;
     }
 

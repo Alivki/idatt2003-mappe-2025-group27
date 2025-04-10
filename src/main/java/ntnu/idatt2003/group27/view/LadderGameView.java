@@ -1,5 +1,7 @@
 package ntnu.idatt2003.group27.view;
 
+import java.util.ArrayList;
+import java.util.Map;
 import javafx.animation.Interpolator;
 import javafx.animation.RotateTransition;
 import javafx.event.ActionEvent;
@@ -21,6 +23,8 @@ import javafx.scene.shape.Box;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
+import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.view.components.*;
 
 public class LadderGameView {
@@ -80,7 +84,7 @@ public class LadderGameView {
       double tileSize = (newWidth.doubleValue() - 100) / ((double) canvas.getBoardSize() / 9);
       canvas.setWidth(newWidth.doubleValue() - 100);
       canvas.setHeight(tileSize * 9);
-      canvas.updateBoard(tileSize, null, null);
+      canvas.resizeBoard(tileSize);
     });
 
     Card rightCard = new Card("Spill info", null, 350);
@@ -197,12 +201,13 @@ public class LadderGameView {
     tileAction.setText(action);
   }
 
-  public void createBoard(int size) {
-    canvas.setBoardSize(size);
+  public void createBoard(ArrayList<Player> players, Map<Integer, Tile> tiles) {
+    canvas.createBoard(tiles, tiles.size());
+    canvas.updateBoard(players);
   }
 
-  public void updateBoard() {
-    canvas.updateBoard(10, null, null);
+  public void updateBoard(ArrayList<Player> players) {
+    canvas.updateBoard(players);
   }
 
   public void rotateDice(int roll) {
