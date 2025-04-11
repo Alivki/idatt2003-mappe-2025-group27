@@ -142,19 +142,16 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     double angle = Math.acos(cos);
 
     int radius = 14;
-    double[] firstLadderLegPointOne = new double[] {radius * Math.cos(-angle), radius * Math.sin(-angle)};
-    double[] firstLadderLegPointTwo = new double[] {radius * Math.cos(-angle - Math.PI), radius * Math.sin(-angle - Math.PI)};
+    double[] tileLegPoints = new double[] {radius * Math.cos(-angle), radius * Math.sin(-angle)};
+    double[] tileLandLegPoints = new double[] {radius * Math.cos(-angle - Math.PI), radius * Math.sin(-angle - Math.PI)};
 
-    gc.setStroke(Color.PURPLE);
+    gc.setStroke(Color.BLACK);
     gc.setLineWidth(5);
     gc.beginPath();
-    gc.moveTo(tileCenter[0] - firstLadderLegPointOne[0], tileCenter[1] - firstLadderLegPointOne[1]);
-    gc.lineTo(tileLandCenter[0] - firstLadderLegPointOne[0], tileLandCenter[1] - firstLadderLegPointOne[1]);
-    gc.stroke();
-    gc.setStroke(Color.GREEN);
-    gc.beginPath();
-    gc.moveTo(tileLandCenter[0] - firstLadderLegPointTwo[0], tileLandCenter[1] - firstLadderLegPointTwo[1]);
-    gc.lineTo(tileCenter[0] - firstLadderLegPointTwo[0], tileCenter[1] - firstLadderLegPointTwo[1]);
+    gc.moveTo(tileCenter[0] - tileLegPoints[0], tileCenter[1] - tileLegPoints[1]);
+    gc.lineTo(tileLandCenter[0] - tileLegPoints[0], tileLandCenter[1] - tileLegPoints[1]);
+    gc.moveTo(tileLandCenter[0] - tileLandLegPoints[0], tileLandCenter[1] - tileLandLegPoints[1]);
+    gc.lineTo(tileCenter[0] - tileLandLegPoints[0], tileCenter[1] - tileLandLegPoints[1]);
     gc.stroke();
   }
 
