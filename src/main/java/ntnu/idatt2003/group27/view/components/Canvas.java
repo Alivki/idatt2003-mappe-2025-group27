@@ -9,6 +9,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import ntnu.idatt2003.group27.models.Player;
@@ -60,6 +61,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     drawArrows(gc);
     drawTileActions(gc);
     drawTiles(gc);
+    drawAllLadders(gc);
     drawPlayers(gc);
   }
 
@@ -98,7 +100,6 @@ public class Canvas extends javafx.scene.canvas.Canvas {
               gc.fillRect(tileLandPosition[0], tileLandPosition[1], tileSize, tileSize);
               gc.setFill(Color.DARKRED);
             }
-            drawLadder(gc, k - 1, ladderAction.getDestinationTileId() - 1);
           }
           case BackToStartAction backToStartAction -> {
             gc.setFill(Color.LIGHTPINK);
@@ -111,7 +112,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
           default -> {break;}
         }
 
-        //gc.fillRect(tilePosition[0], tilePosition[1], tileSize, tileSize);
+        gc.fillRect(tilePosition[0], tilePosition[1], tileSize, tileSize);
       }
     });
   }
@@ -122,37 +123,37 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     });
   }
 
-  private void drawLadder(GraphicsContext gc, int tile, int tileLand) {
-    double[] tileCenter = getTileCenter(tile);
-    double[] tileLandCenter = getTileCenter(tileLand);
+  private void drawAllLadders(GraphicsContext gc) {
+    tileActions.entrySet().stream()
+      .filter(e -> e.getValue().getLandAction() instanceof LadderAction)
+      .forEach(e -> drawLadder(gc, e.getKey() - 1, ((LadderAction) e.getValue().getLandAction()).getDestinationTileId() - 1));
+  }
 
-    double[] baseVector;
-    if (tileCenter[0] < tileLandCenter[0] && tileLand > tile) {
-      baseVector = new double[]{0, -100};
-    } else if (tileCenter[0] < tileLandCenter[0]) {
-      baseVector = new double[]{100, 0};
-    } else {
-      baseVector = new double[]{0, 100};
-    }
-    double[] vector = new double[] {tileLandCenter[0] - tileCenter[0], tileCenter[1] - tileLandCenter[1]};
+  private void drawLadder(GraphicsContext gc, int startTile, int endTile) {
+    double[] start = getTileCenter(startTile);
+    double[] end = getTileCenter(endTile);
 
-    double num =  (vector[0] * baseVector[0] + vector[1] * baseVector[1]);
-    double den = (Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2))) * (Math.sqrt(Math.pow(baseVector[0], 2) + Math.pow(baseVector[1], 2)));
-    double cos = num / den;
-    double angle = Math.acos(cos);
+    double dx = end[0] - start[0];
+    double dy = end[1] - start[1];
+    double angle = Math.atan2(dy, dx);
 
-    int radius = 14;
-    double[] tileLegPoints = new double[] {radius * Math.cos(-angle), radius * Math.sin(-angle)};
-    double[] tileLandLegPoints = new double[] {radius * Math.cos(-angle - Math.PI), radius * Math.sin(-angle - Math.PI)};
+    double radius = tileSize / 4;
+    double[] offset = {radius * Math.sin(angle), radius * Math.cos(angle)};
 
     gc.setStroke(Color.BLACK);
     gc.setLineWidth(5);
+    gc.setLineCap(StrokeLineCap.ROUND);
     gc.beginPath();
-    gc.moveTo(tileCenter[0] - tileLegPoints[0], tileCenter[1] - tileLegPoints[1]);
-    gc.lineTo(tileLandCenter[0] - tileLegPoints[0], tileLandCenter[1] - tileLegPoints[1]);
-    gc.moveTo(tileLandCenter[0] - tileLandLegPoints[0], tileLandCenter[1] - tileLandLegPoints[1]);
-    gc.lineTo(tileCenter[0] - tileLandLegPoints[0], tileCenter[1] - tileLandLegPoints[1]);
+    gc.moveTo(start[0] + offset[0], start[1] - offset[1]);
+    gc.lineTo(end[0] + offset[0], end[1] - offset[1]);
+    gc.moveTo(start[0] - offset[0], start[1] + offset[1]);
+    gc.lineTo(end[0] - offset[0], end[1] + offset[1]);
     gc.stroke();
+
+    gc.setFill(Color.WHITE);
+    double[] dotPos = (startTile > endTile) ? start : end;
+    gc.fillOval(dotPos[0] + offset[0] - 1.5, dotPos[1] - offset[1] - 1.5, 3, 3);
+    gc.fillOval(dotPos[0] - offset[0] - 1.5, dotPos[1] + offset[1] - 1.5, 3, 3);
   }
 
   private void drawPlayers(GraphicsContext gc) {
@@ -167,7 +168,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
 
       gc.lineTo(tileCenter[0],tileCenter[1]);
     });
-    //gc.stroke();
+    gc.stroke();
 
 
     players.forEach(player -> {
