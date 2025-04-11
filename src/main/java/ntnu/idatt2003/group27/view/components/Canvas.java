@@ -136,6 +136,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     double dx = end[0] - start[0];
     double dy = end[1] - start[1];
     double angle = Math.atan2(dy, dx);
+    double length = Math.sqrt(dx * dx + dy * dy);
 
     double radius = tileSize / 4;
     double[] offset = {radius * Math.sin(angle), radius * Math.cos(angle)};
@@ -146,6 +147,39 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     gc.beginPath();
     gc.moveTo(start[0] + offset[0], start[1] - offset[1]);
     gc.lineTo(end[0] + offset[0], end[1] - offset[1]);
+    gc.stroke();
+
+    int numSteps = (int) (length / (tileSize / 2));
+    double stepDx = dx / (numSteps + 1);
+    double stepDy = dy / (numSteps + 1);
+    double stepRadius = radius - 2;
+    double[] stepOffset = {stepRadius * Math.sin(angle), stepRadius * Math.cos(angle)};
+
+    gc.setStroke(Color.BLACK);
+    gc.setLineWidth(7);
+    gc.beginPath();
+    for (int i = 1; i <= numSteps; i++) {
+      double x = start[0] + i * stepDx;
+      double y = start[1] + i * stepDy;
+      gc.moveTo(x + stepOffset[0], y - stepOffset[1]);
+      gc.lineTo(x - stepOffset[0], y + stepOffset[1]);
+    }
+    gc.stroke();
+
+    gc.setStroke(Color.WHITE);
+    gc.setLineWidth(3);
+    gc.beginPath();
+    for (int i = 1; i <= numSteps; i++) {
+      double x = start[0] + i * stepDx;
+      double y = start[1] + i * stepDy;
+      gc.moveTo(x + stepOffset[0], y - stepOffset[1]);
+      gc.lineTo(x - stepOffset[0], y + stepOffset[1]);
+    }
+    gc.stroke();
+
+    gc.setStroke(Color.BLACK);
+    gc.setLineWidth(5);
+    gc.beginPath();
     gc.moveTo(start[0] - offset[0], start[1] + offset[1]);
     gc.lineTo(end[0] - offset[0], end[1] + offset[1]);
     gc.stroke();
@@ -168,8 +202,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
 
       gc.lineTo(tileCenter[0],tileCenter[1]);
     });
-    gc.stroke();
-
+    //gc.stroke();
 
     players.forEach(player -> {
       int i = player.getCurrentTile().getTileId() - 1;
