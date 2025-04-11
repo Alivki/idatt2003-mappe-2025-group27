@@ -39,6 +39,11 @@ public class BoardGameFactory {
         tileActions.put(4, new LadderAction(15, "description"));
         tileActions.put(10, new BackToStartAction("description"));
         tileActions.put(69, new LadderAction(47, "description"));
+        tileActions.put(25, new LadderAction(39, "description"));
+        tileActions.put(18, new LadderAction(43, "description"));
+        tileActions.put(65, new LadderAction(88, "description"));
+        tileActions.put(63, new LadderAction(45, "description"));
+        tileActions.put(32, new LadderAction(12, "description"));
         break;
       case CRAZY:
         tileActions.put(4, new LadderAction(15, "description"));
