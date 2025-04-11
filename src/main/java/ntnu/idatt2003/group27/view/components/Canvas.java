@@ -126,23 +126,27 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     double[] tileCenter = getTileCenter(tile);
     double[] tileLandCenter = getTileCenter(tileLand);
 
-    gc.setStroke(Color.BLACK);
-    gc.strokeOval(tileLandCenter[0] - 10, tileLandCenter[1] - 10, 20, 20);
-    gc.strokeOval(tileCenter[0] - 10, tileCenter[1] - 10, 20, 20);
-    double[] baseVector = new double[] {100, 0};
+    double[] baseVector;
+    if (tileCenter[0] < tileLandCenter[0] && tileLand > tile) {
+      baseVector = new double[]{0, -100};
+    } else if (tileCenter[0] < tileLandCenter[0]) {
+      baseVector = new double[]{100, 0};
+    } else {
+      baseVector = new double[]{0, 100};
+    }
     double[] vector = new double[] {tileLandCenter[0] - tileCenter[0], tileCenter[1] - tileLandCenter[1]};
 
-    int num = (int) (vector[0] * baseVector[0] + vector[1] * baseVector[1]);
+    double num =  (vector[0] * baseVector[0] + vector[1] * baseVector[1]);
     double den = (Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2))) * (Math.sqrt(Math.pow(baseVector[0], 2) + Math.pow(baseVector[1], 2)));
     double cos = num / den;
-    double angles = Math.toDegrees(Math.acos(cos));
-    double angle = 0;
+    double angle = Math.acos(cos);
 
-    int radius = 10;
-    double[] firstLadderLegPointOne = new double[] {radius * Math.sin(angle), radius * Math.cos(angle)};
-    double[] firstLadderLegPointTwo = new double[] {radius * Math.sin(angle - 90), radius * Math.cos(angle - 90)};
+    int radius = 14;
+    double[] firstLadderLegPointOne = new double[] {radius * Math.cos(-angle), radius * Math.sin(-angle)};
+    double[] firstLadderLegPointTwo = new double[] {radius * Math.cos(-angle - Math.PI), radius * Math.sin(-angle - Math.PI)};
 
     gc.setStroke(Color.PURPLE);
+    gc.setLineWidth(5);
     gc.beginPath();
     gc.moveTo(tileCenter[0] - firstLadderLegPointOne[0], tileCenter[1] - firstLadderLegPointOne[1]);
     gc.lineTo(tileLandCenter[0] - firstLadderLegPointOne[0], tileLandCenter[1] - firstLadderLegPointOne[1]);
