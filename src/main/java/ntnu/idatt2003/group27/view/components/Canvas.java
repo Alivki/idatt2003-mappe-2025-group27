@@ -111,7 +111,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
           default -> {break;}
         }
 
-        //gc.fillRect(tilePosition[0], tilePosition[1], tileSize, tileSize);
+        gc.fillRect(tilePosition[0], tilePosition[1], tileSize, tileSize);
       }
     });
   }
@@ -137,7 +137,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     double den2 = (Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2)));
     double den3 = den1 * den2;
     double cos = num / den3;
-    double angle = Math.toDegrees(Math.acos(cos));
+    double angle = Math.acos(cos);
 
     int radius = 20;
     double[] firstLadderLegPointOne = new double[] {radius * Math.sin(angle), radius * Math.cos(angle)};
@@ -146,8 +146,8 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     gc.setStroke(Color.PURPLE);
     gc.beginPath();
     gc.moveTo(tileCenter[0] + firstLadderLegPointOne[0], tileCenter[1] + firstLadderLegPointOne[1]);
-    gc.lineTo(tileLandCenter[0] - firstLadderLegPointOne[0], tileLandCenter[1] + firstLadderLegPointOne[1]);
-    gc.moveTo(tileLandCenter[0] + firstLadderLegPointTwo[0], tileLandCenter[1] - firstLadderLegPointTwo[1]);
+    gc.lineTo(tileLandCenter[0] + firstLadderLegPointOne[0], tileLandCenter[1] + firstLadderLegPointOne[1]);
+    gc.moveTo(tileLandCenter[0] + firstLadderLegPointTwo[0], tileLandCenter[1] + firstLadderLegPointTwo[1]);
     gc.lineTo(tileCenter[0] + firstLadderLegPointTwo[0], tileCenter[1] + firstLadderLegPointTwo[1]);
     gc.stroke();
   }
