@@ -43,7 +43,7 @@ public class BoardGameGUI extends Application {
     // move to controller when ready to implement
     game.addPlayer(new Player("Alice"));
     game.addPlayer(new Player("Test"));
-
+    
     // change when being done in controller on game difficult select
     try {
       game.setUpGame();
