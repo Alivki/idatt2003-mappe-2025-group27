@@ -27,7 +27,7 @@ public class PlayerButtonListCell extends ListCell<Player> {
     playerLabel = new Label("New player");
 
     //Initializes button to remove player from list
-    removePlayerButton = new CustomButton("X", CustomButton.ButtonVariant.DESTRUCTIVE, null);
+    removePlayerButton = new CustomButton("X", CustomButton.ButtonVariant.SECONDARY, null);
     removePlayerButton.setOnAction(e -> {
       MainController.getInstance().removePlayer(getItem());
     });
