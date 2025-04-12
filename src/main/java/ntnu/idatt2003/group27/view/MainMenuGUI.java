@@ -31,7 +31,7 @@ public class MainMenuGUI extends Application {
     MainMenuView mainMenuView = new MainMenuView();
     MainMenuController mainMenuController = new MainMenuController(mainMenuView);
 
-    MainController.instance.mainStage = primaryStage;
+    MainController.getInstance().mainStage = primaryStage;
 
     // set up scene
     Scene scene = new Scene(mainMenuView.getRoot(), 1920, 1080);

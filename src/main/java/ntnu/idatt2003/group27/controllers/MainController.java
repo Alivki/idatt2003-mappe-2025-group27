@@ -20,12 +20,14 @@ public class MainController {
   private ObservableList<Player> playersObservableList = FXCollections.observableArrayList();
   private String[] initArgs;
 
-  public static MainController instance;
+  private static MainController instance;
   public Stage mainStage;
 
   public MainController(String[] args) {
-    instance = this;
-    this.initArgs = args;
+    if (instance == null) {
+      instance = this;
+      this.initArgs = args;
+    }
   }
 
   public void switchToBoardGame(){
@@ -56,5 +58,9 @@ public class MainController {
 
   public void removePlayer(Player player){
     playersObservableList.remove(player);
+  }
+
+  public static MainController getInstance(){
+    return instance;
   }
 }

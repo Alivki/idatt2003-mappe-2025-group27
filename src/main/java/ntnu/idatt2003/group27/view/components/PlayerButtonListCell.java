@@ -25,7 +25,7 @@ public class PlayerButtonListCell extends ListCell<Player> {
     //Initializes button to remove player from list
     removePlayerButton = new CustomButton("X", CustomButton.ButtonVariant.DESTRUCTIVE, null);
     removePlayerButton.setOnAction(e -> {
-      MainController.instance.removePlayer(getItem());
+      MainController.getInstance().removePlayer(getItem());
     });
 
     mainAnchorPane.getChildren().addAll(mainContainer);

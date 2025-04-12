@@ -22,7 +22,10 @@ public class BoardGameController implements BoardGameObserver {
     this.view = view;
     this.ladderView = ladderView;
 
+
+
     game.addObserver(this);
+
 
 
     setupLadderViewEventHandlers();
@@ -63,7 +66,7 @@ public class BoardGameController implements BoardGameObserver {
                   "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
               );
               //Loads main menu
-              MainController.instance.switchToMainMenu();
+              MainController.getInstance().switchToMainMenu();
             }
           }
       );
