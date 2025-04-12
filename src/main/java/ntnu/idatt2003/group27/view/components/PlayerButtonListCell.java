@@ -56,6 +56,7 @@ public class PlayerButtonListCell extends ListCell<Player> {
     else {
       playerLabel.setText(player.getName());
       setGraphic(mainContainer);
+      setPadding(new Insets(5, 5, 5, 5));
     }
   }
 }

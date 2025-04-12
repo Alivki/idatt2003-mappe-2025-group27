@@ -184,10 +184,6 @@
     -fx-border-radius: 5px;
 }
 
-.list-view{
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
-}
 
 .list-cell {
     -fx-background-color: white;
@@ -217,5 +213,23 @@
 .list-cell .label {
     -fx-text-fill: black;
 }
+
+.list-view {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #ececec;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-background-radius: 5px;
+}
+
+.scroll-bar {
+    -fx-background-color: #dcdcdc;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #a0a0a0;
+    -fx-background-radius: 5px;
+}
+
 
 
