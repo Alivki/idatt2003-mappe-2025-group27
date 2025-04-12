@@ -34,7 +34,7 @@ public class MainMenuGUI extends Application {
     MainController.getInstance().mainStage = primaryStage;
 
     // set up scene
-    Scene scene = new Scene(mainMenuView.getRoot(), 1920, 1080);
+    Scene scene = new Scene(mainMenuView.getRoot(), 1260, 600);
 
     // configure stage
     primaryStage.setTitle("Boardgames");
