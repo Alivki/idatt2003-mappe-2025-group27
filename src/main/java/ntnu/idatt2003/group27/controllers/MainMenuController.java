@@ -1,14 +1,11 @@
 package ntnu.idatt2003.group27.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileReader;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileWriter;
-import ntnu.idatt2003.group27.utils.filehandler.fileExplorer.FileExplorer;
 import ntnu.idatt2003.group27.view.MainMenuView;
 import ntnu.idatt2003.group27.view.components.Alert;
-import ntnu.idatt2003.group27.view.components.Toast;
 
 public class MainMenuController {
   private MainMenuView mainMenuView;
@@ -30,12 +27,6 @@ public class MainMenuController {
 
     });
 
-    // upload player button
-    // remove player button
-
-
-
-    // download player button
     // change player piece button
 
 
