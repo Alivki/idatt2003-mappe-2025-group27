@@ -168,6 +168,13 @@ public class MainMenuView {
     normalBoardButton.setOnAction(action);
   }
 
+  public void setExportPlayersCsvButtonHandler(EventHandler<ActionEvent> action) {
+    exportPlayersCsvButton.setOnAction(action);
+  }
+
+  public void setImportPlayersCsvButtonHandler(EventHandler<ActionEvent> action) {
+    importPlayersCsvButton.setOnAction(action);
+  }
   /**
    * Get the name from the player name text input field.
    * @return

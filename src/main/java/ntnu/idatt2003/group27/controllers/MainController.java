@@ -60,6 +60,11 @@ public class MainController {
     playersObservableList.remove(player);
   }
 
+  public void setPlayers(Player[] players){
+    playersObservableList.clear();
+    playersObservableList.addAll(players);
+  }
+
   public static MainController getInstance(){
     return instance;
   }
