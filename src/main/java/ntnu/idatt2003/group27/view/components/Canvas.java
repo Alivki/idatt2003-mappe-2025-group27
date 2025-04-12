@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.view.components;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.stream.IntStream;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
@@ -60,6 +62,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
 
     drawArrows(gc);
     drawTileActions(gc);
+    drawAllIcons(gc);
     drawTiles(gc);
     drawAllLadders(gc);
     drawPlayers(gc);
@@ -103,7 +106,6 @@ public class Canvas extends javafx.scene.canvas.Canvas {
           }
           case BackToStartAction backToStartAction -> {
             gc.setFill(Color.LIGHTPINK);
-            // Draw icon for action
           }
           case ThrowNewDiceAction throwNewDiceAction -> {
             gc.setFill(Color.BLUE);
@@ -115,6 +117,46 @@ public class Canvas extends javafx.scene.canvas.Canvas {
         gc.fillRect(tilePosition[0], tilePosition[1], tileSize, tileSize);
       }
     });
+  }
+
+  private void drawAllIcons(GraphicsContext gc) {
+    tileActions.entrySet().stream()
+      .filter(e -> e.getValue() != null && e.getValue().getLandAction() != null)
+      .forEach(e -> {
+        int tileId = e.getKey() - 1;
+        Object landAction = e.getValue().getLandAction();
+        String iconPath = null;
+
+        if (landAction instanceof BackToStartAction) {
+          iconPath = "/icons/home.png";
+        } else if (landAction instanceof ThrowNewDiceAction) {
+          iconPath = "/icons/reroll-white.png";
+        }
+
+        if (iconPath != null) {
+          drawIcon(gc, tileId, iconPath);
+        }
+      });
+  }
+
+  private void drawIcon(GraphicsContext gc, int tileId, String iconPath) {
+    double[] tilePosition = getTileCenter(tileId);
+
+    InputStream stream = getClass().getResourceAsStream(iconPath);
+    if (stream == null) {
+      System.err.println("Resource not found: " + iconPath);
+      return;
+    }
+    Image image = new Image(stream);
+
+    double targetWidth = tileSize / 2;
+    double targetHeight = targetWidth * (image.getHeight() / image.getWidth());
+
+    gc.drawImage(image,
+      tilePosition[0] - (targetWidth / 2),
+      tilePosition[1] - (targetHeight / 2),
+      targetWidth,
+      targetHeight);
   }
 
   private void drawArrows(GraphicsContext gc) {

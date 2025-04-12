@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.utils.filehandler.json.JsonFileReader;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
@@ -39,6 +40,7 @@ public class BoardGameFactory {
         tileActions.put(4, new LadderAction(15, "description"));
         tileActions.put(10, new BackToStartAction("description"));
         tileActions.put(69, new LadderAction(47, "description"));
+        tileActions.put(58, new ThrowNewDiceAction("description", 1, 6));
         tileActions.put(18, new LadderAction(43, "description"));
         tileActions.put(65, new LadderAction(88, "description"));
         tileActions.put(63, new LadderAction(45, "description"));
