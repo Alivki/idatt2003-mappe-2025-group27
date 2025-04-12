@@ -1,10 +1,12 @@
 package ntnu.idatt2003.group27.view.components;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import ntnu.idatt2003.group27.controllers.MainController;
 import ntnu.idatt2003.group27.models.Player;
 
@@ -21,7 +23,13 @@ public class PlayerButtonListCell extends ListCell<Player> {
     //Initializes main content
     AnchorPane mainAnchorPane = new AnchorPane();
     mainContainer = new HBox(10);
-    mainContainer.setAlignment(Pos.CENTER_LEFT);
+    HBox leftContainer = new HBox(10);
+    HBox rightContainer = new HBox(10);
+    HBox middleContainer = new HBox(10);
+    leftContainer.setAlignment(Pos.CENTER);
+    leftContainer.setPadding(new Insets(0, 0, 0, 5));
+    HBox.setHgrow(middleContainer, Priority.ALWAYS);
+    //mainContainer.setAlignment(Pos.CENTER_LEFT);
 
     //Initializes player label
     playerLabel = new Label("New player");
@@ -32,8 +40,10 @@ public class PlayerButtonListCell extends ListCell<Player> {
       MainController.getInstance().removePlayer(getItem());
     });
 
+    mainContainer.getChildren().addAll(leftContainer, middleContainer, rightContainer);
     mainAnchorPane.getChildren().addAll(mainContainer);
-    mainContainer.getChildren().addAll(playerLabel, removePlayerButton);
+    leftContainer.getChildren().addAll(playerLabel);
+    rightContainer.getChildren().addAll(removePlayerButton);
   }
 
   @Override
