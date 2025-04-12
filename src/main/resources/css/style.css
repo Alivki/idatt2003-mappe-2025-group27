@@ -180,5 +180,28 @@
 }
 
 .text-field{
-
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
 }
+
+.list-view{
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.list-cell {
+    -fx-background-color: white;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-border-style: solid;
+    -fx-border-color: #dcdcdc;
+    -fx-padding: 1px;
+}
+
+.list-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-border-style: hidden;
+}
+
