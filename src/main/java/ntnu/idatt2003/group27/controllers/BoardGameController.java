@@ -79,6 +79,7 @@ public class BoardGameController implements BoardGameObserver {
     ladderView.updateCurrentPlayerLabel(currentPlayer.getName());
     ladderView.rotateDice(roll);
     ladderView.updateBoard(players);
+    ladderView.populatePlayerList(players);
   }
 
   @Override
@@ -107,5 +108,6 @@ public class BoardGameController implements BoardGameObserver {
   @Override
   public void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
     ladderView.createBoard(players, tiles);
+    ladderView.populatePlayerList(players);
   }
 }
