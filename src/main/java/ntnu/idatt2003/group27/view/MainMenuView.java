@@ -12,6 +12,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -37,6 +38,7 @@ public class MainMenuView {
   private CustomButton addPlayerButton;
 
   private MainMenuBoardButton normalBoardButton;
+  private TextField playerNameTextField;
 
   public MainMenuView() {
     root = new StackPane();
@@ -101,18 +103,22 @@ public class MainMenuView {
     //Initializes list view to display player information
     ListView<Player> playerListView = new ListView<>();
     playerListView.setCellFactory(list -> new PlayerButtonListCell());
-    if (MainController.instance != null) {
-      playerListView.setItems(MainController.instance.getPlayers());
+    if (MainController.getInstance() != null) {
+      playerListView.setItems(MainController.getInstance().getPlayers());
     }
 
     playerListView.setPrefSize(playerCard.widthProperty().intValue(), 200);
-    playerCard.getChildren().addAll(playerListView);
+
+    //Initializes player name input field
+    playerNameTextField = new TextField();
+    playerNameTextField.setPromptText("Spiller navn...");
 
     //Initializes add player button
-    addPlayerButton = new CustomButton("Legg til spiller", CustomButton.ButtonVariant.GHOST, null);
-    playerCard.getChildren().addAll(addPlayerButton);
+    addPlayerButton = new CustomButton("Legg til spiller", CustomButton.ButtonVariant.PRIMARY, null);
+
 
     //Positions nodes correctly in each container
+    playerCard.getChildren().addAll(playerListView, playerNameTextField, addPlayerButton);
     headerContainer.getChildren().addAll(ladderGameMainMenuButton, secondGameMainMenuButton, thirdGameMainMenuButton, applicationQuitButton);
     menuContainer.getChildren().addAll(title, boardGrid);
     layout.getHeader().getChildren().addAll(headerContainer);
@@ -139,6 +145,14 @@ public class MainMenuView {
 
   public void setNormalBoardButtonHandler(EventHandler<ActionEvent> action) {
     normalBoardButton.setOnAction(action);
+  }
+
+  /**
+   * Get the name from the player name text input field.
+   * @return
+   */
+  public String getPlayerNameTextFieldValue() {
+    return playerNameTextField.getText();
   }
 
   public StackPane getRoot() {
