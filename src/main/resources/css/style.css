@@ -205,3 +205,17 @@
     -fx-border-style: hidden;
 }
 
+.list-cell:selected {
+    -fx-background-color: #eaeaea;
+    -fx-text-fill: black;
+}
+
+.list-cell:selected .label {
+    -fx-text-fill: black;
+}
+
+.list-cell .label {
+    -fx-text-fill: black;
+}
+
+
