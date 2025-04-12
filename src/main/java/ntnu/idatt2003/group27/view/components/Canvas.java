@@ -128,7 +128,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
         if (landAction instanceof BackToStartAction) {
           iconPath = "/icons/home.png";
         } else if (landAction instanceof ThrowNewDiceAction) {
-          iconPath = "/icons/reroll.png";
+          iconPath = "/icons/reroll-white.png";
         }
 
         if (iconPath != null) {
