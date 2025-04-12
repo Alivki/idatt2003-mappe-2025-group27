@@ -197,14 +197,13 @@ public class BoardGame {
      //   currentPlayer.getName() + "moved to tile "
       //      + (currentPlayer.getCurrentTile().getTileId()) + "\n");
 
+    currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
     notifyRoundPlayed(players, currentPlayer, roll);
     if (getWinner() != null) {
       notifyPlayerWon(getWinner());
        // System.out.println("\n" + getWinner().getName() + " has won the game!");
       return;
     }
-
-    currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
   }
 
   /**

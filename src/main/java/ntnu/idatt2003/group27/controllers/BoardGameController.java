@@ -83,10 +83,20 @@ public class BoardGameController implements BoardGameObserver {
 
   @Override
   public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll) {
+    int round = ladderView.getRoundLabel() + 1;
+
     ladderView.updateCurrentPlayerLabel(currentPlayer.getName());
     ladderView.rotateDice(roll);
     ladderView.updateBoard(players);
     ladderView.populatePlayerList(players);
+    ladderView.updateRoundLabel(String.valueOf(round));
+
+    if (round > 1) {
+      // ladderView.updateLastPlayerLabel();
+      // ladderView.updateLastRollLabel();
+      // ladderView.updateMovedToLabel();
+      // ladderView.updateTileActionLabel();
+    }
   }
 
   @Override
@@ -116,5 +126,9 @@ public class BoardGameController implements BoardGameObserver {
   public void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
     ladderView.createBoard(players, tiles);
     ladderView.populatePlayerList(players);
+    ladderView.updateCurrentPlayerLabel(players.getFirst().getName());
+
+    // set the diffuculty level when there is a way to
+    ladderView.updateGradeLabel("");
   }
 }

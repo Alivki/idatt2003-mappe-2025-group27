@@ -105,9 +105,9 @@ public class LadderGameView {
     VBox gameInfo = new VBox(5);
     gameInfo.setPadding(new Insets(0, 0, 20, 0));
 
-    roundInfo = new Label("?");
+    roundInfo = new Label("1");
     currentPlayerInfo = new Label("");
-    gradeInfo = new Label("?");
+    gradeInfo = new Label("");
     statusInfo = new Label("Pågående");
 
     Separator separator1 = new Separator();
@@ -139,9 +139,9 @@ public class LadderGameView {
 
     VBox lastRoundInfo = new VBox(5);
 
-    lastPlayer = new Label("?");
-    movedTo = new Label("?");
-    lastRoll = new Label("?");
+    lastPlayer = new Label("Ingen");
+    movedTo = new Label("Start");
+    lastRoll = new Label("Ikke kastet");
     tileAction = new Label("Ingen");
 
     layout.getHeader().getChildren().add(homeButton);
@@ -154,7 +154,7 @@ public class LadderGameView {
     gameInfo.getChildren().addAll(
         createGameInfoRow("Runde:", roundInfo),
         createGameInfoRow("Nåværende spiller:", currentPlayerInfo),
-        createGameInfoRow("Vansklighetsgrad:", gradeInfo),
+        createGameInfoRow("Vanskelighetsgrad  :", gradeInfo),
         createGameInfoRow("Status:", statusInfo)
     );
     diceContainer.getChildren().addAll(subScene, diceButton);
@@ -217,6 +217,10 @@ public class LadderGameView {
 
   public void updateTileActionLabel(String action) {
     tileAction.setText(action);
+  }
+
+  public int getRoundLabel() {
+    return Integer.parseInt(roundInfo.getText());
   }
 
   public void populatePlayerList(List<Player> players) {
