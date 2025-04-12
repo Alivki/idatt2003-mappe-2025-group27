@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ntnu.idatt2003.group27.controllers.MainController;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.exceptions.UnknownLadderGameTypeExceptions;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
@@ -42,8 +43,15 @@ public class BoardGameGUI extends Application {
     BoardGameController controller = new BoardGameController(game, view, ladderView);
 
     // move to controller when ready to implement
-    game.addPlayer(new Player("Alice"));
-    game.addPlayer(new Player("Test"));
+    //game.addPlayer(new Player("Alice"));
+    //game.addPlayer(new Player("Test"));
+
+    //for(int i = 0; i < MainController.getInstance().getPlayers().size(); i++){
+    //  game.addPlayer(MainController.getInstance().getPlayers().get(i));
+    //}
+
+    MainController.getInstance().getPlayers().forEach(game::addPlayer);
+
 
     // change when being done in controller on game difficult select
     try {
