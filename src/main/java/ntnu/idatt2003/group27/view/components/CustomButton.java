@@ -14,6 +14,7 @@ public class CustomButton extends Button {
     CONFIRM,
     DESTRUCTIVE,
     GHOST,
+    GHOST_ICON,
     ICON;
   }
 
@@ -39,6 +40,7 @@ public class CustomButton extends Button {
       setMaxWidth(Double.MAX_VALUE);
     }
 
+    int iconButtonSize = 28;
     switch (variant) {
       case PRIMARY:
         getStyleClass().add("primary-button");
@@ -68,14 +70,27 @@ public class CustomButton extends Button {
         getStyleClass().add("icon-button");
         if (icon != null) {
           if (icon instanceof ImageView) {
-            ((ImageView) icon).setFitWidth(14);
-            ((ImageView) icon).setFitHeight(14);
+            ((ImageView) icon).setFitWidth(12);
+            ((ImageView) icon).setFitHeight(12);
           }
           setGraphic(icon);
         }
-        setMinSize(34, 34);
-        setPrefSize(34, 34);
-        setMaxSize(34, 34);
+        setMinSize(iconButtonSize, iconButtonSize);
+        setPrefSize(iconButtonSize, iconButtonSize);
+        setMaxSize(iconButtonSize, iconButtonSize);
+        break;
+      case GHOST_ICON:
+        getStyleClass().add("ghost-icon-button");
+        if (icon != null) {
+          if (icon instanceof ImageView) {
+            ((ImageView) icon).setFitWidth(12);
+            ((ImageView) icon).setFitHeight(12);
+          }
+          setGraphic(icon);
+        }
+        setMinSize(iconButtonSize, iconButtonSize);
+        setPrefSize(iconButtonSize, iconButtonSize);
+        setMaxSize(iconButtonSize, iconButtonSize);
         break;
     }
 
