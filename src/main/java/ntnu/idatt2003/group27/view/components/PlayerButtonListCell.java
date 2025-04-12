@@ -8,6 +8,10 @@ import javafx.scene.layout.HBox;
 import ntnu.idatt2003.group27.controllers.MainController;
 import ntnu.idatt2003.group27.models.Player;
 
+/**
+ * A class to represent player list cells.
+ * Gives access to appropraite player information and player-handling functionality.
+ */
 public class PlayerButtonListCell extends ListCell<Player> {
   private final HBox mainContainer;
   private final Label playerLabel;
