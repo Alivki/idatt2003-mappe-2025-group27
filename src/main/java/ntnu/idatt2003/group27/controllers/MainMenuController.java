@@ -3,6 +3,8 @@ package ntnu.idatt2003.group27.controllers;
 import java.util.ArrayList;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.view.MainMenuView;
+import ntnu.idatt2003.group27.view.components.Alert;
+import ntnu.idatt2003.group27.view.components.Toast;
 
 public class MainMenuController {
   private MainMenuView mainMenuView;
@@ -16,7 +18,11 @@ public class MainMenuController {
     // add player button
     mainMenuView.setAddPlayerButtonHandler(e -> {
       System.out.println("Add player button clicked");
-      MainController.instance.addPlayer(new Player("New player"));
+      String playerName = mainMenuView.getPlayerNameTextFieldValue();
+      if (playerName.equals("")) {
+        playerName = "Spiller " + (MainController.getInstance().getPlayers().size() + 1);
+      }
+      MainController.getInstance().addPlayer(new Player(playerName));
 
     });
 
@@ -37,7 +43,20 @@ public class MainMenuController {
     // start game with specified difficulty use factory to create game
     mainMenuView.setNormalBoardButtonHandler(e -> {
       System.out.println("Normal board button clicked");
-      MainController.instance.switchToBoardGame();
+      if (MainController.getInstance().getPlayers().size() < 2) {
+        System.out.println("Not enough players to start game!");
+        Alert alert = new Alert(
+            this.mainMenuView.getRoot(),
+            "Ikke nok spillere",
+            "Minst 2 spillere trengs for å starte spillet!",
+            "Ok",
+            "Lukk",
+            response -> {}
+        );
+        alert.show();
+        return;
+      }
+      MainController.getInstance().switchToBoardGame();
     });
   }
 }
