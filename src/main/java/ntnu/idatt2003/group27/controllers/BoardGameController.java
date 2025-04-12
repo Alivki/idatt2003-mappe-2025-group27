@@ -24,23 +24,11 @@ public class BoardGameController implements BoardGameObserver {
 
     game.addObserver(this);
 
-    setupMenuViewEventHandler();
+
     setupLadderViewEventHandlers();
   }
 
-  private void setupMenuViewEventHandler() {
-    // add player button
-    // upload player button
-    // remove player button
-    // download player button
-    // change player piece button
 
-    // change to ladder game selection
-    // change to game 2 selection
-    // change to game 3 selection
-
-    // start game with specified difficulty use factory to create game
-  }
 
   private void setupLadderViewEventHandlers() {
     ladderView.setRollDiceHandler(e -> {
@@ -74,6 +62,8 @@ public class BoardGameController implements BoardGameObserver {
                   "Avsluttet",
                   "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
               );
+              //Loads main menu
+              MainController.instance.switchToMainMenu();
             }
           }
       );

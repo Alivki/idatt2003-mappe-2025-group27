@@ -18,6 +18,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javax.swing.Action;
+import ntnu.idatt2003.group27.controllers.MainController;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.view.components.AppLayout;
 import ntnu.idatt2003.group27.view.components.Card;
@@ -32,6 +34,9 @@ public class MainMenuView {
   private CustomButton secondGameMainMenuButton;
   private CustomButton thirdGameMainMenuButton;
   private CustomButton applicationQuitButton;
+  private CustomButton addPlayerButton;
+
+  private MainMenuBoardButton normalBoardButton;
 
   public MainMenuView() {
     root = new StackPane();
@@ -71,8 +76,8 @@ public class MainMenuView {
     int boardButtonSize = 210;
     Insets boardButtonInsets = new Insets(10, 10, 10, 10);
 
-    MainMenuBoardButton
-        normalBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Vanlig", "Helt vanlig norsk stigespill med 90 ruter", new Image("icons/stigespill.png"));
+
+    normalBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Vanlig", "Helt vanlig norsk stigespill med 90 ruter", new Image("icons/stigespill.png"));
 
     MainMenuBoardButton
         crazyBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Crazy", "Stigespill med tileAction!", new Image("icons/stigespill.png"));
@@ -93,15 +98,19 @@ public class MainMenuView {
     Card playerCard = new Card("Spillere", null, 200);
     playerCard.setSpacing(10);
 
+    //Initializes list view to display player information
     ListView<Player> playerListView = new ListView<>();
     playerListView.setCellFactory(list -> new PlayerButtonListCell());
-    ArrayList<Player> players = new ArrayList<>();
-    players.add(new Player("player1"));
-    players.add(new Player("player2"));
-    ObservableList<Player> playerList = FXCollections.observableArrayList(players);
-    playerListView.setItems(playerList);
+    if (MainController.instance != null) {
+      playerListView.setItems(MainController.instance.getPlayers());
+    }
+
     playerListView.setPrefSize(playerCard.widthProperty().intValue(), 200);
     playerCard.getChildren().addAll(playerListView);
+
+    //Initializes add player button
+    addPlayerButton = new CustomButton("Legg til spiller", CustomButton.ButtonVariant.GHOST, null);
+    playerCard.getChildren().addAll(addPlayerButton);
 
     //Positions nodes correctly in each container
     headerContainer.getChildren().addAll(ladderGameMainMenuButton, secondGameMainMenuButton, thirdGameMainMenuButton, applicationQuitButton);
@@ -124,8 +133,12 @@ public class MainMenuView {
     thirdGameMainMenuButton.setOnAction(action);
   }
 
-  public void setApplicationQuitButtonHandler(EventHandler<ActionEvent> action) {
-    applicationQuitButton.setOnAction(action);
+  public void setAddPlayerButtonHandler(EventHandler<ActionEvent> action) {
+    addPlayerButton.setOnAction(action);
+  }
+
+  public void setNormalBoardButtonHandler(EventHandler<ActionEvent> action) {
+    normalBoardButton.setOnAction(action);
   }
 
   public StackPane getRoot() {

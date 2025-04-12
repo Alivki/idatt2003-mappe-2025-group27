@@ -1,6 +1,7 @@
 package ntnu.idatt2003.group27.view;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
@@ -52,13 +53,14 @@ public class BoardGameGUI extends Application {
     }
 
     // set up scene
-    Scene scene = new Scene(ladderView.getRoot(), 1280, 690);
+    Scene scene = new Scene(ladderView.getRoot(), 1260, 600);
 
     // configure stage
     primaryStage.setTitle("Boardgames");
+    primaryStage.setScene(scene);
     primaryStage.setResizable(true);
     primaryStage.setFullScreen(true);
-    primaryStage.setScene(scene);
+
     scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
     primaryStage.show();
   }
