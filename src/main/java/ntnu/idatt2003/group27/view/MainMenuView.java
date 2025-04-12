@@ -14,12 +14,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javax.swing.Action;
+import javax.swing.Icon;
 import ntnu.idatt2003.group27.controllers.MainController;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.view.components.AppLayout;
@@ -36,6 +38,8 @@ public class MainMenuView {
   private CustomButton thirdGameMainMenuButton;
   private CustomButton applicationQuitButton;
   private CustomButton addPlayerButton;
+  private CustomButton exportPlayersCsvButton;
+  private CustomButton importPlayersCsvButton;
 
   private MainMenuBoardButton normalBoardButton;
   private TextField playerNameTextField;
@@ -107,7 +111,22 @@ public class MainMenuView {
       playerListView.setItems(MainController.getInstance().getPlayers());
     }
 
-    playerListView.setPrefSize(playerCard.widthProperty().intValue(), 200);
+    playerListView.setPrefSize(playerCard.widthProperty().intValue(), 150);
+
+    //Initializes player csv cards
+    Card playerExportCsvCard = new Card("Eksporter spillere", "Last ned csv fil med spillerdata", 100);
+    playerExportCsvCard.setSpacing(5);
+    ImageView downloadImageView = new ImageView("icons/download.png");
+    exportPlayersCsvButton = new CustomButton("Last ned spillere", CustomButton.ButtonVariant.PRIMARY_ICON, downloadImageView, null);
+
+    Card playerImportCsvCard = new Card("Importer spillere", "Last opp spillerdata fra csv", 200);
+    playerImportCsvCard.setSpacing(5);
+    ImageView uploadImageView = new ImageView("icons/upload.png");
+    importPlayersCsvButton = new CustomButton("Last opp spillere", CustomButton.ButtonVariant.PRIMARY_ICON, uploadImageView, null);
+
+    Label csvExampleInfoHeaderLabel = new Label("CSV-fil eksempel:");
+    Label csvExampleInfoDescriptionLabel = new Label("navn, brikke\nSpiller 1, bil\nSpiller 2, sjakk");
+    csvExampleInfoDescriptionLabel.getStyleClass().add("info-text");
 
     //Initializes player name input field
     playerNameTextField = new TextField();
@@ -119,11 +138,13 @@ public class MainMenuView {
 
     //Positions nodes correctly in each container
     playerCard.getChildren().addAll(playerListView, playerNameTextField, addPlayerButton);
+    playerExportCsvCard.getChildren().addAll(exportPlayersCsvButton);
+    playerImportCsvCard.getChildren().addAll(importPlayersCsvButton, csvExampleInfoHeaderLabel, csvExampleInfoDescriptionLabel);
     headerContainer.getChildren().addAll(ladderGameMainMenuButton, secondGameMainMenuButton, thirdGameMainMenuButton, applicationQuitButton);
     menuContainer.getChildren().addAll(title, boardGrid);
     layout.getHeader().getChildren().addAll(headerContainer);
     layout.getMainContainer().getChildren().addAll(menuContainer);
-    layout.getLeftContainer().getChildren().addAll(playerCard);
+    layout.getLeftContainer().getChildren().addAll(playerCard, playerExportCsvCard, playerImportCsvCard);
     root.getChildren().add(layout);
   }
 
