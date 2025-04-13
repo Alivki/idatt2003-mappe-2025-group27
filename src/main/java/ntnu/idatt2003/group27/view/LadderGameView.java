@@ -3,16 +3,16 @@ package ntnu.idatt2003.group27.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javafx.animation.Interpolator;
-import javafx.animation.RotateTransition;
+import java.util.Random;
+
+import eu.mihosoft.vvecmath.Vector3d;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Point3D;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.PerspectiveCamera;
-import javafx.scene.SceneAntialiasing;
-import javafx.scene.SubScene;
+import javafx.scene.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
@@ -20,14 +20,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Material;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Box;
+import javafx.scene.shape.MeshView;
+import javafx.scene.shape.TriangleMesh;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.view.components.*;
+import org.fxyz3d.shapes.primitives.CuboidMesh;
 
 public class LadderGameView {
   private final StackPane root;
@@ -45,7 +49,7 @@ public class LadderGameView {
   private Label gradeInfo;
   private Label statusInfo;
 
-  private Box dice;
+  private CuboidMesh dice;
 
   private Label lastPlayer;
   private Label movedTo;
@@ -116,20 +120,32 @@ public class LadderGameView {
     diceContainer.setPadding(new Insets(0, 0, 20, 0));
     diceContainer.setAlignment(Pos.CENTER);
 
-    dice = new Box(5, 5, 5);
-    dice.setMaterial(new PhongMaterial(Color.WHITE));
+    dice = new CuboidMesh(5f,5f,5f);
+    dice.setTextureModeImage(getClass().getResource("/texture/dice.png").toExternalForm());
 
     PerspectiveCamera camera = new PerspectiveCamera(true);
-    camera.getTransforms().addAll(new Rotate(-120, Rotate.X_AXIS), new Rotate(60, Rotate.Y_AXIS), new Translate(0, 0, -20));
+    camera.getTransforms().addAll(
+      new Rotate(20, Rotate.X_AXIS),
+      new Rotate(160, Rotate.Y_AXIS),
+      new Translate(0, 0, -20)
+    );
 
-    Group root3D = new Group(camera,dice);
+    PointLight pointLight = new PointLight();
+    pointLight.setColor(Color.rgb(55, 55, 55));
+    pointLight.setTranslateX(-8);
+    pointLight.setTranslateY(10);
+    pointLight.setTranslateZ(15);
 
-    Separator separator2 = new Separator();
+    AmbientLight ambientLight = new AmbientLight(Color.rgb(244, 244, 244));
+
+    Group root3D = new Group(camera, dice, pointLight, ambientLight);
 
     SubScene subScene = new SubScene(root3D, 150, 150, true, SceneAntialiasing.BALANCED);
     subScene.setCamera(camera);
 
     diceButton = new CustomButton("Rull terning", CustomButton.ButtonVariant.PRIMARY, null);
+
+    Separator separator2 = new Separator();
 
     VBox lastRoundContainer = new VBox();
     lastRoundContainer.setPadding(new Insets(12, 0, 4, 0));
@@ -240,7 +256,6 @@ public class LadderGameView {
       Label playerPositionLabel = new Label(playerPosition);
       playerPositionLabel.getStyleClass().add("p");
 
-
       // change to actual player icons once that is implemented
       ImageView playerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/home.png")));
       playerIcon.setFitHeight(20);
@@ -263,21 +278,29 @@ public class LadderGameView {
   }
 
   public void rotateDice(int roll) {
-    RotateTransition rotatorY = new RotateTransition(Duration.millis(500), dice);
-    rotatorY.setAxis(Rotate.Z_AXIS);
-    rotatorY.setFromAngle(0);
-    rotatorY.setToAngle(360);
-    rotatorY.setCycleCount(1);
-    rotatorY.setInterpolator(Interpolator.EASE_OUT);
-    rotatorY.play();
+    Timeline timeline = new Timeline();
+    dice.getTransforms().clear();
 
-    RotateTransition rotatorX = new RotateTransition(Duration.millis(500), dice);
-    rotatorX.setAxis(Rotate.X_AXIS);
-    rotatorX.setFromAngle(0);
-    rotatorX.setToAngle(360);
-    rotatorX.setCycleCount(1);
-    rotatorX.setInterpolator(Interpolator.EASE_OUT);
-    rotatorX.play();
+    Rotate rotation = new Rotate();
+    dice.getTransforms().add(rotation);
+
+    double angle1 = 360 * (roll % 2 == 0 ? 1 : -1);
+    double angle2 = 360 * (roll % 3 == 0 ? 1 : -1);
+
+    Point3D axis1 = roll % 2 == 0 ? new Point3D(1, 0, 0) : new Point3D(0, 0, 1);
+    Point3D axis2 = roll % 3 == 0 ? new Point3D(0, 1, 0) : new Point3D(1, 0, 0);
+
+    KeyValue kv1 = new KeyValue(rotation.angleProperty(), angle1);
+    KeyValue kvAxis1 = new KeyValue(rotation.axisProperty(), axis1, Interpolator.EASE_OUT);
+    KeyValue kv2 = new KeyValue(rotation.angleProperty(), angle2);
+    KeyValue kvAxis2 = new KeyValue(rotation.axisProperty(), axis2, Interpolator.EASE_OUT);
+
+    KeyFrame kf1 = new KeyFrame(Duration.millis(500), kv1, kvAxis1);
+    KeyFrame kf2 = new KeyFrame(Duration.millis(5000), kv2, kvAxis2);
+
+    timeline.getKeyFrames().addAll(kf1, kf2);
+    timeline.setCycleCount(1);
+    timeline.play();
   }
 
   public void showToast(Toast.ToastVariant variant, String title, String message) {
