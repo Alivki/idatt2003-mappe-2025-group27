@@ -94,9 +94,9 @@ public class LadderGameView {
     layout.getMainContainer().getChildren().addAll(title, canvasContainer);
 
     layout.getMainContainer().widthProperty().addListener((obs, oldWidth, newWidth) -> {
-      double tileSize = (newWidth.doubleValue() - 100) / ((double) canvas.getBoardSize() / 9);
-      canvas.setWidth(newWidth.doubleValue() - 100);
-      canvas.setHeight(tileSize * 9);
+      double tileSize = (newWidth.doubleValue() - 120) / ((double) canvas.getBoardSize() / 9);
+      canvas.setWidth(newWidth.doubleValue() - 60);
+      canvas.setHeight(tileSize * 9 + 5);
       canvas.resizeBoard(tileSize);
     });
 

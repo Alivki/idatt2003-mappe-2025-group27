@@ -84,8 +84,8 @@ public class Canvas extends javafx.scene.canvas.Canvas {
 
   private void drawTileActions(GraphicsContext gc) {
     gc.setFill(Color.YELLOW);
-    gc.fillRect(0, (rows - 1) * tileSize, tileSize, tileSize);
-    gc.fillRect((columns - 1) * tileSize, 0, tileSize, tileSize);
+    gc.fillRect(30, (rows - 1) * tileSize + 2.5, tileSize, tileSize);
+    gc.fillRect((columns - 1) * tileSize + 30,  2.5, tileSize, tileSize);
 
     tileActions.forEach((k, v) -> {
       if (v.getLandAction() != null) {
@@ -160,9 +160,27 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   }
 
   private void drawArrows(GraphicsContext gc) {
-    IntStream.range(1, rows + 1).forEach(i -> {
+    double yPos = (tileSize * rows) + tileSize;
 
-    });
+    for (int i = 1; i < rows + 1; i++) {
+      yPos -= tileSize;
+      double xPos;
+
+      if (i % 2 == 0) {
+        xPos = this.getWidth() - 20;
+        double[] xPoints = {xPos + 10, xPos, xPos + 10};
+        double[] yPoints = {yPos - tileSize / 2 - 10, yPos - tileSize / 2, yPos - tileSize / 2 + 10};
+        gc.setFill(Color.BLACK);
+        gc.fillPolygon(xPoints, yPoints, 3);
+      } else {
+        xPos = 5;
+        double[] xPoints = {xPos, xPos + 10, xPos};
+        double[] yPoints = {yPos - tileSize / 2 - 10, yPos - tileSize / 2, yPos - tileSize / 2 + 10};
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(2.0);
+        gc.strokePolygon(xPoints, yPoints, 3);
+      }
+    }
   }
 
   private void drawAllLadders(GraphicsContext gc) {
@@ -266,7 +284,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     double xPos = leftToRight ? col * tileSize : (columns - 1 - col) * tileSize;
     double currentYPos = yPos - (row * tileSize);
 
-    return new double[] {xPos, currentYPos};
+    return new double[] {xPos + 30, currentYPos + 2.5};
   }
 
   private double[] getTileCenter(int tileId) {
@@ -279,6 +297,6 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     double xPos = leftToRight ? col * tileSize : (columns - 1 - col) * tileSize;
     double currentYPos = yPos - (row * tileSize);
 
-    return new double[] {xPos + (tileSize / 2), currentYPos + (tileSize / 2)};
+    return new double[] {xPos + (tileSize / 2) + 30, currentYPos + (tileSize / 2) + 2.5};
   }
 }
