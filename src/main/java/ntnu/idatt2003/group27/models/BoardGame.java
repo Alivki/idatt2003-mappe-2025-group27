@@ -1,8 +1,10 @@
 package ntnu.idatt2003.group27.models;
 
 import java.util.Map;
+
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
+import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,12 +71,12 @@ public class BoardGame {
    * Notifies all observers that a round has been played and provides the list of players to update
    * player positions on the board.
    *
-   * @param players The list of players in the game.
+   * @param players       The list of players in the game.
    * @param currentPlayer The player whose turn it is after round played.
-   * @param roll The result of the dice roll for the round.
+   * @param roll          The result of the dice roll for the round.
    */
-  public void notifyRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll) {
-    observers.forEach(observer -> observer.onRoundPlayed(players, currentPlayer, roll));
+  public void notifyRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction action) {
+    observers.forEach(observer -> observer.onRoundPlayed(players, currentPlayer, roll, action));
   }
 
   /**
@@ -90,7 +92,7 @@ public class BoardGame {
    * Notifies all observers that the game has been set up and is ready to start.
    *
    * @param players The list of players in the game.
-   * @param tiles The map of tiles on the board.
+   * @param tiles   The map of tiles on the board.
    */
   public void notifyGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
     observers.forEach(observer -> observer.onGameSetup(players, tiles));
@@ -190,18 +192,20 @@ public class BoardGame {
     //System.out.println(currentPlayer.getName() + " rolled a " + roll);
 
     int nextPlayerPosition = getNextPlayerPosition(roll);
+    TileAction tileAction =
+      board.getTiles().get(currentPlayer.getCurrentTile().getTileId() + nextPlayerPosition).getLandAction();
 
     currentPlayer.move(nextPlayerPosition);
 
     //System.out.println(
-     //   currentPlayer.getName() + "moved to tile "
-      //      + (currentPlayer.getCurrentTile().getTileId()) + "\n");
+    //   currentPlayer.getName() + "moved to tile "
+    //      + (currentPlayer.getCurrentTile().getTileId()) + "\n");
 
     currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
-    notifyRoundPlayed(players, currentPlayer, roll);
+    notifyRoundPlayed(players, currentPlayer, roll, tileAction);
     if (getWinner() != null) {
       notifyPlayerWon(getWinner());
-       // System.out.println("\n" + getWinner().getName() + " has won the game!");
+      // System.out.println("\n" + getWinner().getName() + " has won the game!");
       return;
     }
   }
