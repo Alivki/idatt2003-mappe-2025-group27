@@ -40,6 +40,8 @@ public class LadderGameView {
 
   private ScrollPane playerList;
 
+  private VBox canvasContainer;
+
   private Label roundInfo;
   private Label currentPlayerInfo;
   private Label gradeInfo;
@@ -84,13 +86,10 @@ public class LadderGameView {
     Label title = new Label("Stigespillet");
     title.getStyleClass().add("h1");
 
-    canvas = new Canvas();
-
-    VBox canvasContainer = new VBox();
+    canvasContainer = new VBox();
     canvasContainer.setAlignment(Pos.CENTER);
     canvasContainer.getStyleClass().add("gameAreaCard");
 
-    canvasContainer.getChildren().add(canvas);
     layout.getMainContainer().getChildren().addAll(title, canvasContainer);
 
     layout.getMainContainer().widthProperty().addListener((obs, oldWidth, newWidth) -> {
@@ -240,7 +239,6 @@ public class LadderGameView {
       Label playerPositionLabel = new Label(playerPosition);
       playerPositionLabel.getStyleClass().add("p");
 
-
       // change to actual player icons once that is implemented
       ImageView playerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/home.png")));
       playerIcon.setFitHeight(20);
@@ -254,7 +252,10 @@ public class LadderGameView {
   }
 
   public void createBoard(ArrayList<Player> players, Map<Integer, Tile> tiles) {
-    canvas.createBoard(tiles, tiles.size());
+    canvas = new Canvas(tiles, players, tiles.size());
+    canvasContainer.getChildren().add(canvas);
+
+    canvas.redrawBoard();
     canvas.updateBoard(players);
   }
 
