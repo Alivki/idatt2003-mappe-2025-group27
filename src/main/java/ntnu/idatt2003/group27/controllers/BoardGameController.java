@@ -11,6 +11,8 @@ import ntnu.idatt2003.group27.view.BoardGameMenu;
 import ntnu.idatt2003.group27.view.LadderGameView;
 import ntnu.idatt2003.group27.view.components.Alert;
 import ntnu.idatt2003.group27.view.components.Toast;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 
 public class BoardGameController implements BoardGameObserver {
   private final BoardGame game;
@@ -84,12 +86,16 @@ public class BoardGameController implements BoardGameObserver {
   @Override
   public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll) {
     int round = ladderView.getRoundLabel() + 1;
-
-    ladderView.updateCurrentPlayerLabel(currentPlayer.getName());
     ladderView.rotateDice(roll);
-    ladderView.updateBoard(players);
-    ladderView.populatePlayerList(players);
-    ladderView.updateRoundLabel(String.valueOf(round));
+
+    PauseTransition delay = new PauseTransition(Duration.millis(400));
+    delay.setOnFinished(event -> {
+      ladderView.updateCurrentPlayerLabel(currentPlayer.getName());
+      ladderView.updateBoard(players);
+      ladderView.populatePlayerList(players);
+      ladderView.updateRoundLabel(String.valueOf(round));
+    });
+    delay.play();
 
     if (round > 1) {
       // ladderView.updateLastPlayerLabel();
