@@ -1,9 +1,6 @@
 package ntnu.idatt2003.group27.view;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import eu.mihosoft.vvecmath.Vector3d;
 import javafx.animation.*;
@@ -52,11 +49,21 @@ public class LadderGameView {
   private Label statusInfo;
 
   private CuboidMesh dice;
+  private static final Point3D[] DICE_ROTATION = {
+    new Point3D(0, 0, 0),
+    new Point3D(90, 0, 0),
+    new Point3D(0, -90, 0),
+    new Point3D(0, 90, 0),
+    new Point3D(-90, 0, 0),
+    new Point3D(0, 180, 90)
+  };
 
   private Label lastPlayer;
   private Label movedTo;
   private Label lastRoll;
   private Label tileAction;
+
+  private Random random = new Random();
 
   public LadderGameView() {
     root = new StackPane();
@@ -119,13 +126,14 @@ public class LadderGameView {
     diceContainer.setPadding(new Insets(0, 0, 20, 0));
     diceContainer.setAlignment(Pos.CENTER);
 
-    dice = new CuboidMesh(5f,5f,5f);
+    dice = new CuboidMesh(5f, 5f, 5f);
     dice.setTextureModeImage(getClass().getResource("/texture/dice.png").toExternalForm());
 
     PerspectiveCamera camera = new PerspectiveCamera(true);
     camera.getTransforms().addAll(
       new Rotate(20, Rotate.X_AXIS),
       new Rotate(160, Rotate.Y_AXIS),
+      new Rotate(0, Rotate.Z_AXIS),
       new Translate(0, 0, -20)
     );
 
@@ -167,18 +175,18 @@ public class LadderGameView {
     layout.getLeftContainer().getChildren().addAll(playerCard, settingsCard);
 
     gameInfo.getChildren().addAll(
-        createGameInfoRow("Runde:", roundInfo),
-        createGameInfoRow("Nåværende spiller:", currentPlayerInfo),
-        createGameInfoRow("Vanskelighetsgrad  :", gradeInfo),
-        createGameInfoRow("Status:", statusInfo)
+      createGameInfoRow("Runde:", roundInfo),
+      createGameInfoRow("Nåværende spiller:", currentPlayerInfo),
+      createGameInfoRow("Vanskelighetsgrad  :", gradeInfo),
+      createGameInfoRow("Status:", statusInfo)
     );
     diceContainer.getChildren().addAll(subScene, diceButton);
     lastRoundContainer.getChildren().addAll(lastRoundTitleLabel, lastRoundInfo);
     lastRoundInfo.getChildren().addAll(
-        createGameInfoRow("Siste spiller:", lastPlayer),
-        createGameInfoRow("Flyttet til:", movedTo),
-        createGameInfoRow("Kastet:", lastRoll),
-        createGameInfoRow("Action", tileAction)
+      createGameInfoRow("Siste spiller:", lastPlayer),
+      createGameInfoRow("Flyttet til:", movedTo),
+      createGameInfoRow("Kastet:", lastRoll),
+      createGameInfoRow("Action", tileAction)
     );
     rightCard.getChildren().addAll(gameInfo, separator1, diceContainer, separator2, lastRoundContainer);
     layout.getRightContainer().getChildren().addAll(rightCard);
@@ -283,24 +291,35 @@ public class LadderGameView {
     Timeline timeline = new Timeline();
     dice.getTransforms().clear();
 
-    Rotate rotation = new Rotate();
-    dice.getTransforms().add(rotation);
+    Point3D targetRotation = DICE_ROTATION[roll - 1];
 
-    double angle1 = 360 * (roll % 2 == 0 ? 1 : -1);
-    double angle2 = 360 * (roll % 3 == 0 ? 1 : -1);
+    Rotate rotateX = new Rotate(0, Rotate.X_AXIS);
+    Rotate rotateY = new Rotate(0, Rotate.Y_AXIS);
+    Rotate rotateZ = new Rotate(0, Rotate.Z_AXIS);
+    dice.getTransforms().addAll(rotateX, rotateY, rotateZ);
 
-    Point3D axis1 = roll % 2 == 0 ? new Point3D(1, 0, 0) : new Point3D(0, 0, 1);
-    Point3D axis2 = roll % 3 == 0 ? new Point3D(0, 1, 0) : new Point3D(1, 0, 0);
+    double tumbleBase = 360 + random.nextDouble() * 180;
+    double[] tumbleAngles = {
+      tumbleBase * (random.nextBoolean() ? 1 : -1),
+      tumbleBase * (random.nextBoolean() ? 1 : -1),
+      tumbleBase * (random.nextBoolean() ? 1 : -1)
+    };
 
-    KeyValue kv1 = new KeyValue(rotation.angleProperty(), angle1);
-    KeyValue kvAxis1 = new KeyValue(rotation.axisProperty(), axis1, Interpolator.EASE_OUT);
-    KeyValue kv2 = new KeyValue(rotation.angleProperty(), angle2);
-    KeyValue kvAxis2 = new KeyValue(rotation.axisProperty(), axis2, Interpolator.EASE_OUT);
+    double finalX = targetRotation.getX() + Math.round(tumbleAngles[0] / 360) * 360;
+    double finalY = targetRotation.getY() + Math.round(tumbleAngles[1] / 360) * 360;
+    double finalZ = targetRotation.getZ() + Math.round(tumbleAngles[2] / 360) * 360;
 
-    KeyFrame kf1 = new KeyFrame(Duration.millis(500), kv1, kvAxis1);
-    KeyFrame kf2 = new KeyFrame(Duration.millis(5000), kv2, kvAxis2);
+    KeyValue kvTumbleX = new KeyValue(rotateX.angleProperty(), tumbleAngles[0], Interpolator.LINEAR);
+    KeyValue kvTumbleY = new KeyValue(rotateY.angleProperty(), tumbleAngles[1], Interpolator.LINEAR);
+    KeyValue kvTumbleZ = new KeyValue(rotateZ.angleProperty(), tumbleAngles[2], Interpolator.LINEAR);
+    KeyFrame kfTumble = new KeyFrame(Duration.millis(250), kvTumbleX, kvTumbleY, kvTumbleZ);
 
-    timeline.getKeyFrames().addAll(kf1, kf2);
+    KeyValue kvFinalX = new KeyValue(rotateX.angleProperty(), finalX, Interpolator.EASE_OUT);
+    KeyValue kvFinalY = new KeyValue(rotateY.angleProperty(), finalY, Interpolator.EASE_OUT);
+    KeyValue kvFinalZ = new KeyValue(rotateZ.angleProperty(), finalZ, Interpolator.EASE_OUT);
+    KeyFrame kfFinal = new KeyFrame(Duration.millis(350), kvFinalX, kvFinalY, kvFinalZ);
+
+    timeline.getKeyFrames().addAll(kfTumble, kfFinal);
     timeline.setCycleCount(1);
     timeline.play();
   }
