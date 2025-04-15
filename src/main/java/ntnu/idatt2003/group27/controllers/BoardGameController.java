@@ -1,21 +1,26 @@
 package ntnu.idatt2003.group27.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
+import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.BoardGameMenu;
 import ntnu.idatt2003.group27.view.LadderGameView;
 import ntnu.idatt2003.group27.view.components.Alert;
 import ntnu.idatt2003.group27.view.components.Toast;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
 
 public class BoardGameController implements BoardGameObserver {
   private final BoardGame game;
   private BoardGameMenu view;
   private final LadderGameView ladderView;
+  private Player lastPlayer;
 
   public BoardGameController(BoardGame game, BoardGameMenu view, LadderGameView ladderView) {
     this.game = game;
@@ -75,11 +80,30 @@ public class BoardGameController implements BoardGameObserver {
   }
 
   @Override
-  public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll) {
-    ladderView.updateCurrentPlayerLabel(currentPlayer.getName());
+  public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction tileAction) {
+    int round = ladderView.getRoundLabel() + 1;
     ladderView.rotateDice(roll);
-    ladderView.updateBoard(players);
-    ladderView.populatePlayerList(players);
+
+    PauseTransition delay = new PauseTransition(Duration.millis(400));
+    delay.setOnFinished(event -> {
+      ladderView.updateCurrentPlayerLabel(currentPlayer.getName());
+      ladderView.updateBoard(players);
+      ladderView.populatePlayerList(players);
+      ladderView.updateRoundLabel(String.valueOf(round));
+    });
+    delay.play();
+
+    lastPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
+    ladderView.updateLastPlayerLabel(lastPlayer.getName());
+    ladderView.updateLastRollLabel(String.valueOf(roll));
+    ladderView.updateMovedToLabel(String.valueOf(lastPlayer.getCurrentTile().getTileId()));
+    if (tileAction != null) {
+      String action = tileAction.getClass().getSimpleName();
+      String formattedAction = action.replaceAll("(?=\\p{Upper})", " ").trim();
+      ladderView.updateTileActionLabel(formattedAction);
+    } else {
+      ladderView.updateTileActionLabel("Ingen");
+    }
   }
 
   @Override
@@ -109,5 +133,9 @@ public class BoardGameController implements BoardGameObserver {
   public void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
     ladderView.createBoard(players, tiles);
     ladderView.populatePlayerList(players);
+    ladderView.updateCurrentPlayerLabel(players.getFirst().getName());
+
+    // set the diffuculty level when there is a way to
+    ladderView.updateGradeLabel("");
   }
 }

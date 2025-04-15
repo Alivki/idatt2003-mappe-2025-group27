@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -22,28 +23,28 @@ import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
 public class Canvas extends javafx.scene.canvas.Canvas {
-  private int boardSize;
+  private final int boardSize;
   private double tileSize;
   private final int columns = 10;
   private final int rows = 9;
   private List<Player> players;
-  private Map<Integer, Tile> tileActions;
+  private Map<Player, Integer> playerPositions;
+  private final Map<Integer, Tile> tileActions;
 
-  public Canvas() {
+  public Canvas(Map<Integer, Tile> tileActions, List<Player> players, int boardSize) {
     this.tileSize = 0;
-    this.boardSize = 0;
     this.players = new ArrayList<>();
-    this.tileActions = new HashMap<>();
+    this.boardSize = boardSize;
+    this.tileActions = tileActions;
+    this.playerPositions = players.stream()
+      .collect(Collectors.toMap(
+        player -> player,
+        player -> player.getCurrentTile().getTileId()
+      ));
   }
 
   public int getBoardSize() {
     return boardSize;
-  }
-
-  public void createBoard(Map<Integer, Tile> tileActions, int boardSize) {
-    this.tileActions = tileActions;
-    this.boardSize = boardSize;
-    redrawBoard();
   }
 
   public void updateBoard(List<Player> players) {
@@ -84,8 +85,8 @@ public class Canvas extends javafx.scene.canvas.Canvas {
 
   private void drawTileActions(GraphicsContext gc) {
     gc.setFill(Color.YELLOW);
-    gc.fillRect(0, (rows - 1) * tileSize, tileSize, tileSize);
-    gc.fillRect((columns - 1) * tileSize, 0, tileSize, tileSize);
+    gc.fillRect(30, (rows - 1) * tileSize + 9, tileSize, tileSize);
+    gc.fillRect((columns - 1) * tileSize + 30,  9, tileSize, tileSize);
 
     tileActions.forEach((k, v) -> {
       if (v.getLandAction() != null) {
@@ -160,9 +161,27 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   }
 
   private void drawArrows(GraphicsContext gc) {
-    IntStream.range(1, rows + 1).forEach(i -> {
+    double yPos = (tileSize * rows) + tileSize + 9;
 
-    });
+    for (int i = 1; i < rows + 1; i++) {
+      yPos -= tileSize;
+      double xPos;
+
+      if (i % 2 == 0) {
+        xPos = this.getWidth() - 20;
+        double[] xPoints = {xPos + 10, xPos, xPos + 10};
+        double[] yPoints = {yPos - tileSize / 2 - 10, yPos - tileSize / 2, yPos - tileSize / 2 + 10};
+        gc.setFill(Color.BLACK);
+        gc.fillPolygon(xPoints, yPoints, 3);
+      } else {
+        xPos = 5;
+        double[] xPoints = {xPos, xPos + 10, xPos};
+        double[] yPoints = {yPos - tileSize / 2 - 10, yPos - tileSize / 2, yPos - tileSize / 2 + 10};
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(2.0);
+        gc.strokePolygon(xPoints, yPoints, 3);
+      }
+    }
   }
 
   private void drawAllLadders(GraphicsContext gc) {
@@ -233,6 +252,13 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   }
 
   private void drawPlayers(GraphicsContext gc) {
+    Map<Player, Integer> newPlayerPositions = players.stream()
+      .collect(Collectors.toMap(
+        player -> player,
+        player -> player.getCurrentTile().getTileId()
+      ));
+
+/*
     gc.setStroke(Color.BLUE);
     gc.setLineWidth(3.0);
 
@@ -244,15 +270,18 @@ public class Canvas extends javafx.scene.canvas.Canvas {
 
       gc.lineTo(tileCenter[0],tileCenter[1]);
     });
-    //gc.stroke();
+    gc.stroke();
+*/
 
     players.forEach(player -> {
-      int i = player.getCurrentTile().getTileId() - 1;
+      int j = newPlayerPositions.get(player) - playerPositions.get(player);
 
-      double[] tileCenter = getTileCenter(i);
+      double[] tileCenter = getTileCenter(newPlayerPositions.get(player) - 1);
 
       gc.setFill(Color.BLACK);
       gc.fillOval(tileCenter[0] - tileSize / 8, tileCenter[1] - tileSize / 8, tileSize / 4,  tileSize / 4);
+
+      playerPositions = newPlayerPositions;
     });
   }
 
@@ -266,7 +295,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     double xPos = leftToRight ? col * tileSize : (columns - 1 - col) * tileSize;
     double currentYPos = yPos - (row * tileSize);
 
-    return new double[] {xPos, currentYPos};
+    return new double[] {xPos + 30, currentYPos + 9};
   }
 
   private double[] getTileCenter(int tileId) {
@@ -279,6 +308,6 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     double xPos = leftToRight ? col * tileSize : (columns - 1 - col) * tileSize;
     double currentYPos = yPos - (row * tileSize);
 
-    return new double[] {xPos + (tileSize / 2), currentYPos + (tileSize / 2)};
+    return new double[] {xPos + (tileSize / 2) + 30, currentYPos + (tileSize / 2) + 9};
   }
 }
