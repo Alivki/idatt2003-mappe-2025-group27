@@ -85,8 +85,8 @@ public class Canvas extends javafx.scene.canvas.Canvas {
 
   private void drawTileActions(GraphicsContext gc) {
     gc.setFill(Color.YELLOW);
-    gc.fillRect(30, (rows - 1) * tileSize + 2.5, tileSize, tileSize);
-    gc.fillRect((columns - 1) * tileSize + 30,  2.5, tileSize, tileSize);
+    gc.fillRect(30, (rows - 1) * tileSize + 9, tileSize, tileSize);
+    gc.fillRect((columns - 1) * tileSize + 30,  9, tileSize, tileSize);
 
     tileActions.forEach((k, v) -> {
       if (v.getLandAction() != null) {
@@ -161,7 +161,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   }
 
   private void drawArrows(GraphicsContext gc) {
-    double yPos = (tileSize * rows) + tileSize;
+    double yPos = (tileSize * rows) + tileSize + 9;
 
     for (int i = 1; i < rows + 1; i++) {
       yPos -= tileSize;
@@ -295,7 +295,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     double xPos = leftToRight ? col * tileSize : (columns - 1 - col) * tileSize;
     double currentYPos = yPos - (row * tileSize);
 
-    return new double[] {xPos + 30, currentYPos + 2.5};
+    return new double[] {xPos + 30, currentYPos + 9};
   }
 
   private double[] getTileCenter(int tileId) {
@@ -308,6 +308,6 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     double xPos = leftToRight ? col * tileSize : (columns - 1 - col) * tileSize;
     double currentYPos = yPos - (row * tileSize);
 
-    return new double[] {xPos + (tileSize / 2) + 30, currentYPos + (tileSize / 2) + 2.5};
+    return new double[] {xPos + (tileSize / 2) + 30, currentYPos + (tileSize / 2) + 9};
   }
 }

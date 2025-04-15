@@ -23,7 +23,7 @@ public interface BoardGameObserver {
    * @param currentPlayer The {@link Player} next player to play.
    * @param roll The result of the dice roll for the round.
    */
-  void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll);
+  void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction tileAction);
 
   /**
    * Invoked when a player has won the game.

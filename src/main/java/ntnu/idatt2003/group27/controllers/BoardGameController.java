@@ -1,12 +1,14 @@
 package ntnu.idatt2003.group27.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
+import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.BoardGameMenu;
 import ntnu.idatt2003.group27.view.LadderGameView;
 import ntnu.idatt2003.group27.view.components.Alert;
@@ -18,6 +20,7 @@ public class BoardGameController implements BoardGameObserver {
   private final BoardGame game;
   private BoardGameMenu view;
   private final LadderGameView ladderView;
+  private Player lastPlayer;
 
   public BoardGameController(BoardGame game, BoardGameMenu view, LadderGameView ladderView) {
     this.game = game;
@@ -84,7 +87,7 @@ public class BoardGameController implements BoardGameObserver {
   }
 
   @Override
-  public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll) {
+  public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction tileAction) {
     int round = ladderView.getRoundLabel() + 1;
     ladderView.rotateDice(roll);
 
@@ -97,11 +100,16 @@ public class BoardGameController implements BoardGameObserver {
     });
     delay.play();
 
-    if (round > 1) {
-      // ladderView.updateLastPlayerLabel();
-      // ladderView.updateLastRollLabel();
-      // ladderView.updateMovedToLabel();
-      // ladderView.updateTileActionLabel();
+    lastPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
+    ladderView.updateLastPlayerLabel(lastPlayer.getName());
+    ladderView.updateLastRollLabel(String.valueOf(roll));
+    ladderView.updateMovedToLabel(String.valueOf(lastPlayer.getCurrentTile().getTileId()));
+    if (tileAction != null) {
+      String action = tileAction.getClass().getSimpleName();
+      String formattedAction = action.replaceAll("(?=\\p{Upper})", " ").trim();
+      ladderView.updateTileActionLabel(formattedAction);
+    } else {
+      ladderView.updateTileActionLabel("Ingen");
     }
   }
 
