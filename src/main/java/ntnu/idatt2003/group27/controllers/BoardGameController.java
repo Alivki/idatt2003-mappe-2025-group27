@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import ntnu.idatt2003.group27.models.BoardGame;
+import ntnu.idatt2003.group27.models.BoardGameFactory;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
+import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
+import ntnu.idatt2003.group27.models.exceptions.UnknownLadderGameTypeExceptions;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.LadderGameView;
@@ -16,33 +19,54 @@ import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
 public class BoardGameController implements BoardGameObserver {
-  private final BoardGame game;
-  private final LadderGameView ladderView;
+  private BoardGame game;
+  private LadderGameView ladderGameView;
   private Player lastPlayer;
 
-  public BoardGameController(BoardGame game, LadderGameView ladderView) {
-    this.game = game;
-    this.ladderView = ladderView;
+  public BoardGameController() {
+  }
 
+  public void InitializeGame(LadderGameType ladderGameType){
+    // initialize mvc
+    game = null;
+    try {
+      game = BoardGameFactory.createLadderGame(ladderGameType);
+    } catch (UnknownLadderGameTypeExceptions e) {
+      System.err.println(e.getMessage());
+    }
 
+    if (game == null) {
+      return;
+    }
+
+    ladderGameView = new LadderGameView();
 
     game.addObserver(this);
 
-
-
     setupLadderViewEventHandlers();
+
+    //Add players to game
+    MainController.getInstance().getPlayers().forEach(game::addPlayer);
+
+
+    // change when being done in controller on game difficult select
+    try {
+      game.setUpGame();
+    } catch (NotEnoughPlayersInGameException e) {
+      System.err.println(e.getMessage());
+    }
   }
 
 
 
   private void setupLadderViewEventHandlers() {
-    ladderView.setRollDiceHandler(e -> {
+    ladderGameView.setRollDiceHandler(e -> {
       try {
         game.play();
       } catch (NotEnoughPlayersInGameException error) {
         //switch to main menu when possible
 
-        ladderView.showToast(
+        ladderGameView.showToast(
             Toast.ToastVariant.ERROR,
             "Feil",
             "Det oppstod en feil under spillingen: " + error.getMessage()
@@ -50,19 +74,19 @@ public class BoardGameController implements BoardGameObserver {
       }
     });
 
-    ladderView.setRestartButtonHandler(e -> {
+    ladderGameView.setRestartButtonHandler(e -> {
     });
 
-    ladderView.setHomeButtonHandler(e -> {
+    ladderGameView.setHomeButtonHandler(e -> {
       Alert alert = new Alert(
-          this.ladderView.getRoot(),
+          this.ladderGameView.getRoot(),
           "Bekreft avslutning",
           "Er du sikker på at du vil avslutte spillet?",
           "Ja",
           "Nei",
           response -> {
             if (response) {
-              ladderView.showToast(
+              ladderGameView.showToast(
                   Toast.ToastVariant.ERROR,
                   "Avsluttet",
                   "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
@@ -79,39 +103,39 @@ public class BoardGameController implements BoardGameObserver {
 
   @Override
   public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction tileAction) {
-    int round = ladderView.getRoundLabel() + 1;
-    ladderView.rotateDice(roll);
+    int round = ladderGameView.getRoundLabel() + 1;
+    ladderGameView.rotateDice(roll);
 
     PauseTransition delay = new PauseTransition(Duration.millis(400));
     delay.setOnFinished(event -> {
-      ladderView.updateCurrentPlayerLabel(currentPlayer.getName());
-      ladderView.updateBoard(players);
-      ladderView.populatePlayerList(players);
-      ladderView.updateRoundLabel(String.valueOf(round));
+      ladderGameView.updateCurrentPlayerLabel(currentPlayer.getName());
+      ladderGameView.updateBoard(players);
+      ladderGameView.populatePlayerList(players);
+      ladderGameView.updateRoundLabel(String.valueOf(round));
     });
     delay.play();
 
     lastPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
-    ladderView.updateLastPlayerLabel(lastPlayer.getName());
-    ladderView.updateLastRollLabel(String.valueOf(roll));
-    ladderView.updateMovedToLabel(String.valueOf(lastPlayer.getCurrentTile().getTileId()));
+    ladderGameView.updateLastPlayerLabel(lastPlayer.getName());
+    ladderGameView.updateLastRollLabel(String.valueOf(roll));
+    ladderGameView.updateMovedToLabel(String.valueOf(lastPlayer.getCurrentTile().getTileId()));
     if (tileAction != null) {
       String action = tileAction.getClass().getSimpleName();
       String formattedAction = action.replaceAll("(?=\\p{Upper})", " ").trim();
-      ladderView.updateTileActionLabel(formattedAction);
+      ladderGameView.updateTileActionLabel(formattedAction);
     } else {
-      ladderView.updateTileActionLabel("Ingen");
+      ladderGameView.updateTileActionLabel("Ingen");
     }
   }
 
   @Override
   public void onPlayerWon(Player player) {
-    ladderView.disableDiceButton();
-    ladderView.updateStatusLabel("Avsluttet");
-    ladderView.showToast(Toast.ToastVariant.SUCCESS, "Spiller vant",
+    ladderGameView.disableDiceButton();
+    ladderGameView.updateStatusLabel("Avsluttet");
+    ladderGameView.showToast(Toast.ToastVariant.SUCCESS, "Spiller vant",
         player.getName() + " vant spillet! Gratulerer!");
     Alert alert = new Alert(
-        this.ladderView.getRoot(),
+        this.ladderGameView.getRoot(),
         "Spiller vant",
         player.getName() + " vant spillet!",
         "Tilabeke til hovedmeny",
@@ -129,11 +153,15 @@ public class BoardGameController implements BoardGameObserver {
 
   @Override
   public void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
-    ladderView.createBoard(players, tiles);
-    ladderView.populatePlayerList(players);
-    ladderView.updateCurrentPlayerLabel(players.getFirst().getName());
+    ladderGameView.createBoard(players, tiles);
+    ladderGameView.populatePlayerList(players);
+    ladderGameView.updateCurrentPlayerLabel(players.getFirst().getName());
 
     // set the diffuculty level when there is a way to
-    ladderView.updateGradeLabel("");
+    ladderGameView.updateGradeLabel("");
+  }
+
+  public LadderGameView getView() {
+    return ladderGameView;
   }
 }

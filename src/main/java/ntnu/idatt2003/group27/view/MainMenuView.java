@@ -33,15 +33,23 @@ import ntnu.idatt2003.group27.view.components.PlayerButtonListCell;
 public class MainMenuView {
   private final StackPane root;
 
+  //Header buttons
   private CustomButton ladderGameMainMenuButton;
   private CustomButton secondGameMainMenuButton;
   private CustomButton thirdGameMainMenuButton;
   private CustomButton applicationQuitButton;
+
+  //Other buttons
   private CustomButton addPlayerButton;
   private CustomButton exportPlayersCsvButton;
   private CustomButton importPlayersCsvButton;
 
+  //Board buttons
   private MainMenuBoardButton normalBoardButton;
+  private MainMenuBoardButton crazyBoardButton;
+  private MainMenuBoardButton impossibleBoardButton;
+  private MainMenuBoardButton jsonBoardButton;
+
   private TextField playerNameTextField;
 
   public MainMenuView() {
@@ -85,14 +93,11 @@ public class MainMenuView {
 
     normalBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Vanlig", "Helt vanlig norsk stigespill med 90 ruter", new Image("icons/stigespill.png"));
 
-    MainMenuBoardButton
-        crazyBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Crazy", "Stigespill med tileAction!", new Image("icons/stigespill.png"));
+    crazyBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Crazy", "Stigespill med tileAction!", new Image("icons/stigespill.png"));
 
-    MainMenuBoardButton
-        impossibleBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Impossible", "Veldig vanskelig stigespill", new Image("icons/stigespill.png"));
+    impossibleBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Impossible", "Veldig vanskelig stigespill", new Image("icons/stigespill.png"));
 
-    MainMenuBoardButton
-        jsonBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Vanlig (Json)", "Last inn eget spill fra Json fil", new Image("icons/stigespill.png"));
+    jsonBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Vanlig (Json)", "Last inn eget spill fra Json fil", new Image("icons/stigespill.png"));
 
     //Positions board buttons on grid
     boardGrid.add(normalBoardButton, 0, 0);
@@ -166,6 +171,18 @@ public class MainMenuView {
 
   public void setNormalBoardButtonHandler(EventHandler<ActionEvent> action) {
     normalBoardButton.setOnAction(action);
+  }
+
+  public void setCrazyBoardButtonHandler(EventHandler<ActionEvent> action) {
+    crazyBoardButton.setOnAction(action);
+  }
+
+  public void setImpossibleBoardButtonHandler(EventHandler<ActionEvent> action) {
+    impossibleBoardButton.setOnAction(action);
+  }
+
+  public void setJsonBoardButtonHandler(EventHandler<ActionEvent> action) {
+    jsonBoardButton.setOnAction(action);
   }
 
   public void setExportPlayersCsvButtonHandler(EventHandler<ActionEvent> action) {

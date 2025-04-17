@@ -1,13 +1,10 @@
 package ntnu.idatt2003.group27.controllers;
 
-
-import java.util.ArrayList;
-import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.view.BoardGameGUI;
+import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.view.SceneManager;
 
 
@@ -21,7 +18,7 @@ public class MainController {
   public Stage mainStage;
 
   //GUI
-  private BoardGameGUI boardGameGUI;
+  private BoardGameController boardGameController;
 
   public MainController(String[] args) {
     if (instance == null) {
@@ -30,9 +27,10 @@ public class MainController {
     }
   }
 
-  public void switchToBoardGame(){
-    boardGameGUI = new BoardGameGUI();
-    sceneManager.switchSceneImmediate(boardGameGUI.ladderGameView.getRoot());
+  public void switchToBoardGame(LadderGameType ladderGameType) {
+    boardGameController = new BoardGameController();
+    boardGameController.InitializeGame(ladderGameType);
+    sceneManager.switchSceneImmediate(boardGameController.getView().getRoot());
   }
 
   public void switchToMainMenu(){
