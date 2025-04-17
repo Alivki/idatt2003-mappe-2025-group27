@@ -86,11 +86,6 @@ public class BoardGameController implements BoardGameObserver {
           "Nei",
           response -> {
             if (response) {
-              ladderGameView.showToast(
-                  Toast.ToastVariant.ERROR,
-                  "Avsluttet",
-                  "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
-              );
               //Loads main menu
               System.out.println("Home button clicked");
               MainController.getInstance().switchToMainMenu();
