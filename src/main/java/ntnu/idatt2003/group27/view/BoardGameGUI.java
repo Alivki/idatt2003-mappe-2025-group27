@@ -3,6 +3,7 @@ package ntnu.idatt2003.group27.view;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import ntnu.idatt2003.group27.controllers.MainController;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
@@ -16,15 +17,11 @@ import ntnu.idatt2003.group27.models.Player;
 /**
  *.
  */
-public class BoardGameGUI extends Application {
+public class BoardGameGUI {
 
-  /**
-   *.
-   *
-   * @param primaryStage .
-   */
-  @Override
-  public void start(Stage primaryStage) {
+  public LadderGameView ladderGameView;
+
+  public BoardGameGUI() {
     // initialize mvc
     BoardGame game = null;
     try {
@@ -37,19 +34,12 @@ public class BoardGameGUI extends Application {
       return;
     }
 
-    BoardGameMenu view = new BoardGameMenu();
-    LadderGameView ladderView = new LadderGameView();
+    ladderGameView = new LadderGameView();
 
-    BoardGameController controller = new BoardGameController(game, view, ladderView);
 
-    // move to controller when ready to implement
-    //game.addPlayer(new Player("Alice"));
-    //game.addPlayer(new Player("Test"));
+    BoardGameController controller = new BoardGameController(game, ladderGameView);
 
-    //for(int i = 0; i < MainController.getInstance().getPlayers().size(); i++){
-    //  game.addPlayer(MainController.getInstance().getPlayers().get(i));
-    //}
-
+    //Add players to game
     MainController.getInstance().getPlayers().forEach(game::addPlayer);
 
 
@@ -59,26 +49,5 @@ public class BoardGameGUI extends Application {
     } catch (NotEnoughPlayersInGameException e) {
       System.err.println(e.getMessage());
     }
-
-    // set up scene
-    Scene scene = new Scene(ladderView.getRoot(), 1260, 600);
-
-    // configure stage
-    primaryStage.setTitle("Boardgames");
-    primaryStage.setScene(scene);
-    primaryStage.setResizable(true);
-    primaryStage.setFullScreen(true);
-
-    scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
-    primaryStage.show();
-  }
-
-  /**
-   *.
-   *
-   * @param args .
-   */
-  public static void launchGui(String[] args) {
-    launch(args);
   }
 }

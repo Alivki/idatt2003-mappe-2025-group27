@@ -27,7 +27,6 @@ public class MainMenuGUI extends Application {
   public void start(Stage primaryStage) {
 
     //Initializes views and controllers
-    MainMenuMenu view = new MainMenuMenu();
     MainMenuView mainMenuView = new MainMenuView();
     MainMenuController mainMenuController = new MainMenuController(mainMenuView);
 

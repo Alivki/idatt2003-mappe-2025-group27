@@ -9,7 +9,6 @@ import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
-import ntnu.idatt2003.group27.view.BoardGameMenu;
 import ntnu.idatt2003.group27.view.LadderGameView;
 import ntnu.idatt2003.group27.view.components.Alert;
 import ntnu.idatt2003.group27.view.components.Toast;
@@ -18,13 +17,11 @@ import javafx.util.Duration;
 
 public class BoardGameController implements BoardGameObserver {
   private final BoardGame game;
-  private BoardGameMenu view;
   private final LadderGameView ladderView;
   private Player lastPlayer;
 
-  public BoardGameController(BoardGame game, BoardGameMenu view, LadderGameView ladderView) {
+  public BoardGameController(BoardGame game, LadderGameView ladderView) {
     this.game = game;
-    this.view = view;
     this.ladderView = ladderView;
 
 
@@ -45,7 +42,7 @@ public class BoardGameController implements BoardGameObserver {
       } catch (NotEnoughPlayersInGameException error) {
         //switch to main menu when possible
 
-        view.showToast(
+        ladderView.showToast(
             Toast.ToastVariant.ERROR,
             "Feil",
             "Det oppstod en feil under spillingen: " + error.getMessage()
@@ -71,6 +68,7 @@ public class BoardGameController implements BoardGameObserver {
                   "Spillet er avsluttet, og du vil bli sendt tilbake til hovedmenyen"
               );
               //Loads main menu
+              System.out.println("Home button clicked");
               MainController.getInstance().switchToMainMenu();
             }
           }
