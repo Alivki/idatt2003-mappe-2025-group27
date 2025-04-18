@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models;
 
+import com.google.gson.JsonElement;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.stream.IntStream;
 
 import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
+import ntnu.idatt2003.group27.utils.filehandler.json.BoardDeserializer;
 import ntnu.idatt2003.group27.utils.filehandler.json.JsonFileReader;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
 import ntnu.idatt2003.group27.models.actions.LadderAction;
@@ -54,11 +56,21 @@ public class BoardGameFactory {
         tileActions.put(4, new LadderAction(15, "description"));
         tileActions.put(10, new BackToStartAction("description"));
         break;
+      case JSON:
+        JsonFileReader jsonFileReader = new JsonFileReader();
+        try {
+          Board board = jsonFileReader.readFile("boards/Board.Json");
+          return new BoardGame(board, numberOfDice, numberOfDieSides);
+        } catch (IOException e) {
+          System.out.println("Board could not be loaded: Error reading json file.");
+        }
+        break;
       default:
         throw new UnknownLadderGameTypeExceptions("Unknown ladder game type: " + ladderGameType);
     }
 
     Board board = createBoard(totalTiles, tileActions);
+
     return new BoardGame(board, numberOfDice, numberOfDieSides);
   }
 
