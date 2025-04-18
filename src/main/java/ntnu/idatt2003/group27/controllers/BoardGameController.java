@@ -23,11 +23,15 @@ public class BoardGameController implements BoardGameObserver {
   private LadderGameView ladderGameView;
   private Player lastPlayer;
 
-  public BoardGameController() {
+  private final MainController mainController;
+
+  public BoardGameController(MainController mainController) {
+    this.mainController = mainController;
   }
 
-  public void InitializeGame(LadderGameType ladderGameType){
-    // initialize mvc
+  public void InitializeGame(LadderGameType ladderGameType, Player[] players) {
+
+    // initializes mvc pattern
     game = null;
     try {
       game = BoardGameFactory.createLadderGame(ladderGameType);
@@ -46,7 +50,7 @@ public class BoardGameController implements BoardGameObserver {
     setupLadderViewEventHandlers();
 
     //Add players to game
-    MainController.getInstance().getPlayers().forEach(game::addPlayer);
+    Arrays.stream(players).forEach(player -> {game.addPlayer(player);});
 
 
     // change when being done in controller on game difficult select
@@ -88,7 +92,7 @@ public class BoardGameController implements BoardGameObserver {
             if (response) {
               //Loads main menu
               System.out.println("Home button clicked");
-              MainController.getInstance().switchToMainMenu();
+              mainController.switchToMainMenu();
             }
           }
       );

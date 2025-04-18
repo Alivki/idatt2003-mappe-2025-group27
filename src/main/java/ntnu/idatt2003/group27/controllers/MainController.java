@@ -11,25 +11,22 @@ import ntnu.idatt2003.group27.view.SceneManager;
 public class MainController {
 
   private ObservableList<Player> playersObservableList = FXCollections.observableArrayList();
-  private String[] initArgs;
 
   private static MainController instance;
   public SceneManager sceneManager;
-  public Stage mainStage;
 
-  //GUI
+  //Controllers
   private BoardGameController boardGameController;
 
-  public MainController(String[] args) {
+  public MainController() {
     if (instance == null) {
       instance = this;
-      this.initArgs = args;
     }
   }
 
   public void switchToBoardGame(LadderGameType ladderGameType) {
-    boardGameController = new BoardGameController();
-    boardGameController.InitializeGame(ladderGameType);
+    boardGameController = new BoardGameController(this);
+    boardGameController.InitializeGame(ladderGameType, getPlayerArray());
     sceneManager.switchSceneImmediate(boardGameController.getView().getRoot());
   }
 
@@ -39,6 +36,12 @@ public class MainController {
 
   public ObservableList<Player> getPlayers(){
     return playersObservableList;
+  }
+
+  public Player[] getPlayerArray(){
+    Player[] players = new Player[playersObservableList.size()];
+    players = playersObservableList.toArray(players);
+    return players;
   }
 
   public void addPlayer(Player player){
