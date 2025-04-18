@@ -296,9 +296,18 @@
     -fx-padding: 0;
 }
 
-.list-cell {
+.list-cell{
     -fx-background-color: transparent;
     -fx-background-insets: 0;
+}
+
+.list-cell:selected {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
+
+.list-cell:selected .label {
+    -fx-text-fill: black;
 }
 
 
