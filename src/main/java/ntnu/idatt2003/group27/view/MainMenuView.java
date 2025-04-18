@@ -115,7 +115,6 @@ public class MainMenuView {
     if (MainController.getInstance() != null) {
       playerListView.setItems(MainController.getInstance().getPlayers());
     }
-
     playerListView.setPrefSize(playerCard.widthProperty().intValue(), 150);
 
     //Initializes player csv cards

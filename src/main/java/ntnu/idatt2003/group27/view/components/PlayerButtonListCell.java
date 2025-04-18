@@ -4,6 +4,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -27,9 +29,10 @@ public class PlayerButtonListCell extends ListCell<Player> {
     HBox rightContainer = new HBox(10);
     HBox middleContainer = new HBox(10);
     leftContainer.setAlignment(Pos.CENTER);
+    middleContainer.setAlignment(Pos.CENTER_LEFT);
+    rightContainer.setAlignment(Pos.CENTER);
     leftContainer.setPadding(new Insets(0, 0, 0, 5));
     HBox.setHgrow(middleContainer, Priority.ALWAYS);
-    //mainContainer.setAlignment(Pos.CENTER_LEFT);
 
     //Initializes player label
     playerLabel = new Label("New player");
@@ -40,9 +43,15 @@ public class PlayerButtonListCell extends ListCell<Player> {
       MainController.getInstance().removePlayer(getItem());
     });
 
+    //Initialize player image
+    ImageView playerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/home.png")));
+    playerIcon.setFitHeight(20);
+    playerIcon.setFitWidth(20);
+
     mainContainer.getChildren().addAll(leftContainer, middleContainer, rightContainer);
     mainAnchorPane.getChildren().addAll(mainContainer);
-    leftContainer.getChildren().addAll(playerLabel);
+    leftContainer.getChildren().addAll(playerIcon);
+    middleContainer.getChildren().addAll(playerLabel);
     rightContainer.getChildren().addAll(removePlayerButton);
   }
 
