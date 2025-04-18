@@ -121,7 +121,7 @@ public class BoardGameController implements BoardGameObserver {
     });
     delay.play();
 
-    lastPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
+    lastPlayer = players.get((players.indexOf(currentPlayer) - 1 + players.size()) % players.size());
     ladderGameView.updateLastPlayerLabel(lastPlayer.getName());
     ladderGameView.updateLastRollLabel(String.valueOf(roll));
     ladderGameView.updateMovedToLabel(String.valueOf(lastPlayer.getCurrentTile().getTileId()));
@@ -171,12 +171,13 @@ public class BoardGameController implements BoardGameObserver {
 
   @Override
   public void onGameRestart(ArrayList<Player> players, Map<Integer, Tile> tiles){
+
     ladderGameView.toggleDiceButton(true);
     ladderGameView.updateCurrentPlayerLabel(players.getFirst().getName());
-    ladderGameView.updateRoundLabel("0");
-    ladderGameView.updateLastPlayerLabel("");
-    ladderGameView.updateLastRollLabel("");
-    ladderGameView.updateMovedToLabel("");
+    ladderGameView.updateRoundLabel("1");
+    ladderGameView.updateLastPlayerLabel("Ingen");
+    ladderGameView.updateLastRollLabel("Ikke kastet");
+    ladderGameView.updateMovedToLabel("Start");
     ladderGameView.updateBoard(players);
     ladderGameView.populatePlayerList(players);
   }
