@@ -25,12 +25,14 @@ public class BoardGameController implements BoardGameObserver {
 
   private final MainController mainController;
 
+  private LadderGameType ladderGameType;
+
   public BoardGameController(MainController mainController) {
     this.mainController = mainController;
   }
 
   public void InitializeGame(LadderGameType ladderGameType, Player[] players) {
-
+    this.ladderGameType = ladderGameType;
     // initializes mvc pattern
     game = null;
     try {
@@ -61,6 +63,10 @@ public class BoardGameController implements BoardGameObserver {
     }
   }
 
+  public void RestartGame(){
+    game.restartGame();
+  }
+
 
 
   private void setupLadderViewEventHandlers() {
@@ -79,6 +85,7 @@ public class BoardGameController implements BoardGameObserver {
     });
 
     ladderGameView.setRestartButtonHandler(e -> {
+      RestartGame();
     });
 
     ladderGameView.setHomeButtonHandler(e -> {
@@ -129,7 +136,7 @@ public class BoardGameController implements BoardGameObserver {
 
   @Override
   public void onPlayerWon(Player player) {
-    ladderGameView.disableDiceButton();
+    ladderGameView.toggleDiceButton(false);
     ladderGameView.updateStatusLabel("Avsluttet");
     ladderGameView.showToast(Toast.ToastVariant.SUCCESS, "Spiller vant",
         player.getName() + " vant spillet! Gratulerer!");
@@ -137,13 +144,15 @@ public class BoardGameController implements BoardGameObserver {
         this.ladderGameView.getRoot(),
         "Spiller vant",
         player.getName() + " vant spillet!",
-        "Tilabeke til hovedmeny",
+        "Tilbake til hovedmeny",
         "Restart",
         response -> {
           if (response) {
-            // restart game
-          } else {
             // go to main menu
+            mainController.switchToMainMenu();
+          } else {
+            // restart game
+            RestartGame();
           }
         }
     );
@@ -157,7 +166,19 @@ public class BoardGameController implements BoardGameObserver {
     ladderGameView.updateCurrentPlayerLabel(players.getFirst().getName());
 
     // set the diffuculty level when there is a way to
-    ladderGameView.updateGradeLabel("");
+    ladderGameView.updateGradeLabel(ladderGameType.name());
+  }
+
+  @Override
+  public void onGameRestart(ArrayList<Player> players, Map<Integer, Tile> tiles){
+    ladderGameView.toggleDiceButton(true);
+    ladderGameView.updateCurrentPlayerLabel(players.getFirst().getName());
+    ladderGameView.updateRoundLabel("0");
+    ladderGameView.updateLastPlayerLabel("");
+    ladderGameView.updateLastRollLabel("");
+    ladderGameView.updateMovedToLabel("");
+    ladderGameView.updateBoard(players);
+    ladderGameView.populatePlayerList(players);
   }
 
   public LadderGameView getView() {

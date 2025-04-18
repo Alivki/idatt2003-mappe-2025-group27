@@ -99,6 +99,15 @@ public class BoardGame {
   }
 
   /**
+   * Notifies all observers taht the game has been restarted.
+   * @param players
+   * @param tiles
+   */
+  public void notifyGameRestart(ArrayList<Player> players, Map<Integer, Tile> tiles) {
+    observers.forEach(observer -> observer.onGameRestart(players, tiles));
+  }
+
+  /**
    * Retrieves the current game board. This method is package-private for testing purposes.
    *
    * @return The current game board.
@@ -175,6 +184,15 @@ public class BoardGame {
     currentPlayer = players.getFirst();
 
     notifyGameSetup(players, board.getTiles());
+  }
+
+  /**
+   * Restarts the game.
+   */
+  public void restartGame(){
+    players.forEach(player -> player.placeOnTile(board.getTile(1)));
+    currentPlayer = players.getFirst();
+    notifyGameRestart(players, board.getTiles());
   }
 
   /**
