@@ -39,6 +39,7 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
         csvWriter.writeNext(playerInfo);
       }
       csvWriter.close();
+      System.out.println("Wrote CSV file to " + playerCsvFile.getAbsolutePath());
     } catch (Exception e) {
       throw new IOException(e);
     }

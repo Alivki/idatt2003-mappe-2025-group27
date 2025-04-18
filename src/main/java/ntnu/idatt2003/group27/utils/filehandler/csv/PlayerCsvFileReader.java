@@ -33,6 +33,7 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
           .mapToObj(i -> new Player(contents.get(i)[0]))
           .toArray(Player[]::new);
       reader.close();
+      System.out.println("Successfully read players csv file from " + filePath);
       return players;
     }
 
@@ -43,5 +44,6 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
     catch (CsvException e) {
       throw new RuntimeException(e);
     }
+
   }
 }

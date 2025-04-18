@@ -206,8 +206,8 @@ public class LadderGameView {
     restartButton.setOnAction(action);
   }
 
-  public void disableDiceButton() {
-    diceButton.setDisable(true);
+  public void toggleDiceButton(boolean enable) {
+    diceButton.setDisable(!enable);
   }
 
   public void updateRoundLabel(String round) {

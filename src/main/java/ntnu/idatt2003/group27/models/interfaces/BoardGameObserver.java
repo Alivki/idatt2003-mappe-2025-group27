@@ -39,4 +39,11 @@ public interface BoardGameObserver {
    * @param tiles The map of tiles on the board, with tile IDs as keys and {@link Tile} objects as values.
    */
   void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles);
+
+  /**
+   * Invoked when the game is restarted.
+   * @param players
+   * @param tiles
+   */
+  void onGameRestart(ArrayList<Player> players, Map<Integer, Tile> tiles);
 }
