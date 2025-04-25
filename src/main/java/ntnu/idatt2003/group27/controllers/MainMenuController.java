@@ -8,14 +8,30 @@ import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileWriter;
 import ntnu.idatt2003.group27.view.MainMenuView;
 import ntnu.idatt2003.group27.view.components.Alert;
 
+/**
+ * A controller class for managing the main menu of the ladder game application. It handles user
+ * interactions with the {@link MainMenuView}, such as adding players, exporting/importing player
+ * data, and starting games with different difficult levels.
+ */
 public class MainMenuController {
+  /** The main menu view associated with this controller */
   private MainMenuView mainMenuView;
 
+  /**
+   * Constructs a  {@link MainMenuController} witht the specified {@link MainMenuView} and sets up
+   * events handlers for menu interactions.
+   *
+   * @param mainMenuView The {@link MainMenuView} to be controlled.
+   */
   public MainMenuController(MainMenuView mainMenuView) {
     this.mainMenuView = mainMenuView;
     setupMenuViewEventHandler();
   }
 
+  /**
+   * Sets up event handlers for the main menu view, including buttons for adding players, exporting/
+   * importing player data, and starting games with different difficulty levels.
+   */
   private void setupMenuViewEventHandler() {
     // add player button
     mainMenuView.setAddPlayerButtonHandler(e -> {

@@ -6,7 +6,18 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 
+/**
+ * A customizable button component extending the JavaFX Button class. Supports different styles and
+ * optional icon. The button can be styled using different variants and configured with the option
+ * for an action handler. (Not recommended, use the controller instead). Styles are applied using
+ * external CSS stylesheets.
+ *
+ * @author Iver Lindholm
+ * @version 1.2
+ * @since 2.0
+ */
 public class CustomButton extends Button {
+  /** Enum defining the available button style variants */
   public enum ButtonVariant {
     PRIMARY,
     SECONDARY,
@@ -18,21 +29,55 @@ public class CustomButton extends Button {
     ICON;
   }
 
+  /**
+   * Constructs a {@link CustomButton} with the specified text, variant, and action handler. Used
+   * for buttons with text only.
+   *
+   * @param text The text to display on the button.
+   * @param type The {@link ButtonVariant} defining the buttons style.
+   * @param action The {@link EventHandler} to handle button click events.
+   */
   public CustomButton(String text, ButtonVariant type, EventHandler<ActionEvent> action) {
     super(text);
     initialize(type, null, action);
   }
 
+  /**
+   * Constructs a {@link CustomButton} with the specified text, variant, icon, and action handler.
+   * Used for buttons with text and icons.
+   *
+   * @param text The text to display on the button.
+   * @param type The {@link ButtonVariant} defining the buttons style.
+   * @param icon The {@link Node} to display as an icon on the button.
+   * @param action The {@link EventHandler} to handle button click events.
+   */
   public CustomButton(String text, ButtonVariant type, Node icon, EventHandler<ActionEvent> action) {
     super(text);
     initialize(type, icon, action);
   }
 
+  /**
+   * Constructs a {@link CustomButton} with the specified icon, variant, and action handler. Used
+   * for buttons with a single icons only.
+   *
+   * @param icon The {@link Node} to display as an icon on the button.
+   * @param type The {@link ButtonVariant} defining the buttons style.
+   * @param action The {@link EventHandler} to handle button click events.
+   */
   public CustomButton(Node icon, ButtonVariant type, EventHandler<ActionEvent> action) {
     super();
     initialize(type, icon, action);
   }
 
+  /**
+   * Initializes the button with the specified variant, icon, and action handler. Applies the
+   * appropriate CSS styles and configures the button's size and icon properties based on the
+   * variants.
+   *
+   * @param variant The {@link ButtonVariant} defining the buttons style.
+   * @param icon The {@link Node} to display as an icon on the button.
+   * @param action The {@link EventHandler} to handle button click events.
+   */
   private void initialize(ButtonVariant variant, Node icon, EventHandler<ActionEvent> action) {
     getStyleClass().add("button");
 
@@ -99,6 +144,11 @@ public class CustomButton extends Button {
     }
   }
 
+  /**
+   * Sets the icon for the button.
+   *
+   * @param icon The {@link Node} to yse as the button's icon.
+   */
   public void setIcon(Node icon) {
     setGraphic(icon);
   }

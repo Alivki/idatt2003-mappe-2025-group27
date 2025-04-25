@@ -11,8 +11,23 @@ import javax.swing.Icon;
 /**
  * A class representing board buttons to be used in the main menu.
  * These buttons have a title and description explaining the board type, and an icon to show a preview of the board.
+ *
+ * @author Amadeus Berg
+ * @version 1.0
+ * @since 2.0
  */
 public class MainMenuBoardButton extends Button {
+
+  /**
+   * Constructs a {@link MainMenuBoardButton} with the specified size, padding, title, description
+   * and a preview image.
+   *
+   * @param prefSize The preferred size (width and height) for the preview image in pixels.
+   * @param insets The {@link Insets} defining the padding around the buttons's content.
+   * @param title The title text to display on the button.
+   * @param description The description text to display on the button.
+   * @param image The {@link Image} to display as a preview of the board.
+   */
   public MainMenuBoardButton(int prefSize, Insets insets, String title, String description, Image image) {
     super();
 
