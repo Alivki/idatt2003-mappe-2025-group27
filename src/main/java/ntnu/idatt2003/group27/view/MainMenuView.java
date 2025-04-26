@@ -101,13 +101,21 @@ public class MainMenuView {
     Card playerCard = new Card("Spillere", null, 200);
     playerCard.setSpacing(10);
 
+    //Initializes player name input field
+    playerNameTextField = new TextField();
+    playerNameTextField.setPromptText("Spiller navn...");
+
+    //Initializes add player button
+    addPlayerButton = new CustomButton("Legg til spiller", CustomButton.ButtonVariant.PRIMARY, null);
+
+
     //Initializes list view to display player information
     ListView<Player> playerListView = new ListView<>();
     playerListView.setCellFactory(list -> new PlayerButtonListCell());
     if (MainController.getInstance() != null) {
       playerListView.setItems(MainController.getInstance().getPlayers());
     }
-    playerListView.setPrefSize(playerCard.widthProperty().intValue(), 150);
+    playerListView.setPrefSize(playerCard.widthProperty().intValue(), 225);
 
     //Initializes player csv cards
     Card playerExportCsvCard = new Card("Eksporter spillere", "Last ned csv fil med spillerdata", 100);
@@ -123,14 +131,6 @@ public class MainMenuView {
     Label csvExampleInfoHeaderLabel = new Label("CSV-fil eksempel:");
     Label csvExampleInfoDescriptionLabel = new Label("navn, brikke\nSpiller 1, bil\nSpiller 2, sjakk");
     csvExampleInfoDescriptionLabel.getStyleClass().add("info-text");
-
-    //Initializes player name input field
-    playerNameTextField = new TextField();
-    playerNameTextField.setPromptText("Spiller navn...");
-
-    //Initializes add player button
-    addPlayerButton = new CustomButton("Legg til spiller", CustomButton.ButtonVariant.PRIMARY, null);
-
 
     //Positions nodes correctly in each container
     playerCard.getChildren().addAll(playerListView, playerNameTextField, addPlayerButton);
