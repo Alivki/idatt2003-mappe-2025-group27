@@ -140,7 +140,8 @@ public class MainMenuView {
     menuContainer.getChildren().addAll(title, boardGrid);
     layout.getHeader().getChildren().addAll(headerContainer);
     layout.getMainContainer().getChildren().addAll(menuContainer);
-    layout.getLeftContainer().getChildren().addAll(playerCard, playerExportCsvCard, playerImportCsvCard);
+    layout.getRightContainer().getChildren().addAll(playerExportCsvCard, playerImportCsvCard);
+    layout.getLeftContainer().getChildren().addAll(playerCard);
     root.getChildren().add(layout);
   }
 
