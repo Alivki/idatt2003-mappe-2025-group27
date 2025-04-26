@@ -9,23 +9,51 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.stage.StageStyle;
 
+/**
+ * A JavaFX component representing a toast notification. that appears temporarily on the screen. The
+ * toast displays a title and message, supports different variants (default, error, success), and
+ * automatically closes after a short delay. It is styled using an external CSS stylesheet.
+ *
+ * @author Iver Lindholm
+ * @version 1.0
+ * @since 2.0
+ */
 public class Toast {
+  /** Enum defining the available toast notification variants. */
   public enum ToastVariant {
     DEFAULT,
     ERROR,
     SUCCESS,
   }
 
+  /** The stage used to display the toast notification */
   private final Stage toastStage;
+  /** The title of the toast notification */
   private final String title;
+  /** The message of the toast notification */
   private final String message;
+  /** The parent StackPane that owns the toast */
   private final StackPane owner;
+  /** The minimum width of the toast notification */
   private static final double MIN_TOAST_WIDTH = 250;
+  /** The height of the toast notification */
   private static final double TOAST_HEIGHT = 101;
+  /** The offset from the screen edge */
   private static final double EDGE_OFFSET = 35;
+  /** The estimated width of a character in pixels for width calculation */
   private static final double CHAR_WIDTH = 5.5;
+  /** The estimated width of the toast based on content lenght */
   private double estimatedWidth;
 
+  /**
+   * Constructs a {@link Toast} notification with the specified owner, variant, title, and message.
+   * The toast is initialized as a non-model, undecorated, and transparent stage.
+   *
+   * @param owner The {@link StackPane} that owns the toast notification.
+   * @param type The {@link ToastVariant} defining the toast's style.
+   * @param title The title text to display in the toast.
+   * @param message The message text to display in the toast.
+   */
   public Toast(StackPane owner, ToastVariant type, String title, String message) {
     this.owner = owner;
     this.title = title;
@@ -42,6 +70,12 @@ public class Toast {
     setupUI(type);
   }
 
+  /**
+   * Sets up the user interface of the toast notification, including the layout, title, message, and
+   * styling based on the specified variant. The width is estimated based on the content length.
+   *
+   * @param type The {@link ToastVariant} defining the toast's style.
+   */
   private void setupUI(ToastVariant type) {
     VBox layout = new VBox(0);
     layout.getStyleClass().add("toast");
@@ -87,6 +121,10 @@ public class Toast {
     toastStage.setScene(scene);
   }
 
+  /**
+   * Displays the toast notification in the bottom-right corner of the owner window. The toast
+   * remains visible for 3.5 seconds before automatically closing.
+   */
   public void show() {
     double ownerWidth = owner.getScene().getWidth();
     double ownerHeight = owner.getScene().getHeight();

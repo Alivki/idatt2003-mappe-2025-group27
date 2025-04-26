@@ -1,27 +1,19 @@
 package ntnu.idatt2003.group27.view;
 
-import java.util.ArrayList;
-import java.util.List;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javax.swing.Action;
-import javax.swing.Icon;
 import ntnu.idatt2003.group27.controllers.MainController;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.view.components.AppLayout;

@@ -14,13 +14,27 @@ import ntnu.idatt2003.group27.models.Player;
 
 /**
  * A class to represent player list cells.
- * Gives access to appropraite player information and player-handling functionality.
+ * Gives access to appropriate player information and player-handling functionality.
+ *
+ * @author Amadeus Berg
+ * @version 1.0
+ * @since 2.0
  */
 public class PlayerButtonListCell extends ListCell<Player> {
+  /**
+   * The main container for the cell's content, organizing the icon, player name, and remove button
+   */
   private final HBox mainContainer;
+  /** The label displaying the player's name */
   private final Label playerLabel;
+  /** The button used to remove the player from the list */
   private final CustomButton removePlayerButton;
 
+  /**
+   * Constructs a {@link PlayerButtonListCell}, initializing the layout with a player icon, name,
+   * label, and remove button. The cell is styled and configured to handle player removal view the
+   * {@link MainController}.
+   */
   public PlayerButtonListCell() {
     //Initializes main content
     AnchorPane mainAnchorPane = new AnchorPane();
@@ -55,6 +69,13 @@ public class PlayerButtonListCell extends ListCell<Player> {
     rightContainer.getChildren().addAll(removePlayerButton);
   }
 
+  /**
+   * Updates the cell's content based on the provided {@link Player} item. Displays the player's
+   * name and the cell's layout if the item is non-null; otherwise, clears the cell.
+   *
+   * @param player The {@link Player} object to display in the cell, or null if the cell is empty.
+   * @param empty A boolean indicating weather the cell is empty.
+   */
   @Override
   protected void updateItem(Player player, boolean empty) {
     super.updateItem(player, empty);

@@ -22,15 +22,40 @@ import ntnu.idatt2003.group27.models.actions.LadderAction;
 import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
+/**
+ * A JavaFX canvas component for rendering a tile-based game board. The canvas displays tiles,
+ * players positions, tile actions, and visual indicators like arrows and icons. The board is
+ * dynamically sized and supports various tile actions defined in the game model.
+ *
+ * @author Iver Lindholm
+ * @version 1.8
+ * @since 2.0
+ */
 public class Canvas extends javafx.scene.canvas.Canvas {
+  /** The total number of tiles on the board */
   private final int boardSize;
+  /** The size of each tile in pixels */
   private double tileSize;
+  /** The number of columns in the board grid */
   private final int columns = 10;
+  /** The number of rows in the board grid */
   private final int rows = 9;
+  /** The list of players currently on the board. */
   private List<Player> players;
+  /** The positions of players on the board, mapped to their respective tile IDs. */
   private Map<Player, Integer> playerPositions;
+  /** A map of tile IDs to their corresponding {@link Tile} objects, containing tile actions */
   private final Map<Integer, Tile> tileActions;
 
+  /**
+   * Constructs a {@link Canvas} for rendering the game board with the specified tile actions,
+   * players, and board size.
+   *
+   * @param tileActions A {@link Map} of tile IDs to {@link Tile} objects defining the board's
+   *                    actions.
+   * @param players A {@link List} of {@link Player} objects representing the players on the board.
+   * @param boardSize The total number of tiles on the board.
+   */
   public Canvas(Map<Integer, Tile> tileActions, List<Player> players, int boardSize) {
     this.tileSize = 0;
     this.players = new ArrayList<>();
@@ -43,20 +68,39 @@ public class Canvas extends javafx.scene.canvas.Canvas {
       ));
   }
 
+  /**
+   * Retrieves the total number of tiles on the board.
+   *
+   * @return The board size as an integer.
+   */
   public int getBoardSize() {
     return boardSize;
   }
 
+  /**
+   * Updates the board with a new list of players and redraws the canvas to reflect the changes in
+   * their positions.
+   *
+   * @param players The updated {@link List} of {@link Player} objects.
+   */
   public void updateBoard(List<Player> players) {
     this.players = players;
     redrawBoard();
   }
 
+  /**
+   * Resizes the board by setting a new tile size and redraws the canvas to reflect the change.
+   *
+   * @param tileSize The new size of each tile in pixels.
+   */
   public void resizeBoard(double tileSize) {
     this.tileSize = tileSize;
     redrawBoard();
   }
 
+  /**
+   * Redraws the entire board, including tiles, players, tile actions, and visual indicators.
+   */
   public void redrawBoard() {
     GraphicsContext gc = getGraphicsContext2D();
     gc.clearRect(0, 0, getWidth(), getHeight());
@@ -69,6 +113,11 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     drawPlayers(gc);
   }
 
+  /**
+   * Draws the grid of tiles on the canvas, including tile borders and tile numbers.
+   *
+   * @param gc The {@link GraphicsContext} used for drawing.
+   */
   private void drawTiles(GraphicsContext gc) {
     IntStream.range(0, (columns * rows )).forEach(i -> {
       double[] tilePosition = getTilePos(i);
@@ -83,6 +132,12 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     });
   }
 
+  /**
+   * Draws visual representations of tile actions, such as ladders, back-to-start actions, or dice
+   * reroll actions, using different colors for each actions type.
+   *
+   * @param gc The {@link GraphicsContext} used for drawing.
+   */
   private void drawTileActions(GraphicsContext gc) {
     gc.setFill(Color.YELLOW);
     gc.fillRect(30, (rows - 1) * tileSize + 9, tileSize, tileSize);
@@ -120,6 +175,12 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     });
   }
 
+  /**
+   * Draws icons for the specific tile actions, such as back-to-start or dice reroll actions, on
+   * the corresponding tiles.
+   *
+   * @param gc The {@link GraphicsContext} used for drawing.
+   */
   private void drawAllIcons(GraphicsContext gc) {
     tileActions.entrySet().stream()
       .filter(e -> e.getValue() != null && e.getValue().getLandAction() != null)
@@ -140,6 +201,13 @@ public class Canvas extends javafx.scene.canvas.Canvas {
       });
   }
 
+  /**
+   * Draws a single icon on the specified tile, centered within the tile.
+   *
+   * @param gc The {@link GraphicsContext} used for drawing.
+   * @param tileId The ID of the tile (zero-based) where the icon will be drawn.
+   * @param iconPath The resource path to the icon image file.
+   */
   private void drawIcon(GraphicsContext gc, int tileId, String iconPath) {
     double[] tilePosition = getTileCenter(tileId);
 
@@ -160,6 +228,11 @@ public class Canvas extends javafx.scene.canvas.Canvas {
       targetHeight);
   }
 
+  /**
+   * Draws arrows indicating the direction of movement across rows on the board.
+   *
+   * @param gc The {@link GraphicsContext} used for drawing.
+   */
   private void drawArrows(GraphicsContext gc) {
     double yPos = (tileSize * rows) + tileSize + 9;
 
@@ -184,12 +257,25 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     }
   }
 
+  /**
+   * Draws all ladders connecting tiles as defined by {@link LadderAction} instances in the tile
+   * actions map.
+   *
+   * @param gc The {@link GraphicsContext} used for drawing.
+   */
   private void drawAllLadders(GraphicsContext gc) {
     tileActions.entrySet().stream()
       .filter(e -> e.getValue().getLandAction() instanceof LadderAction)
       .forEach(e -> drawLadder(gc, e.getKey() - 1, ((LadderAction) e.getValue().getLandAction()).getDestinationTileId() - 1));
   }
 
+  /**
+   * Draws a ladder connecting two tiles, including rungs.
+   *
+   * @param gc The {@link GraphicsContext} used for drawing.
+   * @param startTile The zero-based ID of the strating tile.
+   * @param endTile The zero-based ID of the ending tile.
+   */
   private void drawLadder(GraphicsContext gc, int startTile, int endTile) {
     double[] start = getTileCenter(startTile);
     double[] end = getTileCenter(endTile);
@@ -251,6 +337,11 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     gc.fillOval(dotPos[0] - offset[0] - 1.5, dotPos[1] + offset[1] - 1.5, 3, 3);
   }
 
+  /**
+   * Draws the players positions on the board with their piece centered on their respective tiles.
+   *
+   * @param gc The {@link GraphicsContext} used for drawing.
+   */
   private void drawPlayers(GraphicsContext gc) {
     Map<Player, Integer> newPlayerPositions = players.stream()
       .collect(Collectors.toMap(
@@ -285,6 +376,12 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     });
   }
 
+  /**
+   * Calculates the top-left position of a tile based on its ID.
+   *
+   * @param tileId The zero-based ID of the tile.
+   * @return A double array containing the x and y coordinates of the tile's top-left corner.
+   */
   private double[] getTilePos(int tileId) {
     double yPos = (tileSize * rows) - tileSize;
 
@@ -298,6 +395,12 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     return new double[] {xPos + 30, currentYPos + 9};
   }
 
+  /**
+   * Calculates the center position of a tile based on its ID.
+   *
+   * @param tileId The zero-based ID of the tile.
+   * @return A double array containing the x and y coordinates of the tile's center.
+   */
   private double[] getTileCenter(int tileId) {
     double yPos = (tileSize * rows) - tileSize;
 

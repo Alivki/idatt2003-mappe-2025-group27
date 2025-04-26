@@ -3,12 +3,36 @@ package ntnu.idatt2003.group27.view.components;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
+/**
+ * A JavaFX component representing a card with a title and an optional description, the card is
+ * styled using an external CSS stylesheet and supports text wrapping the description.
+ *
+ * @author Iver Lindholm
+ * @version 1.0
+ * @since 2.0
+ */
 public class Card extends VBox {
 
+  /**
+   * Constructs a {@link Card} with the specified title, description and height.
+   *
+   * @param title The title text to display on the card.
+   * @param description The description text to display on the card, or null if no
+   *                    description is needed.
+   * @param height The minimum height of the card in pixels.
+   */
   public Card(String title, String description, double height) {
     initialize(title, description, height);
   }
 
+  /**
+   * Initializes the card with a title, optional description and specified minimum height.
+   *
+   * @param title The title text to display on the card.
+   * @param description The description text to display on the card, or null if no
+   *                    description is needed.
+   * @param height The minimum height of the card in pixels.
+   */
   public void initialize(String title, String description, double height) {
     Label titleLabel = new Label(title);
     titleLabel.getStyleClass().add("h3");

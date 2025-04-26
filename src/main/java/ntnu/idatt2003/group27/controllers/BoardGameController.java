@@ -18,19 +18,45 @@ import ntnu.idatt2003.group27.view.components.Toast;
 import javafx.animation.PauseTransition;
 import javafx.util.Duration;
 
+/**
+ * A controller class for managing the ladder game, implementing the MVC pattern. It handles game
+ * logic, user interactions with the {@link LadderGameView}, and updates the view based on the game
+ * event as an observer of the {@link BoardGame}.
+ *
+ * @author Iver Lindholm, Amadeus Berg
+ * @version 1.3
+ * @since 2.0
+ */
 public class BoardGameController implements BoardGameObserver {
+  /** The game model managing the ladder game logic */
   private BoardGame game;
+  /** The view for displaying the ladder game. */
   private LadderGameView ladderGameView;
+  /** The last player who made a move */
   private Player lastPlayer;
 
+  /** The main controller for coordinating application-wide actions */
   private final MainController mainController;
 
+  /** The type of ladder game being played */
   private LadderGameType ladderGameType;
 
+  /**
+   * Constructs a {@link BoardGameController} with the specified {@link MainController}
+   *
+   * @param mainController The {@link MainController} for coordinating application-wide actions
+   */
   public BoardGameController(MainController mainController) {
     this.mainController = mainController;
   }
 
+  /**
+   * Initializes the ladder game with the specifed game type and players, setting up the MVC pattern
+   * and event handlers.
+   *
+   * @param ladderGameType The {@link LadderGameType} defining the game difficulty.
+   * @param players An array of {@link Player} objects participating in the game.
+   */
   public void InitializeGame(LadderGameType ladderGameType, Player[] players) {
     this.ladderGameType = ladderGameType;
     // initializes mvc pattern
@@ -63,12 +89,17 @@ public class BoardGameController implements BoardGameObserver {
     }
   }
 
+  /**
+   * Restarts the current game, resetting the game state and updating the view.
+   */
   public void RestartGame(){
     game.restartGame();
   }
 
-
-
+  /**
+   * Sets up events handlers for the ladder game view, including actions for rolling the dice,
+   * restarting the game, and returning to the main menu.
+   */
   private void setupLadderViewEventHandlers() {
     ladderGameView.setRollDiceHandler(e -> {
       try {
@@ -107,6 +138,15 @@ public class BoardGameController implements BoardGameObserver {
     });
   }
 
+  /**
+   * Handles the event when a round is played, updating the view with the current player, roll
+   * result, and tile action information.
+   *
+   * @param players List of all {@link Player} in the game.
+   * @param currentPlayer The {@link Player} next player to play.
+   * @param roll The result of the dice roll for the round.
+   * @param tileAction The {@link TileAction} triggered by the player's move, or null if none.
+   */
   @Override
   public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction tileAction) {
     int round = ladderGameView.getRoundLabel() + 1;
@@ -134,6 +174,11 @@ public class BoardGameController implements BoardGameObserver {
     }
   }
 
+  /**
+   * Handles the event when a player wins the game, updating the view and showing a victory alert.
+   *
+   * @param player The {@link Player} who has won.
+   */
   @Override
   public void onPlayerWon(Player player) {
     ladderGameView.toggleDiceButton(false);
@@ -159,6 +204,12 @@ public class BoardGameController implements BoardGameObserver {
     alert.show();
   }
 
+  /**
+   * Handles the event when the game is set up, initializing the view with the initial game state.
+   *
+   * @param players The list of players participating in the game.
+   * @param tiles The map of tiles on the board, with tile IDs as keys and {@link Tile} objects as values.
+   */
   @Override
   public void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
     ladderGameView.createBoard(players, tiles);
@@ -169,9 +220,14 @@ public class BoardGameController implements BoardGameObserver {
     ladderGameView.updateGradeLabel(ladderGameType.name());
   }
 
+  /**
+   * Handles the event when the game is restarted, resetting the view to the initial game state.
+   *
+   * @param players The list of {@link Player} objects in the game.
+   * @param tiles The map of tile IDs to {@link Tile} objects representing the game board.
+   */
   @Override
   public void onGameRestart(ArrayList<Player> players, Map<Integer, Tile> tiles){
-
     ladderGameView.toggleDiceButton(true);
     ladderGameView.updateCurrentPlayerLabel(players.getFirst().getName());
     ladderGameView.updateRoundLabel("1");
@@ -182,6 +238,11 @@ public class BoardGameController implements BoardGameObserver {
     ladderGameView.populatePlayerList(players);
   }
 
+  /**
+   * Retrievers the ladder game view associated with this controller.
+   *
+   * @return The {@link LadderGameView} instance.
+   */
   public LadderGameView getView() {
     return ladderGameView;
   }
