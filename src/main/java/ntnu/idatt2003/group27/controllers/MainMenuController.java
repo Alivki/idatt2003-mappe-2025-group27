@@ -33,26 +33,47 @@ public class MainMenuController {
    * importing player data, and starting games with different difficulty levels.
    */
   private void setupMenuViewEventHandler() {
-    // add player button
+    //Sets handler for add player button
     mainMenuView.setAddPlayerButtonHandler(e -> {
       System.out.println("Add player button clicked");
+
+      if (MainController.getInstance().getPlayers().size() >= 5) {
+        System.out.println("Cannot add player, max player limit reached!");
+        Alert alert = new Alert(
+            this.mainMenuView.getRoot(),
+            "Kan ikke legge til spiller",
+            "Du har nådd maksgrensen på 5 spillere. Fjern en tidligere spiller dersom du vil endre på spillerene.",
+            "Ok",
+            "Lukk",
+            response -> {
+            }
+        );
+        alert.show();
+        return;
+      }
+
       String playerName = mainMenuView.getPlayerNameTextFieldValue();
       if (playerName.equals("")) {
         playerName = "Spiller " + (MainController.getInstance().getPlayers().size() + 1);
       }
+
+      if(MainController.getInstance().getPlayers().stream().map(Player::getName).anyMatch(playerName::equals)) {
+        System.out.println("Cannot add player, player name already in use!");
+        Alert alert = new Alert(
+            this.mainMenuView.getRoot(),
+            "Kan ikke legge til spiller",
+            "En spiller med samme navn finnes allerede!",
+            "Ok",
+            "Lukk",
+            response -> {
+            }
+        );
+        alert.show();
+        return;
+      }
+
       MainController.getInstance().addPlayer(new Player(playerName));
-
     });
-
-    // change player piece button
-
-
-
-    // change to ladder game selection
-    // change to game 2 selection
-    // change to game 3 selection
-
-    // start game with specified difficulty use factory to create game
 
     //Sets handler for normal board button
     mainMenuView.setNormalBoardButtonHandler(e -> {
