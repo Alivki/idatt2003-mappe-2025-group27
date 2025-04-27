@@ -1,6 +1,7 @@
 package ntnu.idatt2003.group27.view.components;
 
 import java.util.List;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -31,7 +32,16 @@ public class PlayerListCard extends Card {
    */
   public PlayerListCard(String title, String description, double height) {
     super(title, description, height);
+
+    //Initializes playerList scrollpane
     playerList = new ScrollPane();
+    playerList.setPadding(new Insets(10, 0, 0, 0));
+    playerList.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    playerList.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    playerList.setMaxHeight(height);
+    VBox.setVgrow(playerList, Priority.ALWAYS);
+    playerList.setFitToWidth(true);
+    playerList.getStyleClass().add("player-scroll-pane");
     getChildren().add(playerList);
   }
 
