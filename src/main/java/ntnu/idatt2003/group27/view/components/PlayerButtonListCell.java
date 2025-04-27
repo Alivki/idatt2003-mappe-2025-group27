@@ -54,7 +54,7 @@ public class PlayerButtonListCell extends ListCell<Player> {
     //Initializes button to remove player from list
     removePlayerButton = new CustomButton("X", CustomButton.ButtonVariant.SECONDARY, null);
     removePlayerButton.setOnAction(e -> {
-      MainController.getInstance().removePlayer(getItem());
+      //mainController.removePlayer(getItem());
     });
 
     //Initialize player image

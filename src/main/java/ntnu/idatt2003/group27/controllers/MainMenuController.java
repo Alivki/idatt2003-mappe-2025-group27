@@ -17,14 +17,20 @@ public class MainMenuController {
   /** The main menu view associated with this controller */
   private MainMenuView mainMenuView;
 
+  /** A reference to the mainController */
+  private final MainController mainController;
+
   /**
    * Constructs a  {@link MainMenuController} witht the specified {@link MainMenuView} and sets up
    * events handlers for menu interactions.
    *
    * @param mainMenuView The {@link MainMenuView} to be controlled.
    */
-  public MainMenuController(MainMenuView mainMenuView) {
+  public MainMenuController(MainController mainController, MainMenuView mainMenuView) {
+    this.mainController = mainController;
     this.mainMenuView = mainMenuView;
+    mainMenuView.setMainMenuController(this);
+    mainMenuView.initializeLayout();
     setupMenuViewEventHandler();
   }
 
@@ -37,7 +43,7 @@ public class MainMenuController {
     mainMenuView.setAddPlayerButtonHandler(e -> {
       System.out.println("Add player button clicked");
 
-      if (MainController.getInstance().getPlayers().size() >= 5) {
+      if (mainController.getPlayers().size() >= 5) {
         System.out.println("Cannot add player, max player limit reached!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
@@ -54,10 +60,10 @@ public class MainMenuController {
 
       String playerName = mainMenuView.getPlayerNameTextFieldValue();
       if (playerName.equals("")) {
-        playerName = "Spiller " + (MainController.getInstance().getPlayers().size() + 1);
+        playerName = "Spiller " + (mainController.getPlayers().size() + 1);
       }
 
-      if(MainController.getInstance().getPlayers().stream().map(Player::getName).anyMatch(playerName::equals)) {
+      if(mainController.getPlayers().stream().map(Player::getName).anyMatch(playerName::equals)) {
         System.out.println("Cannot add player, player name already in use!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
@@ -72,13 +78,13 @@ public class MainMenuController {
         return;
       }
 
-      MainController.getInstance().addPlayer(new Player(playerName));
+      mainController.addPlayer(new Player(playerName));
     });
 
     //Sets handler for normal board button
     mainMenuView.setNormalBoardButtonHandler(e -> {
       System.out.println("Normal board button clicked");
-      if (MainController.getInstance().getPlayers().size() < 2) {
+      if (mainController.getPlayers().size() < 2) {
         System.out.println("Not enough players to start game!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
@@ -91,13 +97,13 @@ public class MainMenuController {
         alert.show();
         return;
       }
-      MainController.getInstance().switchToBoardGame(LadderGameType.NORMAL);
+      mainController.switchToBoardGame(LadderGameType.NORMAL);
     });
 
     //Sets handler for crazy board button
     mainMenuView.setCrazyBoardButtonHandler(e -> {
       System.out.println("Crazy board button clicked");
-      if (MainController.getInstance().getPlayers().size() < 2) {
+      if (mainController.getPlayers().size() < 2) {
         System.out.println("Not enough players to start game!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
@@ -110,13 +116,13 @@ public class MainMenuController {
         alert.show();
         return;
       }
-      MainController.getInstance().switchToBoardGame(LadderGameType.CRAZY);
+      mainController.switchToBoardGame(LadderGameType.CRAZY);
     });
 
     //Sets handler for IMPOSSIBLE board button
     mainMenuView.setImpossibleBoardButtonHandler(e -> {
       System.out.println("IMPOSSIBLE board button clicked");
-      if (MainController.getInstance().getPlayers().size() < 2) {
+      if (mainController.getPlayers().size() < 2) {
         System.out.println("Not enough players to start game!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
@@ -129,13 +135,13 @@ public class MainMenuController {
         alert.show();
         return;
       }
-      MainController.getInstance().switchToBoardGame(LadderGameType.IMPOSSIBLE);
+      mainController.switchToBoardGame(LadderGameType.IMPOSSIBLE);
     });
 
     //Sets handler for JSON board button
     mainMenuView.setJsonBoardButtonHandler(e -> {
       System.out.println("Json board button clicked");
-      if (MainController.getInstance().getPlayers().size() < 2) {
+      if (mainController.getPlayers().size() < 2) {
         System.out.println("Not enough players to start game!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
@@ -148,16 +154,16 @@ public class MainMenuController {
         alert.show();
         return;
       }
-      MainController.getInstance().switchToBoardGame(LadderGameType.NORMAL);
+      mainController.switchToBoardGame(LadderGameType.NORMAL);
     });
 
     //Set export players csv file handler
     mainMenuView.setExportPlayersCsvButtonHandler(e -> {
       System.out.println("Export players csv button clicked");
-      if (MainController.getInstance() != null){      PlayerCsvFileWriter csvFileWriter = new PlayerCsvFileWriter();
+      if (mainController != null){      PlayerCsvFileWriter csvFileWriter = new PlayerCsvFileWriter();
       try {
         csvFileWriter.writeFile("src/main/resources/csv/Exported_Players.csv",
-            MainController.getInstance().getPlayers().toArray(new Player[0]));
+            mainController.getPlayers().toArray(new Player[0]));
       } catch (IOException ex) {
         System.out.println(ex.getMessage());
 
@@ -171,13 +177,24 @@ public class MainMenuController {
       PlayerCsvFileReader fileReader = new PlayerCsvFileReader();
       try {
         Player[] players = fileReader.readFile("src/main/resources/csv/Exported_Players.csv");
-        if (MainController.getInstance() != null){
-          MainController.getInstance().setPlayers(players);
+        if (mainController != null){
+          mainController.setPlayers(players);
         }
       }
       catch (IOException ex) {
         System.out.println(ex.getMessage());
       }
     });
+
+    mainMenuView.setSelectIconButtonHandlers(e -> {
+      //gets an int from the specific button, alternatively
+      //selectedPiece = MainController.pieceMap.get(i);
+      //selected piece is used on creation
+    }
+    );
+  }
+
+  public MainController getMainController(){
+    return mainController;
   }
 }

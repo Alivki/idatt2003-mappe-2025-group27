@@ -14,7 +14,7 @@ public class Player {
 
   /** The tile currently occupied by the player. */
   private Tile currentTile;
-  private String piece;
+  private Piece piece;
 
   /**
    * Constructs a player with the specified name and associates them with the game.
@@ -35,10 +35,10 @@ public class Player {
   }
 
   /**
-   * getPiece method to get the name of the player piece.
-   * @return String The name of the piece.
+   * getPiece method to get the current player piece.
+   * @return The current {@Link Piece} used by this player.
    */
-  public String getPiece() {
+  public Piece getPiece() {
     return piece;
   }
 

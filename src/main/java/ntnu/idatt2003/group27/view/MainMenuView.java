@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ntnu.idatt2003.group27.controllers.MainController;
+import ntnu.idatt2003.group27.controllers.MainMenuController;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.view.components.AppLayout;
 import ntnu.idatt2003.group27.view.components.Card;
@@ -24,6 +25,8 @@ import ntnu.idatt2003.group27.view.components.PlayerButtonListCell;
 
 public class MainMenuView {
   private final StackPane root;
+
+  private MainMenuController mainMenuController;
 
   //Header buttons
   private CustomButton ladderGameMainMenuButton;
@@ -35,6 +38,13 @@ public class MainMenuView {
   private CustomButton addPlayerButton;
   private CustomButton exportPlayersCsvButton;
   private CustomButton importPlayersCsvButton;
+
+  //Player icon selection buttons
+  private CustomButton firstPlayerIconButton;
+  private CustomButton secondPlayerIconButton;
+  private CustomButton thirdPlayerIconButton;
+  private CustomButton fourthPlayerIconButton;
+  private CustomButton fifthPlayerIconButton;
 
   //Board buttons
   private MainMenuBoardButton normalBoardButton;
@@ -49,10 +59,10 @@ public class MainMenuView {
     root.setAlignment(Pos.TOP_CENTER);
     root.getStyleClass().add("root");
 
-    initializeLayout();
+
   }
 
-  private void initializeLayout() {
+  public void initializeLayout() {
     AppLayout layout = new AppLayout();
 
     //Initializes header
@@ -112,10 +122,31 @@ public class MainMenuView {
     //Initializes list view to display player information
     ListView<Player> playerListView = new ListView<>();
     playerListView.setCellFactory(list -> new PlayerButtonListCell());
-    if (MainController.getInstance() != null) {
-      playerListView.setItems(MainController.getInstance().getPlayers());
+    System.out.println(mainMenuController);
+    System.out.println(mainMenuController.getMainController());
+    if (mainMenuController != null && mainMenuController.getMainController() != null) {
+      playerListView.setItems(mainMenuController.getMainController().getPlayers());
     }
     playerListView.setPrefSize(playerCard.widthProperty().intValue(), 225);
+
+    //Initializes icon selection buttons
+    HBox iconSelectionButtonContainer = new HBox(7);
+    iconSelectionButtonContainer.setAlignment(Pos.CENTER);
+
+    ImageView firstPlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/home.png")));
+    firstPlayerIconButton = new CustomButton(firstPlayerIcon, CustomButton.ButtonVariant.ICON, null);
+
+    ImageView secondPlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/download.png")));
+    secondPlayerIconButton = new CustomButton(secondPlayerIcon, CustomButton.ButtonVariant.ICON, null);
+
+    ImageView thirdPlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/reroll.png")));
+    thirdPlayerIconButton = new CustomButton(thirdPlayerIcon, CustomButton.ButtonVariant.ICON, null);
+
+    ImageView fourthPlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/upload.png")));
+    fourthPlayerIconButton = new CustomButton(fourthPlayerIcon, CustomButton.ButtonVariant.ICON, null);
+
+    ImageView fifthPlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/player_icons/chicken.png")));
+    fifthPlayerIconButton = new CustomButton(fifthPlayerIcon, CustomButton.ButtonVariant.ICON, null);
 
     //Initializes player csv cards
     Card playerExportCsvCard = new Card("Eksporter spillere", "Last ned csv fil med spillerdata", 100);
@@ -133,11 +164,15 @@ public class MainMenuView {
     csvExampleInfoDescriptionLabel.getStyleClass().add("info-text");
 
     //Positions nodes correctly in each container
-    playerCard.getChildren().addAll(playerListView, playerNameTextField, addPlayerButton);
+    iconSelectionButtonContainer.getChildren().addAll(firstPlayerIconButton, secondPlayerIconButton,
+        thirdPlayerIconButton, fourthPlayerIconButton, fifthPlayerIconButton);
+    playerCard.getChildren().addAll(playerListView, iconSelectionButtonContainer, playerNameTextField, addPlayerButton);
     playerExportCsvCard.getChildren().addAll(exportPlayersCsvButton);
     playerImportCsvCard.getChildren().addAll(importPlayersCsvButton, csvExampleInfoHeaderLabel, csvExampleInfoDescriptionLabel);
+
     headerContainer.getChildren().addAll(ladderGameMainMenuButton, secondGameMainMenuButton, thirdGameMainMenuButton, applicationQuitButton);
     menuContainer.getChildren().addAll(title, boardGrid);
+
     layout.getHeader().getChildren().addAll(headerContainer);
     layout.getMainContainer().getChildren().addAll(menuContainer);
     layout.getRightContainer().getChildren().addAll(playerExportCsvCard, playerImportCsvCard);
@@ -184,12 +219,25 @@ public class MainMenuView {
   public void setImportPlayersCsvButtonHandler(EventHandler<ActionEvent> action) {
     importPlayersCsvButton.setOnAction(action);
   }
+
+  public void setSelectIconButtonHandlers(EventHandler<ActionEvent> action) {
+    firstPlayerIconButton.setOnAction(action);
+  }
+
   /**
    * Get the name from the player name text input field.
    * @return
    */
   public String getPlayerNameTextFieldValue() {
     return playerNameTextField.getText();
+  }
+
+  /**
+   * Sets the controller of the view in the MVC pattern
+   * @return
+   */
+  public void setMainMenuController(MainMenuController mainMenuController) {
+    this.mainMenuController = mainMenuController;
   }
 
   public StackPane getRoot() {

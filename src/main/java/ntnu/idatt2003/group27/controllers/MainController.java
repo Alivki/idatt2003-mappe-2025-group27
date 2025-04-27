@@ -1,8 +1,11 @@
 package ntnu.idatt2003.group27.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.view.SceneManager;
@@ -14,20 +17,21 @@ import ntnu.idatt2003.group27.view.SceneManager;
 public class MainController {
   /** The observable list of players in the game. */
   private ObservableList<Player> playersObservableList = FXCollections.observableArrayList();
-  /** The instance of the {@link MainController} */
-  private static MainController instance;
+
+  /** The HashMap for retrieving piece instances from an integer */
+  private Map<Integer, Piece> pieceMap = new HashMap<Integer, Piece>();
+
   /** The scene manager responsible for handling screen transitions */
-  public SceneManager sceneManager;
+  private SceneManager sceneManager;
   /** The controller for the board game. */
   private BoardGameController boardGameController;
 
   /**
    * Constructs a {@link MainController} and initializes it as the singleton instance of nine exists.
    */
-  public MainController() {
-    if (instance == null) {
-      instance = this;
-    }
+  public MainController(SceneManager sceneManager) {
+    this.sceneManager = sceneManager;
+    InitializePieces();
   }
 
   /**
@@ -97,12 +101,15 @@ public class MainController {
     playersObservableList.addAll(players);
   }
 
+
   /**
-   * Retrieves the singleton instace of the {@link MainController}.
-   *
-   * @return The singleton instance of {@link MainController}.
+   * Initializes the game pieces and puts them into a hashmap with the correct key
    */
-  public static MainController getInstance(){
-    return instance;
+  private void InitializePieces(){
+    pieceMap.put(0, new Piece("Car", "icons/player_icons/jeep.png"));
+    pieceMap.put(1, new Piece("Chicken", "icons/player_icons/chicken.png"));
+    pieceMap.put(2, new Piece("Frisbee", "icons/player_icons/frisbee.png"));
+    pieceMap.put(3, new Piece("Pawn", "icons/player_icons/chess-pawn.png"));
+    pieceMap.put(4, new Piece("Tophat", "icons/player_icons/top-hat.png"));
   }
 }
