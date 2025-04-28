@@ -1,7 +1,10 @@
 package ntnu.idatt2003.group27.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
@@ -18,8 +21,8 @@ public class MainController {
   /** The observable list of players in the game. */
   private ObservableList<Player> playersObservableList = FXCollections.observableArrayList();
 
-  /** The HashMap for retrieving piece instances from an integer */
-  private Map<Integer, Piece> pieceMap = new HashMap<Integer, Piece>();
+  /** A list of all pieces available in the application*/
+  private ArrayList<Piece> pieces = new ArrayList<>();
 
   /** The scene manager responsible for handling screen transitions */
   private SceneManager sceneManager;
@@ -91,6 +94,11 @@ public class MainController {
     playersObservableList.remove(player);
   }
 
+
+  public ArrayList<Piece> getPieces(){
+    return pieces;
+  }
+
   /**
    * Sets the list of players, replacing the current list with the provided array.
    *
@@ -106,10 +114,23 @@ public class MainController {
    * Initializes the game pieces and puts them into a hashmap with the correct key
    */
   private void InitializePieces(){
-    pieceMap.put(0, new Piece("Car", "icons/player_icons/jeep.png"));
-    pieceMap.put(1, new Piece("Chicken", "icons/player_icons/chicken.png"));
-    pieceMap.put(2, new Piece("Frisbee", "icons/player_icons/frisbee.png"));
-    pieceMap.put(3, new Piece("Pawn", "icons/player_icons/chess-pawn.png"));
-    pieceMap.put(4, new Piece("Tophat", "icons/player_icons/top-hat.png"));
+    pieces.clear();
+    pieces.add(new Piece("Car", "/icons/player_icons/jeep.png"));
+    pieces.add(new Piece("Chicken", "/icons/player_icons/chicken.png"));
+    pieces.add(new Piece("Frisbee", "/icons/player_icons/frisbee.png"));
+    pieces.add(new Piece("Pawn", "/icons/player_icons/chess-pawn.png"));
+    pieces.add(new Piece("Tophat", "/icons/player_icons/top-hat.png"));
   }
+
+  /**
+   * Gets the first piece not used by another player, returns null if none.
+   */
+  public Piece getAvailablePiece() {
+    return pieces.stream()
+        .filter(piece -> playersObservableList.stream()
+        .noneMatch(player -> player.getPiece().equals(piece)))
+        .findFirst()
+        .orElse(null);
+  }
+
 }

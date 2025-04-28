@@ -1,6 +1,7 @@
 package ntnu.idatt2003.group27.controllers;
 
 import java.io.IOException;
+import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileReader;
@@ -32,6 +33,7 @@ public class MainMenuController {
     mainMenuView.setMainMenuController(this);
     mainMenuView.initializeLayout();
     setupMenuViewEventHandler();
+    mainMenuView.populatePlayerList(mainController.getPlayers());
   }
 
   /**
@@ -43,6 +45,7 @@ public class MainMenuController {
     mainMenuView.setAddPlayerButtonHandler(e -> {
       System.out.println("Add player button clicked");
 
+      //Show alert if adding player crosses player limit.
       if (mainController.getPlayers().size() >= 5) {
         System.out.println("Cannot add player, max player limit reached!");
         Alert alert = new Alert(
@@ -59,10 +62,13 @@ public class MainMenuController {
       }
 
       String playerName = mainMenuView.getPlayerNameTextFieldValue();
+
+      //Set a default player name if player is already added.
       if (playerName.equals("")) {
         playerName = "Spiller " + (mainController.getPlayers().size() + 1);
       }
 
+      //Show alert if player with name already exists
       if(mainController.getPlayers().stream().map(Player::getName).anyMatch(playerName::equals)) {
         System.out.println("Cannot add player, player name already in use!");
         Alert alert = new Alert(
@@ -78,7 +84,16 @@ public class MainMenuController {
         return;
       }
 
-      mainController.addPlayer(new Player(playerName));
+      Piece availablePiece = mainController.getAvailablePiece();
+      mainController.addPlayer(new Player(playerName, availablePiece));
+      mainMenuView.populatePlayerList(mainController.getPlayers());
+    });
+
+    //Sets handler for remove player button
+
+    mainMenuView.setRemovePlayerButtonHandler(e -> {
+      System.out.println("Remove player button clicked");
+      System.out.println(e.getPlayer());
     });
 
     //Sets handler for normal board button

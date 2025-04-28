@@ -23,6 +23,12 @@ public class Player {
    */
   public Player(String name) {
     this.name = name;
+    this.piece = null;
+  }
+
+  public Player(String name, Piece piece) {
+    this.name = name;
+    this.piece = piece;
   }
 
   /**

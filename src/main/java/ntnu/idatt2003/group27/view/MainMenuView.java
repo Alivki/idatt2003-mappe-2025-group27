@@ -1,5 +1,7 @@
 package ntnu.idatt2003.group27.view;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,14 +16,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import ntnu.idatt2003.group27.controllers.MainController;
 import ntnu.idatt2003.group27.controllers.MainMenuController;
 import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.models.actionEvents.PlayerActionEvent;
 import ntnu.idatt2003.group27.view.components.AppLayout;
 import ntnu.idatt2003.group27.view.components.Card;
 import ntnu.idatt2003.group27.view.components.CustomButton;
 import ntnu.idatt2003.group27.view.components.MainMenuBoardButton;
 import ntnu.idatt2003.group27.view.components.PlayerButtonListCell;
+import ntnu.idatt2003.group27.view.components.PlayerListEditorCard;
 
 public class MainMenuView {
   private final StackPane root;
@@ -40,11 +43,7 @@ public class MainMenuView {
   private CustomButton importPlayersCsvButton;
 
   //Player icon selection buttons
-  private CustomButton firstPlayerIconButton;
-  private CustomButton secondPlayerIconButton;
-  private CustomButton thirdPlayerIconButton;
-  private CustomButton fourthPlayerIconButton;
-  private CustomButton fifthPlayerIconButton;
+  private ArrayList<CustomButton> playerIconButtons = new ArrayList<>();
 
   //Board buttons
   private MainMenuBoardButton normalBoardButton;
@@ -52,14 +51,15 @@ public class MainMenuView {
   private MainMenuBoardButton impossibleBoardButton;
   private MainMenuBoardButton jsonBoardButton;
 
+  //Cards
+  private PlayerListEditorCard playerListEditorCard;
+
   private TextField playerNameTextField;
 
   public MainMenuView() {
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
     root.getStyleClass().add("root");
-
-
   }
 
   public void initializeLayout() {
@@ -129,24 +129,20 @@ public class MainMenuView {
     }
     playerListView.setPrefSize(playerCard.widthProperty().intValue(), 225);
 
+    //Initializes player list card to display player information
+    playerListEditorCard = new PlayerListEditorCard("Spillere", "En oversikt over spillerne i spillet. Her kan du legge til og redigere spillere.", 300);
+    playerListEditorCard.setSpacing(10);
+
     //Initializes icon selection buttons
     HBox iconSelectionButtonContainer = new HBox(7);
     iconSelectionButtonContainer.setAlignment(Pos.CENTER);
 
-    ImageView firstPlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/home.png")));
-    firstPlayerIconButton = new CustomButton(firstPlayerIcon, CustomButton.ButtonVariant.ICON, null);
+    for(int i = 0; i < 5; i++){
+      ImageView playerIcon = new ImageView(new Image(mainMenuController.getMainController().getPieces().get(i).getIconFilePath()));
+      CustomButton playerIconButton = new CustomButton(playerIcon, CustomButton.ButtonVariant.ICON, null);
+      playerIconButtons.add(playerIconButton);
+    }
 
-    ImageView secondPlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/download.png")));
-    secondPlayerIconButton = new CustomButton(secondPlayerIcon, CustomButton.ButtonVariant.ICON, null);
-
-    ImageView thirdPlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/reroll.png")));
-    thirdPlayerIconButton = new CustomButton(thirdPlayerIcon, CustomButton.ButtonVariant.ICON, null);
-
-    ImageView fourthPlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/upload.png")));
-    fourthPlayerIconButton = new CustomButton(fourthPlayerIcon, CustomButton.ButtonVariant.ICON, null);
-
-    ImageView fifthPlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/player_icons/chicken.png")));
-    fifthPlayerIconButton = new CustomButton(fifthPlayerIcon, CustomButton.ButtonVariant.ICON, null);
 
     //Initializes player csv cards
     Card playerExportCsvCard = new Card("Eksporter spillere", "Last ned csv fil med spillerdata", 100);
@@ -164,9 +160,8 @@ public class MainMenuView {
     csvExampleInfoDescriptionLabel.getStyleClass().add("info-text");
 
     //Positions nodes correctly in each container
-    iconSelectionButtonContainer.getChildren().addAll(firstPlayerIconButton, secondPlayerIconButton,
-        thirdPlayerIconButton, fourthPlayerIconButton, fifthPlayerIconButton);
-    playerCard.getChildren().addAll(playerListView, iconSelectionButtonContainer, playerNameTextField, addPlayerButton);
+    iconSelectionButtonContainer.getChildren().addAll(playerIconButtons);
+    playerListEditorCard.getChildren().addAll(iconSelectionButtonContainer, playerNameTextField, addPlayerButton);
     playerExportCsvCard.getChildren().addAll(exportPlayersCsvButton);
     playerImportCsvCard.getChildren().addAll(importPlayersCsvButton, csvExampleInfoHeaderLabel, csvExampleInfoDescriptionLabel);
 
@@ -176,7 +171,7 @@ public class MainMenuView {
     layout.getHeader().getChildren().addAll(headerContainer);
     layout.getMainContainer().getChildren().addAll(menuContainer);
     layout.getRightContainer().getChildren().addAll(playerExportCsvCard, playerImportCsvCard);
-    layout.getLeftContainer().getChildren().addAll(playerCard);
+    layout.getLeftContainer().getChildren().addAll(playerListEditorCard);
     root.getChildren().add(layout);
   }
 
@@ -221,7 +216,15 @@ public class MainMenuView {
   }
 
   public void setSelectIconButtonHandlers(EventHandler<ActionEvent> action) {
-    firstPlayerIconButton.setOnAction(action);
+
+  }
+
+  public void setRemovePlayerButtonHandler(EventHandler<PlayerActionEvent> action) {
+    playerListEditorCard.setRemovePlayerButtonHandler(action);
+  }
+
+  public void populatePlayerList(List<Player> players){
+    playerListEditorCard.populatePlayerList(players);
   }
 
   /**
