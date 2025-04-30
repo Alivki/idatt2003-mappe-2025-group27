@@ -3,6 +3,8 @@ package ntnu.idatt2003.group27.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import ntnu.idatt2003.group27.models.Board;
+import ntnu.idatt2003.group27.models.BoardFactory;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.models.BoardGameFactory;
 import ntnu.idatt2003.group27.models.Player;
@@ -41,6 +43,8 @@ public class BoardGameController implements BoardGameObserver {
   /** The type of ladder game being played */
   private LadderGameType ladderGameType;
 
+  private final BoardGameFactory boardGameFactory;
+
   /**
    * Constructs a {@link BoardGameController} with the specified {@link MainController}
    *
@@ -48,10 +52,11 @@ public class BoardGameController implements BoardGameObserver {
    */
   public BoardGameController(MainController mainController) {
     this.mainController = mainController;
+    this.boardGameFactory = new BoardGameFactory(new BoardFactory());
   }
 
   /**
-   * Initializes the ladder game with the specifed game type and players, setting up the MVC pattern
+   * Initializes the ladder game with the specified game type and players, setting up the MVC pattern
    * and event handlers.
    *
    * @param ladderGameType The {@link LadderGameType} defining the game difficulty.
@@ -62,9 +67,9 @@ public class BoardGameController implements BoardGameObserver {
     // initializes mvc pattern
     game = null;
     try {
-      game = BoardGameFactory.createLadderGame(ladderGameType);
-    } catch (UnknownLadderGameTypeExceptions e) {
-      System.err.println(e.getMessage());
+      game = boardGameFactory.createLadderGame(ladderGameType);
+    } catch (IllegalArgumentException e) {
+      System.err.println("Error creating game: " + e.getMessage());
     }
 
     if (game == null) {
