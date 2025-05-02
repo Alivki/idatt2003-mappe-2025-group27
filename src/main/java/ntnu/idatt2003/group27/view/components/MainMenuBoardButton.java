@@ -28,22 +28,27 @@ public class MainMenuBoardButton extends Button {
    * @param description The description text to display on the button.
    * @param image The {@link Image} to display as a preview of the board.
    */
-  public MainMenuBoardButton(int prefSize, Insets insets, String title, String description, Image image) {
+  public MainMenuBoardButton(int prefSize, int minSize, int maxSize, int imageSize, Insets insets, String title, String description, Image image) {
     super();
 
     //Creates button content to display button information correctly.
-    VBox buttonContent = new VBox(10);
+    VBox buttonContent = new VBox(5);
     buttonContent.setPadding(insets);
+
+    setPrefSize(prefSize, prefSize + 60);
+    setMinSize(minSize, minSize + 60);
+    setMaxSize(maxSize, maxSize + 60);
 
     //Initializes labels
     Label titleLabel = new Label(title);
     titleLabel.getStyleClass().add("h1");
     Label descriptionLabel = new Label(description);
+    descriptionLabel.setWrapText(true);
 
     //Initializes image
     ImageView imageView = new ImageView(image);
-    imageView.setFitHeight(prefSize);
-    imageView.setFitWidth(prefSize);
+    imageView.setPreserveRatio(true);
+    imageView.setFitWidth(imageSize);
 
     //Applies changes to button.
     buttonContent.getChildren().addAll(titleLabel, descriptionLabel, imageView);

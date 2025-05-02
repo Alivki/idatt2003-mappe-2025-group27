@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.view.components;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -9,15 +10,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.actionEvents.PlayerActionEvent;
 
 /**
  * A class representing an HBox displaying player infromation.
  */
-public class PlayerHBox extends HBox {
+public class PlayerListCell extends HBox {
   private final CustomButton removePlayerButton;
 
-  public PlayerHBox(Player player, double spacing) {
+  public PlayerListCell(Player player, double spacing) {
     //Initializes base HBox
     setSpacing(spacing);
     getStyleClass().add("player-row");
@@ -55,8 +55,8 @@ public class PlayerHBox extends HBox {
     getChildren().addAll(playerIcon, playerName, spacer, removePlayerButton);
   }
 
-  public void setRemovePlayerButtonHandler(EventHandler<PlayerActionEvent> action) {
-    //removePlayerButton.setOnAction(action);
+  public void setRemovePlayerButtonHandler(EventHandler<ActionEvent> action) {
+    removePlayerButton.setOnAction(action);
   }
 
 }

@@ -1,35 +1,33 @@
 package ntnu.idatt2003.group27.view.components;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.actionEvents.PlayerActionEvent;
 
 /**
  * A card representing an editable player list.
  *
  * @author Amadeus Berg
  */
-public class PlayerListEditorCard extends Card {
+public class PlayerListCardEditable extends Card {
 
   private final ScrollPane playerList;
 
-  private EventHandler<PlayerActionEvent> playerActionEvent;
-
   /** An arrayList storing all player used by this list*/
-  private ArrayList<PlayerHBox> playerHBoxes = new ArrayList<>();
+  private ArrayList<PlayerListCell> playerListCells = new ArrayList<>();
+
+  /** A map connecting a player to their corresponding playerHBox */
+  private Map<Player, PlayerListCell> playerListCellMap = new HashMap<>();
 
   /**
    * Constructs a {@link Card} with the specified title, description and height.
@@ -39,16 +37,17 @@ public class PlayerListEditorCard extends Card {
    *                    description is needed.
    * @param height      The minimum height of the card in pixels.
    */
-  public PlayerListEditorCard(String title, String description, double height) {
+  public PlayerListCardEditable(String title, String description, double height) {
     super(title, description, height);
 
     //Initializes playerList scrollpane
     playerList = new ScrollPane();
     playerList.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-    playerList.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    playerList.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     playerList.setMaxHeight(height);
     VBox.setVgrow(playerList, Priority.ALWAYS);
     playerList.setFitToWidth(true);
+    playerList.setFitToHeight(true);
     playerList.getStyleClass().add("player-scroll-pane");
     getChildren().add(playerList);
   }
@@ -60,10 +59,13 @@ public class PlayerListEditorCard extends Card {
   public void populatePlayerList(List<Player> players) {
     VBox playerContainer = new VBox(0);
 
+    playerListCellMap.clear();
+
     players.forEach(player -> {
-      PlayerHBox playerHBox = new PlayerHBox(player, 8);
-      playerHBoxes.add(playerHBox);
-      playerContainer.getChildren().addAll(playerHBox);
+      PlayerListCell playerListCell = new PlayerListCell(player, 8);
+      playerListCells.add(playerListCell);
+      playerContainer.getChildren().addAll(playerListCell);
+      playerListCellMap.put(player, playerListCell);
     });
 
     if (players.size() == 0) {
@@ -82,10 +84,8 @@ public class PlayerListEditorCard extends Card {
     playerList.setContent(playerContainer);
   }
 
-  public void setRemovePlayerButtonHandler(EventHandler<PlayerActionEvent> action) {
-    playerHBoxes.forEach(playerHBox -> {
-      playerHBox.setRemovePlayerButtonHandler(action);
-    });
+  public void setRemovePlayerButtonHandler(Player player, EventHandler<ActionEvent> action) {
+    playerListCellMap.get(player).setRemovePlayerButtonHandler(action);
   }
 
 }

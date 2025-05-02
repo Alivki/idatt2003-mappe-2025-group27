@@ -10,6 +10,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -17,14 +19,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import ntnu.idatt2003.group27.controllers.MainMenuController;
+import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.actionEvents.PlayerActionEvent;
 import ntnu.idatt2003.group27.view.components.AppLayout;
 import ntnu.idatt2003.group27.view.components.Card;
 import ntnu.idatt2003.group27.view.components.CustomButton;
+import ntnu.idatt2003.group27.view.components.CustomToggleButton;
 import ntnu.idatt2003.group27.view.components.MainMenuBoardButton;
 import ntnu.idatt2003.group27.view.components.PlayerButtonListCell;
-import ntnu.idatt2003.group27.view.components.PlayerListEditorCard;
+import ntnu.idatt2003.group27.view.components.PlayerListCardEditable;
 
 public class MainMenuView {
   private final StackPane root;
@@ -43,7 +46,7 @@ public class MainMenuView {
   private CustomButton importPlayersCsvButton;
 
   //Player icon selection buttons
-  private ArrayList<CustomButton> playerIconButtons = new ArrayList<>();
+  private ArrayList<ToggleButton> playerIconButtons = new ArrayList<>();
 
   //Board buttons
   private MainMenuBoardButton normalBoardButton;
@@ -52,8 +55,7 @@ public class MainMenuView {
   private MainMenuBoardButton jsonBoardButton;
 
   //Cards
-  private PlayerListEditorCard playerListEditorCard;
-
+  private PlayerListCardEditable playerListCardEditable;
   private TextField playerNameTextField;
 
   public MainMenuView() {
@@ -62,7 +64,7 @@ public class MainMenuView {
     root.getStyleClass().add("root");
   }
 
-  public void initializeLayout() {
+  public void initializeLayout(List<Piece> pieces) {
     AppLayout layout = new AppLayout();
 
     //Initializes header
@@ -89,17 +91,20 @@ public class MainMenuView {
     boardGrid.setAlignment(Pos.CENTER);
 
     //Initializes board buttons
-    int boardButtonSize = 210;
+    int boardButtonMinSize = 100;
+    int boardButtonPrefSize = 220;
+    int boardButtonMaxSize = 220;
+    int boardButtonImageSize = 120;
     Insets boardButtonInsets = new Insets(10, 10, 10, 10);
 
 
-    normalBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Vanlig", "Helt vanlig norsk stigespill med 90 ruter", new Image("icons/ladder_game_normal_board.png"));
+    normalBoardButton = new MainMenuBoardButton(boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize, boardButtonInsets, "Vanlig", "Helt vanlig norsk stigespill med 90 ruter", new Image("icons/ladder_game_normal_board.png"));
 
-    crazyBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Crazy", "Stigespill med tileAction!", new Image("icons/ladder_game_normal_board.png"));
+    crazyBoardButton = new MainMenuBoardButton(boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize, boardButtonInsets, "Crazy", "Stigespill med tileAction!", new Image("icons/ladder_game_normal_board.png"));
 
-    impossibleBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Impossible", "Veldig vanskelig stigespill", new Image("icons/ladder_game_normal_board.png"));
+    impossibleBoardButton = new MainMenuBoardButton(boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize, boardButtonInsets, "Impossible", "Veldig vanskelig stigespill", new Image("icons/ladder_game_normal_board.png"));
 
-    jsonBoardButton = new MainMenuBoardButton(boardButtonSize,boardButtonInsets, "Vanlig (Json)", "Last inn eget spill fra Json fil", new Image("icons/ladder_game_normal_board.png"));
+    jsonBoardButton = new MainMenuBoardButton(boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize, boardButtonInsets, "Vanlig (Json)", "Last inn eget spill fra Json fil", new Image("icons/ladder_game_normal_board.png"));
 
     //Positions board buttons on grid
     boardGrid.add(normalBoardButton, 0, 0);
@@ -118,31 +123,22 @@ public class MainMenuView {
     //Initializes add player button
     addPlayerButton = new CustomButton("Legg til spiller", CustomButton.ButtonVariant.PRIMARY, null);
 
-
-    //Initializes list view to display player information
-    ListView<Player> playerListView = new ListView<>();
-    playerListView.setCellFactory(list -> new PlayerButtonListCell());
-    System.out.println(mainMenuController);
-    System.out.println(mainMenuController.getMainController());
-    if (mainMenuController != null && mainMenuController.getMainController() != null) {
-      playerListView.setItems(mainMenuController.getMainController().getPlayers());
-    }
-    playerListView.setPrefSize(playerCard.widthProperty().intValue(), 225);
-
     //Initializes player list card to display player information
-    playerListEditorCard = new PlayerListEditorCard("Spillere", "En oversikt over spillerne i spillet. Her kan du legge til og redigere spillere.", 300);
-    playerListEditorCard.setSpacing(10);
+    playerListCardEditable = new PlayerListCardEditable("Spillere", "En oversikt over spillerne i spillet. Her kan du legge til og redigere spillere.", 300);
+    playerListCardEditable.setSpacing(10);
 
     //Initializes icon selection buttons
     HBox iconSelectionButtonContainer = new HBox(7);
     iconSelectionButtonContainer.setAlignment(Pos.CENTER);
 
-    for(int i = 0; i < 5; i++){
-      ImageView playerIcon = new ImageView(new Image(mainMenuController.getMainController().getPieces().get(i).getIconFilePath()));
-      CustomButton playerIconButton = new CustomButton(playerIcon, CustomButton.ButtonVariant.ICON, null);
+    ToggleGroup iconSelectionButtonGroup = new ToggleGroup();
+    for(int i = 0; i < pieces.size(); i++){
+      ImageView playerIcon = new ImageView(new Image(pieces.get(i).getIconFilePath()));
+      //CustomButton playerIconButton = new CustomButton(playerIcon, CustomButton.ButtonVariant.ICON, null);
+      CustomToggleButton playerIconButton = new CustomToggleButton(playerIcon, 28);
+      playerIconButton.setToggleGroup(iconSelectionButtonGroup);
       playerIconButtons.add(playerIconButton);
     }
-
 
     //Initializes player csv cards
     Card playerExportCsvCard = new Card("Eksporter spillere", "Last ned csv fil med spillerdata", 100);
@@ -161,17 +157,16 @@ public class MainMenuView {
 
     //Positions nodes correctly in each container
     iconSelectionButtonContainer.getChildren().addAll(playerIconButtons);
-    playerListEditorCard.getChildren().addAll(iconSelectionButtonContainer, playerNameTextField, addPlayerButton);
+    playerListCardEditable.getChildren().addAll(iconSelectionButtonContainer, playerNameTextField, addPlayerButton);
     playerExportCsvCard.getChildren().addAll(exportPlayersCsvButton);
     playerImportCsvCard.getChildren().addAll(importPlayersCsvButton, csvExampleInfoHeaderLabel, csvExampleInfoDescriptionLabel);
 
     headerContainer.getChildren().addAll(ladderGameMainMenuButton, secondGameMainMenuButton, thirdGameMainMenuButton, applicationQuitButton);
     menuContainer.getChildren().addAll(title, boardGrid);
-
     layout.getHeader().getChildren().addAll(headerContainer);
     layout.getMainContainer().getChildren().addAll(menuContainer);
     layout.getRightContainer().getChildren().addAll(playerExportCsvCard, playerImportCsvCard);
-    layout.getLeftContainer().getChildren().addAll(playerListEditorCard);
+    layout.getLeftContainer().getChildren().addAll(playerListCardEditable);
     root.getChildren().add(layout);
   }
 
@@ -215,16 +210,25 @@ public class MainMenuView {
     importPlayersCsvButton.setOnAction(action);
   }
 
-  public void setSelectIconButtonHandlers(EventHandler<ActionEvent> action) {
-
+  public void setPlayerPieceButtonHandlers(int buttonIndex, EventHandler<ActionEvent> action) {
+    playerIconButtons.get(buttonIndex).setOnAction(action);
   }
 
-  public void setRemovePlayerButtonHandler(EventHandler<PlayerActionEvent> action) {
-    playerListEditorCard.setRemovePlayerButtonHandler(action);
+  public void setRemovePlayerButtonHandler(Player player, EventHandler<ActionEvent> action) {
+    playerListCardEditable.setRemovePlayerButtonHandler(player, action);
   }
 
   public void populatePlayerList(List<Player> players){
-    playerListEditorCard.populatePlayerList(players);
+    playerListCardEditable.populatePlayerList(players);
+  }
+
+  /**
+   * Set the state of the selection button to enabled or disabled. Updates the display and prevents / allows button interaction.
+   * @param buttonIndex
+   * @param disable
+   */
+  public void setDisablePlayerPieceButton(int buttonIndex, boolean disable){
+    playerIconButtons.get(buttonIndex).setDisable(disable);
   }
 
   /**

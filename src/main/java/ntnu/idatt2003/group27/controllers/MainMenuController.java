@@ -1,6 +1,7 @@
 package ntnu.idatt2003.group27.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
@@ -21,6 +22,9 @@ public class MainMenuController {
   /** A reference to the mainController */
   private final MainController mainController;
 
+  /** The currently selected piece from the icon menu */
+  private Piece selectedPiece;
+
   /**
    * Constructs a  {@link MainMenuController} witht the specified {@link MainMenuView} and sets up
    * events handlers for menu interactions.
@@ -31,7 +35,7 @@ public class MainMenuController {
     this.mainController = mainController;
     this.mainMenuView = mainMenuView;
     mainMenuView.setMainMenuController(this);
-    mainMenuView.initializeLayout();
+    mainMenuView.initializeLayout(mainController.getPieces());
     setupMenuViewEventHandler();
     mainMenuView.populatePlayerList(mainController.getPlayers());
   }
@@ -41,60 +45,7 @@ public class MainMenuController {
    * importing player data, and starting games with different difficulty levels.
    */
   private void setupMenuViewEventHandler() {
-    //Sets handler for add player button
-    mainMenuView.setAddPlayerButtonHandler(e -> {
-      System.out.println("Add player button clicked");
-
-      //Show alert if adding player crosses player limit.
-      if (mainController.getPlayers().size() >= 5) {
-        System.out.println("Cannot add player, max player limit reached!");
-        Alert alert = new Alert(
-            this.mainMenuView.getRoot(),
-            "Kan ikke legge til spiller",
-            "Du har nådd maksgrensen på 5 spillere. Fjern en tidligere spiller dersom du vil endre på spillerene.",
-            "Ok",
-            "Lukk",
-            response -> {
-            }
-        );
-        alert.show();
-        return;
-      }
-
-      String playerName = mainMenuView.getPlayerNameTextFieldValue();
-
-      //Set a default player name if player is already added.
-      if (playerName.equals("")) {
-        playerName = "Spiller " + (mainController.getPlayers().size() + 1);
-      }
-
-      //Show alert if player with name already exists
-      if(mainController.getPlayers().stream().map(Player::getName).anyMatch(playerName::equals)) {
-        System.out.println("Cannot add player, player name already in use!");
-        Alert alert = new Alert(
-            this.mainMenuView.getRoot(),
-            "Kan ikke legge til spiller",
-            "En spiller med samme navn finnes allerede!",
-            "Ok",
-            "Lukk",
-            response -> {
-            }
-        );
-        alert.show();
-        return;
-      }
-
-      Piece availablePiece = mainController.getAvailablePiece();
-      mainController.addPlayer(new Player(playerName, availablePiece));
-      mainMenuView.populatePlayerList(mainController.getPlayers());
-    });
-
-    //Sets handler for remove player button
-
-    mainMenuView.setRemovePlayerButtonHandler(e -> {
-      System.out.println("Remove player button clicked");
-      System.out.println(e.getPlayer());
-    });
+    setAddPlayerButtonHandler();
 
     //Sets handler for normal board button
     mainMenuView.setNormalBoardButtonHandler(e -> {
@@ -181,7 +132,6 @@ public class MainMenuController {
             mainController.getPlayers().toArray(new Player[0]));
       } catch (IOException ex) {
         System.out.println(ex.getMessage());
-
       }
       }
     });
@@ -201,12 +151,130 @@ public class MainMenuController {
       }
     });
 
-    mainMenuView.setSelectIconButtonHandlers(e -> {
-      //gets an int from the specific button, alternatively
-      //selectedPiece = MainController.pieceMap.get(i);
-      //selected piece is used on creation
+    //Dynamically sets appropritate piece button handlers.
+    for(int i = 0; i < mainController.getPieces().size(); i++) {
+      setSelectPieceButtonHandler(i);
     }
+  }
+
+  /**
+   * Sets up actionEvent handlers for add player button.
+   */
+  private void setAddPlayerButtonHandler(){
+    mainMenuView.setAddPlayerButtonHandler(e -> {
+      System.out.println("Add player button clicked");
+
+      //Show alert if adding player crosses player limit.
+      if (mainController.getPlayers().size() >= 5) {
+        System.out.println("Cannot add player, max player limit reached!");
+        Alert alert = new Alert(
+            this.mainMenuView.getRoot(),
+            "Kan ikke legge til spiller",
+            "Du har nådd maksgrensen på 5 spillere. Fjern en tidligere spiller dersom du vil endre på spillerene.",
+            "Ok",
+            "Lukk",
+            response -> {
+            }
+        );
+        alert.show();
+        return;
+      }
+
+      String playerName = mainMenuView.getPlayerNameTextFieldValue();
+
+      //Set a unique default player name if player is already added.
+      if (playerName.equals("")) {
+        for(int i = 0; i < mainController.getPlayers().size() + 1; i++) {
+          String generatedPlayerName = "Spiller " + (i + 1);
+          playerName = generatedPlayerName;
+          if (mainController.getPlayers().stream()
+              .noneMatch(player -> player.getName().equals(generatedPlayerName))) {
+            break;
+          }
+        }
+      }
+
+      //Show alert if player with name already exists
+      if(mainController.getPlayers().stream().map(Player::getName).anyMatch(playerName::equals)) {
+        System.out.println("Cannot add player, player name already in use!");
+        Alert alert = new Alert(
+            this.mainMenuView.getRoot(),
+            "Kan ikke legge til spiller",
+            "En spiller med samme navn finnes allerede!",
+            "Ok",
+            "Lukk",
+            response -> {
+            }
+        );
+        alert.show();
+        return;
+      }
+
+      Piece piece = selectedPiece;
+
+      //Show alert if no piece is selected.
+      if (selectedPiece == null) {
+        System.out.println("Cannot add player, no piece selected!");
+        Alert alert = new Alert(
+            this.mainMenuView.getRoot(),
+            "Kan ikke legge til spiller",
+            "Vennligst velg en brikke!",
+            "Ok",
+            "Lukk",
+            response -> {
+            }
+        );
+        alert.show();
+        return;
+      }
+
+      //Show alert if piece is already selected by another player.
+      if (mainController.getPlayers().stream().anyMatch(p -> p.getPiece() == piece)){
+        System.out.println("Cannot add player, player piece already in use!");
+        Alert alert = new Alert(
+            this.mainMenuView.getRoot(),
+            "Kan ikke legge til spiller",
+            "En spiller med samme brikke finnes allerede!",
+            "Ok",
+            "Lukk",
+            response -> {
+            }
+        );
+        alert.show();
+        return;
+      }
+
+      Player newPlayer = new Player(playerName, piece);
+      mainController.addPlayer(newPlayer);
+      mainMenuView.populatePlayerList(mainController.getPlayers());
+      setRemovePlayerButtonHandlers();
+      mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(selectedPiece), true);
+    });
+  }
+
+
+  private void setSelectPieceButtonHandler(int i){
+    Piece piece = mainController.getPieces().get(i);
+    mainMenuView.setPlayerPieceButtonHandlers(i, e -> {
+          System.out.println("Selected piece: " + piece.getName());
+          selectedPiece = piece;
+        }
     );
+  }
+
+  /**
+   * Sets remove player button handler for the player list cells.
+   */
+  private void setRemovePlayerButtonHandlers(){
+    mainController.getPlayers().forEach(player -> {
+      mainMenuView.setRemovePlayerButtonHandler(player, e -> {
+        System.out.println("Remove player button clicked for player: " + player.getName());
+        mainController.removePlayer(player);
+        mainMenuView.populatePlayerList(mainController.getPlayers());
+        setRemovePlayerButtonHandlers();
+        mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(player.getPiece()), false);
+      });
+    });
   }
 
   public MainController getMainController(){
