@@ -8,7 +8,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -83,19 +82,21 @@ public class MainMenuView {
     menuContainer.setAlignment(Pos.TOP_CENTER);
 
     //Initializes main content title
+    VBox titleContainer = new VBox(0);
     Label title = new Label("Stigespill");
     title.getStyleClass().add("h1");
 
     //Initializes board button grid
-    GridPane boardGrid = new GridPane(10, 10);
+    GridPane boardGrid = new GridPane(5,5);
     boardGrid.setAlignment(Pos.CENTER);
+    boardGrid.getStyleClass().add("card");
 
     //Initializes board buttons
     int boardButtonMinSize = 100;
-    int boardButtonPrefSize = 220;
-    int boardButtonMaxSize = 220;
+    int boardButtonPrefSize = 170;
+    int boardButtonMaxSize = 200;
     int boardButtonImageSize = 120;
-    Insets boardButtonInsets = new Insets(10, 10, 10, 10);
+    Insets boardButtonInsets = new Insets(5, 5, 5, 5);
 
 
     normalBoardButton = new MainMenuBoardButton(boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize, boardButtonInsets, "Vanlig", "Helt vanlig norsk stigespill med 90 ruter", new Image("icons/ladder_game_normal_board.png"));
@@ -127,16 +128,16 @@ public class MainMenuView {
     playerListCardEditable = new PlayerListCardEditable("Spillere", "En oversikt over spillerne i spillet. Her kan du legge til og redigere spillere.", 300);
     playerListCardEditable.setSpacing(10);
 
-    //Initializes icon selection buttons
-    HBox iconSelectionButtonContainer = new HBox(7);
-    iconSelectionButtonContainer.setAlignment(Pos.CENTER);
+    //Initializes piece selection buttons
+    HBox pieceSelectionButtonContainer = new HBox(7);
+    pieceSelectionButtonContainer.setAlignment(Pos.CENTER);
 
-    ToggleGroup iconSelectionButtonGroup = new ToggleGroup();
+    ToggleGroup pieceSelectionButtonGroup = new ToggleGroup();
     for(int i = 0; i < pieces.size(); i++){
       ImageView playerIcon = new ImageView(new Image(pieces.get(i).getIconFilePath()));
       //CustomButton playerIconButton = new CustomButton(playerIcon, CustomButton.ButtonVariant.ICON, null);
       CustomToggleButton playerIconButton = new CustomToggleButton(playerIcon, 28);
-      playerIconButton.setToggleGroup(iconSelectionButtonGroup);
+      playerIconButton.setToggleGroup(pieceSelectionButtonGroup);
       playerIconButtons.add(playerIconButton);
     }
 
@@ -156,13 +157,14 @@ public class MainMenuView {
     csvExampleInfoDescriptionLabel.getStyleClass().add("info-text");
 
     //Positions nodes correctly in each container
-    iconSelectionButtonContainer.getChildren().addAll(playerIconButtons);
-    playerListCardEditable.getChildren().addAll(iconSelectionButtonContainer, playerNameTextField, addPlayerButton);
+    pieceSelectionButtonContainer.getChildren().addAll(playerIconButtons);
+    playerListCardEditable.getChildren().addAll(pieceSelectionButtonContainer, playerNameTextField, addPlayerButton);
     playerExportCsvCard.getChildren().addAll(exportPlayersCsvButton);
     playerImportCsvCard.getChildren().addAll(importPlayersCsvButton, csvExampleInfoHeaderLabel, csvExampleInfoDescriptionLabel);
 
     headerContainer.getChildren().addAll(ladderGameMainMenuButton, secondGameMainMenuButton, thirdGameMainMenuButton, applicationQuitButton);
-    menuContainer.getChildren().addAll(title, boardGrid);
+    titleContainer.getChildren().add(title);
+    menuContainer.getChildren().addAll(titleContainer, boardGrid);
     layout.getHeader().getChildren().addAll(headerContainer);
     layout.getMainContainer().getChildren().addAll(menuContainer);
     layout.getRightContainer().getChildren().addAll(playerExportCsvCard, playerImportCsvCard);

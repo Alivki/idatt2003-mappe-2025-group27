@@ -41,7 +41,7 @@ public class MainMenuBoardButton extends Button {
 
     //Initializes labels
     Label titleLabel = new Label(title);
-    titleLabel.getStyleClass().add("h1");
+    titleLabel.getStyleClass().add("h2");
     Label descriptionLabel = new Label(description);
     descriptionLabel.setWrapText(true);
 
