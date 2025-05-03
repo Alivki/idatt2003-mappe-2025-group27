@@ -124,7 +124,7 @@ public class MainMenuView {
     for(int i = 0; i < pieces.size(); i++){
       ImageView playerIcon = new ImageView(new Image(pieces.get(i).getIconFilePath()));
       //CustomButton playerIconButton = new CustomButton(playerIcon, CustomButton.ButtonVariant.ICON, null);
-      CustomToggleButton playerIconButton = new CustomToggleButton(playerIcon, 28);
+      CustomToggleButton playerIconButton = new CustomToggleButton(playerIcon, 30);
       playerIconButton.setToggleGroup(pieceSelectionButtonGroup);
       playerIconButtons.add(playerIconButton);
     }
