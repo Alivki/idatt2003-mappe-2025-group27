@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
@@ -120,19 +121,7 @@ public class MainMenuView {
     HBox.setHgrow(playerNameTextField, Priority.ALWAYS);
 
     ImageView colorPickerIcon = new ImageView("icons/picker-button.png");
-    colorPicker = new CustomButton(null, CustomButton.ButtonVariant.GHOST_ICON, colorPickerIcon, event -> {
-      ColorPicker tempColorPicker = new ColorPicker();
-      tempColorPicker.setStyle("-fx-color-label-visible: false; -fx-background-color: transparent; -fx-pref-width: 0; -fx-pref-height: 0;");
-      tempColorPicker.setOnAction(e -> {
-        pickedColor = tempColorPicker.getValue();
-        System.out.println("Selected Color: " + pickedColor);
-      });
-      StackPane tempContainer = new StackPane(tempColorPicker);
-      tempContainer.setVisible(false);
-      playerListCardEditable.getChildren().add(tempContainer);
-      tempColorPicker.show();
-      tempColorPicker.setOnHidden(e -> playerListCardEditable.getChildren().remove(tempContainer));
-    });
+    colorPicker = new CustomButton(null, CustomButton.ButtonVariant.GHOST_ICON, colorPickerIcon, null);
     colorPickerIcon.setFitWidth(20);
     colorPickerIcon.setFitHeight(20);
 
@@ -230,8 +219,50 @@ public class MainMenuView {
     playerListCardEditable.setRemovePlayerButtonHandler(player, action);
   }
 
+  /**
+   * Displays the color picker for the user to select a color.
+   */
+  public void showColorPicker() {
+    ColorPicker tempColorPicker = new ColorPicker(pickedColor != null ? pickedColor : Color.WHITE);
+    tempColorPicker.setStyle("-fx-color-label-visible: false; -fx-background-color: transparent; -fx-pref-width: 0; -fx-pref-height: 0;");
+    tempColorPicker.setOnAction(colorPickEvent -> {
+      pickedColor = tempColorPicker.getValue();
+      System.out.println("Selected color: " + pickedColor);
+    });
+    StackPane tempContainer = new StackPane(tempColorPicker);
+    tempContainer.setVisible(false);
+    playerListCardEditable.getChildren().add(tempContainer);
+    tempContainer.setLayoutX(colorPicker.getLayoutX());
+    tempContainer.setLayoutY(colorPicker.getLayoutY() + colorPicker.getHeight());
+    tempColorPicker.show();
+    tempColorPicker.setOnHidden(colorPickerHideEvent -> playerListCardEditable.getChildren().remove(tempContainer));
+  }
+
+  /**
+   * Sets the picked color to the given color.
+   *
+   * @param color the {@link Color} object representing the color to be set.
+   */
+  public void setPickedColor(Color color) {
+    this.pickedColor = color;
+  }
+
+  /**
+   * Retrieves the color picked by the user.
+   *
+   * @return the {@link Color} object representing the picked color.
+   */
   public Color getPickedColor() {
     return pickedColor;
+  }
+
+  /**
+   * Set the action for the color picker button.
+   *
+   * @param action the action to set.
+   */
+  public void setColorPickerButtonHandler(EventHandler<ActionEvent> action) {
+    colorPicker.setOnAction(action);
   }
 
   public void populatePlayerList(List<Player> players){

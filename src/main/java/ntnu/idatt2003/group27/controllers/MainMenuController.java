@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.controllers;
 
 import java.io.IOException;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
@@ -27,9 +28,6 @@ public class MainMenuController {
   /** The currently selected piece from the icon menu. */
   private Piece selectedPiece;
 
-  /** The selected color. */
-  private Color color;
-
   /**
    * Constructs a  {@link MainMenuController} witht the specified {@link MainMenuView} and sets up
    * events handlers for menu interactions.
@@ -50,6 +48,7 @@ public class MainMenuController {
    * importing player data, and starting games with different difficulty levels.
    */
   private void setupMenuViewEventHandler() {
+    setColorPickerButtonHandler();
     setAddPlayerButtonHandler();
 
     //Sets handler for normal board button
@@ -249,16 +248,28 @@ public class MainMenuController {
         return;
       }
 
-      color = mainMenuView.getPickedColor();
+      Color color = mainMenuView.getPickedColor();
+
       if (color == null) {
         color = RandomColor.generateRandomColor().getColor();
       }
 
       Player newPlayer = new Player(playerName, piece, color);
+      System.out.println("New player created: " + newPlayer.getColor());
       mainController.addPlayer(newPlayer);
       mainMenuView.populatePlayerList(mainController.getPlayers());
       setRemovePlayerButtonHandlers();
       mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(selectedPiece), true);
+      mainMenuView.setPickedColor(null);
+    });
+  }
+
+  /**
+   * Sets up actionEvent handlers for color picker button.
+   */
+  private void setColorPickerButtonHandler() {
+    mainMenuView.setColorPickerButtonHandler(event -> {
+      mainMenuView.showColorPicker();
     });
   }
 
