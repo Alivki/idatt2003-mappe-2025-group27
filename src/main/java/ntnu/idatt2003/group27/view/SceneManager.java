@@ -15,11 +15,13 @@ public class SceneManager extends Application {
   private StackPane currentPane = null;
 
   private MainMenuView mainMenuView;
-
+  private MainController mainController;
 
   @Override
   public void start(Stage primaryStage) throws Exception {
-    MainController.getInstance().sceneManager = this;
+    //Initializes the main controller for the application
+    mainController = new MainController(this);
+
     System.out.println("Starting SceneManager");
     rootContainer = new StackPane();
     rootContainer.setAlignment(Pos.TOP_CENTER);
@@ -40,7 +42,7 @@ public class SceneManager extends Application {
     primaryStage.show();
 
     mainMenuView = new MainMenuView();
-    MainMenuController mainMenuController = new MainMenuController(mainMenuView);
+    MainMenuController mainMenuController = new MainMenuController(mainController, mainMenuView);
     switchSceneImmediate(mainMenuView.getRoot());
   }
 

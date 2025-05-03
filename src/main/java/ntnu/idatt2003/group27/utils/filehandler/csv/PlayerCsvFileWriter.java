@@ -35,7 +35,7 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
       File playerCsvFile = createPlayerCsvFile(filePath);
       CSVWriter csvWriter = new CSVWriter(new FileWriter(playerCsvFile, true));
       for (Player player : data) {
-        String[] playerInfo = {player.getName(), player.getPiece()};
+        String[] playerInfo = {player.getName(), player.getPiece().getName()};
         csvWriter.writeNext(playerInfo);
       }
       csvWriter.close();
@@ -76,7 +76,7 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
         playerCsvFile = createPlayerCsvFile(filepath);
       }
       CSVWriter csvWriter = new CSVWriter(new FileWriter(playerCsvFile, true));
-      String[] playerInfo = {player.getName(), player.getPiece()};
+      String[] playerInfo = {player.getName(), player.getPiece().getName()};
       csvWriter.writeNext(playerInfo);
       csvWriter.close();
     }

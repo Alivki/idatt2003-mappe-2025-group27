@@ -1,8 +1,14 @@
 package ntnu.idatt2003.group27.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
+import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.view.SceneManager;
@@ -14,20 +20,21 @@ import ntnu.idatt2003.group27.view.SceneManager;
 public class MainController {
   /** The observable list of players in the game. */
   private ObservableList<Player> playersObservableList = FXCollections.observableArrayList();
-  /** The instance of the {@link MainController} */
-  private static MainController instance;
+
+  /** A list of all pieces available in the application*/
+  private ArrayList<Piece> pieces = new ArrayList<>();
+
   /** The scene manager responsible for handling screen transitions */
-  public SceneManager sceneManager;
+  private SceneManager sceneManager;
   /** The controller for the board game. */
   private BoardGameController boardGameController;
 
   /**
    * Constructs a {@link MainController} and initializes it as the singleton instance of nine exists.
    */
-  public MainController() {
-    if (instance == null) {
-      instance = this;
-    }
+  public MainController(SceneManager sceneManager) {
+    this.sceneManager = sceneManager;
+    InitializePieces();
   }
 
   /**
@@ -87,6 +94,11 @@ public class MainController {
     playersObservableList.remove(player);
   }
 
+
+  public ArrayList<Piece> getPieces(){
+    return pieces;
+  }
+
   /**
    * Sets the list of players, replacing the current list with the provided array.
    *
@@ -97,12 +109,28 @@ public class MainController {
     playersObservableList.addAll(players);
   }
 
+
   /**
-   * Retrieves the singleton instace of the {@link MainController}.
-   *
-   * @return The singleton instance of {@link MainController}.
+   * Initializes the game pieces and puts them into a hashmap with the correct key
    */
-  public static MainController getInstance(){
-    return instance;
+  private void InitializePieces(){
+    pieces.clear();
+    pieces.add(new Piece("Car", "/icons/player_icons/jeep.png"));
+    pieces.add(new Piece("Chicken", "/icons/player_icons/chicken.png"));
+    pieces.add(new Piece("Frisbee", "/icons/player_icons/frisbee.png"));
+    pieces.add(new Piece("Pawn", "/icons/player_icons/chess-pawn.png"));
+    pieces.add(new Piece("Tophat", "/icons/player_icons/top-hat.png"));
   }
+
+  /**
+   * Gets the first piece not used by another player, returns null if none.
+   */
+  public Piece getAvailablePiece() {
+    return pieces.stream()
+        .filter(piece -> playersObservableList.stream()
+        .noneMatch(player -> player.getPiece().equals(piece)))
+        .findFirst()
+        .orElse(null);
+  }
+
 }

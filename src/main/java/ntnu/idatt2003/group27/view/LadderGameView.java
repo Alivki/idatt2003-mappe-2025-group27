@@ -33,7 +33,7 @@ public class LadderGameView {
 
   private Canvas canvas;
 
-  private ScrollPane playerList;
+  private PlayerListCard playerListCard;
 
   private VBox canvasContainer;
 
@@ -72,16 +72,7 @@ public class LadderGameView {
 
     homeButton = new CustomButton("Hjem", CustomButton.ButtonVariant.GHOST, null);
 
-    Card playerCard = new Card("Spillere", "Spillerne i spillet", 382);
-
-    playerList = new ScrollPane();
-    playerList.setPadding(new Insets(10, 0, 0, 0));
-    playerList.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-    playerList.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-    playerList.setMaxHeight(305);
-    VBox.setVgrow(playerList, Priority.ALWAYS);
-    playerList.setFitToWidth(true);
-    playerList.getStyleClass().add("player-scroll-pane");
+    playerListCard = new PlayerListCard("Spillere", "Spillerne i spillet", 382);
 
     Card settingsCard = new Card("Innstillinger", "Restart eller slutt spill", 115);
     VBox settingsButtonContainer = new VBox(12);
@@ -165,8 +156,8 @@ public class LadderGameView {
 
     settingsButtonContainer.getChildren().addAll(restartButton);
     settingsCard.getChildren().addAll(settingsButtonContainer);
-    playerCard.getChildren().add(playerList);
-    layout.getLeftContainer().getChildren().addAll(playerCard, settingsCard);
+    //playerCard.getChildren().add(playerList);
+    layout.getLeftContainer().getChildren().addAll(playerListCard, settingsCard);
 
     gameInfo.getChildren().addAll(
       createGameInfoRow("Runde:", roundInfo),
@@ -241,32 +232,7 @@ public class LadderGameView {
   }
 
   public void populatePlayerList(List<Player> players) {
-    VBox playerContainer = new VBox(5);
-
-    players.forEach(player -> {
-      HBox playerRow = new HBox(8);
-      playerRow.getStyleClass().add("player-row");
-
-      Label playerName = new Label(player.getName());
-      playerName.getStyleClass().add("p");
-
-      Region spacer = new Region();
-      HBox.setHgrow(spacer, Priority.ALWAYS);
-
-      String playerPosition = String.valueOf(player.getCurrentTile().getTileId());
-      Label playerPositionLabel = new Label(playerPosition);
-      playerPositionLabel.getStyleClass().add("p");
-
-      // change to actual player icons once that is implemented
-      ImageView playerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/home.png")));
-      playerIcon.setFitHeight(20);
-      playerIcon.setFitWidth(20);
-
-      playerRow.getChildren().addAll(playerIcon, playerName, spacer, playerPositionLabel);
-      playerContainer.getChildren().addAll(playerRow);
-    });
-
-    playerList.setContent(playerContainer);
+    playerListCard.populatePlayerList(players);
   }
 
   public void createBoard(ArrayList<Player> players, Map<Integer, Tile> tiles) {

@@ -60,6 +60,10 @@
     -fx-cursor: hand;
 }
 
+.toggle-button:selected {
+    -fx-background-color: #cfcfcf;
+}
+
 .primary-button {
     -fx-background-color: #0f172a;
     -fx-text-fill: #ffffff;
