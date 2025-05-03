@@ -12,7 +12,7 @@ import javafx.scene.layout.Region;
 import ntnu.idatt2003.group27.models.Player;
 
 /**
- * A class representing an HBox displaying player infromation.
+ * A class representing an HBox displaying player information.
  */
 public class PlayerListCell extends HBox {
   private final CustomButton removePlayerButton;
@@ -33,7 +33,7 @@ public class PlayerListCell extends HBox {
 
     //Initializes remove player button
     ImageView removePlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/delete.png")));
-    this.removePlayerButton = new CustomButton(removePlayerIcon, CustomButton.ButtonVariant.ICON, null);
+    this.removePlayerButton = new CustomButton(removePlayerIcon, CustomButton.ButtonVariant.GHOST_ICON, null);
 
     //Initializes player icon
     ImageView playerIcon = new ImageView();

@@ -57,7 +57,7 @@ public class PlayerListCardEditable extends Card {
    * @param players
    */
   public void populatePlayerList(List<Player> players) {
-    VBox playerContainer = new VBox(0);
+    VBox playerContainer = new VBox(5);
 
     playerListCellMap.clear();
 

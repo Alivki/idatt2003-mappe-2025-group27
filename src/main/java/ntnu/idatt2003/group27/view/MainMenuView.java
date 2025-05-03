@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import ntnu.idatt2003.group27.controllers.MainMenuController;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
@@ -25,7 +24,6 @@ import ntnu.idatt2003.group27.view.components.Card;
 import ntnu.idatt2003.group27.view.components.CustomButton;
 import ntnu.idatt2003.group27.view.components.CustomToggleButton;
 import ntnu.idatt2003.group27.view.components.MainMenuBoardButton;
-import ntnu.idatt2003.group27.view.components.PlayerButtonListCell;
 import ntnu.idatt2003.group27.view.components.PlayerListCardEditable;
 
 public class MainMenuView {
@@ -77,12 +75,7 @@ public class MainMenuView {
     applicationQuitButton = new CustomButton("Avslutt", CustomButton.ButtonVariant.DESTRUCTIVE,
         actionEvent -> Platform.exit());
 
-    //Initializes main content
-    VBox menuContainer = new VBox(20);
-    menuContainer.setAlignment(Pos.TOP_CENTER);
-
     //Initializes main content title
-    VBox titleContainer = new VBox(0);
     Label title = new Label("Stigespill");
     title.getStyleClass().add("h1");
 
@@ -98,7 +91,6 @@ public class MainMenuView {
     int boardButtonImageSize = 120;
     Insets boardButtonInsets = new Insets(5, 5, 5, 5);
 
-
     normalBoardButton = new MainMenuBoardButton(boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize, boardButtonInsets, "Vanlig", "Helt vanlig norsk stigespill med 90 ruter", new Image("icons/ladder_game_normal_board.png"));
 
     crazyBoardButton = new MainMenuBoardButton(boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize, boardButtonInsets, "Crazy", "Stigespill med tileAction!", new Image("icons/ladder_game_normal_board.png"));
@@ -113,10 +105,6 @@ public class MainMenuView {
     boardGrid.add(impossibleBoardButton, 0, 1);
     boardGrid.add(jsonBoardButton, 1, 1);
 
-    //Initializes player information card
-    Card playerCard = new Card("Spillere", null, 200);
-    playerCard.setSpacing(10);
-
     //Initializes player name input field
     playerNameTextField = new TextField();
     playerNameTextField.setPromptText("Spiller navn...");
@@ -125,7 +113,7 @@ public class MainMenuView {
     addPlayerButton = new CustomButton("Legg til spiller", CustomButton.ButtonVariant.PRIMARY, null);
 
     //Initializes player list card to display player information
-    playerListCardEditable = new PlayerListCardEditable("Spillere", "En oversikt over spillerne i spillet. Her kan du legge til og redigere spillere.", 300);
+    playerListCardEditable = new PlayerListCardEditable("Spillere", "En oversikt over spillerne i spillet. Her kan du legge til og redigere spillere.", 382);
     playerListCardEditable.setSpacing(10);
 
     //Initializes piece selection buttons
@@ -163,10 +151,8 @@ public class MainMenuView {
     playerImportCsvCard.getChildren().addAll(importPlayersCsvButton, csvExampleInfoHeaderLabel, csvExampleInfoDescriptionLabel);
 
     headerContainer.getChildren().addAll(ladderGameMainMenuButton, secondGameMainMenuButton, thirdGameMainMenuButton, applicationQuitButton);
-    titleContainer.getChildren().add(title);
-    menuContainer.getChildren().addAll(titleContainer, boardGrid);
     layout.getHeader().getChildren().addAll(headerContainer);
-    layout.getMainContainer().getChildren().addAll(menuContainer);
+    layout.getMainContainer().getChildren().addAll(title, boardGrid);
     layout.getRightContainer().getChildren().addAll(playerExportCsvCard, playerImportCsvCard);
     layout.getLeftContainer().getChildren().addAll(playerListCardEditable);
     root.getChildren().add(layout);
