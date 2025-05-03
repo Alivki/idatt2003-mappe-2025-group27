@@ -58,19 +58,19 @@ public class AppLayout extends VBox {
     leftContainer.setMinWidth(303);
     HBox.setHgrow(leftContainer, Priority.ALWAYS);
     leftContainer.setAlignment(Pos.TOP_RIGHT);
-    leftContainer.setPadding(new Insets(63,0,21,0));
+    leftContainer.setPadding(new Insets(63,0,0,0));
 
     mainContainer = new VBox(12);
     HBox.setHgrow(mainContainer, Priority.ALWAYS);
     mainContainer.setMinWidth(630);
     mainContainer.setMaxWidth(1100);
-    mainContainer.setPadding(new Insets(21,0,21,0));
+    mainContainer.setPadding(new Insets(21,0,0,0));
 
     rightContainer = new VBox(20);
     rightContainer.setMinWidth(303);
     HBox.setHgrow(rightContainer, Priority.ALWAYS);
     rightContainer.setAlignment(Pos.TOP_LEFT);
-    rightContainer.setPadding(new Insets(63,0,21,0));
+    rightContainer.setPadding(new Insets(63,0,0,0));
 
     header.getChildren().addAll(headerLeftContainer, headerMainContainer, headerRightContainer);
     main.getChildren().addAll(leftContainer, mainContainer, rightContainer);
