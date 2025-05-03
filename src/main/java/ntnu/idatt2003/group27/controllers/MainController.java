@@ -1,13 +1,7 @@
 package ntnu.idatt2003.group27.controllers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.stage.Stage;
+import java.util.Collections;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
@@ -18,8 +12,8 @@ import ntnu.idatt2003.group27.view.SceneManager;
  * It handles player management, scene switching, and game initialization.
  */
 public class MainController {
-  /** The observable list of players in the game. */
-  private ObservableList<Player> playersObservableList = FXCollections.observableArrayList();
+  /** The lost of players in the game. */
+  private ArrayList<Player> players = new ArrayList<>();
 
   /** A list of all pieces available in the application*/
   private ArrayList<Piece> pieces = new ArrayList<>();
@@ -60,8 +54,8 @@ public class MainController {
    *
    * @return An array of {@link Player} objects.
    */
-  public ObservableList<Player> getPlayers(){
-    return playersObservableList;
+  public ArrayList<Player> getPlayers(){
+    return players;
   }
 
   /**
@@ -70,8 +64,8 @@ public class MainController {
    * @return An array of {@link Player} objects.
    */
   public Player[] getPlayerArray(){
-    Player[] players = new Player[playersObservableList.size()];
-    players = playersObservableList.toArray(players);
+    Player[] players = new Player[this.players.size()];
+    players = this.players.toArray(players);
     return players;
   }
 
@@ -81,7 +75,7 @@ public class MainController {
    * @param player The {@link Player} object to be added.
    */
   public void addPlayer(Player player){
-    playersObservableList.add(player);
+    players.add(player);
     System.out.println("Player added: " + player.getName());
   }
 
@@ -91,7 +85,7 @@ public class MainController {
    * @param player The {@link Player} to add to the game.
    */
   public void removePlayer(Player player){
-    playersObservableList.remove(player);
+    players.remove(player);
   }
 
 
@@ -105,8 +99,8 @@ public class MainController {
    * @param players An array of {@link Player} objects to set as the new player list.
    */
   public void setPlayers(Player[] players){
-    playersObservableList.clear();
-    playersObservableList.addAll(players);
+    this.players.clear();
+    Collections.addAll(this.players, players);
   }
 
 
@@ -127,10 +121,9 @@ public class MainController {
    */
   public Piece getAvailablePiece() {
     return pieces.stream()
-        .filter(piece -> playersObservableList.stream()
+        .filter(piece -> players.stream()
         .noneMatch(player -> player.getPiece().equals(piece)))
         .findFirst()
         .orElse(null);
   }
-
 }

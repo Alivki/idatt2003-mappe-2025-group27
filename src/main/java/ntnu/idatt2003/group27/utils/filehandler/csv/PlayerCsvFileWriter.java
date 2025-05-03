@@ -98,7 +98,7 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
     }
 
     try{
-      PlayerCsvFileReader playerCsvFileReader = new PlayerCsvFileReader();
+      PlayerCsvFileReader playerCsvFileReader = new PlayerCsvFileReader(null);
       Player[] players = playerCsvFileReader.readFile(filepath);
       List<Player> updatedPlayersList = Arrays.stream(players)
           .filter(p -> !p.getName().equals(player.getName()))

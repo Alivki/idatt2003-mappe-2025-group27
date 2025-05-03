@@ -3,8 +3,11 @@ package ntnu.idatt2003.group27.utils.filehandler.csv;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
+import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileReader;
 
@@ -17,6 +20,17 @@ import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileReader;
  * @version 1.0
  */
 public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
+  /** A list of pieces to be used when reading files */
+  private Piece[] pieces;
+
+  /**
+   * Constructor to set pieces
+   * @param pieces
+   */
+  public PlayerCsvFileReader(Piece[] pieces) {
+    this.pieces = pieces;
+  }
+
   /**
    * Reads the csv file from filepath and returns a player array containing all players.
    * @param filePath .
@@ -29,12 +43,27 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
       List<String[]> contents = reader.readAll();
 
       //Loop starts at i = 1 to skip the titles for each column in the csv file.
-      Player[] players = IntStream.range(1, contents.size())
-          .mapToObj(i -> new Player(contents.get(i)[0]))
-          .toArray(Player[]::new);
+      ArrayList<Player> players = new ArrayList<>();
+      for (int i = 1; i < contents.size(); i++) {
+        String playerName = contents.get(i)[0];
+        String pieceName = contents.get(i)[1];
+        Piece piece = Arrays.stream(pieces)
+            .filter(p -> p.getName().equals(pieceName))
+            .findFirst()
+            .orElse(null);
+        if (piece == null) {
+          piece = new Piece(pieceName, null);
+          System.out.println("Piece instance not found, created new piece for: " + pieceName);
+        }
+
+        players.add(new Player(playerName, piece));
+      }
+
+
       reader.close();
+
       System.out.println("Successfully read players csv file from " + filePath);
-      return players;
+      return players.toArray(new Player[0]);
     }
 
     catch (IOException e){

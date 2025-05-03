@@ -46,6 +46,8 @@ public class MainMenuController {
    */
   private void setupMenuViewEventHandler() {
     setAddPlayerButtonHandler();
+    setImportPlayerCsvButtonhandler();
+    setExportPlayerCsvButtonHandler();
 
     //Sets handler for normal board button
     mainMenuView.setNormalBoardButtonHandler(e -> {
@@ -121,34 +123,6 @@ public class MainMenuController {
         return;
       }
       mainController.switchToBoardGame(LadderGameType.NORMAL);
-    });
-
-    //Set export players csv file handler
-    mainMenuView.setExportPlayersCsvButtonHandler(e -> {
-      System.out.println("Export players csv button clicked");
-      if (mainController != null){      PlayerCsvFileWriter csvFileWriter = new PlayerCsvFileWriter();
-      try {
-        csvFileWriter.writeFile("src/main/resources/csv/Exported_Players.csv",
-            mainController.getPlayers().toArray(new Player[0]));
-      } catch (IOException ex) {
-        System.out.println(ex.getMessage());
-      }
-      }
-    });
-
-    //Set import players csv file handler
-    mainMenuView.setImportPlayersCsvButtonHandler(e -> {
-      System.out.println("Import players csv button clicked");
-      PlayerCsvFileReader fileReader = new PlayerCsvFileReader();
-      try {
-        Player[] players = fileReader.readFile("src/main/resources/csv/Exported_Players.csv");
-        if (mainController != null){
-          mainController.setPlayers(players);
-        }
-      }
-      catch (IOException ex) {
-        System.out.println(ex.getMessage());
-      }
     });
 
     //Dynamically sets appropritate piece button handlers.
@@ -246,12 +220,50 @@ public class MainMenuController {
 
       Player newPlayer = new Player(playerName, piece);
       mainController.addPlayer(newPlayer);
-      mainMenuView.populatePlayerList(mainController.getPlayers());
-      setRemovePlayerButtonHandlers();
+      UpdatePlayerListDisplay();
       mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(selectedPiece), true);
     });
   }
 
+  private void setExportPlayerCsvButtonHandler(){
+    //Set export players csv file handler
+    mainMenuView.setExportPlayersCsvButtonHandler(e -> {
+      System.out.println("Export players csv button clicked");
+      if (mainController != null){
+        PlayerCsvFileWriter csvFileWriter = new PlayerCsvFileWriter();
+        try {
+          csvFileWriter.writeFile("src/main/resources/csv/Exported_Players.csv",
+              mainController.getPlayers().toArray(new Player[0]));
+        } catch (IOException ex) {
+          System.out.println(ex.getMessage());
+        }
+      }
+    });
+  }
+
+  private void setImportPlayerCsvButtonhandler(){
+    //Set import players csv file handler
+    mainMenuView.setImportPlayersCsvButtonHandler(e -> {
+      System.out.println("Import players csv button clicked");
+      PlayerCsvFileReader fileReader = new PlayerCsvFileReader(mainController.getPieces().toArray(new Piece[0]));
+      try {
+        Player[] players = fileReader.readFile("src/main/resources/csv/Exported_Players.csv");
+        mainMenuView.setDisableAllPlayerPieceButtons(false);
+        if (mainController != null){
+          for(int i = 0; i < players.length; i++) {
+            Player player = players[i];
+            mainController.setPlayers(players);
+            Piece piece = player.getPiece();
+            mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(piece), true);
+          }
+        }
+        UpdatePlayerListDisplay();
+      }
+      catch (IOException ex) {
+        System.out.println(ex.getMessage());
+      }
+    });
+  }
 
   private void setSelectPieceButtonHandler(int i){
     Piece piece = mainController.getPieces().get(i);
@@ -270,11 +282,18 @@ public class MainMenuController {
       mainMenuView.setRemovePlayerButtonHandler(player, e -> {
         System.out.println("Remove player button clicked for player: " + player.getName());
         mainController.removePlayer(player);
-        mainMenuView.populatePlayerList(mainController.getPlayers());
-        setRemovePlayerButtonHandlers();
+        UpdatePlayerListDisplay();
         mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(player.getPiece()), false);
       });
     });
+  }
+
+  /**
+   * Updates the player list to display correct player information.
+   */
+  private void UpdatePlayerListDisplay(){
+    mainMenuView.populatePlayerList(mainController.getPlayers());
+    setRemovePlayerButtonHandlers();
   }
 
   public MainController getMainController(){

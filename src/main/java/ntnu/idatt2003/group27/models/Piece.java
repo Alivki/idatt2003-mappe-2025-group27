@@ -11,6 +11,8 @@ public class Piece {
   /* The filepath to the piece's icon */
   private final String iconFilePath;
 
+
+
   public Piece(String name, String iconFilePath) {
     this.name = name;
     this.iconFilePath = iconFilePath;
