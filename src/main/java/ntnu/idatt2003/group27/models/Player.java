@@ -4,7 +4,7 @@ package ntnu.idatt2003.group27.models;
  * Represents a player in a board game, tracking their name and current position on the board. This
  * class provides methods to manage the player's location and movement across tiles.
  *
- * @author Iver Lindholm
+ * @author Iver Lindholm og Amadeus Berg
  * @version 1.1
  * @since 0.0
  */
@@ -12,9 +12,11 @@ public class Player {
   /** The name of the player. */
   private final String name;
 
+  /** The piece the player will have on the board.  */
+  private Piece piece;
+
   /** The tile currently occupied by the player. */
   private Tile currentTile;
-  private Piece piece;
 
   /**
    * Constructs a player with the specified name and associates them with the game.

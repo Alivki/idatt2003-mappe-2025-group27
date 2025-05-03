@@ -120,7 +120,7 @@ public class MainMenuController {
         alert.show();
         return;
       }
-      mainController.switchToBoardGame(LadderGameType.NORMAL);
+      mainController.switchToBoardGame(LadderGameType.JSON);
     });
 
     //Set export players csv file handler

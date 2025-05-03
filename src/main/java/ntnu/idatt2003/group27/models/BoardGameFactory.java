@@ -1,18 +1,9 @@
 package ntnu.idatt2003.group27.models;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.IntStream;
 
-import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.interfaces.GameConfiguration;
-import ntnu.idatt2003.group27.utils.filehandler.json.JsonFileReader;
-import ntnu.idatt2003.group27.models.actions.BackToStartAction;
-import ntnu.idatt2003.group27.models.actions.LadderAction;
-import ntnu.idatt2003.group27.models.interfaces.TileAction;
-import ntnu.idatt2003.group27.models.exceptions.UnknownLadderGameTypeExceptions;
 
 /**
  * A factory class responsible for creating {@link BoardGame} instances with predefined
@@ -37,7 +28,7 @@ public class BoardGameFactory {
   }
 
   /**
-   * Craetes a {@link BoardGame} instace based on the specified {@link LadderGameType}. The game is
+   * Creates a {@link BoardGame} instance based on the specified {@link LadderGameType}. The game is
    * configured with a board and dice as defined by the associated {@link GameConfiguration}.
    *
    * @param ladderGameType The {@link LadderGameType} defining the game configuration.
@@ -45,13 +36,23 @@ public class BoardGameFactory {
    * @throws IllegalArgumentException if the {@code LadderGameType} is unknown.
    */
   public BoardGame createLadderGame(LadderGameType ladderGameType) {
+    if (ladderGameType.equals(LadderGameType.JSON)) {
+      BoardGame test = null;
+      try {
+        test = createLadderGameFromJson("src/main/resources/boards/Board.json");
+      } catch (IOException e) {
+        throw new IllegalArgumentException("Failed to load JSON configuration: " + e.getMessage());
+      }
+      return test;
+    }
+
     GameConfiguration config = new LadderGameConfiguration(ladderGameType);
     Board board = boardFactory.createBoard(config.getTotalTiles(), config.getTileActions());
     return new BoardGame(board, config.getNumberOfDice(), config.getNumberOfDieSides());
   }
 
   /**
-   * Creates a {@link BoardGame} instace based on a configuration loaded from a JSON file. The game
+   * Creates a {@link BoardGame} instance based on a configuration loaded from a JSON file. The game
    * is configured with a board and dice as defined by the associated {@link GameConfiguration}.
    *
    * @param jsonPath The file path to the JSON configuration file.

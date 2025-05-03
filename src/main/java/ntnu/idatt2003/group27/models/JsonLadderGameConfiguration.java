@@ -71,7 +71,7 @@ public class JsonLadderGameConfiguration implements GameConfiguration {
    * @return The {@link Board} instance configured from the JSON file.
    * @throws IllegalArgumentException if the board has not been initialized.
    */
-  public Board getBoard() {
+  public Board getBoard() throws IllegalArgumentException {
     if (board == null) {
       throw new IllegalArgumentException("Board has not been initialized.");
     }
