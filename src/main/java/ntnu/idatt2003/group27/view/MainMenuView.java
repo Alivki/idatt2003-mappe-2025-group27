@@ -7,6 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -15,7 +17,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import ntnu.idatt2003.group27.controllers.MainMenuController;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
@@ -34,7 +39,6 @@ public class MainMenuView {
   //Header buttons
   private CustomButton ladderGameMainMenuButton;
   private CustomButton secondGameMainMenuButton;
-  private CustomButton thirdGameMainMenuButton;
   private CustomButton applicationQuitButton;
 
   //Other buttons
@@ -44,6 +48,9 @@ public class MainMenuView {
 
   //Player icon selection buttons
   private ArrayList<ToggleButton> playerIconButtons = new ArrayList<>();
+  private ColorPicker colorPickerMenu;
+  private CustomButton colorPicker;
+  private Color pickedColor;
 
   //Board buttons
   private MainMenuBoardButton normalBoardButton;
@@ -71,7 +78,6 @@ public class MainMenuView {
     //Initializes header buttons
     ladderGameMainMenuButton = new CustomButton("Stigespill", CustomButton.ButtonVariant.GHOST, null);
     secondGameMainMenuButton = new CustomButton("Spill 2", CustomButton.ButtonVariant.GHOST, null);
-    thirdGameMainMenuButton = new CustomButton("Spill 3", CustomButton.ButtonVariant.GHOST, null);
     applicationQuitButton = new CustomButton("Avslutt", CustomButton.ButtonVariant.DESTRUCTIVE,
         actionEvent -> Platform.exit());
 
@@ -105,9 +111,30 @@ public class MainMenuView {
     boardGrid.add(impossibleBoardButton, 0, 1);
     boardGrid.add(jsonBoardButton, 1, 1);
 
+    HBox nameAndColorContainer = new HBox(10);
+
     //Initializes player name input field
     playerNameTextField = new TextField();
     playerNameTextField.setPromptText("Spiller navn...");
+    playerNameTextField.setPrefHeight(31);
+    HBox.setHgrow(playerNameTextField, Priority.ALWAYS);
+
+    ImageView colorPickerIcon = new ImageView("icons/picker-button.png");
+    colorPicker = new CustomButton(null, CustomButton.ButtonVariant.GHOST_ICON, colorPickerIcon, event -> {
+      ColorPicker tempColorPicker = new ColorPicker();
+      tempColorPicker.setStyle("-fx-color-label-visible: false; -fx-background-color: transparent; -fx-pref-width: 0; -fx-pref-height: 0;");
+      tempColorPicker.setOnAction(e -> {
+        pickedColor = tempColorPicker.getValue();
+        System.out.println("Selected Color: " + pickedColor);
+      });
+      StackPane tempContainer = new StackPane(tempColorPicker);
+      tempContainer.setVisible(false);
+      playerListCardEditable.getChildren().add(tempContainer);
+      tempColorPicker.show();
+      tempColorPicker.setOnHidden(e -> playerListCardEditable.getChildren().remove(tempContainer));
+    });
+    colorPickerIcon.setFitWidth(20);
+    colorPickerIcon.setFitHeight(20);
 
     //Initializes add player button
     addPlayerButton = new CustomButton("Legg til spiller", CustomButton.ButtonVariant.PRIMARY, null);
@@ -124,7 +151,7 @@ public class MainMenuView {
     for(int i = 0; i < pieces.size(); i++){
       ImageView playerIcon = new ImageView(new Image(pieces.get(i).getIconFilePath()));
       //CustomButton playerIconButton = new CustomButton(playerIcon, CustomButton.ButtonVariant.ICON, null);
-      CustomToggleButton playerIconButton = new CustomToggleButton(playerIcon, 30);
+      CustomToggleButton playerIconButton = new CustomToggleButton(playerIcon, 34);
       playerIconButton.setToggleGroup(pieceSelectionButtonGroup);
       playerIconButtons.add(playerIconButton);
     }
@@ -146,11 +173,12 @@ public class MainMenuView {
 
     //Positions nodes correctly in each container
     pieceSelectionButtonContainer.getChildren().addAll(playerIconButtons);
-    playerListCardEditable.getChildren().addAll(pieceSelectionButtonContainer, playerNameTextField, addPlayerButton);
+    nameAndColorContainer.getChildren().addAll(playerNameTextField, colorPicker);
+    playerListCardEditable.getChildren().addAll(pieceSelectionButtonContainer, nameAndColorContainer, addPlayerButton);
     playerExportCsvCard.getChildren().addAll(exportPlayersCsvButton);
     playerImportCsvCard.getChildren().addAll(importPlayersCsvButton, csvExampleInfoHeaderLabel, csvExampleInfoDescriptionLabel);
 
-    headerContainer.getChildren().addAll(ladderGameMainMenuButton, secondGameMainMenuButton, thirdGameMainMenuButton, applicationQuitButton);
+    headerContainer.getChildren().addAll(ladderGameMainMenuButton, secondGameMainMenuButton, applicationQuitButton);
     layout.getHeader().getChildren().addAll(headerContainer);
     layout.getMainContainer().getChildren().addAll(title, boardGrid);
     layout.getRightContainer().getChildren().addAll(playerExportCsvCard, playerImportCsvCard);
@@ -164,10 +192,6 @@ public class MainMenuView {
 
   public void setStartButtonHandler(EventHandler<ActionEvent> action) {
     secondGameMainMenuButton.setOnAction(action);
-  }
-
-  public void setSettingsButtonHandler(EventHandler<ActionEvent> action) {
-    thirdGameMainMenuButton.setOnAction(action);
   }
 
   public void setAddPlayerButtonHandler(EventHandler<ActionEvent> action) {
@@ -204,6 +228,10 @@ public class MainMenuView {
 
   public void setRemovePlayerButtonHandler(Player player, EventHandler<ActionEvent> action) {
     playerListCardEditable.setRemovePlayerButtonHandler(player, action);
+  }
+
+  public Color getPickedColor() {
+    return pickedColor;
   }
 
   public void populatePlayerList(List<Player> players){

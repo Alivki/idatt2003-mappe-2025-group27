@@ -1,10 +1,12 @@
 package ntnu.idatt2003.group27.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
+import ntnu.idatt2003.group27.utils.filehandler.RandomColor;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileReader;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileWriter;
 import ntnu.idatt2003.group27.view.MainMenuView;
@@ -16,14 +18,17 @@ import ntnu.idatt2003.group27.view.components.Alert;
  * data, and starting games with different difficult levels.
  */
 public class MainMenuController {
-  /** The main menu view associated with this controller */
+  /** The main menu view associated with this controller. */
   private MainMenuView mainMenuView;
 
   /** A reference to the mainController */
   private final MainController mainController;
 
-  /** The currently selected piece from the icon menu */
+  /** The currently selected piece from the icon menu. */
   private Piece selectedPiece;
+
+  /** The selected color. */
+  private Color color;
 
   /**
    * Constructs a  {@link MainMenuController} witht the specified {@link MainMenuView} and sets up
@@ -244,7 +249,12 @@ public class MainMenuController {
         return;
       }
 
-      Player newPlayer = new Player(playerName, piece);
+      color = mainMenuView.getPickedColor();
+      if (color == null) {
+        color = RandomColor.generateRandomColor().getColor();
+      }
+
+      Player newPlayer = new Player(playerName, piece, color);
       mainController.addPlayer(newPlayer);
       mainMenuView.populatePlayerList(mainController.getPlayers());
       setRemovePlayerButtonHandlers();
@@ -252,7 +262,11 @@ public class MainMenuController {
     });
   }
 
-
+  /**
+   * Sets up actionEvent handlers for select piece button.
+   *
+   * @param i The index of the piece in the list of pieces.
+   */
   private void setSelectPieceButtonHandler(int i){
     Piece piece = mainController.getPieces().get(i);
     mainMenuView.setPlayerPieceButtonHandlers(i, e -> {
