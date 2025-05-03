@@ -84,7 +84,7 @@
                 <version>${javafx.plugin.version}</version>
                 <configuration>
                     <!-- Main class for the application -->
-                    <mainClass>ntnu.idatt2003.group27.view.BoardGameGUI</mainClass>
+                    <mainClass>ntnu.idatt2003.group27.view.SceneManager</mainClass>
                 </configuration>
             </plugin>
             <!-- Maven Javadoc Plugin for generating JavaDoc -->
