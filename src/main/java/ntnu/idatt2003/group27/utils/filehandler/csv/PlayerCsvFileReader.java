@@ -47,23 +47,32 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
       Player[] players = new Player[contents.size()-1];
       for (int i = 1; i < contents.size(); i++) {
         String playerName = contents.get(i)[0];
-        String pieceName = contents.get(i)[1];
-        Piece piece = Arrays.stream(pieces)
-            .filter(p -> p.getName().equals(pieceName))
-            .findFirst()
-            .orElse(null);
-        if (piece == null) {
-          piece = new Piece(pieceName, null);
-          System.out.println("Piece instance not found, created new piece for: " + pieceName);
+        if (!playerName.isBlank()) {
+          if (contents.get(i).length > 1) {
+            String pieceName = contents.get(i)[1];
+            Piece piece = Arrays.stream(pieces)
+                .filter(p -> p.getName().equals(pieceName))
+                .findFirst()
+                .orElse(null);
+            if (piece == null) {
+              piece = new Piece(pieceName, null);
+              System.out.println("Piece instance not found, created new piece for: " + pieceName);
+            }
+            players[i - 1] = new Player(playerName, piece);
+          } else {
+            players[i - 1] = new Player(playerName);
+          }
         }
-
-        players[i-1] = new Player(playerName, piece);
       }
 
-
       reader.close();
-
       System.out.println("Successfully read players csv file from " + filePath);
+
+      //Removes potential null elements from player array
+      players = Arrays.stream(players)
+          .filter(s -> s != null)
+          .toArray(Player[]::new);
+
       return players;
     }
 

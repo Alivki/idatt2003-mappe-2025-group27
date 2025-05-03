@@ -1,7 +1,12 @@
 package ntnu.idatt2003.group27.controllers;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
@@ -245,22 +250,45 @@ public class MainMenuController {
     //Set import players csv file handler
     mainMenuView.setImportPlayersCsvButtonHandler(e -> {
       System.out.println("Import players csv button clicked");
-      PlayerCsvFileReader fileReader = new PlayerCsvFileReader(mainController.getPieces().toArray(new Piece[0]));
-      try {
-        Player[] players = fileReader.readFile("src/main/resources/csv/Exported_Players.csv");
-        mainMenuView.setDisableAllPlayerPieceButtons(false);
-        if (mainController != null){
-          for(int i = 0; i < players.length; i++) {
-            Player player = players[i];
-            mainController.setPlayers(players);
-            Piece piece = player.getPiece();
-            mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(piece), true);
+
+      //Opens an explorer window to select a file from the system.
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.setTitle("Import players csv");
+      fileChooser.getExtensionFilters().addAll(
+          new FileChooser.ExtensionFilter("Csv files","*.csv")
+      );
+
+      Stage stage = (Stage)mainMenuView.getRoot().getScene().getWindow();
+      File selectedFile = fileChooser.showOpenDialog(stage);
+      if (selectedFile != null) {
+        System.out.println("File selected: " + selectedFile.getAbsolutePath());
+
+        //Reads the csv file and adds players
+        PlayerCsvFileReader fileReader = new PlayerCsvFileReader(mainController.getPieces().toArray(new Piece[0]));
+        try {
+          Player[] players = fileReader.readFile(selectedFile.getAbsolutePath());
+          mainMenuView.setDisableAllPlayerPieceButtons(false);
+          if (mainController != null){
+            for(int i = 0; i < players.length; i++) {
+              Player player = players[i];
+              if (player != null) {
+                System.out.println(
+                    "Adding player: " + player.getName() + ", piece: " + player.getPiece());
+                mainController.setPlayers(players);
+                Piece piece = player.getPiece();
+                if (piece != null && mainController.getPieces().contains(piece)) {
+                  mainMenuView.setDisablePlayerPieceButton(
+                      mainController.getPieces().indexOf(piece),
+                      true);
+                }
+              }
+            }
           }
+          UpdatePlayerListDisplay();
         }
-        UpdatePlayerListDisplay();
-      }
-      catch (IOException ex) {
-        System.out.println(ex.getMessage());
+        catch (IOException ex) {
+          System.out.println(ex.getMessage());
+        }
       }
     });
   }

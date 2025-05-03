@@ -49,6 +49,10 @@ public class MainController {
     sceneManager.switchToMainMenu();
   }
 
+  public SceneManager getSceneManager() {
+    return this.sceneManager;
+  }
+
   /**
    * Retrieves and array of players currently in the game.
    *
