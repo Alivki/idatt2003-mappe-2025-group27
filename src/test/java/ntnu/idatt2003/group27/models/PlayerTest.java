@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
  * testing the move method</p>
  */
 public class PlayerTest {
-  BoardGame game;
+  LadderGame game;
 
   /**
    * Creates a new board game before each test.
@@ -39,7 +39,7 @@ public class PlayerTest {
 
     Board board = new Board(tiles);
 
-    game = new BoardGame(board, 1, 6);
+    game = new LadderGame(board, 1, 6);
   }
 
   @Test

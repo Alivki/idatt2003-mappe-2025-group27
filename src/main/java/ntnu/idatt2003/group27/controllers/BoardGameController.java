@@ -3,15 +3,13 @@ package ntnu.idatt2003.group27.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
-import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.models.BoardFactory;
-import ntnu.idatt2003.group27.models.BoardGame;
+import ntnu.idatt2003.group27.models.LadderGame;
 import ntnu.idatt2003.group27.models.BoardGameFactory;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
-import ntnu.idatt2003.group27.models.exceptions.UnknownLadderGameTypeExceptions;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.LadderGameView;
@@ -23,7 +21,7 @@ import javafx.util.Duration;
 /**
  * A controller class for managing the ladder game, implementing the MVC pattern. It handles game
  * logic, user interactions with the {@link LadderGameView}, and updates the view based on the game
- * event as an observer of the {@link BoardGame}.
+ * event as an observer of the {@link LadderGame}.
  *
  * @author Iver Lindholm, Amadeus Berg
  * @version 1.3
@@ -31,7 +29,7 @@ import javafx.util.Duration;
  */
 public class BoardGameController implements BoardGameObserver {
   /** The game model managing the ladder game logic */
-  private BoardGame game;
+  private LadderGame game;
   /** The view for displaying the ladder game. */
   private LadderGameView ladderGameView;
   /** The last player who made a move */

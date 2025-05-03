@@ -2,13 +2,13 @@ package ntnu.idatt2003.group27.models.interfaces;
 
 import java.util.ArrayList;
 import java.util.Map;
-import ntnu.idatt2003.group27.models.BoardGame;
+import ntnu.idatt2003.group27.models.LadderGame;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
 
 
 /**
- * Defines a contract for observing significant events in a {@link BoardGame}. Implementations of
+ * Defines a contract for observing significant events in a {@link LadderGame}. Implementations of
  * this interface receive notifications when a player moves or wins the game.
  *
  * @author Iver Lindholm

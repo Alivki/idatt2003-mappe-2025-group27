@@ -3,6 +3,7 @@ package ntnu.idatt2003.group27.models;
 import java.util.Map;
 
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
+import ntnu.idatt2003.group27.models.interfaces.BoardGame;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * @version 1.2
  * @since 0.0
  */
-public class BoardGame {
+public class LadderGame implements BoardGame {
   /**
    * List of observers monitoring game events .
    */
@@ -53,18 +54,9 @@ public class BoardGame {
    * @param numberOfDice  The number of dice to use in the game.
    * @param numberOfSides The number of sides on each dice.
    */
-  public BoardGame(Board board, int numberOfDice, int numberOfSides) {
+  public LadderGame(Board board, int numberOfDice, int numberOfSides) {
     this.board = board;
     createDice(numberOfDice, numberOfSides);
-  }
-
-  /**
-   * Adds an observer to receive game event notifications.
-   *
-   * @param observer The observer to register.
-   */
-  public void addObserver(BoardGameObserver observer) {
-    observers.add(observer);
   }
 
   /**
@@ -150,6 +142,7 @@ public class BoardGame {
    * @param player The player to be added.
    * @throws IllegalArgumentException if the player already exists in the game.
    */
+  @Override
   public void addPlayer(Player player) throws IllegalArgumentException {
     if (players.contains(player)) {
       throw new IllegalArgumentException("Player already exists");
@@ -159,21 +152,12 @@ public class BoardGame {
   }
 
   /**
-   * Initializes the dice with the specified number of dice and sides on each dice.
-   *
-   * @param numberOfDice  The number of dice to create.
-   * @param numberOfSides The number of sides on each dice.
-   */
-  private void createDice(int numberOfDice, int numberOfSides) {
-    dice = new Dice(numberOfDice, numberOfSides);
-  }
-
-  /**
    * Prepares the game for play by placing all players on the starting tile and setting the initial
    * player.
    *
    * @throws IllegalArgumentException if no players have been added to the game.
    */
+  @Override
   public void setUpGame() throws NotEnoughPlayersInGameException {
     if (players.isEmpty()) {
       throw new NotEnoughPlayersInGameException("Not enough players in the game to start!");
@@ -189,6 +173,7 @@ public class BoardGame {
   /**
    * Restarts the game.
    */
+  @Override
   public void restartGame(){
     players.forEach(player -> player.placeOnTile(board.getTile(1)));
     currentPlayer = players.getFirst();
@@ -200,6 +185,7 @@ public class BoardGame {
    *
    * @throws IllegalArgumentException if there are less than two players in the game.
    */
+  @Override
   public void play() throws NotEnoughPlayersInGameException {
     if (players.size() < 2) {
       throw new NotEnoughPlayersInGameException("Must be two players to start the game");
@@ -226,6 +212,16 @@ public class BoardGame {
       // System.out.println("\n" + getWinner().getName() + " has won the game!");
       return;
     }
+  }
+
+  /**
+   * Initializes the dice with the specified number of dice and sides on each dice.
+   *
+   * @param numberOfDice  The number of dice to create.
+   * @param numberOfSides The number of sides on each dice.
+   */
+  private void createDice(int numberOfDice, int numberOfSides) {
+    dice = new Dice(numberOfDice, numberOfSides);
   }
 
   /**
@@ -263,5 +259,14 @@ public class BoardGame {
     }
 
     return null;
+  }
+
+  /**
+   * Adds an observer to receive game event notifications.
+   *
+   * @param observer The observer to register.
+   */
+  public void addObserver(BoardGameObserver observer) {
+    observers.add(observer);
   }
 }
