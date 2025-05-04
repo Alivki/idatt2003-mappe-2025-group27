@@ -7,9 +7,13 @@ import java.util.ArrayList;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
+import ntnu.idatt2003.group27.utils.filehandler.RandomColor;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileReader;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileWriter;
 import ntnu.idatt2003.group27.view.MainMenuView;
@@ -21,13 +25,13 @@ import ntnu.idatt2003.group27.view.components.Alert;
  * data, and starting games with different difficult levels.
  */
 public class MainMenuController {
-  /** The main menu view associated with this controller */
+  /** The main menu view associated with this controller. */
   private MainMenuView mainMenuView;
 
   /** A reference to the mainController */
   private final MainController mainController;
 
-  /** The currently selected piece from the icon menu */
+  /** The currently selected piece from the icon menu. */
   private Piece selectedPiece;
 
   /**
@@ -50,6 +54,7 @@ public class MainMenuController {
    * importing player data, and starting games with different difficulty levels.
    */
   private void setupMenuViewEventHandler() {
+    setColorPickerButtonHandler();
     setAddPlayerButtonHandler();
     setImportPlayerCsvButtonhandler();
     setExportPlayerCsvButtonHandler();
@@ -223,13 +228,30 @@ public class MainMenuController {
         return;
       }
 
-      Player newPlayer = new Player(playerName, piece);
+      Color color = mainMenuView.getPickedColor();
+
+      if (color == null) {
+        color = RandomColor.generateRandomColor().getColor();
+      }
+
+      Player newPlayer = new Player(playerName, piece, color);
+      System.out.println("New player created: " + newPlayer.getColor());
       mainController.addPlayer(newPlayer);
       UpdatePlayerListDisplay();
       mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(selectedPiece), true);
+      mainMenuView.setPickedColor(null);
+      mainMenuView.removePickedColor();
     });
   }
 
+  /**
+   * Sets up actionEvent handlers for color picker button.
+   */
+  private void setColorPickerButtonHandler() {
+    mainMenuView.setColorPickerButtonHandler(event -> {
+      mainMenuView.showColorPicker();
+    });
+  }
   private void setExportPlayerCsvButtonHandler(){
     //Set export players csv file handler
     mainMenuView.setExportPlayersCsvButtonHandler(e -> {
@@ -304,6 +326,11 @@ public class MainMenuController {
     });
   }
 
+  /**
+   * Sets up actionEvent handlers for select piece button.
+   *
+   * @param i The index of the piece in the list of pieces.
+   */
   private void setSelectPieceButtonHandler(int i){
     Piece piece = mainController.getPieces().get(i);
     mainMenuView.setPlayerPieceButtonHandlers(i, e -> {
