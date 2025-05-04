@@ -234,10 +234,20 @@ public class MainMenuController {
     //Set export players csv file handler
     mainMenuView.setExportPlayersCsvButtonHandler(e -> {
       System.out.println("Export players csv button clicked");
-      if (mainController != null){
+
+      //Open fileChooser for saving
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.setTitle("Save player csv file");
+      fileChooser.getExtensionFilters().add(
+          new FileChooser.ExtensionFilter("CSV file", "*.csv"));
+      Stage stage = (Stage)mainMenuView.getRoot().getScene().getWindow();
+      File selectedFile = fileChooser.showSaveDialog(stage);
+
+      //Save file to selected path
+      if (selectedFile != null && mainController != null){
         PlayerCsvFileWriter csvFileWriter = new PlayerCsvFileWriter();
         try {
-          csvFileWriter.writeFile("src/main/resources/csv/Exported_Players.csv",
+          csvFileWriter.writeFile(selectedFile.getAbsolutePath(),
               mainController.getPlayers().toArray(new Player[0]));
         } catch (IOException ex) {
           System.out.println(ex.getMessage());
@@ -253,7 +263,7 @@ public class MainMenuController {
 
       //Opens an explorer window to select a file from the system.
       FileChooser fileChooser = new FileChooser();
-      fileChooser.setTitle("Import players csv");
+      fileChooser.setTitle("Import player csv file");
       fileChooser.getExtensionFilters().addAll(
           new FileChooser.ExtensionFilter("Csv files","*.csv")
       );
@@ -269,12 +279,13 @@ public class MainMenuController {
           Player[] players = fileReader.readFile(selectedFile.getAbsolutePath());
           mainMenuView.setDisableAllPlayerPieceButtons(false);
           if (mainController != null){
+            mainController.setPlayers(players);
             for(int i = 0; i < players.length; i++) {
               Player player = players[i];
               if (player != null) {
                 System.out.println(
                     "Adding player: " + player.getName() + ", piece: " + player.getPiece());
-                mainController.setPlayers(players);
+
                 Piece piece = player.getPiece();
                 if (piece != null && mainController.getPieces().contains(piece)) {
                   mainMenuView.setDisablePlayerPieceButton(
@@ -287,7 +298,7 @@ public class MainMenuController {
           UpdatePlayerListDisplay();
         }
         catch (IOException ex) {
-          System.out.println(ex.getMessage());
+          System.out.println("Problem reading file: " + ex.getMessage());
         }
       }
     });

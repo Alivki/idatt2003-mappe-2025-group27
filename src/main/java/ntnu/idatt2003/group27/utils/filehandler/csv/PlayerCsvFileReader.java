@@ -44,8 +44,8 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
 
       //Loop starts at i = 1 to skip the titles for each column in the csv file.
       System.out.println(contents.size());
-      Player[] players = new Player[contents.size()-1];
-      for (int i = 1; i < contents.size(); i++) {
+      Player[] players = new Player[contents.size()];
+      for (int i = 0; i < contents.size(); i++) {
         String playerName = contents.get(i)[0];
         if (!playerName.isBlank()) {
           if (contents.get(i).length > 1) {
@@ -58,9 +58,9 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
               piece = new Piece(pieceName, null);
               System.out.println("Piece instance not found, created new piece for: " + pieceName);
             }
-            players[i - 1] = new Player(playerName, piece);
+            players[i] = new Player(playerName, piece);
           } else {
-            players[i - 1] = new Player(playerName);
+            players[i] = new Player(playerName);
           }
         }
       }
