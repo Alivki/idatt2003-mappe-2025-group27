@@ -261,6 +261,7 @@ public class MainMenuController {
       setRemovePlayerButtonHandlers();
       mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(selectedPiece), true);
       mainMenuView.setPickedColor(null);
+      mainMenuView.removePickedColor();
     });
   }
 
