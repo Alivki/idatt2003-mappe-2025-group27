@@ -21,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import ntnu.idatt2003.group27.controllers.MainMenuController;
 import ntnu.idatt2003.group27.models.Piece;
@@ -49,7 +50,6 @@ public class MainMenuView {
 
   //Player icon selection buttons
   private ArrayList<ToggleButton> playerIconButtons = new ArrayList<>();
-  private ColorPicker colorPickerMenu;
   private CustomButton colorPicker;
   private Color pickedColor;
 
@@ -137,13 +137,13 @@ public class MainMenuView {
     pieceSelectionButtonContainer.setAlignment(Pos.CENTER);
 
     ToggleGroup pieceSelectionButtonGroup = new ToggleGroup();
-    for(int i = 0; i < pieces.size(); i++){
-      ImageView playerIcon = new ImageView(new Image(pieces.get(i).getIconFilePath()));
+    pieces.forEach(piece -> {
+      ImageView playerIcon = new ImageView(new Image(piece.getIconFilePath()));
       //CustomButton playerIconButton = new CustomButton(playerIcon, CustomButton.ButtonVariant.ICON, null);
       CustomToggleButton playerIconButton = new CustomToggleButton(playerIcon, 34);
       playerIconButton.setToggleGroup(pieceSelectionButtonGroup);
       playerIconButtons.add(playerIconButton);
-    }
+    });
 
     //Initializes player csv cards
     Card playerExportCsvCard = new Card("Eksporter spillere", "Last ned csv fil med spillerdata", 100);
@@ -220,6 +220,27 @@ public class MainMenuView {
   }
 
   /**
+   * Sets a new icon for the color picker button to indicate what color was picked by the user.
+   *
+   * @param color The {@link Color} object representing the color to be displayed.
+   */
+  public void showPickedColor(Color color) {
+    Circle colorCircle = new Circle(10);
+    colorCircle.setFill(color);
+    colorPicker.setGraphic(colorCircle);
+  }
+
+  /**
+   * Resets the icon back to the default color picker icon when a player has been added.
+   */
+  public void removePickedColor() {
+    ImageView colorPickerIcon = new ImageView("icons/picker-button.png");
+    colorPickerIcon.setFitWidth(20);
+    colorPickerIcon.setFitHeight(20);
+    colorPicker.setGraphic(colorPickerIcon);
+  }
+
+  /**
    * Displays the color picker for the user to select a color.
    */
   public void showColorPicker() {
@@ -227,7 +248,7 @@ public class MainMenuView {
     tempColorPicker.setStyle("-fx-color-label-visible: false; -fx-background-color: transparent; -fx-pref-width: 0; -fx-pref-height: 0;");
     tempColorPicker.setOnAction(colorPickEvent -> {
       pickedColor = tempColorPicker.getValue();
-      System.out.println("Selected color: " + pickedColor);
+      showPickedColor(pickedColor);
     });
     StackPane tempContainer = new StackPane(tempColorPicker);
     tempContainer.setVisible(false);
@@ -235,6 +256,7 @@ public class MainMenuView {
     tempContainer.setLayoutX(colorPicker.getLayoutX());
     tempContainer.setLayoutY(colorPicker.getLayoutY() + colorPicker.getHeight());
     tempColorPicker.show();
+    tempColorPicker.getStyleClass().add("color-palette");
     tempColorPicker.setOnHidden(colorPickerHideEvent -> playerListCardEditable.getChildren().remove(tempContainer));
   }
 
