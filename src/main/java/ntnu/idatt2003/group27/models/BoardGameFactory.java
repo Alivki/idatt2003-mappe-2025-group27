@@ -45,7 +45,18 @@ public class BoardGameFactory {
    * @throws IllegalArgumentException if the {@code LadderGameType} is unknown.
    */
   public BoardGame createLadderGame(LadderGameType ladderGameType) {
-    GameConfiguration config = new LadderGameConfiguration(ladderGameType);
+    GameConfiguration config = null;
+    if (ladderGameType.equals(LadderGameType.JSON)){
+      try {
+        config = new JsonLadderGameConfiguration("src/main/resources/boards/Board.Json");
+      }
+      catch (IOException e){
+        System.out.println("Error creating JSON LadderGameConfiguration: " + e.getMessage());
+      }
+    }
+    else{
+      config = new LadderGameConfiguration(ladderGameType);
+    }
     Board board = boardFactory.createBoard(config.getTotalTiles(), config.getTileActions());
     return new BoardGame(board, config.getNumberOfDice(), config.getNumberOfDieSides());
   }

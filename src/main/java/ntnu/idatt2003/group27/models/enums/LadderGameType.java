@@ -9,5 +9,7 @@ public enum LadderGameType {
   /** A more challenging ladder game with unpredictable or complex rules. */
   CRAZY,
   /** An extremely difficult ladder game with highly restrictive or intricate rules. */
-  IMPOSSIBLE;
+  IMPOSSIBLE,
+  /** A ladder game using a JSON defined board. */
+  JSON;
 }
