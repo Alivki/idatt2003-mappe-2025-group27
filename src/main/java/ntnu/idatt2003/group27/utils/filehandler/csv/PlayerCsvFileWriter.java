@@ -32,31 +32,14 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
   @Override
   public void writeFile(String filePath, Player[] data) throws IOException {
     try{
-      File playerCsvFile = createPlayerCsvFile(filePath);
-      CSVWriter csvWriter = new CSVWriter(new FileWriter(playerCsvFile, true));
+      File playerCsvFile = new File(filePath);
+      CSVWriter csvWriter = new CSVWriter(new FileWriter(playerCsvFile, false));
       for (Player player : data) {
         String[] playerInfo = {player.getName(), player.getPiece().getName()};
         csvWriter.writeNext(playerInfo);
       }
       csvWriter.close();
       System.out.println("Wrote CSV file to " + playerCsvFile.getAbsolutePath());
-    } catch (Exception e) {
-      throw new IOException(e);
-    }
-  }
-
-  /**
-   * Creates a default players.csv file in the correct format.
-   * @param filePath
-   * @throws IOException
-   */
-  public File createPlayerCsvFile(String filePath) throws IOException {
-    try{
-      CSVWriter csvWriter = new CSVWriter(new FileWriter(filePath));
-      String[] header = {"Player_Name", "Player_Piece"};
-      csvWriter.writeNext(header);
-      csvWriter.close();
-      return new File(filePath);
     } catch (Exception e) {
       throw new IOException(e);
     }
@@ -70,11 +53,7 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
    */
   public void writePlayerToFile(String filepath, Player player) throws IOException{
     try{
-
       File playerCsvFile = new File(filepath);
-      if (!playerCsvFile.exists()) {
-        playerCsvFile = createPlayerCsvFile(filepath);
-      }
       CSVWriter csvWriter = new CSVWriter(new FileWriter(playerCsvFile, true));
       String[] playerInfo = {player.getName(), player.getPiece().getName()};
       csvWriter.writeNext(playerInfo);
@@ -98,7 +77,7 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
     }
 
     try{
-      PlayerCsvFileReader playerCsvFileReader = new PlayerCsvFileReader();
+      PlayerCsvFileReader playerCsvFileReader = new PlayerCsvFileReader(null);
       Player[] players = playerCsvFileReader.readFile(filepath);
       List<Player> updatedPlayersList = Arrays.stream(players)
           .filter(p -> !p.getName().equals(player.getName()))

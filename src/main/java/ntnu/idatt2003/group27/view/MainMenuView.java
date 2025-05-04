@@ -301,6 +301,14 @@ public class MainMenuView {
   }
 
   /**
+   * Set the state of all player piece selection buttons.
+   * @param disable
+   */
+  public void setDisableAllPlayerPieceButtons(boolean disable){
+    playerIconButtons.forEach(button -> button.setDisable(disable));
+  }
+
+  /**
    * Get the name from the player name text input field.
    * @return
    */

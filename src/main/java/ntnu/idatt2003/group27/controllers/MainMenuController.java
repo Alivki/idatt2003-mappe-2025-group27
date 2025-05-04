@@ -1,6 +1,13 @@
 package ntnu.idatt2003.group27.controllers;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -50,6 +57,8 @@ public class MainMenuController {
   private void setupMenuViewEventHandler() {
     setColorPickerButtonHandler();
     setAddPlayerButtonHandler();
+    setImportPlayerCsvButtonhandler();
+    setExportPlayerCsvButtonHandler();
 
     //Sets handler for normal board button
     mainMenuView.setNormalBoardButtonHandler(e -> {
@@ -127,34 +136,6 @@ public class MainMenuController {
       mainController.switchToBoardGame(LadderGameType.NORMAL);
     });
 
-    //Set export players csv file handler
-    mainMenuView.setExportPlayersCsvButtonHandler(e -> {
-      System.out.println("Export players csv button clicked");
-      if (mainController != null){      PlayerCsvFileWriter csvFileWriter = new PlayerCsvFileWriter();
-      try {
-        csvFileWriter.writeFile("src/main/resources/csv/Exported_Players.csv",
-            mainController.getPlayers().toArray(new Player[0]));
-      } catch (IOException ex) {
-        System.out.println(ex.getMessage());
-      }
-      }
-    });
-
-    //Set import players csv file handler
-    mainMenuView.setImportPlayersCsvButtonHandler(e -> {
-      System.out.println("Import players csv button clicked");
-      PlayerCsvFileReader fileReader = new PlayerCsvFileReader();
-      try {
-        Player[] players = fileReader.readFile("src/main/resources/csv/Exported_Players.csv");
-        if (mainController != null){
-          mainController.setPlayers(players);
-        }
-      }
-      catch (IOException ex) {
-        System.out.println(ex.getMessage());
-      }
-    });
-
     //Dynamically sets appropritate piece button handlers.
     for(int i = 0; i < mainController.getPieces().size(); i++) {
       setSelectPieceButtonHandler(i);
@@ -169,12 +150,12 @@ public class MainMenuController {
       System.out.println("Add player button clicked");
 
       //Show alert if adding player crosses player limit.
-      if (mainController.getPlayers().size() >= 5) {
+      if (mainController.getPlayers().size() >= mainController.getMaxPlayers()) {
         System.out.println("Cannot add player, max player limit reached!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
             "Kan ikke legge til spiller",
-            "Du har nådd maksgrensen på 5 spillere. Fjern en tidligere spiller dersom du vil endre på spillerene.",
+            "Du har nådd maksgrensen på "+ mainController.getMaxPlayers() +" spillere. Fjern en tidligere spiller dersom du vil endre på spillerene.",
             "Ok",
             "Lukk",
             response -> {
@@ -257,8 +238,7 @@ public class MainMenuController {
       Player newPlayer = new Player(playerName, piece, color);
       System.out.println("New player created: " + newPlayer.getColor());
       mainController.addPlayer(newPlayer);
-      mainMenuView.populatePlayerList(mainController.getPlayers());
-      setRemovePlayerButtonHandlers();
+      UpdatePlayerListDisplay();
       mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(selectedPiece), true);
       mainMenuView.setPickedColor(null);
       mainMenuView.removePickedColor();
@@ -271,6 +251,89 @@ public class MainMenuController {
   private void setColorPickerButtonHandler() {
     mainMenuView.setColorPickerButtonHandler(event -> {
       mainMenuView.showColorPicker();
+    });
+  }
+
+  /**
+   * Sets up actionEvent handler for export players button.
+   */
+  private void setExportPlayerCsvButtonHandler(){
+    //Set export players csv file handler
+    mainMenuView.setExportPlayersCsvButtonHandler(e -> {
+      System.out.println("Export players csv button clicked");
+
+      //Open fileChooser for saving
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.setTitle("Save player csv file");
+      fileChooser.getExtensionFilters().add(
+          new FileChooser.ExtensionFilter("CSV file", "*.csv"));
+      Stage stage = (Stage)mainMenuView.getRoot().getScene().getWindow();
+      File selectedFile = fileChooser.showSaveDialog(stage);
+
+      //Save file to selected path
+      if (selectedFile != null && mainController != null){
+        PlayerCsvFileWriter csvFileWriter = new PlayerCsvFileWriter();
+        try {
+          csvFileWriter.writeFile(selectedFile.getAbsolutePath(),
+              mainController.getPlayers().toArray(new Player[0]));
+        } catch (IOException ex) {
+          System.out.println(ex.getMessage());
+        }
+      }
+    });
+  }
+
+  /**
+   * Sets up actionEvent handler for import players button.
+   */
+  private void setImportPlayerCsvButtonhandler(){
+    //Set import players csv file handler
+    mainMenuView.setImportPlayersCsvButtonHandler(e -> {
+      System.out.println("Import players csv button clicked");
+
+      //Opens an explorer window to select a file from the system.
+      FileChooser fileChooser = new FileChooser();
+      fileChooser.setTitle("Import player csv file");
+      fileChooser.getExtensionFilters().addAll(
+          new FileChooser.ExtensionFilter("Csv files","*.csv")
+      );
+
+      Stage stage = (Stage)mainMenuView.getRoot().getScene().getWindow();
+      File selectedFile = fileChooser.showOpenDialog(stage);
+      if (selectedFile != null) {
+        System.out.println("File selected: " + selectedFile.getAbsolutePath());
+
+        //Reads the csv file and adds players
+        PlayerCsvFileReader fileReader = new PlayerCsvFileReader(mainController.getPieces().toArray(new Piece[0]));
+        try {
+          Player[] players = fileReader.readFile(selectedFile.getAbsolutePath());
+          //Shortens array to the max player amount
+          players = Arrays.copyOf(players, Math.min(players.length, mainController.getMaxPlayers()));
+
+          mainMenuView.setDisableAllPlayerPieceButtons(false);
+          if (mainController != null){
+            mainController.setPlayers(players);
+            for(int i = 0; i < players.length; i++) {
+              Player player = players[i];
+              if (player != null) {
+                System.out.println(
+                    "Adding player: " + player.getName() + ", piece: " + player.getPiece());
+
+                Piece piece = player.getPiece();
+                if (piece != null && mainController.getPieces().contains(piece)) {
+                  mainMenuView.setDisablePlayerPieceButton(
+                      mainController.getPieces().indexOf(piece),
+                      true);
+                }
+              }
+            }
+          }
+          UpdatePlayerListDisplay();
+        }
+        catch (IOException ex) {
+          System.out.println("Problem reading file: " + ex.getMessage());
+        }
+      }
     });
   }
 
@@ -289,18 +352,25 @@ public class MainMenuController {
   }
 
   /**
-   * Sets remove player button handler for the player list cells.
+   * Sets up actionEvent handlers for remove player buttons.
    */
   private void setRemovePlayerButtonHandlers(){
     mainController.getPlayers().forEach(player -> {
       mainMenuView.setRemovePlayerButtonHandler(player, e -> {
         System.out.println("Remove player button clicked for player: " + player.getName());
         mainController.removePlayer(player);
-        mainMenuView.populatePlayerList(mainController.getPlayers());
-        setRemovePlayerButtonHandlers();
+        UpdatePlayerListDisplay();
         mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(player.getPiece()), false);
       });
     });
+  }
+
+  /**
+   * Updates the player list to display correct player information.
+   */
+  private void UpdatePlayerListDisplay(){
+    mainMenuView.populatePlayerList(mainController.getPlayers());
+    setRemovePlayerButtonHandlers();
   }
 
   public MainController getMainController(){
