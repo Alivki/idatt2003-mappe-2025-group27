@@ -51,22 +51,40 @@ public class LadderGameConfiguration implements GameConfiguration {
     Map<Integer, TileAction> tileActions = new HashMap<>();
     switch (gameType) {
       case NORMAL:
-        tileActions.put(4, new LadderAction(15, "description"));
-        tileActions.put(10, new BackToStartAction("description"));
-        tileActions.put(69, new LadderAction(47, "description"));
-        tileActions.put(58, new ThrowNewDiceAction("description", 1, 6));
-        tileActions.put(18, new LadderAction(43, "description"));
-        tileActions.put(65, new LadderAction(88, "description"));
-        tileActions.put(63, new LadderAction(45, "description"));
-        tileActions.put(32, new LadderAction(12, "description"));
+        tileActions.put(4, new LadderAction(15, "A ladder that takes you from tile 4 to 15"));
+        tileActions.put(18, new LadderAction(43, "A ladder that takes you from tile 18 to 43"));
+        tileActions.put(32, new LadderAction(12, "A ladder that drops you from tile 32 to 12"));
+        tileActions.put(63, new LadderAction(45, "A ladder that drops you from tile 63 to 45"));
+        tileActions.put(65, new LadderAction(88, "A ladder that takes you from tile 65 to 88"));
+        tileActions.put(69, new LadderAction(47, "A ladder that drops you from tile 69 to 47"));
         break;
       case CRAZY:
-        tileActions.put(4, new LadderAction(15, "description"));
-        tileActions.put(10, new BackToStartAction("description"));
+        tileActions.put(4, new LadderAction(15, "A ladder that takes you from tile 4 to 15"));
+        tileActions.put(10, new BackToStartAction("You landed on tile 10 and are sent back to the start"));
+        tileActions.put(11, new ThrowNewDiceAction("You get to throw another dice this turn!", 1, 6));
+        tileActions.put(18, new LadderAction(43, "A ladder that takes you from tile 18 to 43"));
+        tileActions.put(32, new LadderAction(12, "A ladder that drops you from tile 32 to 12"));
+        tileActions.put(58, new ThrowNewDiceAction("You get to throw another dice this turn!", 1, 6));
+        tileActions.put(63, new LadderAction(45, "A ladder that drops you from tile 63 to 45"));
+        tileActions.put(65, new LadderAction(88, "A ladder that takes you from tile 65 to 88"));
+        tileActions.put(69, new LadderAction(47, "A ladder that drops you from tile 69 to 47"));
+        tileActions.put(73, new ThrowNewDiceAction("You get to throw another dice this turn!", 1, 6));
         break;
       case IMPOSSIBLE:
-        tileActions.put(4, new LadderAction(15, "description"));
-        tileActions.put(10, new BackToStartAction("description"));
+        tileActions.put(2, new BackToStartAction("You landed on tile 2 and are sent back to the start"));
+        tileActions.put(5, new LadderAction(24, "A ladder that drops you from tile 5 to 24"));
+        tileActions.put(8, new BackToStartAction("You landed on tile 8 and are sent back to the start"));
+        tileActions.put(10, new BackToStartAction("You landed on tile 10 and are sent back to the start"));
+        tileActions.put(21, new BackToStartAction("You landed on tile 21 and are sent back to the start"));
+        tileActions.put(32, new LadderAction(12, "A ladder that drops you from tile 32 to 12"));
+        tileActions.put(34, new BackToStartAction("You landed on tile 34 and are sent back to the start"));
+        tileActions.put(45, new BackToStartAction("You landed on tile 45 and are sent back to the start"));
+        tileActions.put(57, new BackToStartAction("You landed on tile 57 and are sent back to the start"));
+        tileActions.put(63, new LadderAction(20, "A ladder that drops you from tile 63 to 20"));
+        tileActions.put(69, new LadderAction(33, "A ladder that drops you from tile 69 to 33"));
+        tileActions.put(87, new LadderAction(65, "A ladder that drops you from tile 87 to 65"));
+        tileActions.put(89, new BackToStartAction("You landed on tile 89 and are sent back to the start"));
+
         break;
       default:
         throw new IllegalArgumentException("Unknown ladder game type: " + gameType);

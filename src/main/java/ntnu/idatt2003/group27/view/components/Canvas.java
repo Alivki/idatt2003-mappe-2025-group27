@@ -366,6 +366,30 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   }
 
   /**
+   * Draws the players positions on the board with their piece centered on their respective tiles.
+   *
+   * @param gc The {@link GraphicsContext} used for drawing.
+   */
+  private void drawPlayers(GraphicsContext gc) {
+    Map<Player, Integer> newPlayerPositions = players.stream()
+      .collect(Collectors.toMap(
+        player -> player,
+        player -> player.getCurrentTile().getTileId()
+      ));
+
+    players.forEach(player -> {
+      int j = newPlayerPositions.get(player) - playerPositions.get(player);
+
+      double[] tileCenter = getTileCenter(newPlayerPositions.get(player) - 1);
+
+      gc.setFill(Color.BLACK);
+      gc.fillOval(tileCenter[0] - tileSize / 8, tileCenter[1] - tileSize / 8, tileSize / 4,  tileSize / 4);
+
+      playerPositions = newPlayerPositions;
+    });
+  }
+
+  /**
    * Calculates the top-left position of a tile based on its ID.
    *
    * @param tileId The zero-based ID of the tile.
