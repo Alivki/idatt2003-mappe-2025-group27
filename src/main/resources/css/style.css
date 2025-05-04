@@ -42,6 +42,10 @@
     -fx-background-insets: 0;
 }
 
+.player-row-inGame {
+    -fx-padding: 10px 15px 10px 10px;
+}
+
 .color-palette .hyperlink, .color-palette .separator {
     visibility: hidden ;
 }
@@ -245,12 +249,18 @@
     -fx-shape: " ";
     -fx-padding: 0;
 }
-.info-text {
+
+.info-container {
     -fx-background-color: rgba(177, 177, 177, 0.25);
-    -fx-border-radius: 5px;
-    -fx-border-style: solid;
-    -fx-border-color: rgba(177, 177, 177, 0.25);
-    -fx-padding: 5px;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-font-size: 12px;
+    -fx-font-family: "Courier New";
+}
+
+.info-text {
+    -fx-font-size: 12px;
+    -fx-font-family: "Courier New";
 }
 
 .text-field{

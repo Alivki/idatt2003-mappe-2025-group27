@@ -9,6 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import ntnu.idatt2003.group27.models.Player;
 
 /**
@@ -35,6 +37,8 @@ public class PlayerListCell extends HBox {
     ImageView removePlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/delete.png")));
     this.removePlayerButton = new CustomButton(removePlayerIcon, CustomButton.ButtonVariant.GHOST_ICON, null);
 
+    StackPane playerIconStack = new StackPane();
+
     //Initializes player icon
     ImageView playerIcon = new ImageView();
     if (player.getPiece() != null) {
@@ -51,8 +55,12 @@ public class PlayerListCell extends HBox {
     playerIcon.setFitHeight(20);
     playerIcon.setFitWidth(20);
 
+    Circle colorCircle = new Circle(18);
+    colorCircle.setFill(player.getColor());
+
     //Positions nodes
-    getChildren().addAll(playerIcon, playerName, spacer, removePlayerButton);
+    playerIconStack.getChildren().addAll(colorCircle, playerIcon);
+    getChildren().addAll(playerIconStack, playerName, spacer, removePlayerButton);
   }
 
   public void setRemovePlayerButtonHandler(EventHandler<ActionEvent> action) {
