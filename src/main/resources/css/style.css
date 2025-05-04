@@ -42,6 +42,10 @@
     -fx-background-insets: 0;
 }
 
+.color-palette .hyperlink, .color-palette .separator {
+    visibility: hidden ;
+}
+
 .button {
     -fx-background-color: #fafafa;
     -fx-border-color: #d0d0d0;
