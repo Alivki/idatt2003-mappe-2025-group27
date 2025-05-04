@@ -349,21 +349,6 @@ public class Canvas extends javafx.scene.canvas.Canvas {
         player -> player.getCurrentTile().getTileId()
       ));
 
-/*
-    gc.setStroke(Color.BLUE);
-    gc.setLineWidth(3.0);
-
-    gc.beginPath();
-    double[] startPos = getTileCenter(0);
-    gc.moveTo(startPos[0], startPos[1]);
-    IntStream.range(0, (columns * rows )).forEach(i -> {
-      double[] tileCenter = getTileCenter(i);
-
-      gc.lineTo(tileCenter[0],tileCenter[1]);
-    });
-    gc.stroke();
-*/
-
     players.forEach(player -> {
       int j = newPlayerPositions.get(player) - playerPositions.get(player);
 

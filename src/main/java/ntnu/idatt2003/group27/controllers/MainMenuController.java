@@ -128,7 +128,7 @@ public class MainMenuController {
         alert.show();
         return;
       }
-      mainController.switchToBoardGame(LadderGameType.NORMAL);
+      mainController.switchToBoardGame(LadderGameType.JSON);
     });
 
     //Dynamically sets appropritate piece button handlers.

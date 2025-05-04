@@ -2,13 +2,7 @@
   "tiles": [
     {
       "id": 1,
-      "nextTile": 2,
-      "action": {
-        "type": "ThrowNewDiceAction",
-        "description": "You get to throw another dice this turn!",
-        "numberOfDice": 1,
-        "numberOfSides": 6
-      }
+      "nextTile": 2
     },
     {
       "id": 2,
@@ -16,7 +10,13 @@
     },
     {
       "id": 3,
-      "nextTile": 4
+      "nextTile": 4,
+      "action": {
+        "type": "ThrowNewDiceAction",
+        "description": "You get to throw another dice this turn!",
+        "numberOfDice": 1,
+        "numberOfSides": 6
+      }
     },
     {
       "id": 4,
@@ -85,7 +85,12 @@
     },
     {
       "id": 18,
-      "nextTile": 19
+      "nextTile": 19,
+      "action": {
+        "type": "LadderAction",
+        "targetTile": 37,
+        "description": "Ladder that takes you from tile 18 to tile 37"
+      }
     },
     {
       "id": 19,
@@ -185,7 +190,12 @@
     },
     {
       "id": 43,
-      "nextTile": 44
+      "nextTile": 44,
+      "action": {
+        "type": "LadderAction",
+        "targetTile": 75,
+        "description": "Ladder that takes you from tile 43 to tile 75"
+      }
     },
     {
       "id": 44,
@@ -197,7 +207,13 @@
     },
     {
       "id": 46,
-      "nextTile": 47
+      "nextTile": 47,
+      "action": {
+        "type": "ThrowNewDiceAction",
+        "description": "You get to throw another dice this turn!",
+        "numberOfDice": 1,
+        "numberOfSides": 6
+      }
     },
     {
       "id": 47,
@@ -221,7 +237,12 @@
     },
     {
       "id": 52,
-      "nextTile": 53
+      "nextTile": 53,
+      "action": {
+        "type": "LadderAction",
+        "targetTile": 30,
+        "description": "Ladder that takes you from tile 52 to tile 30"
+      }
     },
     {
       "id": 53,
@@ -329,7 +350,12 @@
     },
     {
       "id": 79,
-      "nextTile": 80
+      "nextTile": 80,
+      "action": {
+        "type": "LadderAction",
+        "targetTile": 64,
+        "description": "Ladder that takes you from tile 79 to tile 64"
+      }
     },
     {
       "id": 80,
@@ -361,15 +387,27 @@
     },
     {
       "id": 87,
-      "nextTile": 88
+      "nextTile": 88,
+      "action": {
+        "type": "BackToStartAction",
+        "description": "You have been moved back to the start"
+      }
     },
     {
       "id": 88,
-      "nextTile": 89
+      "nextTile": 89,
+      "action": {
+        "type": "BackToStartAction",
+        "description": "You have been moved back to the start"
+      }
     },
     {
       "id": 89,
-      "nextTile": 90
+      "nextTile": 90,
+      "action": {
+        "type": "BackToStartAction",
+        "description": "You have been moved back to the start"
+      }
     },
     {
       "id": 90
