@@ -85,7 +85,7 @@ public class CustomButton extends Button {
       setMaxWidth(Double.MAX_VALUE);
     }
 
-    int iconButtonSize = 28;
+    int iconButtonSize = 32;
     switch (variant) {
       case PRIMARY:
         getStyleClass().add("primary-button");
