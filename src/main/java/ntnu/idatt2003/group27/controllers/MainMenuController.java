@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -149,12 +150,12 @@ public class MainMenuController {
       System.out.println("Add player button clicked");
 
       //Show alert if adding player crosses player limit.
-      if (mainController.getPlayers().size() >= 5) {
+      if (mainController.getPlayers().size() >= mainController.getMaxPlayers()) {
         System.out.println("Cannot add player, max player limit reached!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
             "Kan ikke legge til spiller",
-            "Du har nådd maksgrensen på 5 spillere. Fjern en tidligere spiller dersom du vil endre på spillerene.",
+            "Du har nådd maksgrensen på "+ mainController.getMaxPlayers() +" spillere. Fjern en tidligere spiller dersom du vil endre på spillerene.",
             "Ok",
             "Lukk",
             response -> {
@@ -306,6 +307,9 @@ public class MainMenuController {
         PlayerCsvFileReader fileReader = new PlayerCsvFileReader(mainController.getPieces().toArray(new Piece[0]));
         try {
           Player[] players = fileReader.readFile(selectedFile.getAbsolutePath());
+          //Shortens array to the max player amount
+          players = Arrays.copyOf(players, Math.min(players.length, mainController.getMaxPlayers()));
+
           mainMenuView.setDisableAllPlayerPieceButtons(false);
           if (mainController != null){
             mainController.setPlayers(players);

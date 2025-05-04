@@ -23,6 +23,9 @@ public class MainController {
   /** The controller for the board game. */
   private BoardGameController boardGameController;
 
+  /** The max players for the game. */
+  private int maxPlayers = 5;
+
   /**
    * Constructs a {@link MainController} and initializes it as the singleton instance of nine exists.
    */
@@ -109,7 +112,7 @@ public class MainController {
 
 
   /**
-   * Initializes the game pieces and puts them into a hashmap with the correct key
+   * Initializes the game pieces and puts them into a list.
    */
   private void InitializePieces(){
     pieces.clear();
@@ -121,13 +124,27 @@ public class MainController {
   }
 
   /**
-   * Gets the first piece not used by another player, returns null if none.
+   * Returns the first available piece that is not currently used by any player.
+   * If all pieces are taken, returns {@code null}.
+   *
+   * @return the first unused {@link Piece}, or {@code null} if none are available
    */
   public Piece getAvailablePiece() {
     return pieces.stream()
         .filter(piece -> players.stream()
-        .noneMatch(player -> player.getPiece().equals(piece)))
+            .noneMatch(player -> player.getPiece().equals(piece)))
         .findFirst()
         .orElse(null);
   }
+
+
+  /**
+   * Returns the maximum number of players allowed.
+   *
+   * @return the maximum number of players
+   */
+  public int getMaxPlayers() {
+    return this.maxPlayers;
+  }
+
 }

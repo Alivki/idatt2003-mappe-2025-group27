@@ -50,6 +50,8 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
         if (!playerName.isBlank()) {
           if (contents.get(i).length > 1) {
             String pieceName = contents.get(i)[1];
+
+            //Checks for existing pieces with matching name
             Piece piece = Arrays.stream(pieces)
                 .filter(p -> p.getName().equals(pieceName))
                 .findFirst()
