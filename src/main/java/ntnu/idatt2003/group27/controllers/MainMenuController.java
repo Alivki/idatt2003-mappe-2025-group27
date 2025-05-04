@@ -252,6 +252,10 @@ public class MainMenuController {
       mainMenuView.showColorPicker();
     });
   }
+
+  /**
+   * Sets up actionEvent handler for export players button.
+   */
   private void setExportPlayerCsvButtonHandler(){
     //Set export players csv file handler
     mainMenuView.setExportPlayersCsvButtonHandler(e -> {
@@ -278,6 +282,9 @@ public class MainMenuController {
     });
   }
 
+  /**
+   * Sets up actionEvent handler for import players button.
+   */
   private void setImportPlayerCsvButtonhandler(){
     //Set import players csv file handler
     mainMenuView.setImportPlayersCsvButtonHandler(e -> {
@@ -341,7 +348,7 @@ public class MainMenuController {
   }
 
   /**
-   * Sets remove player button handler for the player list cells.
+   * Sets up actionEvent handlers for remove player buttons.
    */
   private void setRemovePlayerButtonHandlers(){
     mainController.getPlayers().forEach(player -> {

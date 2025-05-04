@@ -58,7 +58,7 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
               piece = new Piece(pieceName, null);
               System.out.println("Piece instance not found, created new piece for: " + pieceName);
             }
-            players[i] = new Player(playerName, piece);
+            players[i] = new Player(playerName, piece, null);
           } else {
             players[i] = new Player(playerName);
           }
