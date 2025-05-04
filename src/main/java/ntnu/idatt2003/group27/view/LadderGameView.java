@@ -153,7 +153,6 @@ public class LadderGameView {
 
     settingsButtonContainer.getChildren().addAll(restartButton);
     settingsCard.getChildren().addAll(settingsButtonContainer);
-    //playerCard.getChildren().add(playerList);
     layout.getLeftContainer().getChildren().addAll(playerListCard, settingsCard);
 
     gameInfo.getChildren().addAll(
