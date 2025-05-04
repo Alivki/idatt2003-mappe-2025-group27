@@ -1,15 +1,10 @@
 package ntnu.idatt2003.group27.controllers;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
@@ -262,6 +257,20 @@ public class MainMenuController {
     mainMenuView.setExportPlayersCsvButtonHandler(e -> {
       System.out.println("Export players csv button clicked");
 
+      if (mainController.getPlayers().isEmpty()) {
+        Alert alert = new Alert(
+            this.mainMenuView.getRoot(),
+            "Ingen spillere",
+            "Ingen spillere å eksportere",
+            "Ok",
+            "Lukk",
+            response -> {
+            }
+        );
+        alert.show();
+        return;
+      }
+
       //Open fileChooser for saving
       FileChooser fileChooser = new FileChooser();
       fileChooser.setTitle("Save player csv file");
@@ -330,8 +339,17 @@ public class MainMenuController {
           }
           UpdatePlayerListDisplay();
         }
-        catch (IOException ex) {
-          System.out.println("Problem reading file: " + ex.getMessage());
+        catch (Exception ex) {
+          Alert alert = new Alert(
+              this.mainMenuView.getRoot(),
+              "Kan ikke legge til spillere",
+              ex.getMessage(),
+              "Ok",
+              "Lukk",
+              response -> {
+              }
+          );
+          alert.show();
         }
       }
     });
