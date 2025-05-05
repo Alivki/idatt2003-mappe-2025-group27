@@ -121,7 +121,19 @@ public class BoardGameController implements BoardGameObserver {
     });
 
     ladderGameView.setRestartButtonHandler(e -> {
-      RestartGame();
+      Alert alert = new Alert(
+          this.ladderGameView.getRoot(),
+          "Bekreft restart",
+          "Er du sikker på at du vil starte spillet på nytt?",
+          "Ja",
+          "Nei",
+          response -> {
+            if (response) {
+              RestartGame();
+            }
+          }
+      );
+      alert.show();
     });
 
     ladderGameView.setHomeButtonHandler(e -> {
