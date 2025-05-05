@@ -20,6 +20,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
@@ -156,8 +157,11 @@ public class MainMenuView {
     ImageView uploadImageView = new ImageView("icons/upload.png");
     importPlayersCsvButton = new CustomButton("Last opp spillere", CustomButton.ButtonVariant.PRIMARY_ICON, uploadImageView, null);
 
+    VBox csvExample = new VBox(5);
+    csvExample.getStyleClass().add("info-container");
+
     Label csvExampleInfoHeaderLabel = new Label("CSV-fil eksempel:");
-    Label csvExampleInfoDescriptionLabel = new Label("navn, brikke\nSpiller 1, bil\nSpiller 2, sjakk");
+    Label csvExampleInfoDescriptionLabel = new Label("navn, brikke, farge\nSpiller 1, bil, red\nSpiller 2, sjakk, blue");
     csvExampleInfoDescriptionLabel.getStyleClass().add("info-text");
 
     //Positions nodes correctly in each container
@@ -165,7 +169,8 @@ public class MainMenuView {
     nameAndColorContainer.getChildren().addAll(playerNameTextField, colorPicker);
     playerListCardEditable.getChildren().addAll(pieceSelectionButtonContainer, nameAndColorContainer, addPlayerButton);
     playerExportCsvCard.getChildren().addAll(exportPlayersCsvButton);
-    playerImportCsvCard.getChildren().addAll(importPlayersCsvButton, csvExampleInfoHeaderLabel, csvExampleInfoDescriptionLabel);
+    csvExample.getChildren().addAll(csvExampleInfoDescriptionLabel);
+    playerImportCsvCard.getChildren().addAll(importPlayersCsvButton, csvExampleInfoHeaderLabel, csvExample);
 
     headerContainer.getChildren().addAll(ladderGameMainMenuButton, secondGameMainMenuButton, applicationQuitButton);
     layout.getHeader().getChildren().addAll(headerContainer);

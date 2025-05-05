@@ -2,25 +2,21 @@ package ntnu.idatt2003.group27.view.components;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
 import ntnu.idatt2003.group27.models.actions.LadderAction;
 import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
-import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
 /**
  * A JavaFX canvas component for rendering a tile-based game board. The canvas displays tiles,
@@ -46,6 +42,8 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   private Map<Player, Integer> playerPositions;
   /** A map of tile IDs to their corresponding {@link Tile} objects, containing tile actions */
   private final Map<Integer, Tile> tileActions;
+  /** The time of the player animation */
+  private final double ANIMATION_DURATION = 500;
 
   /**
    * Constructs a {@link Canvas} for rendering the game board with the specified tile actions,
@@ -129,6 +127,33 @@ public class Canvas extends javafx.scene.canvas.Canvas {
       gc.setFill(Color.BLACK);
       gc.setFont(Font.font("Inter", 14));
       gc.fillText(String.valueOf(i + 1), tilePosition[0] + 30, tilePosition[1] + 20);
+    });
+  }
+
+  /**
+   * Draws the players positions on the board with their piece centered on their respective tiles.
+   *
+   * @param gc The {@link GraphicsContext} used for drawing.
+   */
+  private void drawPlayers(GraphicsContext gc) {
+    Map<Player, Integer> newPlayerPositions = players.stream()
+        .collect(Collectors.toMap(
+            player -> player,
+            player -> player.getCurrentTile().getTileId()
+        ));
+
+    players.forEach(player -> {
+      double[] tileCenter = getTileCenter(newPlayerPositions.get(player) - 1);
+
+      gc.setFill(player.getColor());
+      gc.fillOval(tileCenter[0] - tileSize / 4, tileCenter[1] - tileSize / 4,
+          tileSize / 2,  tileSize / 2);
+      Image piece = new Image(Objects.requireNonNull(
+          getClass().getResourceAsStream(player.getPiece().getIconFilePath())));
+      gc.drawImage(piece, tileCenter[0] - tileSize / 6, tileCenter[1] - tileSize / 6,
+          tileSize / 3,  tileSize / 3);
+
+      playerPositions = newPlayerPositions;
     });
   }
 
@@ -266,7 +291,10 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   private void drawAllLadders(GraphicsContext gc) {
     tileActions.entrySet().stream()
       .filter(e -> e.getValue().getLandAction() instanceof LadderAction)
-      .forEach(e -> drawLadder(gc, e.getKey() - 1, ((LadderAction) e.getValue().getLandAction()).getDestinationTileId() - 1));
+      .forEach(e -> drawLadder(
+          gc,
+          e.getKey() - 1,
+          ((LadderAction) e.getValue().getLandAction()).getDestinationTileId() - 1));
   }
 
   /**
