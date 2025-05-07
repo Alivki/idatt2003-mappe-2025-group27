@@ -233,10 +233,12 @@ public class Canvas extends javafx.scene.canvas.Canvas {
           e -> {
             animatingPlayerPosition = new double[] {
                 startPos[0] +
-                    (endPos[0] - startPos[0]) * (fraction - (finalI - 1.0) / (finalPath.size() - 1)) *
+                    (endPos[0] - startPos[0]) *
+                        (fraction - (finalI - 1.0) / (finalPath.size() - 1)) *
                         (finalPath.size() - 1),
                 startPos[1] +
-                    (endPos[1] - startPos[1]) * (fraction - (finalI - 1.0) / (finalPath.size() - 1)) *
+                    (endPos[1] - startPos[1]) *
+                        (fraction - (finalI - 1.0) / (finalPath.size() - 1)) *
                         (finalPath.size() - 1)
             };
             redrawBoard();
@@ -274,7 +276,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
       }
       path.add(endTileId);
     } else {
-      for (int i = startTileId; i >= actionTile; i--) {
+      for (int i = startTileId; i <= actionTile; i++) {
         path.add(i);
       }
       path.add(endTileId);
