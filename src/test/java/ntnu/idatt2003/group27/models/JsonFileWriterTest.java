@@ -27,9 +27,9 @@ public class JsonFileWriterTest {
   public void WriteBoardToJsonTest(){
     Board board = new Board(tiles);
     JsonFileWriter jsonFileWriter = new JsonFileWriter();
-    JsonObject jsonObject = jsonFileWriter.serializeBoard(board);
+
     try {
-      jsonFileWriter.writeFile("Board.Json", jsonObject);
+      jsonFileWriter.writeFile("Board.Json", board);
     }
     catch (IOException e){
       System.out.println(e.getMessage());

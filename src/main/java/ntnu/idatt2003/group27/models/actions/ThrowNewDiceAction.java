@@ -29,6 +29,33 @@ public class ThrowNewDiceAction implements TileAction {
   }
 
   /**
+   * Retrieves the tile id of the destination tile for this ladder action.
+   *
+   * @return the ID of the destination tile.
+   */
+  public int getNumberOfSides() {
+    return numberOfDieSides;
+  }
+
+  /**
+   * Retrieves the number of dice to throw for this ladder action.
+   *
+   * @return the number of dice to throw.
+   */
+  public int getNumberOfDice() {
+    return numberOfDice;
+  }
+
+  /**
+   * Retrieves the description of this ladder action.
+   *
+   * @return the description of the ladder action.
+   */
+  public String getDescription() {
+    return description;
+  }
+
+  /**
    * Executes the ladder action by moving the specified player to the destination tile.
    *
    * @param player The {@link Player} affected by this ladder action.

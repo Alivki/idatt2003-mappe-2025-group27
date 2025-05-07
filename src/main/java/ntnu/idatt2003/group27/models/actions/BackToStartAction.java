@@ -25,6 +25,15 @@ public class BackToStartAction implements TileAction {
   }
 
   /**
+   * Retrieves the description of this ladder action.
+   *
+   * @return the description of the ladder action.
+   */
+  public String getDescription() {
+    return description;
+  }
+
+  /**
    * Executes the ladder action by moving the specified player to the destination tile.
    *
    * @param player The {@link Player} affected by this ladder action.
