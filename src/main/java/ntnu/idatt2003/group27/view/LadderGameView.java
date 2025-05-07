@@ -231,6 +231,15 @@ public class LadderGameView {
     playerListCard.populatePlayerList(players);
   }
 
+  public void animatePlayerMovement(Player player, int newTileId, List<Player> players, Runnable onComplete) {
+    canvas.animatePlayerMovement(player, newTileId, () -> {
+      updateBoard(players);
+      if (onComplete != null) {
+        onComplete.run();
+      }
+    });
+  }
+
   public void createBoard(ArrayList<Player> players, Map<Integer, Tile> tiles) {
     canvas = new Canvas(tiles, players, tiles.size());
     canvasContainer.getChildren().add(canvas);
@@ -239,7 +248,7 @@ public class LadderGameView {
     canvas.updateBoard(players);
   }
 
-  public void updateBoard(ArrayList<Player> players) {
+  public void updateBoard(List<Player> players) {
     canvas.updateBoard(players);
   }
 

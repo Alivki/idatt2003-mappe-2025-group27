@@ -157,26 +157,36 @@ public class BoardGameController implements BoardGameObserver {
     int round = ladderGameView.getRoundLabel() + 1;
     ladderGameView.rotateDice(roll);
 
+    int currentPlayerIndex = players.indexOf(currentPlayer);
+    int lastPlayerIndex = (currentPlayerIndex - 1 + players.size()) % players.size();
+    lastPlayer = players.get(lastPlayerIndex);
+
+    int destinationTileId = lastPlayer.getCurrentTile().getTileId();
+
     PauseTransition delay = new PauseTransition(Duration.millis(400));
     delay.setOnFinished(event -> {
       ladderGameView.updateCurrentPlayerLabel(currentPlayer.getName());
-      ladderGameView.updateBoard(players);
-      ladderGameView.populatePlayerList(players);
-      ladderGameView.updateRoundLabel(String.valueOf(round));
+      ladderGameView.updateLastPlayerLabel(lastPlayer.getName());
+      ladderGameView.updateLastRollLabel(String.valueOf(roll));
+      ladderGameView.updateMovedToLabel(String.valueOf(destinationTileId));
+      if (tileAction != null) {
+        String action = tileAction.getClass().getSimpleName();
+        String formattedAction = action.replaceAll("(?=\\p{Upper})", " ").trim();
+        ladderGameView.updateTileActionLabel(formattedAction);
+      } else {
+        ladderGameView.updateTileActionLabel("Ingen");
+      }
+      ladderGameView.animatePlayerMovement(
+          lastPlayer,
+          destinationTileId,
+          players,
+          () -> {
+            ladderGameView.updateRoundLabel(String.valueOf(round));
+            ladderGameView.populatePlayerList(players);
+          }
+      );
     });
     delay.play();
-
-    lastPlayer = players.get((players.indexOf(currentPlayer) - 1 + players.size()) % players.size());
-    ladderGameView.updateLastPlayerLabel(lastPlayer.getName());
-    ladderGameView.updateLastRollLabel(String.valueOf(roll));
-    ladderGameView.updateMovedToLabel(String.valueOf(lastPlayer.getCurrentTile().getTileId()));
-    if (tileAction != null) {
-      String action = tileAction.getClass().getSimpleName();
-      String formattedAction = action.replaceAll("(?=\\p{Upper})", " ").trim();
-      ladderGameView.updateTileActionLabel(formattedAction);
-    } else {
-      ladderGameView.updateTileActionLabel("Ingen");
-    }
   }
 
   /**

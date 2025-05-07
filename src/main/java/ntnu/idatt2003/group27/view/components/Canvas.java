@@ -7,11 +7,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
@@ -43,7 +46,11 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   /** A map of tile IDs to their corresponding {@link Tile} objects, containing tile actions */
   private final Map<Integer, Tile> tileActions;
   /** The time of the player animation */
-  private final double ANIMATION_DURATION = 500;
+  private final double ANIMATION_DURATION = 100;
+  /** The position of the player being animated */
+  private double[] animatingPlayerPosition;
+  /** The player currently being animated */
+  private Player animatingPlayer;
 
   /**
    * Constructs a {@link Canvas} for rendering the game board with the specified tile actions,
@@ -64,6 +71,8 @@ public class Canvas extends javafx.scene.canvas.Canvas {
         player -> player,
         player -> player.getCurrentTile().getTileId()
       ));
+    this.animatingPlayerPosition = null;
+    this.animatingPlayer = null;
   }
 
   /**
@@ -82,7 +91,12 @@ public class Canvas extends javafx.scene.canvas.Canvas {
    * @param players The updated {@link List} of {@link Player} objects.
    */
   public void updateBoard(List<Player> players) {
-    this.players = players;
+    this.players = new ArrayList<>(players);
+    this.playerPositions = this.players.stream()
+        .collect(Collectors.toMap(
+            player -> player,
+            player -> player.getCurrentTile().getTileId()
+        ));
     redrawBoard();
   }
 
@@ -111,6 +125,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     drawPlayers(gc);
   }
 
+
   /**
    * Draws the grid of tiles on the canvas, including tile borders and tile numbers.
    *
@@ -130,31 +145,98 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     });
   }
 
+
   /**
    * Draws the players positions on the board with their piece centered on their respective tiles.
    *
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawPlayers(GraphicsContext gc) {
-    Map<Player, Integer> newPlayerPositions = players.stream()
-        .collect(Collectors.toMap(
-            player -> player,
-            player -> player.getCurrentTile().getTileId()
-        ));
-
     players.forEach(player -> {
-      double[] tileCenter = getTileCenter(newPlayerPositions.get(player) - 1);
+      double[] tileCenter;
+      if (player.equals(animatingPlayer) && animatingPlayerPosition != null) {
+        tileCenter = animatingPlayerPosition;
+      } else {
+        tileCenter = getTileCenter(playerPositions.getOrDefault(player, 1) - 1);
+      }
 
       gc.setFill(player.getColor());
       gc.fillOval(tileCenter[0] - tileSize / 4, tileCenter[1] - tileSize / 4,
-          tileSize / 2,  tileSize / 2);
+          tileSize / 2, tileSize / 2);
       Image piece = new Image(Objects.requireNonNull(
           getClass().getResourceAsStream(player.getPiece().getIconFilePath())));
       gc.drawImage(piece, tileCenter[0] - tileSize / 6, tileCenter[1] - tileSize / 6,
-          tileSize / 3,  tileSize / 3);
-
-      playerPositions = newPlayerPositions;
+          tileSize / 3, tileSize / 3);
     });
+  }
+
+  /**
+   * Animates the movement of a player from their current tile to a new tile, updating their
+   * position on the board and executing a callback when the animation is complete.
+   *
+   * @param player The {@link Player} to animate.
+   * @param newTileId The ID of the tile to move the player to.
+   * @param onComplete A {@link Runnable} callback to execute when the animation is complete.
+   */
+  public void animatePlayerMovement(Player player, int newTileId, Runnable onComplete) {
+    int currentTileId = playerPositions.getOrDefault(player, 1);
+    List<Integer> path = calculatePath(currentTileId, newTileId);
+
+    Timeline timeline = new Timeline();
+    animatingPlayer = player;
+    double totalDuration = ANIMATION_DURATION * (path.size() - 1);
+
+    for (int i = 1; i < path.size(); i++) {
+      double[] startPos = getTileCenter(path.get(i - 1) - 1);
+      double[] endPos = getTileCenter(path.get(i) - 1);
+      double fraction = (double) i / (path.size() - 1);
+
+      int finalI = i;
+      KeyFrame keyFrame = new KeyFrame(
+          Duration.millis(totalDuration * fraction),
+          e -> {
+            animatingPlayerPosition = new double[] {
+                startPos[0] + (endPos[0] - startPos[0]) * (fraction - (finalI - 1.0) / (path.size() - 1)) * (path.size() - 1),
+                startPos[1] + (endPos[1] - startPos[1]) * (fraction - (finalI - 1.0) / (path.size() - 1)) * (path.size() - 1)
+            };
+            redrawBoard();
+          }
+      );
+      timeline.getKeyFrames().add(keyFrame);
+    }
+
+    timeline.setOnFinished(e -> {
+      animatingPlayer = null;
+      animatingPlayerPosition = null;
+      playerPositions.put(player, newTileId);
+      redrawBoard();
+      if (onComplete != null) {
+        onComplete.run();
+      }
+    });
+
+    timeline.play();
+  }
+
+  /**
+   * Calculates the path between two tiles based on their IDs. The path is represented as a list.
+   *
+   * @param startTileId The starting tile Id for the path.
+   * @param endTileId The ending tile Id for the path.
+   * @return A list of tile IDs representing the path from start to end.
+   */
+  private List<Integer> calculatePath(int startTileId, int endTileId) {
+    List<Integer> path = new ArrayList<>();
+    if (startTileId <= endTileId) {
+      for (int i = startTileId; i <= endTileId; i++) {
+        path.add(i);
+      }
+    } else {
+      for (int i = startTileId; i >= endTileId; i--) {
+        path.add(i);
+      }
+    }
+    return path;
   }
 
   /**
