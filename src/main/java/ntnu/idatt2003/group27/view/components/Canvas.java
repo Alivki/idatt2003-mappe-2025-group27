@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.view.components;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -166,6 +167,29 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     });
   }
 
+  /**
+   * Calculates the offset for players on the same tile to ensure they are evenly spaced and don't
+   * end up on top of each other.
+   *
+   * @return A map of {@link Player} to their respective offset values.
+   */
+  private Map<Player, Double> calculatePlayerOffset(List<Player> playersOnTile) {
+    Map<Player, Double> offsets = new HashMap<>();
+    int count = playersOnTile.size();
+
+    if (count <= 1) {
+      playersOnTile.forEach(player -> offsets.put(player, 0.0));
+      return offsets;
+    }
+
+    double offsetStep = tileSize / 9;
+    IntStream.range(0, count).forEach(i -> {
+      Double offset = (i - (count - 1) / 2.0) * offsetStep;
+      offsets.put(playersOnTile.get(i), offset);
+    });
+
+    return offsets;
+  }
 
   /**
    * Draws the players positions on the board with their piece centered on their respective tiles.
@@ -173,12 +197,21 @@ public class Canvas extends javafx.scene.canvas.Canvas {
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawPlayers(GraphicsContext gc) {
+    Map<Integer, List<Player>> playersByTile = players.stream()
+        .collect(Collectors.groupingBy(player -> playerPositions.getOrDefault(player, 1)));
+
     players.forEach(player -> {
       double[] tileCenter;
       if (player.equals(animatingPlayer) && animatingPlayerPosition != null) {
         tileCenter = animatingPlayerPosition;
       } else {
-        tileCenter = getTileCenter(playerPositions.getOrDefault(player, 1) - 1);
+        int tileId = playerPositions.getOrDefault(player, 1);
+        tileCenter = getTileCenter(tileId - 1);
+
+        List<Player> playersOnTile = playersByTile.getOrDefault(tileId, List.of(player));
+        Map<Player, Double> offsets = calculatePlayerOffset(playersOnTile);
+        double offset =  offsets.getOrDefault(player, 0.0);
+        tileCenter = new double[] {tileCenter[0] + offset, tileCenter[1]};
       }
 
       gc.setFill(player.getColor());
