@@ -31,7 +31,7 @@ public class JsonFileReader implements CustomFileReader<Board> {
   }
 
   /**
-   * Reads a JSON file from a specifed file path and deserializes it into a {@link Board} object.
+   * Reads a JSON file from a specified file path and deserializes it into a {@link Board} object.
    *
    * @param filePath The path to the JSON file to read.
    * @return a {@link Board} object representing the data in the JSON file.

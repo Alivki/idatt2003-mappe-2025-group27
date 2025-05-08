@@ -1,6 +1,7 @@
 package ntnu.idatt2003.group27.utils.filehandler.json;
 
-import com.google.gson.JsonObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.FileWriter;
 import java.io.IOException;
 import ntnu.idatt2003.group27.models.Board;
@@ -12,38 +13,37 @@ import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileWriter;
  *
  * @author Iver Lindholm, Amadeus Berg
  * @since 0.0
- * @version 1.0
+ * @version 1.1
  */
-public class JsonFileWriter implements CustomFileWriter<JsonObject> {
+public class JsonFileWriter implements CustomFileWriter<Board> {
+  private final Gson gson;
+
   /**
-   * Serializes the board object given as a parameter.
-   *
-   * @param board .
-   * @return The JsonObject for the board.
+   * Constructs a {@link JsonFileWriter} instance with a configured Gson object. The Gson instance
+   * is set up to use a custom {@link BoardSerializer} to handle the serialization of {@link Board}
+   * object to Json.
    */
-  public JsonObject serializeBoard(Board board) {
-    JsonObject boardJson = new JsonObject();
-
-    int numberOfTiles = board.getTiles().size();
-    boardJson.addProperty("numberOfTiles", numberOfTiles);
-
-    return boardJson;
+  public JsonFileWriter() {
+    this.gson = new GsonBuilder()
+        .registerTypeAdapter(Board.class, new BoardSerializer())
+        .setPrettyPrinting()
+        .create();
   }
 
   /**
-   * Writes JsonObject to file at specified filepath.
+   * Writes the provided {@link Board} object to a file in JSON format to the specified file path.
    *
-   * @param filePath .
-   * @param data .
-   * @throws IOException .
+   * @param filePath The path to the file where the data will be written.
+   * @param data The {@link Board} object to be written to the file.
+   * @throws IOException If an error occurs while writing to the file.
    */
   @Override
-  public void writeFile(String filePath, JsonObject data) throws IOException {
+  public void writeFile(String filePath, Board data) throws IOException {
     try (FileWriter file = new FileWriter(filePath)) {
-      file.write(data.toString());
+      gson.toJson(data, file);
       file.flush();
     } catch (Exception e) {
-      throw new IOException(e.getMessage());
+      throw new IOException("Error writing to file: " + e.getMessage(), e);
     }
   }
 }
