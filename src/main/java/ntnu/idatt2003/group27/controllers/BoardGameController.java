@@ -3,7 +3,6 @@ package ntnu.idatt2003.group27.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
-import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.models.BoardFactory;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.models.BoardGameFactory;
@@ -11,7 +10,6 @@ import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
-import ntnu.idatt2003.group27.models.exceptions.UnknownLadderGameTypeExceptions;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.LadderGameView;
@@ -36,6 +34,8 @@ public class BoardGameController implements BoardGameObserver {
   private LadderGameView ladderGameView;
   /** The last player who made a move */
   private Player lastPlayer;
+  /** A boolean indicating whether the play button should be disabled */
+  private boolean diablePlayButton = false;
 
   /** The main controller for coordinating application-wide actions */
   private final MainController mainController;
@@ -166,29 +166,43 @@ public class BoardGameController implements BoardGameObserver {
    */
   @Override
   public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction tileAction) {
+    ladderGameView.toggleDiceButton(false);
+
     int round = ladderGameView.getRoundLabel() + 1;
     ladderGameView.rotateDice(roll);
+
+    int currentPlayerIndex = players.indexOf(currentPlayer);
+    int lastPlayerIndex = (currentPlayerIndex - 1 + players.size()) % players.size();
+    lastPlayer = players.get(lastPlayerIndex);
+
+    int destinationTileId = lastPlayer.getCurrentTile().getTileId();
 
     PauseTransition delay = new PauseTransition(Duration.millis(400));
     delay.setOnFinished(event -> {
       ladderGameView.updateCurrentPlayerLabel(currentPlayer.getName());
-      ladderGameView.updateBoard(players);
-      ladderGameView.populatePlayerList(players);
-      ladderGameView.updateRoundLabel(String.valueOf(round));
+      ladderGameView.updateLastPlayerLabel(lastPlayer.getName());
+      ladderGameView.updateLastRollLabel(String.valueOf(roll));
+      ladderGameView.updateMovedToLabel(String.valueOf(destinationTileId));
+      if (tileAction != null) {
+        String action = tileAction.getClass().getSimpleName();
+        String formattedAction = action.replaceAll("(?=\\p{Upper})", " ").trim();
+        ladderGameView.updateTileActionLabel(formattedAction);
+      } else {
+        ladderGameView.updateTileActionLabel("Ingen");
+      }
+      ladderGameView.animatePlayerMovement(
+          lastPlayer,
+          destinationTileId,
+          tileAction,
+          roll,
+          players,
+          () -> {
+            ladderGameView.updateRoundLabel(String.valueOf(round));
+            ladderGameView.populatePlayerList(players);
+          }
+      );
     });
     delay.play();
-
-    lastPlayer = players.get((players.indexOf(currentPlayer) - 1 + players.size()) % players.size());
-    ladderGameView.updateLastPlayerLabel(lastPlayer.getName());
-    ladderGameView.updateLastRollLabel(String.valueOf(roll));
-    ladderGameView.updateMovedToLabel(String.valueOf(lastPlayer.getCurrentTile().getTileId()));
-    if (tileAction != null) {
-      String action = tileAction.getClass().getSimpleName();
-      String formattedAction = action.replaceAll("(?=\\p{Upper})", " ").trim();
-      ladderGameView.updateTileActionLabel(formattedAction);
-    } else {
-      ladderGameView.updateTileActionLabel("Ingen");
-    }
   }
 
   /**

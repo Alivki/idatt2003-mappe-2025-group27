@@ -2,21 +2,26 @@ package ntnu.idatt2003.group27.view.components;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
 import ntnu.idatt2003.group27.models.actions.LadderAction;
 import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
+import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
 /**
  * A JavaFX canvas component for rendering a tile-based game board. The canvas displays tiles,
@@ -28,22 +33,46 @@ import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
  * @since 2.0
  */
 public class Canvas extends javafx.scene.canvas.Canvas {
-  /** The total number of tiles on the board */
+  /**
+   * The total number of tiles on the board
+   */
   private final int boardSize;
-  /** The size of each tile in pixels */
+  /**
+   * The size of each tile in pixels
+   */
   private double tileSize;
-  /** The number of columns in the board grid */
+  /**
+   * The number of columns in the board grid
+   */
   private final int columns = 10;
-  /** The number of rows in the board grid */
+  /**
+   * The number of rows in the board grid
+   */
   private final int rows = 9;
-  /** The list of players currently on the board. */
+  /**
+   * The list of players currently on the board.
+   */
   private List<Player> players;
-  /** The positions of players on the board, mapped to their respective tile IDs. */
+  /**
+   * The positions of players on the board, mapped to their respective tile IDs.
+   */
   private Map<Player, Integer> playerPositions;
-  /** A map of tile IDs to their corresponding {@link Tile} objects, containing tile actions */
+  /**
+   * A map of tile IDs to their corresponding {@link Tile} objects, containing tile actions
+   */
   private final Map<Integer, Tile> tileActions;
-  /** The time of the player animation */
-  private final double ANIMATION_DURATION = 500;
+  /**
+   * The time of the player animation
+   */
+  private final double ANIMATION_DURATION = 100;
+  /**
+   * The position of the player being animated
+   */
+  private double[] animatingPlayerPosition;
+  /**
+   * The player currently being animated
+   */
+  private Player animatingPlayer;
 
   /**
    * Constructs a {@link Canvas} for rendering the game board with the specified tile actions,
@@ -51,8 +80,8 @@ public class Canvas extends javafx.scene.canvas.Canvas {
    *
    * @param tileActions A {@link Map} of tile IDs to {@link Tile} objects defining the board's
    *                    actions.
-   * @param players A {@link List} of {@link Player} objects representing the players on the board.
-   * @param boardSize The total number of tiles on the board.
+   * @param players     A {@link List} of {@link Player} objects representing the players on the board.
+   * @param boardSize   The total number of tiles on the board.
    */
   public Canvas(Map<Integer, Tile> tileActions, List<Player> players, int boardSize) {
     this.tileSize = 0;
@@ -60,10 +89,12 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     this.boardSize = boardSize;
     this.tileActions = tileActions;
     this.playerPositions = players.stream()
-      .collect(Collectors.toMap(
-        player -> player,
-        player -> player.getCurrentTile().getTileId()
-      ));
+        .collect(Collectors.toMap(
+            player -> player,
+            player -> player.getCurrentTile().getTileId()
+        ));
+    this.animatingPlayerPosition = null;
+    this.animatingPlayer = null;
   }
 
   /**
@@ -82,7 +113,12 @@ public class Canvas extends javafx.scene.canvas.Canvas {
    * @param players The updated {@link List} of {@link Player} objects.
    */
   public void updateBoard(List<Player> players) {
-    this.players = players;
+    this.players = new ArrayList<>(players);
+    this.playerPositions = this.players.stream()
+        .collect(Collectors.toMap(
+            player -> player,
+            player -> player.getCurrentTile().getTileId()
+        ));
     redrawBoard();
   }
 
@@ -111,13 +147,14 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     drawPlayers(gc);
   }
 
+
   /**
    * Draws the grid of tiles on the canvas, including tile borders and tile numbers.
    *
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawTiles(GraphicsContext gc) {
-    IntStream.range(0, (columns * rows )).forEach(i -> {
+    IntStream.range(0, (columns * rows)).forEach(i -> {
       double[] tilePosition = getTilePos(i);
 
       gc.setStroke(Color.BLACK);
@@ -131,30 +168,174 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   }
 
   /**
+   * Calculates the offset for players on the same tile to ensure they are evenly spaced and don't
+   * end up on top of each other.
+   *
+   * @return A map of {@link Player} to their respective offset values.
+   */
+  private Map<Player, Double> calculatePlayerOffset(List<Player> playersOnTile) {
+    Map<Player, Double> offsets = new HashMap<>();
+    int count = playersOnTile.size();
+
+    if (count <= 1) {
+      playersOnTile.forEach(player -> offsets.put(player, 0.0));
+      return offsets;
+    }
+
+    double offsetStep = tileSize / 9;
+    IntStream.range(0, count).forEach(i -> {
+      Double offset = (i - (count - 1) / 2.0) * offsetStep;
+      offsets.put(playersOnTile.get(i), offset);
+    });
+
+    return offsets;
+  }
+
+  /**
    * Draws the players positions on the board with their piece centered on their respective tiles.
    *
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawPlayers(GraphicsContext gc) {
-    Map<Player, Integer> newPlayerPositions = players.stream()
-        .collect(Collectors.toMap(
-            player -> player,
-            player -> player.getCurrentTile().getTileId()
-        ));
+    Map<Integer, List<Player>> playersByTile = players.stream()
+        .collect(Collectors.groupingBy(player -> playerPositions.getOrDefault(player, 1)));
 
     players.forEach(player -> {
-      double[] tileCenter = getTileCenter(newPlayerPositions.get(player) - 1);
+      double[] tileCenter;
+      if (player.equals(animatingPlayer) && animatingPlayerPosition != null) {
+        tileCenter = animatingPlayerPosition;
+      } else {
+        int tileId = playerPositions.getOrDefault(player, 1);
+        tileCenter = getTileCenter(tileId - 1);
+
+        List<Player> playersOnTile = playersByTile.getOrDefault(tileId, List.of(player));
+        Map<Player, Double> offsets = calculatePlayerOffset(playersOnTile);
+        double offset =  offsets.getOrDefault(player, 0.0);
+        tileCenter = new double[] {tileCenter[0] + offset, tileCenter[1]};
+      }
 
       gc.setFill(player.getColor());
       gc.fillOval(tileCenter[0] - tileSize / 4, tileCenter[1] - tileSize / 4,
-          tileSize / 2,  tileSize / 2);
+          tileSize / 2, tileSize / 2);
       Image piece = new Image(Objects.requireNonNull(
           getClass().getResourceAsStream(player.getPiece().getIconFilePath())));
       gc.drawImage(piece, tileCenter[0] - tileSize / 6, tileCenter[1] - tileSize / 6,
-          tileSize / 3,  tileSize / 3);
-
-      playerPositions = newPlayerPositions;
+          tileSize / 3, tileSize / 3);
     });
+  }
+
+  /**
+   * Animates the movement of a player from their current tile to a new tile, updating their
+   * position on the board and executing a callback when the animation is complete.
+   *
+   * @param player     The {@link Player} to animate.
+   * @param newTileId  The ID of the tile to move the player to.
+   * @param onComplete A {@link Runnable} callback to execute when the animation is complete.
+   */
+  public void animatePlayerMovement(Player player, int newTileId, TileAction tileAction, int roll,
+                                    Runnable onComplete) {
+    int currentTileId = playerPositions.getOrDefault(player, 1);
+    List<Integer> path = null;
+
+    if (tileAction instanceof LadderAction ladderAction) {
+      path = calculateActionPath(currentTileId, currentTileId + roll,
+          ladderAction.getDestinationTileId());
+    } else if (tileAction instanceof BackToStartAction) {
+      path = calculateActionPath(currentTileId, currentTileId + roll, 1);
+    } else if (tileAction instanceof ThrowNewDiceAction) {
+      path = calculatePath(currentTileId, newTileId);
+    }
+
+    if (tileAction == null) {
+      path = calculatePath(currentTileId, newTileId);
+    }
+
+    Timeline timeline = new Timeline();
+    animatingPlayer = player;
+    double totalDuration = ANIMATION_DURATION * (path.size() - 1);
+
+    for (int i = 1; i < path.size(); i++) {
+      double[] startPos = getTileCenter(path.get(i - 1) - 1);
+      double[] endPos = getTileCenter(path.get(i) - 1);
+      double fraction = (double) i / (path.size() - 1);
+
+      int finalI = i;
+      List<Integer> finalPath = path;
+      KeyFrame keyFrame = new KeyFrame(
+          Duration.millis(totalDuration * fraction),
+          e -> {
+            animatingPlayerPosition = new double[] {
+                startPos[0] +
+                    (endPos[0] - startPos[0]) *
+                        (fraction - (finalI - 1.0) / (finalPath.size() - 1)) *
+                        (finalPath.size() - 1),
+                startPos[1] +
+                    (endPos[1] - startPos[1]) *
+                        (fraction - (finalI - 1.0) / (finalPath.size() - 1)) *
+                        (finalPath.size() - 1)
+            };
+            redrawBoard();
+          }
+      );
+      timeline.getKeyFrames().add(keyFrame);
+    }
+
+    timeline.setOnFinished(e -> {
+      animatingPlayer = null;
+      animatingPlayerPosition = null;
+      playerPositions.put(player, newTileId);
+      redrawBoard();
+      if (onComplete != null) {
+        onComplete.run();
+      }
+    });
+
+    timeline.play();
+  }
+
+  /**
+   * Calculates the path between two tiles based on their IDs with the tile action movement
+   * in the middle. The path is represented as a list.
+   *
+   * @param startTileId The starting tile Id for the path.
+   * @param endTileId   The ending tile Id for the path.
+   * @return A list of tile IDs representing the path from start to end.
+   */
+  private List<Integer> calculateActionPath(int startTileId, int actionTile, int endTileId) {
+    List<Integer> path = new ArrayList<>();
+    if (startTileId <= endTileId) {
+      for (int i = startTileId; i <= actionTile; i++) {
+        path.add(i);
+      }
+      path.add(endTileId);
+    } else {
+      for (int i = startTileId; i <= actionTile; i++) {
+        path.add(i);
+      }
+      path.add(endTileId);
+    }
+    return path;
+  }
+
+  /**
+   * Calculates the path between two tiles based on their IDs. The path is represented as a list.
+   *
+   * @param startTileId The starting tile Id for the path.
+   * @param endTileId   The ending tile Id for the path.
+   * @return A list of tile IDs representing the path from start to end.
+   */
+  private List<Integer> calculatePath(int startTileId, int endTileId) {
+    List<Integer> path = new ArrayList<>();
+    if (startTileId <= endTileId) {
+      for (int i = startTileId; i <= endTileId; i++) {
+        path.add(i);
+      }
+    } else {
+      for (int i = startTileId; i >= endTileId; i--) {
+        path.add(i);
+      }
+    }
+    return path;
   }
 
   /**
@@ -166,7 +347,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   private void drawTileActions(GraphicsContext gc) {
     gc.setFill(Color.YELLOW);
     gc.fillRect(30, (rows - 1) * tileSize + 9, tileSize, tileSize);
-    gc.fillRect((columns - 1) * tileSize + 30,  9, tileSize, tileSize);
+    gc.fillRect((columns - 1) * tileSize + 30, 9, tileSize, tileSize);
 
     tileActions.forEach((k, v) -> {
       if (v.getLandAction() != null) {
@@ -192,7 +373,9 @@ public class Canvas extends javafx.scene.canvas.Canvas {
             gc.setFill(Color.BLUE);
             // Draw icon for action
           }
-          default -> {break;}
+          default -> {
+            break;
+          }
         }
 
         gc.fillRect(tilePosition[0], tilePosition[1], tileSize, tileSize);
@@ -208,29 +391,29 @@ public class Canvas extends javafx.scene.canvas.Canvas {
    */
   private void drawAllIcons(GraphicsContext gc) {
     tileActions.entrySet().stream()
-      .filter(e -> e.getValue() != null && e.getValue().getLandAction() != null)
-      .forEach(e -> {
-        int tileId = e.getKey() - 1;
-        Object landAction = e.getValue().getLandAction();
-        String iconPath = null;
+        .filter(e -> e.getValue() != null && e.getValue().getLandAction() != null)
+        .forEach(e -> {
+          int tileId = e.getKey() - 1;
+          Object landAction = e.getValue().getLandAction();
+          String iconPath = null;
 
-        if (landAction instanceof BackToStartAction) {
-          iconPath = "/icons/home.png";
-        } else if (landAction instanceof ThrowNewDiceAction) {
-          iconPath = "/icons/reroll-white.png";
-        }
+          if (landAction instanceof BackToStartAction) {
+            iconPath = "/icons/home.png";
+          } else if (landAction instanceof ThrowNewDiceAction) {
+            iconPath = "/icons/reroll-white.png";
+          }
 
-        if (iconPath != null) {
-          drawIcon(gc, tileId, iconPath);
-        }
-      });
+          if (iconPath != null) {
+            drawIcon(gc, tileId, iconPath);
+          }
+        });
   }
 
   /**
    * Draws a single icon on the specified tile, centered within the tile.
    *
-   * @param gc The {@link GraphicsContext} used for drawing.
-   * @param tileId The ID of the tile (zero-based) where the icon will be drawn.
+   * @param gc       The {@link GraphicsContext} used for drawing.
+   * @param tileId   The ID of the tile (zero-based) where the icon will be drawn.
    * @param iconPath The resource path to the icon image file.
    */
   private void drawIcon(GraphicsContext gc, int tileId, String iconPath) {
@@ -247,10 +430,10 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     double targetHeight = targetWidth * (image.getHeight() / image.getWidth());
 
     gc.drawImage(image,
-      tilePosition[0] - (targetWidth / 2),
-      tilePosition[1] - (targetHeight / 2),
-      targetWidth,
-      targetHeight);
+        tilePosition[0] - (targetWidth / 2),
+        tilePosition[1] - (targetHeight / 2),
+        targetWidth,
+        targetHeight);
   }
 
   /**
@@ -268,13 +451,15 @@ public class Canvas extends javafx.scene.canvas.Canvas {
       if (i % 2 == 0) {
         xPos = this.getWidth() - 20;
         double[] xPoints = {xPos + 10, xPos, xPos + 10};
-        double[] yPoints = {yPos - tileSize / 2 - 10, yPos - tileSize / 2, yPos - tileSize / 2 + 10};
+        double[] yPoints =
+            {yPos - tileSize / 2 - 10, yPos - tileSize / 2, yPos - tileSize / 2 + 10};
         gc.setFill(Color.BLACK);
         gc.fillPolygon(xPoints, yPoints, 3);
       } else {
         xPos = 5;
         double[] xPoints = {xPos, xPos + 10, xPos};
-        double[] yPoints = {yPos - tileSize / 2 - 10, yPos - tileSize / 2, yPos - tileSize / 2 + 10};
+        double[] yPoints =
+            {yPos - tileSize / 2 - 10, yPos - tileSize / 2, yPos - tileSize / 2 + 10};
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(2.0);
         gc.strokePolygon(xPoints, yPoints, 3);
@@ -290,19 +475,19 @@ public class Canvas extends javafx.scene.canvas.Canvas {
    */
   private void drawAllLadders(GraphicsContext gc) {
     tileActions.entrySet().stream()
-      .filter(e -> e.getValue().getLandAction() instanceof LadderAction)
-      .forEach(e -> drawLadder(
-          gc,
-          e.getKey() - 1,
-          ((LadderAction) e.getValue().getLandAction()).getDestinationTileId() - 1));
+        .filter(e -> e.getValue().getLandAction() instanceof LadderAction)
+        .forEach(e -> drawLadder(
+            gc,
+            e.getKey() - 1,
+            ((LadderAction) e.getValue().getLandAction()).getDestinationTileId() - 1));
   }
 
   /**
    * Draws a ladder connecting two tiles, including rungs.
    *
-   * @param gc The {@link GraphicsContext} used for drawing.
+   * @param gc        The {@link GraphicsContext} used for drawing.
    * @param startTile The zero-based ID of the strating tile.
-   * @param endTile The zero-based ID of the ending tile.
+   * @param endTile   The zero-based ID of the ending tile.
    */
   private void drawLadder(GraphicsContext gc, int startTile, int endTile) {
     double[] start = getTileCenter(startTile);
