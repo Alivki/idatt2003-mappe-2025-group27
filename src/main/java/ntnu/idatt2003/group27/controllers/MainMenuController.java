@@ -52,8 +52,16 @@ public class MainMenuController {
   private void setupMenuViewEventHandler() {
     setColorPickerButtonHandler();
     setAddPlayerButtonHandler();
-    setImportPlayerCsvButtonhandler();
+    setImportPlayerCsvButtonHandler();
     setExportPlayerCsvButtonHandler();
+
+    mainMenuView.setLadderGameButtonHandler(e -> {
+      mainMenuView.switchToGameLadder();
+    });
+
+    mainMenuView.setMathGameButtonHandler(e -> {
+      mainMenuView.switchToGameMath();
+    });
 
     //Sets handler for normal board button
     mainMenuView.setNormalBoardButtonHandler(e -> {
@@ -295,7 +303,7 @@ public class MainMenuController {
   /**
    * Sets up actionEvent handler for import players button.
    */
-  private void setImportPlayerCsvButtonhandler(){
+  private void setImportPlayerCsvButtonHandler(){
     //Set import players csv file handler
     mainMenuView.setImportPlayersCsvButtonHandler(e -> {
       System.out.println("Import players csv button clicked");

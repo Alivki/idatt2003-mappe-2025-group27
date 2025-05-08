@@ -42,10 +42,6 @@
     -fx-background-insets: 0;
 }
 
-.player-row-inGame {
-    -fx-padding: 10px 15px 10px 10px;
-}
-
 .color-palette .hyperlink, .color-palette .separator {
     visibility: hidden ;
 }

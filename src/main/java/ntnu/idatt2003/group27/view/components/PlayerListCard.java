@@ -61,7 +61,6 @@ public class PlayerListCard extends Card {
       HBox playerRow = new HBox(8);
       playerRow.setAlignment(Pos.CENTER);
       playerRow.getStyleClass().add("player-row");
-      playerRow.getStyleClass().add("player-row-inGame");
 
       Label playerName = new Label(player.getName());
       playerName.getStyleClass().add("p");
@@ -72,6 +71,7 @@ public class PlayerListCard extends Card {
       String playerPosition = String.valueOf(player.getCurrentTile().getTileId());
       Label playerPositionLabel = new Label(playerPosition);
       playerPositionLabel.getStyleClass().add("h2");
+      playerPositionLabel.setMinWidth(20);
 
       StackPane playerIconStack = new StackPane();
 
