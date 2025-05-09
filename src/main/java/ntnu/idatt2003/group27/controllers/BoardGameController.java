@@ -267,6 +267,7 @@ public class BoardGameController implements BoardGameObserver {
     ladderGameView.updateMovedToLabel("Start");
     ladderGameView.updateBoard(players);
     ladderGameView.populatePlayerList(players);
+    ladderGameView.updateStatusLabel("Pågående");
   }
 
   /**
