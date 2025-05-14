@@ -1,18 +1,9 @@
 package ntnu.idatt2003.group27.models;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.IntStream;
 
-import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.interfaces.GameConfiguration;
-import ntnu.idatt2003.group27.utils.filehandler.json.JsonFileReader;
-import ntnu.idatt2003.group27.models.actions.BackToStartAction;
-import ntnu.idatt2003.group27.models.actions.LadderAction;
-import ntnu.idatt2003.group27.models.interfaces.TileAction;
-import ntnu.idatt2003.group27.models.exceptions.UnknownLadderGameTypeExceptions;
 
 /**
  * A factory class responsible for creating {@link BoardGame} instances with predefined
