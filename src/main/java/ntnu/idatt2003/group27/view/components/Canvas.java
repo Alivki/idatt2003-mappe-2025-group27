@@ -243,11 +243,11 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     } else if (tileAction instanceof BackToStartAction) {
       path = calculateActionPath(currentTileId, currentTileId + roll, 1);
     } else if (tileAction instanceof ThrowNewDiceAction) {
-      path = calculatePath(currentTileId, newTileId);
+      path = calculatePath(currentTileId, newTileId, roll);
     }
 
     if (tileAction == null) {
-      path = calculatePath(currentTileId, newTileId);
+      path = calculatePath(currentTileId, newTileId, roll);
     }
 
     Timeline timeline = new Timeline();
@@ -324,8 +324,18 @@ public class Canvas extends javafx.scene.canvas.Canvas {
    * @param endTileId   The ending tile Id for the path.
    * @return A list of tile IDs representing the path from start to end.
    */
-  private List<Integer> calculatePath(int startTileId, int endTileId) {
+  private List<Integer> calculatePath(int startTileId, int endTileId, int roll) {
     List<Integer> path = new ArrayList<>();
+    if (startTileId + roll > boardSize) {
+      for (int i = startTileId; i <= boardSize; i++) {
+        path.add(i);
+      }
+      for (int i = boardSize - 1; i >= endTileId; i--) {
+        path.add(i);
+      }
+      return path;
+    }
+
     if (startTileId <= endTileId) {
       for (int i = startTileId; i <= endTileId; i++) {
         path.add(i);
