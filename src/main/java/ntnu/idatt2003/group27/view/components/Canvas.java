@@ -322,6 +322,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
    *
    * @param startTileId The starting tile Id for the path.
    * @param endTileId   The ending tile Id for the path.
+   * @param roll        The result of the players dice roll.
    * @return A list of tile IDs representing the path from start to end.
    */
   private List<Integer> calculatePath(int startTileId, int endTileId, int roll) {
