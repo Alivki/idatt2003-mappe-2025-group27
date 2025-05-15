@@ -33,7 +33,7 @@ public class LadderGameConfiguration implements GameConfiguration {
 
   @Override
   public int getNumberOfDice() {
-    return 1;
+    return 2;
   }
 
   @Override
