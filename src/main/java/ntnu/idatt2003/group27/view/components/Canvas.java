@@ -244,9 +244,10 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   public void animatePlayerMovement(Player player, int newTileId, TileAction tileAction, int roll,
                                     Runnable onComplete) {
     int currentTileId = playerPositions.getOrDefault(player, 1);
+
     List<Integer> path = tileAction != null
         ? tileAction.getAnimationPath(currentTileId, currentTileId + roll)
-        : calculatePath(currentTileId, newTileId);
+        : calculatePath(currentTileId, newTileId, roll);
 
     Timeline timeline = new Timeline();
     animatingPlayer = player;
@@ -296,10 +297,21 @@ public class Canvas extends javafx.scene.canvas.Canvas {
    *
    * @param startTileId The starting tile Id for the path.
    * @param endTileId   The ending tile Id for the path.
+   * @param roll        The result of the players dice roll.
    * @return A list of tile IDs representing the path from start to end.
    */
-  private List<Integer> calculatePath(int startTileId, int endTileId) {
+  private List<Integer> calculatePath(int startTileId, int endTileId, int roll) {
     List<Integer> path = new ArrayList<>();
+    if (startTileId + roll > boardSize) {
+      for (int i = startTileId; i <= boardSize; i++) {
+        path.add(i);
+      }
+      for (int i = boardSize - 1; i >= endTileId; i--) {
+        path.add(i);
+      }
+      return path;
+    }
+
     if (startTileId <= endTileId) {
       for (int i = startTileId; i <= endTileId; i++) {
         path.add(i);
