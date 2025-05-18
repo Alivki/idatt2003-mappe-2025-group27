@@ -104,7 +104,7 @@ public class MainMenuView {
   /**
    * Constructs a new {@code MainMenuView} and initializes the root layout.
    * The root is a {@link StackPane} aligned to the top center and styled with the "root" CSS class.
-   * This constructor sets up the foundational layout for the main menu interface.
+   * This constructor sets up the foundational layout for this interface.
    */
   public MainMenuView() {
     root = new StackPane();
