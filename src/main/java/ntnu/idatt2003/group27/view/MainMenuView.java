@@ -101,35 +101,42 @@ public class MainMenuView {
   /** Text field for entering a new player's name. */
   private TextField playerNameTextField;
 
+  /**
+   * Constructs a new {@code MainMenuView} and initializes the root layout.
+   * The root is a {@link StackPane} aligned to the top center and styled with the "root" CSS class.
+   * This constructor sets up the foundational layout for the main menu interface.
+   */
   public MainMenuView() {
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
     root.getStyleClass().add("root");
   }
 
+
   public void initializeLayout(List<Piece> pieces) {
+    //Initializes layout.
     AppLayout layout = new AppLayout();
 
-    //Initializes header
+    //Initializes header.
     HBox headerContainer = new HBox(20);
     headerContainer.setAlignment(Pos.CENTER);
 
-    //Initializes header buttons
+    //Initializes header buttons.
     ladderGameMainMenuButton = new CustomButton("Stigespill", CustomButton.ButtonVariant.GHOST, null);
     mathGameMainMenuButton = new CustomButton("Matte spill", CustomButton.ButtonVariant.GHOST, null);
     applicationQuitButton = new CustomButton("Avslutt", CustomButton.ButtonVariant.DESTRUCTIVE,
         actionEvent -> Platform.exit());
 
-    //Initializes main content title
+    //Initializes main content title.
     title = new Label("Stigespill");
     title.getStyleClass().add("h1");
 
-    //Initializes board button grid
+    //Initializes board button grid.
     gameDifficultyGrid = new GridPane(5,5);
     gameDifficultyGrid.setAlignment(Pos.CENTER);
     gameDifficultyGrid.getStyleClass().add("card");
 
-    //Initializes board buttons
+    //Initializes buttons for selecting different boards and difficulties.
     int boardButtonMinSize = 100;
     int boardButtonPrefSize = 170;
     int boardButtonMaxSize = 200;
