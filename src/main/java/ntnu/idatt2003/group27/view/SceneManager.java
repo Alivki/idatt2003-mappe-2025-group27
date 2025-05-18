@@ -1,12 +1,10 @@
 package ntnu.idatt2003.group27.view;
 
-import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import ntnu.idatt2003.group27.controllers.MainController;
 import ntnu.idatt2003.group27.controllers.MainMenuController;
 
@@ -21,7 +19,6 @@ public class SceneManager extends Application {
   private MainMenuView mainMenuView;
   /** The main controller instance used by this scene manager. */
   private MainController mainController;
-
 
   /**
    * The start method to launch the application.
@@ -53,6 +50,10 @@ public class SceneManager extends Application {
     switchSceneImmediate(mainMenuView.getRoot());
   }
 
+  /**
+   * Launches the application GUI.
+   * @param args
+   */
   public static void launchGui(String[] args) {
     launch(args);
   }
@@ -67,6 +68,9 @@ public class SceneManager extends Application {
     rootContainer.getChildren().add(newPane);
   }
 
+  /**
+   * Instantly switches "scene" to the main menu view.
+   */
   public void switchToMainMenu() {
     switchSceneImmediate(mainMenuView.getRoot());
   }
