@@ -39,7 +39,6 @@ public class MainMenuController {
   public MainMenuController(MainController mainController, MainMenuView mainMenuView) {
     this.mainController = mainController;
     this.mainMenuView = mainMenuView;
-    mainMenuView.setMainMenuController(this);
     mainMenuView.initializeLayout(mainController.getPieces());
     setupMenuViewEventHandler();
     mainMenuView.populatePlayerList(mainController.getPlayers());

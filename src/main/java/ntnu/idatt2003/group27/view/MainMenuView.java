@@ -499,14 +499,6 @@ public class MainMenuView {
   }
 
   /**
-   * Sets the controller of the view in the MVC pattern
-   * @return
-   */
-  public void setMainMenuController(MainMenuController mainMenuController) {
-    this.mainMenuController = mainMenuController;
-  }
-
-  /**
    * Gets the root of this view.
    * @return the root {@link StackPane} of this view.
    */
