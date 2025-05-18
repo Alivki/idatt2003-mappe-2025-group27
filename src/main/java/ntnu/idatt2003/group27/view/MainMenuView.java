@@ -31,43 +31,74 @@ import ntnu.idatt2003.group27.view.components.CustomToggleButton;
 import ntnu.idatt2003.group27.view.components.MainMenuBoardButton;
 import ntnu.idatt2003.group27.view.components.PlayerListCardEditable;
 
+/**
+ * A class representing a view for the main menu of the application.
+ */
 public class MainMenuView {
+  /** The root container for the main menu view. */
   private final StackPane root;
 
+  /** Controller for controlling this view. */
   private MainMenuController mainMenuController;
 
-  //Header buttons
+  /** Button to start the ladder game. */
   private CustomButton ladderGameMainMenuButton;
+
+  /** Button to start the math game. */
   private CustomButton mathGameMainMenuButton;
+
+  /** Button to quit the application. */
   private CustomButton applicationQuitButton;
 
-  //title label
+  /** Title label for the main menu. */
   private Label title;
 
-  //Other buttons
+  /** Button to add a new player. */
   private CustomButton addPlayerButton;
+
+  /** Button to export the list of players to a CSV file. */
   private CustomButton exportPlayersCsvButton;
+
+  /** Button to import a list of players from a CSV file. */
   private CustomButton importPlayersCsvButton;
 
-  //Player icon selection buttons
-  private ArrayList<ToggleButton> playerIconButtons = new ArrayList<>();
+  /** List of toggle buttons for selecting player piece icons. */
+  private ArrayList<ToggleButton> playerPieceIconButtons = new ArrayList<>();
+
+  /** Button to open the color picker for selecting player color. */
   private CustomButton colorPicker;
+
+  /** The currently selected color for the player. */
   private Color pickedColor;
 
-  //Game difficulty button grid
+  /** Grid layout for displaying game difficulty selection buttons. */
   private GridPane gameDifficultyGrid;
 
-  //Game difficulty buttons
+  /** Button for selecting the normal difficulty in Ladder Game. */
   private MainMenuBoardButton normalLadderGameBoardButton;
+
+  /** Button for selecting the crazy difficulty in Ladder Game. */
   private MainMenuBoardButton crazyLadderGameBoardButton;
+
+  /** Button for selecting the impossible difficulty in Ladder Game. */
   private MainMenuBoardButton impossibleLadderGameBoardButton;
+
+  /** Button for selecting a JSON-defined board in Ladder Game. */
   private MainMenuBoardButton jsonLadderGameBoardButton;
+
+  /** Button for selecting easy difficulty in Math Game. */
   private MainMenuBoardButton mathEasyButton;
+
+  /** Button for selecting medium difficulty in Math Game. */
   private MainMenuBoardButton mathMediumButton;
+
+  /** Button for selecting hard difficulty in Math Game. */
   private MainMenuBoardButton mathHardButton;
 
-  //Cards
+  /** Editable card component displaying the list of players. */
   private PlayerListCardEditable playerListCardEditable;
+
+  /** Text field for entering a new player's name. */
   private TextField playerNameTextField;
 
   public MainMenuView() {
@@ -171,7 +202,7 @@ public class MainMenuView {
       //CustomButton playerIconButton = new CustomButton(playerIcon, CustomButton.ButtonVariant.ICON, null);
       CustomToggleButton playerIconButton = new CustomToggleButton(playerIcon, 34);
       playerIconButton.setToggleGroup(pieceSelectionButtonGroup);
-      playerIconButtons.add(playerIconButton);
+      playerPieceIconButtons.add(playerIconButton);
     });
 
     //Initializes player csv cards
@@ -193,7 +224,7 @@ public class MainMenuView {
     csvExampleInfoDescriptionLabel.getStyleClass().add("info-text");
 
     //Positions nodes correctly in each container
-    pieceSelectionButtonContainer.getChildren().addAll(playerIconButtons);
+    pieceSelectionButtonContainer.getChildren().addAll(playerPieceIconButtons);
     nameAndColorInputContainer.getChildren().addAll(playerNameTextField, colorPicker);
     playerListCardEditable.getChildren().addAll(pieceSelectionButtonContainer, nameAndColorInputContainer, addPlayerButton);
     playerExportCsvCard.getChildren().addAll(exportPlayersCsvButton);
@@ -257,7 +288,7 @@ public class MainMenuView {
   }
 
   public void setPlayerPieceButtonHandlers(int buttonIndex, EventHandler<ActionEvent> action) {
-    playerIconButtons.get(buttonIndex).setOnAction(action);
+    playerPieceIconButtons.get(buttonIndex).setOnAction(action);
   }
 
   public void setRemovePlayerButtonHandler(Player player, EventHandler<ActionEvent> action) {
@@ -361,7 +392,7 @@ public class MainMenuView {
    * @param disable
    */
   public void setDisablePlayerPieceButton(int buttonIndex, boolean disable){
-    playerIconButtons.get(buttonIndex).setDisable(disable);
+    playerPieceIconButtons.get(buttonIndex).setDisable(disable);
   }
 
   /**
@@ -369,7 +400,7 @@ public class MainMenuView {
    * @param disable
    */
   public void setDisableAllPlayerPieceButtons(boolean disable){
-    playerIconButtons.forEach(button -> button.setDisable(disable));
+    playerPieceIconButtons.forEach(button -> button.setDisable(disable));
   }
 
   /**
