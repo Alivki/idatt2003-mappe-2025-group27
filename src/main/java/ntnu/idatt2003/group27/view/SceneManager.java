@@ -71,34 +71,6 @@ public class SceneManager extends Application {
     rootContainer.getChildren().add(newPane);
   }
 
-  /**
-   * Switch scenes with a fade transition.
-   * @param newPane
-   */
-  public void switchScene(StackPane newPane) {
-    if(currentPane == newPane) {
-      return;
-    }
-
-    currentPane = newPane;
-
-    FadeTransition fadeOut = new FadeTransition(Duration.millis(150), rootContainer);
-    fadeOut.setFromValue(1.0);
-    fadeOut.setToValue(0.7);
-
-    fadeOut.setOnFinished(e -> {
-      rootContainer.getChildren().clear();
-      rootContainer.getChildren().add(newPane);
-
-      FadeTransition fadeIn = new FadeTransition(Duration.millis(150), rootContainer);
-      fadeIn.setFromValue(0.7);
-      fadeIn.setToValue(1.0);
-      fadeIn.play();
-    });
-
-    fadeOut.play();
-  }
-
   public void switchToMainMenu() {
     switchSceneImmediate(mainMenuView.getRoot());
   }
