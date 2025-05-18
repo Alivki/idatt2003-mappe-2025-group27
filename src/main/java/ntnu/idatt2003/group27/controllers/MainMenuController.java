@@ -67,16 +67,7 @@ public class MainMenuController {
     mainMenuView.setNormalBoardButtonHandler(e -> {
       System.out.println("Normal board button clicked");
       if (mainController.getPlayers().size() < 2) {
-        System.out.println("Not enough players to start game!");
-        Alert alert = new Alert(
-            this.mainMenuView.getRoot(),
-            "Ikke nok spillere",
-            "Minst 2 spillere trengs for å starte spillet!",
-            "Ok",
-            "Lukk",
-            response -> {}
-        );
-        alert.show();
+        showNotEnoughPlayersAlert(2);
         return;
       }
       mainController.switchToBoardGame(LadderGameType.NORMAL);
@@ -86,16 +77,7 @@ public class MainMenuController {
     mainMenuView.setCrazyBoardButtonHandler(e -> {
       System.out.println("Crazy board button clicked");
       if (mainController.getPlayers().size() < 2) {
-        System.out.println("Not enough players to start game!");
-        Alert alert = new Alert(
-            this.mainMenuView.getRoot(),
-            "Ikke nok spillere",
-            "Minst 2 spillere trengs for å starte spillet!",
-            "Ok",
-            "Lukk",
-            response -> {}
-        );
-        alert.show();
+        showNotEnoughPlayersAlert(2);
         return;
       }
       mainController.switchToBoardGame(LadderGameType.CRAZY);
@@ -105,16 +87,7 @@ public class MainMenuController {
     mainMenuView.setImpossibleBoardButtonHandler(e -> {
       System.out.println("IMPOSSIBLE board button clicked");
       if (mainController.getPlayers().size() < 2) {
-        System.out.println("Not enough players to start game!");
-        Alert alert = new Alert(
-            this.mainMenuView.getRoot(),
-            "Ikke nok spillere",
-            "Minst 2 spillere trengs for å starte spillet!",
-            "Ok",
-            "Lukk",
-            response -> {}
-        );
-        alert.show();
+        showNotEnoughPlayersAlert(2);
         return;
       }
       mainController.switchToBoardGame(LadderGameType.IMPOSSIBLE);
@@ -124,16 +97,7 @@ public class MainMenuController {
     mainMenuView.setJsonBoardButtonHandler(e -> {
       System.out.println("Json board button clicked");
       if (mainController.getPlayers().size() < 2) {
-        System.out.println("Not enough players to start game!");
-        Alert alert = new Alert(
-            this.mainMenuView.getRoot(),
-            "Ikke nok spillere",
-            "Minst 2 spillere trengs for å starte spillet!",
-            "Ok",
-            "Lukk",
-            response -> {}
-        );
-        alert.show();
+        showNotEnoughPlayersAlert(2);
         return;
       }
       mainController.switchToBoardGame(LadderGameType.JSON);
@@ -143,6 +107,23 @@ public class MainMenuController {
     for(int i = 0; i < mainController.getPieces().size(); i++) {
       setSelectPieceButtonHandler(i);
     }
+  }
+
+  /**
+   * Shows an alert to the user requiring more players to start a game.
+   * @param requiredAmountOfPlayers
+   */
+  private void showNotEnoughPlayersAlert(int requiredAmountOfPlayers){
+    System.out.println("Not enough players to start game!");
+    Alert alert = new Alert(
+        this.mainMenuView.getRoot(),
+        "Ikke nok spillere",
+        String.format("Minst %d spillere trengs for å starte spillet!", requiredAmountOfPlayers),
+        "Ok",
+        "Lukk",
+        response -> {}
+    );
+    alert.show();
   }
 
   /**
