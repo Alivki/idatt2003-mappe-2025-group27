@@ -7,8 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,7 +21,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
 import ntnu.idatt2003.group27.controllers.MainMenuController;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
@@ -211,11 +208,11 @@ public class MainMenuView {
     root.getChildren().add(layout);
   }
 
-  public void setLadderGameButtonHandler(EventHandler<ActionEvent> action) {
+  public void setLadderGameSelectionMenuButtonHandler(EventHandler<ActionEvent> action) {
     ladderGameMainMenuButton.setOnAction(action);
   }
 
-  public void setMathGameButtonHandler(EventHandler<ActionEvent> action) {
+  public void setMathGameSelectionMenuButtonHandler(EventHandler<ActionEvent> action) {
     mathGameMainMenuButton.setOnAction(action);
   }
 
