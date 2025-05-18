@@ -11,8 +11,8 @@ import ntnu.idatt2003.group27.controllers.MainController;
 import ntnu.idatt2003.group27.controllers.MainMenuController;
 
 /**
- * A class representing a scene manager. Extends {@link Application}.
- * Implements logic for switching scenes.
+ * A class representing a scene manager and base application. Extends {@link Application}.
+ * Implements logic for switching scenes and sets up necessary dependencies to control the application.
  */
 public class SceneManager extends Application {
   /** The root container for the scene manager. */
@@ -30,28 +30,26 @@ public class SceneManager extends Application {
    */
   @Override
   public void start(Stage primaryStage) throws Exception {
-    //Initializes the main controller for the application
+    //Initialized scene manager
     mainController = new MainController(this);
-
     System.out.println("Starting SceneManager");
     rootContainer = new StackPane();
     rootContainer.setAlignment(Pos.TOP_CENTER);
     rootContainer.getStyleClass().add("root");
 
-    // set up scene
+    //Initializes new scene
     Scene scene = new Scene(rootContainer, 1260, 600);
 
-    // configure stage
+    //Initializes primary stage
     primaryStage.setTitle("Boardgames");
-
     primaryStage.setScene(scene);
-
     primaryStage.setResizable(true);
     primaryStage.setFullScreen(true);
     primaryStage.setFullScreenExitHint("");
     scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
     primaryStage.show();
 
+    //Initialized main menu view
     mainMenuView = new MainMenuView();
     MainMenuController mainMenuController = new MainMenuController(mainController, mainMenuView);
     switchSceneImmediate(mainMenuView.getRoot());
