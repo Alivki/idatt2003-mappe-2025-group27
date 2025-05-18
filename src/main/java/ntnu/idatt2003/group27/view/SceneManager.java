@@ -17,8 +17,6 @@ import ntnu.idatt2003.group27.controllers.MainMenuController;
 public class SceneManager extends Application {
   /** The root container for the scene manager. */
   private StackPane rootContainer;
-  /** The current pane used by the scene manager. */
-  private StackPane currentPane = null;
   /** The view for the main menu. */
   private MainMenuView mainMenuView;
   /** The main controller instance used by this scene manager. */
