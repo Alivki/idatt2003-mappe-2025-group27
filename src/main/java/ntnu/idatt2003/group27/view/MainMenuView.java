@@ -143,6 +143,7 @@ public class MainMenuView {
     int boardButtonImageSize = 120;
     Insets boardButtonInsets = new Insets(5, 5, 5, 5);
 
+    //Initializes buttons for selecting the ladder game board type.
     normalLadderGameBoardButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
         boardButtonInsets, "Vanlig", "Helt vanlig norsk stigespill med 90 ruter",
@@ -160,6 +161,7 @@ public class MainMenuView {
         boardButtonInsets, "Vanlig (Json)", "Last inn eget spill fra Json fil",
         new Image("icons/ladder_game_normal_board.png"));
 
+    //Initializes buttons for selecting the math game board type.
     mathEasyButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
         boardButtonInsets, "Enkel", "Matte spill med enkel matte",
@@ -246,62 +248,137 @@ public class MainMenuView {
     root.getChildren().add(layout);
   }
 
+  /**
+   * Sets the event handler for the ladder game menu button.
+   * Displays the available selectable boards when playing a ladder game.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setLadderGameSelectionMenuButtonHandler(EventHandler<ActionEvent> action) {
     ladderGameMainMenuButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the math game menu button.
+   * Displays the available selectable boards when playing a math game.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setMathGameSelectionMenuButtonHandler(EventHandler<ActionEvent> action) {
     mathGameMainMenuButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the add player button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setAddPlayerButtonHandler(EventHandler<ActionEvent> action) {
     addPlayerButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the normal difficulty ladder game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setNormalLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
     normalLadderGameBoardButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the crazy difficulty ladder game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setCrazyLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
     crazyLadderGameBoardButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the impossible difficulty ladder game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setImpossibleLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
     impossibleLadderGameBoardButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the json ladder game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setJsonLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
     jsonLadderGameBoardButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the easy difficulty math game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setEasyMathButtonHandler(EventHandler<ActionEvent> action) {
     normalLadderGameBoardButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the medium difficulty math game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setMediumMathButtonHandler(EventHandler<ActionEvent> action) {
     crazyLadderGameBoardButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the hard difficulty math game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setHardMathButtonHandler(EventHandler<ActionEvent> action) {
     impossibleLadderGameBoardButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the export players to csv file button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setExportPlayersCsvButtonHandler(EventHandler<ActionEvent> action) {
     exportPlayersCsvButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the import players from csv file button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setImportPlayersCsvButtonHandler(EventHandler<ActionEvent> action) {
     importPlayersCsvButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the select player piece button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setPlayerPieceButtonHandlers(int buttonIndex, EventHandler<ActionEvent> action) {
     playerPieceIconButtons.get(buttonIndex).setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the remove player button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setRemovePlayerButtonHandler(Player player, EventHandler<ActionEvent> action) {
     playerListCardEditable.setRemovePlayerButtonHandler(player, action);
   }
 
+  /**
+   * Displays ladder game board difficulty selection buttons in the game difficulty grid.
+   */
   public void switchToGameLadder() {
     title.setText("Stigespill");
 
@@ -312,6 +389,9 @@ public class MainMenuView {
     gameDifficultyGrid.add(jsonLadderGameBoardButton, 1, 1);
   }
 
+  /**
+   * Displays math game difficulty selection buttons in the game difficulty grid.
+   */
   public void switchToGameMath() {
     title.setText("Matte spill");
 
@@ -426,6 +506,10 @@ public class MainMenuView {
     this.mainMenuController = mainMenuController;
   }
 
+  /**
+   * Gets the root of this view.
+   * @return the root {@link StackPane} of this view.
+   */
   public StackPane getRoot() {
     return root;
   }
