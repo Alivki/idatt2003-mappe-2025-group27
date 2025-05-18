@@ -58,10 +58,10 @@ public class MainMenuView {
   private GridPane gameDifficultyGrid;
 
   //Game difficulty buttons
-  private MainMenuBoardButton normalBoardButton;
-  private MainMenuBoardButton crazyBoardButton;
-  private MainMenuBoardButton impossibleBoardButton;
-  private MainMenuBoardButton jsonBoardButton;
+  private MainMenuBoardButton normalLadderGameBoardButton;
+  private MainMenuBoardButton crazyLadderGameBoardButton;
+  private MainMenuBoardButton impossibleLadderGameBoardButton;
+  private MainMenuBoardButton jsonLadderGameBoardButton;
   private MainMenuBoardButton mathEasyButton;
   private MainMenuBoardButton mathMediumButton;
   private MainMenuBoardButton mathHardButton;
@@ -105,19 +105,19 @@ public class MainMenuView {
     int boardButtonImageSize = 120;
     Insets boardButtonInsets = new Insets(5, 5, 5, 5);
 
-    normalBoardButton = new MainMenuBoardButton(
+    normalLadderGameBoardButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
         boardButtonInsets, "Vanlig", "Helt vanlig norsk stigespill med 90 ruter",
         new Image("icons/ladder_game_normal_board.png"));
-    crazyBoardButton = new MainMenuBoardButton(
+    crazyLadderGameBoardButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
         boardButtonInsets, "Crazy", "Stigespill med tileAction!",
         new Image("icons/ladder_game_normal_board.png"));
-    impossibleBoardButton = new MainMenuBoardButton(
+    impossibleLadderGameBoardButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
         boardButtonInsets, "Impossible", "Veldig vanskelig stigespill",
         new Image("icons/ladder_game_normal_board.png"));
-    jsonBoardButton = new MainMenuBoardButton(
+    jsonLadderGameBoardButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
         boardButtonInsets, "Vanlig (Json)", "Last inn eget spill fra Json fil",
         new Image("icons/ladder_game_normal_board.png"));
@@ -136,10 +136,10 @@ public class MainMenuView {
         new Image("icons/math_game.png"));
 
     //Positions board buttons on grid
-    gameDifficultyGrid.add(normalBoardButton, 0, 0);
-    gameDifficultyGrid.add(crazyBoardButton, 1, 0);
-    gameDifficultyGrid.add(impossibleBoardButton, 0, 1);
-    gameDifficultyGrid.add(jsonBoardButton, 1, 1);
+    gameDifficultyGrid.add(normalLadderGameBoardButton, 0, 0);
+    gameDifficultyGrid.add(crazyLadderGameBoardButton, 1, 0);
+    gameDifficultyGrid.add(impossibleLadderGameBoardButton, 0, 1);
+    gameDifficultyGrid.add(jsonLadderGameBoardButton, 1, 1);
 
     HBox nameAndColorInputContainer = new HBox(10);
 
@@ -220,32 +220,32 @@ public class MainMenuView {
     addPlayerButton.setOnAction(action);
   }
 
-  public void setNormalBoardButtonHandler(EventHandler<ActionEvent> action) {
-    normalBoardButton.setOnAction(action);
+  public void setNormalLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    normalLadderGameBoardButton.setOnAction(action);
   }
 
-  public void setCrazyBoardButtonHandler(EventHandler<ActionEvent> action) {
-    crazyBoardButton.setOnAction(action);
+  public void setCrazyLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    crazyLadderGameBoardButton.setOnAction(action);
   }
 
-  public void setImpossibleBoardButtonHandler(EventHandler<ActionEvent> action) {
-    impossibleBoardButton.setOnAction(action);
+  public void setImpossibleLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    impossibleLadderGameBoardButton.setOnAction(action);
   }
 
-  public void setJsonBoardButtonHandler(EventHandler<ActionEvent> action) {
-    jsonBoardButton.setOnAction(action);
+  public void setJsonLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    jsonLadderGameBoardButton.setOnAction(action);
   }
 
   public void setEasyMathButtonHandler(EventHandler<ActionEvent> action) {
-    normalBoardButton.setOnAction(action);
+    normalLadderGameBoardButton.setOnAction(action);
   }
 
   public void setMediumMathButtonHandler(EventHandler<ActionEvent> action) {
-    crazyBoardButton.setOnAction(action);
+    crazyLadderGameBoardButton.setOnAction(action);
   }
 
   public void setHardMathButtonHandler(EventHandler<ActionEvent> action) {
-    impossibleBoardButton.setOnAction(action);
+    impossibleLadderGameBoardButton.setOnAction(action);
   }
 
   public void setExportPlayersCsvButtonHandler(EventHandler<ActionEvent> action) {
@@ -268,10 +268,10 @@ public class MainMenuView {
     title.setText("Stigespill");
 
     gameDifficultyGrid.getChildren().clear();
-    gameDifficultyGrid.add(normalBoardButton, 0, 0);
-    gameDifficultyGrid.add(crazyBoardButton, 1, 0);
-    gameDifficultyGrid.add(impossibleBoardButton, 0, 1);
-    gameDifficultyGrid.add(jsonBoardButton, 1, 1);
+    gameDifficultyGrid.add(normalLadderGameBoardButton, 0, 0);
+    gameDifficultyGrid.add(crazyLadderGameBoardButton, 1, 0);
+    gameDifficultyGrid.add(impossibleLadderGameBoardButton, 0, 1);
+    gameDifficultyGrid.add(jsonLadderGameBoardButton, 1, 1);
   }
 
   public void switchToGameMath() {

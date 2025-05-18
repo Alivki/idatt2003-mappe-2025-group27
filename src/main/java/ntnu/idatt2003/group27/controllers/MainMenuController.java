@@ -60,7 +60,6 @@ public class MainMenuController {
     setCrazyLadderGameBoardButtonHandler();
     setImpossibleLadderGameBoardButtonHandler();
     setJsonLadderGameBoardButtonHandler();
-
     //Dynamically sets appropritate piece button handlers.
     for(int i = 0; i < mainController.getPieces().size(); i++) {
       setSelectPieceButtonHandler(i);
@@ -98,7 +97,7 @@ public class MainMenuController {
 
   private void setNormalLadderGameBoardButtonHandler(){
     //Sets handler for normal board button
-    mainMenuView.setNormalBoardButtonHandler(e -> {
+    mainMenuView.setNormalLadderGameBoardButtonHandler(e -> {
       System.out.println("Normal board button clicked");
       if (mainController.getPlayers().size() < 2) {
         showNotEnoughPlayersAlert(2);
@@ -110,7 +109,7 @@ public class MainMenuController {
 
   private void setCrazyLadderGameBoardButtonHandler(){
     //Sets handler for crazy board button
-    mainMenuView.setCrazyBoardButtonHandler(e -> {
+    mainMenuView.setCrazyLadderGameBoardButtonHandler(e -> {
       System.out.println("Crazy board button clicked");
       if (mainController.getPlayers().size() < 2) {
         showNotEnoughPlayersAlert(2);
@@ -122,7 +121,7 @@ public class MainMenuController {
 
   private void setImpossibleLadderGameBoardButtonHandler(){
     //Sets handler for IMPOSSIBLE board button
-    mainMenuView.setImpossibleBoardButtonHandler(e -> {
+    mainMenuView.setImpossibleLadderGameBoardButtonHandler(e -> {
       System.out.println("IMPOSSIBLE board button clicked");
       if (mainController.getPlayers().size() < 2) {
         showNotEnoughPlayersAlert(2);
@@ -137,7 +136,7 @@ public class MainMenuController {
    */
   private void setJsonLadderGameBoardButtonHandler(){
     //Sets handler for JSON board button
-    mainMenuView.setJsonBoardButtonHandler(e -> {
+    mainMenuView.setJsonLadderGameBoardButtonHandler(e -> {
       System.out.println("Json board button clicked");
       if (mainController.getPlayers().size() < 2) {
         showNotEnoughPlayersAlert(2);
