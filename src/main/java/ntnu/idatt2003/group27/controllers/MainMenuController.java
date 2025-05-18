@@ -55,11 +55,11 @@ public class MainMenuController {
     setImportPlayerCsvButtonHandler();
     setExportPlayerCsvButtonHandler();
 
-    mainMenuView.setLadderGameButtonHandler(e -> {
+    mainMenuView.setLadderGameSelectionMenuButtonHandler(e -> {
       mainMenuView.switchToGameLadder();
     });
 
-    mainMenuView.setMathGameButtonHandler(e -> {
+    mainMenuView.setMathGameSelectionMenuButtonHandler(e -> {
       mainMenuView.switchToGameMath();
     });
 
