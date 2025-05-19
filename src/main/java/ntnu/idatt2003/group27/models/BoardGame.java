@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import java.util.Map;
 
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
@@ -19,6 +20,12 @@ import java.util.List;
  * @since 0.0
  */
 public class BoardGame {
+  /**
+   * Logger instance for the {@code Board} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(BoardGame.class.getName());
+
   /**
    * List of observers monitoring game events .
    */
@@ -54,6 +61,7 @@ public class BoardGame {
    * @param numberOfSides The number of sides on each dice.
    */
   public BoardGame(Board board, int numberOfDice, int numberOfSides) {
+    logger.fine("Initializing BoardGame");
     this.board = board;
     createDice(numberOfDice, numberOfSides);
   }
@@ -64,6 +72,7 @@ public class BoardGame {
    * @param observer The observer to register.
    */
   public void addObserver(BoardGameObserver observer) {
+    logger.fine("Adding observer " + observer + " to BoardGame" + this);
     observers.add(observer);
   }
 
@@ -76,6 +85,7 @@ public class BoardGame {
    * @param roll          The result of the dice roll for the round.
    */
   public void notifyRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction action) {
+    logger.fine("Notifying round played " + currentPlayer + " " + roll + " " + action);
     observers.forEach(observer -> observer.onRoundPlayed(players, currentPlayer, roll, action));
   }
 
@@ -85,6 +95,7 @@ public class BoardGame {
    * @param player The player that has won.
    */
   public void notifyPlayerWon(Player player) {
+    logger.fine("Notifying player won " + player);
     observers.forEach(observer -> observer.onPlayerWon(player));
   }
 
@@ -95,6 +106,7 @@ public class BoardGame {
    * @param tiles   The map of tiles on the board.
    */
   public void notifyGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
+    logger.fine("Notifying game setup " + players);
     observers.forEach(observer -> observer.onGameSetup(players, tiles));
   }
 
@@ -104,6 +116,7 @@ public class BoardGame {
    * @param tiles
    */
   public void notifyGameRestart(ArrayList<Player> players, Map<Integer, Tile> tiles) {
+    logger.fine("Notifying game restart " + players);
     observers.forEach(observer -> observer.onGameRestart(players, tiles));
   }
 
@@ -113,6 +126,7 @@ public class BoardGame {
    * @return The current game board.
    */
   public Board getBoard() {
+    logger.fine("Getting Board");
     return board;
   }
 
@@ -123,6 +137,7 @@ public class BoardGame {
    * @return A new {@link ArrayList} containing all players in the game.
    */
   ArrayList<Player> getPlayers() {
+    logger.fine("Getting Players");
     return new ArrayList<>(players);
   }
 
@@ -132,6 +147,7 @@ public class BoardGame {
    * @return The player whose turn is currently active.
    */
   Player getCurrentPlayer() {
+    logger.fine("Getting Current Player");
     return currentPlayer;
   }
 
@@ -141,6 +157,7 @@ public class BoardGame {
    * @return The dice instance used in the game.
    */
   Dice getDice() {
+    logger.fine("Getting Dice");
     return dice;
   }
 
@@ -151,7 +168,9 @@ public class BoardGame {
    * @throws IllegalArgumentException if the player already exists in the game.
    */
   public void addPlayer(Player player) throws IllegalArgumentException {
+    logger.fine("Adding player " + player);
     if (players.contains(player)) {
+      logger.warning("Player " + player + " already exists");
       throw new IllegalArgumentException("Player already exists");
     }
 
@@ -165,6 +184,7 @@ public class BoardGame {
    * @param numberOfSides The number of sides on each dice.
    */
   private void createDice(int numberOfDice, int numberOfSides) {
+    logger.fine("Creating Dice " + numberOfDice + " " + numberOfSides);
     dice = new Dice(numberOfDice, numberOfSides);
   }
 
@@ -175,7 +195,9 @@ public class BoardGame {
    * @throws IllegalArgumentException if no players have been added to the game.
    */
   public void setUpGame() throws NotEnoughPlayersInGameException {
+    logger.fine("Setting up game");
     if (players.isEmpty()) {
+      logger.severe("No players in game");
       throw new NotEnoughPlayersInGameException("Not enough players in the game to start!");
     }
 
@@ -190,6 +212,7 @@ public class BoardGame {
    * Restarts the game.
    */
   public void restartGame(){
+    logger.fine("Restarting game");
     players.forEach(player -> player.placeOnTile(board.getTile(1)));
     currentPlayer = players.getFirst();
     notifyGameRestart(players, board.getTiles());
@@ -201,7 +224,9 @@ public class BoardGame {
    * @throws IllegalArgumentException if there are less than two players in the game.
    */
   public void play() throws NotEnoughPlayersInGameException {
+    logger.fine("Playing game.");
     if (players.size() < 2) {
+      logger.warning("Not enough players to start the game!");
       throw new NotEnoughPlayersInGameException("Must be two players to start the game");
     }
 
@@ -223,8 +248,6 @@ public class BoardGame {
     notifyRoundPlayed(players, currentPlayer, roll, tileAction);
     if (getWinner() != null) {
       notifyPlayerWon(getWinner());
-      // System.out.println("\n" + getWinner().getName() + " has won the game!");
-      return;
     }
   }
 
@@ -236,6 +259,7 @@ public class BoardGame {
    * @return The relative movement distance for the player.
    */
   private int getNextPlayerPosition(int roll) {
+    logger.fine("Getting Next player position for roll " + roll);
     int lastTileIndex = board.getTiles().size();
     int currentPosition = currentPlayer.getCurrentTile().getTileId();
     int newPosition = currentPosition + roll;
@@ -256,6 +280,7 @@ public class BoardGame {
    * @return The winning player, or null if no player has won yet.
    */
   public Player getWinner() {
+    logger.fine("Getting winner");
     for (Player player : players) {
       if (player.getCurrentTile().getTileId() == board.getTiles().size()) {
         return player;
