@@ -2,13 +2,14 @@ package ntnu.idatt2003.group27.models.interfaces;
 
 import java.util.ArrayList;
 import java.util.Map;
-import ntnu.idatt2003.group27.models.BoardGame;
+
+import ntnu.idatt2003.group27.models.Board;
+import ntnu.idatt2003.group27.models.LadderBoardGame;
 import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.Tile;
 
 
 /**
- * Defines a contract for observing significant events in a {@link BoardGame}. Implementations of
+ * Defines a contract for observing significant events in a {@link LadderBoardGame}. Implementations of
  * this interface receive notifications when a player moves or wins the game.
  *
  * @author Iver Lindholm
@@ -36,14 +37,12 @@ public interface BoardGameObserver {
    * Invoked when the game is set up and ready to start.
    *
    * @param players The list of players participating in the game.
-   * @param tiles The map of tiles on the board, with tile IDs as keys and {@link Tile} objects as values.
    */
-  void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles);
+  void onGameSetup(ArrayList<Player> players, Map<Player, Board> boards);
 
   /**
    * Invoked when the game is restarted.
    * @param players
-   * @param tiles
    */
-  void onGameRestart(ArrayList<Player> players, Map<Integer, Tile> tiles);
+  void onGameRestart(ArrayList<Player> players, Map<Player, Board> boards);
 }

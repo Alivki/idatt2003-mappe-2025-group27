@@ -1,10 +1,13 @@
 package ntnu.idatt2003.group27.models;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
+import ntnu.idatt2003.group27.models.interfaces.BoardGame;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
+import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
 import java.util.ArrayList;
@@ -19,7 +22,7 @@ import java.util.List;
  * @version 1.2
  * @since 0.0
  */
-public class BoardGame {
+public class LadderBoardGame implements BoardGame {
   /**
    * Logger instance for the {@code BoardGame} class.
    * Used for logging informational messages and errors related to class operations.
@@ -60,7 +63,7 @@ public class BoardGame {
    * @param numberOfDice  The number of dice to use in the game.
    * @param numberOfSides The number of sides on each dice.
    */
-  public BoardGame(Board board, int numberOfDice, int numberOfSides) {
+  public LadderBoardGame(Board board, int numberOfDice, int numberOfSides) {
     logger.fine("Initializing BoardGame");
     this.board = board;
     createDice(numberOfDice, numberOfSides);
@@ -71,94 +74,10 @@ public class BoardGame {
    *
    * @param observer The observer to register.
    */
+  @Override
   public void addObserver(BoardGameObserver observer) {
     logger.fine("Adding observer " + observer + " to BoardGame" + this);
     observers.add(observer);
-  }
-
-  /**
-   * Notifies all observers that a round has been played and provides the list of players to update
-   * player positions on the board.
-   *
-   * @param players       The list of players in the game.
-   * @param currentPlayer The player whose turn it is after round played.
-   * @param roll          The result of the dice roll for the round.
-   */
-  public void notifyRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction action) {
-    logger.fine("Notifying round played " + currentPlayer + " " + roll + " " + action);
-    observers.forEach(observer -> observer.onRoundPlayed(players, currentPlayer, roll, action));
-  }
-
-  /**
-   * Notifies all observers that a player has won.
-   *
-   * @param player The player that has won.
-   */
-  public void notifyPlayerWon(Player player) {
-    logger.fine("Notifying player won " + player);
-    observers.forEach(observer -> observer.onPlayerWon(player));
-  }
-
-  /**
-   * Notifies all observers that the game has been set up and is ready to start.
-   *
-   * @param players The list of players in the game.
-   * @param tiles   The map of tiles on the board.
-   */
-  public void notifyGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
-    logger.fine("Notifying game setup " + players);
-    observers.forEach(observer -> observer.onGameSetup(players, tiles));
-  }
-
-  /**
-   * Notifies all observers taht the game has been restarted.
-   * @param players
-   * @param tiles
-   */
-  public void notifyGameRestart(ArrayList<Player> players, Map<Integer, Tile> tiles) {
-    logger.fine("Notifying game restart " + players);
-    observers.forEach(observer -> observer.onGameRestart(players, tiles));
-  }
-
-  /**
-   * Retrieves the current game board. This method is package-private for testing purposes.
-   *
-   * @return The current game board.
-   */
-  public Board getBoard() {
-    logger.fine("Getting Board");
-    return board;
-  }
-
-  /**
-   * Retrieves a copy of the list of players in the game.
-   * The method is package-private for testing purposes.
-   *
-   * @return A new {@link ArrayList} containing all players in the game.
-   */
-  ArrayList<Player> getPlayers() {
-    logger.fine("Getting Players");
-    return new ArrayList<>(players);
-  }
-
-  /**
-   * Retrieves the current player. The method is package-private for testing purposes.
-   *
-   * @return The player whose turn is currently active.
-   */
-  Player getCurrentPlayer() {
-    logger.fine("Getting Current Player");
-    return currentPlayer;
-  }
-
-  /**
-   * Retrieves the dice used in the game. The method is package-private for testing purposes.
-   *
-   * @return The dice instance used in the game.
-   */
-  Dice getDice() {
-    logger.fine("Getting Dice");
-    return dice;
   }
 
   /**
@@ -178,22 +97,12 @@ public class BoardGame {
   }
 
   /**
-   * Initializes the dice with the specified number of dice and sides on each dice.
-   *
-   * @param numberOfDice  The number of dice to create.
-   * @param numberOfSides The number of sides on each dice.
-   */
-  private void createDice(int numberOfDice, int numberOfSides) {
-    logger.fine("Creating Dice " + numberOfDice + " " + numberOfSides);
-    dice = new Dice(numberOfDice, numberOfSides);
-  }
-
-  /**
    * Prepares the game for play by placing all players on the starting tile and setting the initial
    * player.
    *
    * @throws IllegalArgumentException if no players have been added to the game.
    */
+  @Override
   public void setUpGame() throws NotEnoughPlayersInGameException {
     logger.fine("Setting up game");
     if (players.isEmpty()) {
@@ -205,17 +114,18 @@ public class BoardGame {
 
     currentPlayer = players.getFirst();
 
-    notifyGameSetup(players, board.getTiles());
+    notifyGameSetup();
   }
 
   /**
    * Restarts the game.
    */
+  @Override
   public void restartGame(){
     logger.fine("Restarting game");
     players.forEach(player -> player.placeOnTile(board.getTile(1)));
     currentPlayer = players.getFirst();
-    notifyGameRestart(players, board.getTiles());
+    notifyGameRestart();
   }
 
   /**
@@ -223,6 +133,7 @@ public class BoardGame {
    *
    * @throws IllegalArgumentException if there are less than two players in the game.
    */
+  @Override
   public void play() throws NotEnoughPlayersInGameException {
     logger.fine("Playing game.");
     if (players.size() < 2) {
@@ -232,23 +143,80 @@ public class BoardGame {
 
     int roll = dice.roll();
 
-    //System.out.println(currentPlayer.getName() + " rolled a " + roll);
-
     int nextPlayerPosition = getNextPlayerPosition(roll);
-    TileAction tileAction =
+    TileAction ladderTileAction =
       board.getTiles().get(currentPlayer.getCurrentTile().getTileId() + nextPlayerPosition).getLandAction();
 
     currentPlayer.move(nextPlayerPosition);
 
-    //System.out.println(
-    //   currentPlayer.getName() + "moved to tile "
-    //      + (currentPlayer.getCurrentTile().getTileId()) + "\n");
-
     currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
-    notifyRoundPlayed(players, currentPlayer, roll, tileAction);
+    notifyRoundPlayed(roll, ladderTileAction);
     if (getWinner() != null) {
       notifyPlayerWon(getWinner());
     }
+  }
+
+  /**
+   * Retrieves the current player. The method is package-private for testing purposes.
+   *
+   * @return The player whose turn is currently active.
+   */
+  @Override
+  public Player getCurrentPlayer() {
+    return currentPlayer;
+  }
+
+  /**
+   * Retrieves a copy of the list of players in the game.
+   * The method is package-private for testing purposes.
+   *
+   * @return A new {@link ArrayList} containing all players in the game.
+   */
+  @Override
+  public ArrayList<Player> getPlayers() {
+    return new ArrayList<>(players);
+  }
+
+  /**
+   * Determines the winner of the game, if any.
+   *
+   * @return The winning player, or null if no player has won yet.
+   */
+  @Override
+  public Player getWinner() {
+    for (Player player : players) {
+      if (player.getCurrentTile().getTileId() == board.getTiles().size()) {
+        return player;
+      }
+    }
+
+    return null;
+  }
+
+  @Override
+  public Map<Player, Board> getBoards() {
+    Map<Player, Board> boards = new LinkedHashMap<>();
+    boards.put(null, board);
+    return boards;
+  }
+
+  /**
+   * Retrieves the dice used in the game. The method is package-private for testing purposes.
+   *
+   * @return The dice instance used in the game.
+   */
+  Dice getDice() {
+    return dice;
+  }
+
+  /**
+   * Initializes the dice with the specified number of dice and sides on each dice.
+   *
+   * @param numberOfDice  The number of dice to create.
+   * @param numberOfSides The number of sides on each dice.
+   */
+  private void createDice(int numberOfDice, int numberOfSides) {
+    dice = new Dice(numberOfDice, numberOfSides);
   }
 
   /**
@@ -275,18 +243,40 @@ public class BoardGame {
   }
 
   /**
-   * Determines the winner of the game, if any.
+   * Notifies all observers that a round has been played and provides the list of players to update
+   * player positions on the board.
    *
-   * @return The winning player, or null if no player has won yet.
+   * @param roll The result of the dice roll for the round.
+   * @param action The action taken on the tile, if any.
    */
-  public Player getWinner() {
-    logger.fine("Getting winner");
-    for (Player player : players) {
-      if (player.getCurrentTile().getTileId() == board.getTiles().size()) {
-        return player;
-      }
-    }
 
-    return null;
+  public void notifyRoundPlayed(int roll, TileAction action) {
+    observers.forEach(observer -> observer.onRoundPlayed(players, currentPlayer, roll, action));
+  }
+
+  /**
+   * Notifies all observers that a player has won.
+   *
+   * @param player The player that has won.
+   */
+  public void notifyPlayerWon(Player player) {
+    logger.fine("Notifying player won: " + player.getName());
+    observers.forEach(observer -> observer.onPlayerWon(player));
+  }
+
+  /**
+   * Notifies all observers that the game has been set up and is ready to start.
+   */
+  public void notifyGameSetup() {
+    logger.fine("Notifying game setup.");
+    observers.forEach(observer -> observer.onGameSetup(players, getBoards()));
+  }
+
+  /**
+   * Notifies all observers that the game has been restarted.
+   */
+  public void notifyGameRestart() {
+    logger.fine("Notifying game restart.");
+    observers.forEach(observer -> observer.onGameRestart(players, getBoards()));
   }
 }

@@ -1,63 +1,50 @@
 package ntnu.idatt2003.group27.controllers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.logging.Logger;
-import ntnu.idatt2003.group27.models.BoardFactory;
-import ntnu.idatt2003.group27.models.BoardGame;
-import ntnu.idatt2003.group27.models.BoardGameFactory;
-import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.Tile;
+import ntnu.idatt2003.group27.models.*;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
+import ntnu.idatt2003.group27.models.enums.MathGameType;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.LadderGameView;
+import ntnu.idatt2003.group27.view.MathGameView;
 import ntnu.idatt2003.group27.view.components.Alert;
 import ntnu.idatt2003.group27.view.components.Toast;
-import javafx.animation.PauseTransition;
-import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A controller class for managing the ladder game, implementing the MVC pattern. It handles game
  * logic, user interactions with the {@link LadderGameView}, and updates the view based on the game
- * event as an observer of the {@link BoardGame}.
+ * event as an observer of the {@link LadderBoardGame}.
  *
  * @author Iver Lindholm, Amadeus Berg
  * @version 1.3
  * @since 2.0
  */
-public class BoardGameController implements BoardGameObserver {
-  /**
-   * Logger instance for the {@code BoardGameController} class.
-   * Used for logging informational messages and errors related to class operations.
-   */
-  private static final Logger logger = Logger.getLogger(BoardGameController.class.getName());
+public class MathGameController implements BoardGameObserver {
   /** The game model managing the ladder game logic */
-  private BoardGame game;
+  private MathBoardGame game;
   /** The view for displaying the ladder game. */
-  private LadderGameView ladderGameView;
-  /** The last player who made a move */
-  private Player lastPlayer;
-  /** A boolean indicating whether the play button should be disabled */
-  private boolean diablePlayButton = false;
+  private MathGameView mathGameView;
 
   /** The main controller for coordinating application-wide actions */
   private final MainController mainController;
 
   /** The type of ladder game being played */
-  private LadderGameType ladderGameType;
+  private MathGameType mathGameType;
 
   private final BoardGameFactory boardGameFactory;
 
   /**
-   * Constructs a {@link BoardGameController} with the specified {@link MainController}
+   * Constructs a {@link MathGameController} with the specified {@link MainController}
    *
    * @param mainController The {@link MainController} for coordinating application-wide actions
    */
-  public BoardGameController(MainController mainController) {
-    logger.info("Initializing BoardGameController.");
+  public MathGameController(MainController mainController) {
     this.mainController = mainController;
     this.boardGameFactory = new BoardGameFactory(new BoardFactory());
   }
@@ -66,15 +53,15 @@ public class BoardGameController implements BoardGameObserver {
    * Initializes the ladder game with the specified game type and players, setting up the MVC pattern
    * and event handlers.
    *
-   * @param ladderGameType The {@link LadderGameType} defining the game difficulty.
+   * @param mathGameType The {@link LadderGameType} defining the game difficulty.
    * @param players An array of {@link Player} objects participating in the game.
    */
-  public void InitializeGame(LadderGameType ladderGameType, Player[] players) {
-    this.ladderGameType = ladderGameType;
+  public void InitializeGame(MathGameType mathGameType, Player[] players) {
+    this.mathGameType = mathGameType;
     // initializes mvc pattern
     game = null;
     try {
-      game = boardGameFactory.createLadderGame(ladderGameType);
+      game = boardGameFactory.createMathGame(mathGameType, players);
     } catch (IllegalArgumentException e) {
       System.err.println("Error creating game: " + e.getMessage());
     }
@@ -83,15 +70,14 @@ public class BoardGameController implements BoardGameObserver {
       return;
     }
 
-    ladderGameView = new LadderGameView();
+    mathGameView = new MathGameView();
 
     game.addObserver(this);
 
-    setupLadderViewEventHandlers();
+    setupMathViewEventHandlers();
 
-    //Add players to game
-    Arrays.stream(players).forEach(player -> {game.addPlayer(player);});
-
+    List<Board> boards = game.getBoards().values().stream().toList();
+    game.addPlayers(boards, Arrays.stream(players).toList());
 
     // change when being done in controller on game difficult select
     try {
@@ -105,7 +91,6 @@ public class BoardGameController implements BoardGameObserver {
    * Restarts the current game, resetting the game state and updating the view.
    */
   public void RestartGame(){
-    logger.fine("Restart game.");
     game.restartGame();
   }
 
@@ -113,26 +98,40 @@ public class BoardGameController implements BoardGameObserver {
    * Sets up events handlers for the ladder game view, including actions for rolling the dice,
    * restarting the game, and returning to the main menu.
    */
-  private void setupLadderViewEventHandlers() {
-    ladderGameView.setRollDiceHandler(e -> {
-      logger.fine("Roll dice button clicked.");
+  private void setupMathViewEventHandlers() {
+    mathGameView.setPlayButtonHandler(e -> {
       try {
         game.play();
       } catch (NotEnoughPlayersInGameException error) {
-        //switch to main menu when possible
-
-        ladderGameView.showToast(
+        mathGameView.showToast(
             Toast.ToastVariant.ERROR,
             "Feil",
             "Det oppstod en feil under spillingen: " + error.getMessage()
         );
       }
+      String question = game.getMathQuestion();
+      mathGameView.roundPlay(question);
     });
 
-    ladderGameView.setRestartButtonHandler(e -> {
-      logger.fine("Restart button clicked.");
+    mathGameView.setAnswerButtonHandler(e -> {
+      String answer = mathGameView.getAnswer();
+      try {
+        Integer.parseInt(answer);
+      } catch (NumberFormatException error) {
+        mathGameView.showToast(
+            Toast.ToastVariant.ERROR,
+            "Feil",
+            "Ugyldig svar. Vennligst skriv inn et gyldig tall."
+        );
+        return;
+      }
+      game.checkAnswer(answer);
+      mathGameView.betweenRounds();
+    });
+
+    mathGameView.setRestartButtonHandler(e -> {
       Alert alert = new Alert(
-          this.ladderGameView.getRoot(),
+          this.mathGameView.getRoot(),
           "Bekreft restart",
           "Er du sikker på at du vil starte spillet på nytt?",
           "Ja",
@@ -146,10 +145,9 @@ public class BoardGameController implements BoardGameObserver {
       alert.show();
     });
 
-    ladderGameView.setHomeButtonHandler(e -> {
-      logger.fine("Home button clicked.");
+    mathGameView.setHomeButtonHandler(e -> {
       Alert alert = new Alert(
-          this.ladderGameView.getRoot(),
+          this.mathGameView.getRoot(),
           "Bekreft avslutning",
           "Er du sikker på at du vil avslutte spillet?",
           "Ja",
@@ -157,6 +155,7 @@ public class BoardGameController implements BoardGameObserver {
           response -> {
             if (response) {
               //Loads main menu
+              System.out.println("Home button clicked");
               mainController.switchToMainMenu();
             }
           }
@@ -176,44 +175,21 @@ public class BoardGameController implements BoardGameObserver {
    */
   @Override
   public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction tileAction) {
-    logger.fine("On round played.");
-    ladderGameView.toggleDiceButton(false);
-
-    int round = ladderGameView.getRoundLabel() + 1;
-    ladderGameView.rotateDice(roll);
+    int round = mathGameView.getRoundLabel() + 1;
 
     int currentPlayerIndex = players.indexOf(currentPlayer);
     int lastPlayerIndex = (currentPlayerIndex - 1 + players.size()) % players.size();
-    lastPlayer = players.get(lastPlayerIndex);
+    Player lastPlayer = players.get(lastPlayerIndex);
 
-    int destinationTileId = lastPlayer.getCurrentTile().getTileId();
-
-    PauseTransition delay = new PauseTransition(Duration.millis(400));
-    delay.setOnFinished(event -> {
-      ladderGameView.updateCurrentPlayerLabel(currentPlayer.getName());
-      ladderGameView.updateLastPlayerLabel(lastPlayer.getName());
-      ladderGameView.updateLastRollLabel(String.valueOf(roll));
-      ladderGameView.updateMovedToLabel(String.valueOf(destinationTileId));
-      if (tileAction != null) {
-        String action = tileAction.getClass().getSimpleName();
-        String formattedAction = action.replaceAll("(?=\\p{Upper})", " ").trim();
-        ladderGameView.updateTileActionLabel(formattedAction);
-      } else {
-        ladderGameView.updateTileActionLabel("Ingen");
-      }
-      ladderGameView.animatePlayerMovement(
-          lastPlayer,
-          destinationTileId,
-          tileAction,
-          roll,
-          players,
-          () -> {
-            ladderGameView.updateRoundLabel(String.valueOf(round));
-            ladderGameView.populatePlayerList(players);
-          }
-      );
-    });
-    delay.play();
+    mathGameView.animatePlayerMovement(
+        lastPlayer,
+        lastPlayer.getCurrentTile().getTileId() + 1,
+        players,
+        () -> {
+          mathGameView.updateRoundLabel(String.valueOf(round));
+          mathGameView.populatePlayerList(players);
+        });
+    mathGameView.updateCurrentPlayerLabel(currentPlayer.getName());
   }
 
   /**
@@ -223,13 +199,11 @@ public class BoardGameController implements BoardGameObserver {
    */
   @Override
   public void onPlayerWon(Player player) {
-    logger.fine("On player won. Player: " + player.getName());
-    ladderGameView.toggleDiceButton(false);
-    ladderGameView.updateStatusLabel("Avsluttet");
-    ladderGameView.showToast(Toast.ToastVariant.SUCCESS, "Spiller vant",
+    mathGameView.updateStatusLabel("Avsluttet");
+    mathGameView.showToast(Toast.ToastVariant.SUCCESS, "Spiller vant",
         player.getName() + " vant spillet! Gratulerer!");
     Alert alert = new Alert(
-        this.ladderGameView.getRoot(),
+        this.mathGameView.getRoot(),
         "Spiller vant",
         player.getName() + " vant spillet!",
         "Tilbake til hovedmeny",
@@ -251,37 +225,28 @@ public class BoardGameController implements BoardGameObserver {
    * Handles the event when the game is set up, initializing the view with the initial game state.
    *
    * @param players The list of players participating in the game.
-   * @param tiles The map of tiles on the board, with tile IDs as keys and {@link Tile} objects as values.
    */
   @Override
-  public void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
-    logger.fine("On game setup.");
-    ladderGameView.createBoard(players, tiles);
-    ladderGameView.populatePlayerList(players);
-    ladderGameView.updateCurrentPlayerLabel(players.getFirst().getName());
+  public void onGameSetup(ArrayList<Player> players, Map<Player, Board> boards) {
+    mathGameView.createBoard(players, boards);
+    mathGameView.populatePlayerList(players);
+    mathGameView.updateCurrentPlayerLabel(players.getFirst().getName());
 
-    // set the diffuculty level when there is a way to
-    ladderGameView.updateGradeLabel(ladderGameType.name());
+    mathGameView.updateGradeLabel(mathGameType.name());
   }
 
   /**
    * Handles the event when the game is restarted, resetting the view to the initial game state.
    *
    * @param players The list of {@link Player} objects in the game.
-   * @param tiles The map of tile IDs to {@link Tile} objects representing the game board.
    */
   @Override
-  public void onGameRestart(ArrayList<Player> players, Map<Integer, Tile> tiles){
-    logger.fine("On game restart.");
-    ladderGameView.toggleDiceButton(true);
-    ladderGameView.updateCurrentPlayerLabel(players.getFirst().getName());
-    ladderGameView.updateRoundLabel("1");
-    ladderGameView.updateLastPlayerLabel("Ingen");
-    ladderGameView.updateLastRollLabel("Ikke kastet");
-    ladderGameView.updateMovedToLabel("Start");
-    ladderGameView.updateBoard(players);
-    ladderGameView.populatePlayerList(players);
-    ladderGameView.updateStatusLabel("Pågående");
+  public void onGameRestart(ArrayList<Player> players, Map<Player, Board> boards){
+    mathGameView.updateCurrentPlayerLabel(players.getFirst().getName());
+    mathGameView.updateRoundLabel("1");
+    mathGameView.populatePlayerList(players);
+    mathGameView.updateStatusLabel("Pågående");
+    mathGameView.updateBoard(players);
   }
 
   /**
@@ -289,8 +254,7 @@ public class BoardGameController implements BoardGameObserver {
    *
    * @return The {@link LadderGameView} instance.
    */
-  public LadderGameView getView() {
-    logger.fine("Get view.");
-    return ladderGameView;
+  public MathGameView getView() {
+    return mathGameView;
   }
 }

@@ -7,26 +7,26 @@ import java.util.stream.IntStream;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.interfaces.TileAction;
-import ntnu.idatt2003.group27.view.components.Canvas;
+import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
+import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
 /**
  * Represents the behavior of a ladder on the game board. This class implements the 
- * {@link TileAction} interface to define an action that moves a player to a specified
+ * {@link LadderTileAction} interface to define an action that moves a player to a specified
  * destination tile when triggered.
  *
  * @author Iver Lindholm
  * @version 1.0
  * @since 1.0
  */
-public class BackToStartAction implements TileAction {
+public class BackToStartAction implements LadderTileAction {
   /**
    * Logger instance for the {@code BackToStartAction} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(BackToStartAction.class.getName());
 
-  /** Description for this {@link TileAction} */
+  /** Description for this {@link LadderTileAction} */
   public String description;
 
   /**
@@ -77,12 +77,12 @@ public class BackToStartAction implements TileAction {
   }
 
   @Override
-  public void drawCustom(GraphicsContext gc, int tileId, Canvas canvas) {
+  public void drawCustom(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
     // No custom drawing needed for this action
   }
 
   @Override
-  public void drawDestinationTile(GraphicsContext gc, int tileId, Canvas canvas) {
+  public void drawDestinationTile(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
     // No custom drawing needed for this action
   }
 

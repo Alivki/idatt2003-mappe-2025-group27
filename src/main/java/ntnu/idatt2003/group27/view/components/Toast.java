@@ -138,7 +138,7 @@ public class Toast {
     double ownerY = owner.getScene().getWindow().getY();
 
     double rightEdgeX = ownerX + ownerWidth - estimatedWidth - EDGE_OFFSET;
-    double bottomEdgeY = ownerY + ownerHeight - TOAST_HEIGHT - EDGE_OFFSET + 35;
+    double bottomEdgeY = ownerY + ownerHeight - TOAST_HEIGHT - EDGE_OFFSET ;
 
     toastStage.setX(rightEdgeX);
     toastStage.setY(bottomEdgeY);

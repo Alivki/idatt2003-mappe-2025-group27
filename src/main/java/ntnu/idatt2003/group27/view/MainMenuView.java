@@ -22,7 +22,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import ntnu.idatt2003.group27.controllers.MainMenuController;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.view.components.AppLayout;
@@ -43,9 +42,6 @@ public class MainMenuView {
   private static final Logger logger = Logger.getLogger(MainMenuView.class.getName());
   /** The root container for the main menu view. */
   private final StackPane root;
-
-  /** Controller for controlling this view. */
-  private MainMenuController mainMenuController;
 
   /** Button to start the ladder game. */
   private CustomButton ladderGameMainMenuButton;
@@ -129,7 +125,7 @@ public class MainMenuView {
 
     //Initializes header buttons.
     ladderGameMainMenuButton = new CustomButton("Stigespill", CustomButton.ButtonVariant.GHOST, null);
-    mathGameMainMenuButton = new CustomButton("Matte spill", CustomButton.ButtonVariant.GHOST, null);
+    mathGameMainMenuButton = new CustomButton("Mattespill", CustomButton.ButtonVariant.GHOST, null);
     applicationQuitButton = new CustomButton("Avslutt", CustomButton.ButtonVariant.DESTRUCTIVE,
         actionEvent -> Platform.exit());
 
@@ -325,7 +321,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setEasyMathButtonHandler(EventHandler<ActionEvent> action) {
-    normalLadderGameBoardButton.setOnAction(action);
+    mathEasyButton.setOnAction(action);
   }
 
   /**
@@ -334,7 +330,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setMediumMathButtonHandler(EventHandler<ActionEvent> action) {
-    crazyLadderGameBoardButton.setOnAction(action);
+    mathMediumButton.setOnAction(action);
   }
 
   /**
@@ -343,7 +339,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setHardMathButtonHandler(EventHandler<ActionEvent> action) {
-    impossibleLadderGameBoardButton.setOnAction(action);
+    mathHardButton.setOnAction(action);
   }
 
   /**
@@ -399,7 +395,7 @@ public class MainMenuView {
    * Displays math game difficulty selection buttons in the game difficulty grid.
    */
   public void switchToGameMath() {
-    title.setText("Matte spill");
+    title.setText("Mattespill");
 
     gameDifficultyGrid.getChildren().clear();
     gameDifficultyGrid.add(mathEasyButton, 0, 0);

@@ -1,22 +1,13 @@
 package ntnu.idatt2003.group27.models.interfaces;
 
-import java.util.List;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.view.components.Canvas;
+import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
-/**
- * Defines a contract for custom actions that can be executed when a player interacts with a 
- * tile on the game board. Implementations of this interface specify behavior triggered by 
- * a player's presence on a tile.
- *
- * @author Iver Lindholm
- * @version 1.0
- * @since 1.0
- */
+import java.util.List;
+
 public interface TileAction {
-
   /**
    * Executes the custom action associated with a tile, affecting the specified player.
    *
@@ -52,16 +43,16 @@ public interface TileAction {
    *
    * @param gc The {@link GraphicsContext} used for drawing.
    * @param tileId The zero based ID of the tile.
-   * @param canvas The {@link Canvas} instance for accessing tile positions.
+   * @param ladderCanvas The {@link LadderCanvas} instance for accessing tile positions.
    */
-  void drawCustom(GraphicsContext gc, int tileId, Canvas canvas);
+  void drawCustom(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas);
 
   /**
    * Draw the destination tile for this action, if applicable.
    *
    * @param gc The {@link GraphicsContext} used for drawing.
    * @param tileId The zero based ID of the tile.
-   * @param canvas The {@link Canvas} instance for accessing tile positions.
+   * @param ladderCanvas The {@link LadderCanvas} instance for accessing tile positions.
    */
-  void drawDestinationTile(GraphicsContext gc, int tileId, Canvas canvas);
+  void drawDestinationTile(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas);
 }

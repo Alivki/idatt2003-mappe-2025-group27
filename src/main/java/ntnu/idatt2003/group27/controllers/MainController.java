@@ -5,6 +5,7 @@ import java.util.Collections;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
+import ntnu.idatt2003.group27.models.enums.MathGameType;
 import ntnu.idatt2003.group27.view.SceneManager;
 import java.util.logging.Logger;
 
@@ -28,7 +29,8 @@ public class MainController {
   /** The scene manager responsible for handling screen transitions */
   private SceneManager sceneManager;
   /** The controller for the board game. */
-  private BoardGameController boardGameController;
+  private LadderGameController ladderGameController;
+  private MathGameController mathGameController;
 
   /** The max players for the game. */
   private int maxPlayers = 5;
@@ -47,11 +49,18 @@ public class MainController {
    *
    * @param ladderGameType The {@link LadderGameType} defining the type of game to be initialized.
    */
-  public void switchToBoardGame(LadderGameType ladderGameType) {
-    logger.info("Switching to ladder game.");
-    boardGameController = new BoardGameController(this);
-    boardGameController.InitializeGame(ladderGameType, getPlayerArray());
-    sceneManager.switchSceneImmediate(boardGameController.getView().getRoot());
+  public void switchToLadderBoardGame(LadderGameType ladderGameType) {
+    logger.info("Switching to ladder board game.");
+    ladderGameController = new LadderGameController(this);
+    ladderGameController.InitializeGame(ladderGameType, getPlayerArray());
+    sceneManager.switchSceneImmediate(ladderGameController.getView().getRoot());
+  }
+
+  public void switchToMathBoardGame(MathGameType mathGameType) {
+    logger.info("Switching to math board game.");
+    mathGameController = new MathGameController(this);
+    mathGameController.InitializeGame(mathGameType, getPlayerArray());
+    sceneManager.switchSceneImmediate(mathGameController.getView().getRoot());
   }
 
   /**

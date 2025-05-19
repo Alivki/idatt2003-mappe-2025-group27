@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models;
 
+import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
 import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
@@ -14,7 +15,7 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  */
 public class Tile {
   /**
-   * Logger instance for the {@code Board} class.
+   * Logger instance for the {@code Tile} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(Tile.class.getName());
@@ -69,7 +70,7 @@ public class Tile {
   /**
    * Retrieves the action associated with landing on this tile.
    *
-   * @return The {@link TileAction} for this tile, or null if no action is set.
+   * @return The {@link LadderTileAction} for this tile, or null if no action is set.
    */
   public TileAction getLandAction() {
     return landAction;
@@ -78,7 +79,7 @@ public class Tile {
   /**
    * Sets the action to be performed when a player lands on this tile.
    *
-   * @param landAction The {@link TileAction} to associate with this tile.
+   * @param landAction The {@link LadderTileAction} to associate with this tile.
    */
   public void setLandAction(TileAction landAction) {
     this.landAction = landAction;
@@ -103,7 +104,7 @@ public class Tile {
   }
 
   /**
-   * Handles a player landing on this tile. If a {@link TileAction} is defined, it is executed;
+   * Handles a player landing on this tile. If a {@link LadderTileAction} is defined, it is executed;
    * otherwise, the player is placed on this tile.
    *
    * @param player The {@link Player} landing on this tile.
