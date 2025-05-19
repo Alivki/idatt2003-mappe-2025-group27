@@ -27,7 +27,7 @@ import ntnu.idatt2003.group27.models.Tile;
  */
 public class BoardDeserializer implements JsonDeserializer<Board> {
   /**
-   * Logger instance for the {@code BoardDeserializer} class.
+   * Logger instance for the {@link BoardDeserializer} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(BoardDeserializer.class.getName());
@@ -47,6 +47,7 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
   @Override
   public Board deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
       throws JsonParseException, IllegalArgumentException {
+    logger.fine("Deserializing JsonElement: " + json + ", to a Board instance.");
     JsonObject jsonObject = json.getAsJsonObject();
     JsonArray tilesJsonArray = jsonObject.getAsJsonArray("tiles");
 
@@ -71,21 +72,25 @@ public class BoardDeserializer implements JsonDeserializer<Board> {
 
         switch (type) {
           case "LadderAction":
+            logger.fine("Adding LadderAction to tile: " + id);
             int targetTile = actionObject.get("targetTile").getAsInt();
             String ladderDescription = actionObject.get("description").getAsString();
             currentTile.setLandAction(new LadderAction(targetTile, ladderDescription));
             break;
           case "BackToStartAction":
+            logger.fine("Adding BackToStartAction to tile: " + id);
             String backToStartDescription = actionObject.get("description").getAsString();
             currentTile.setLandAction(new BackToStartAction(backToStartDescription));
             break;
           case "ThrowNewDiceAction":
+            logger.fine("Adding ThrowNewDiceAction to tile: " + id);
             String throwNewDiceDescription = actionObject.get("description").getAsString();
             int numberOfDice = actionObject.get("numberOfDice").getAsInt();
             int numberOfSides = actionObject.get("numberOfSides").getAsInt();
             currentTile.setLandAction(new ThrowNewDiceAction(throwNewDiceDescription, numberOfDice, numberOfSides));
             break;
           default:
+            logger.warning("Could not add action to board: Unknown action type: " + type);
             throw new IllegalArgumentException("Unknown action type: " + type);
         }
       }
