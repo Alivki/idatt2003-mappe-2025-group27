@@ -29,7 +29,7 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  * @version 1.8
  * @since 2.0
  */
-public class Canvas extends javafx.scene.canvas.Canvas {
+public class LadderCanvas extends javafx.scene.canvas.Canvas {
   /**
    * The total number of tiles on the board
    */
@@ -72,7 +72,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
   private Player animatingPlayer;
 
   /**
-   * Constructs a {@link Canvas} for rendering the game board with the specified tile actions,
+   * Constructs a {@link LadderCanvas} for rendering the game board with the specified tile actions,
    * players, and board size.
    *
    * @param tileActions A {@link Map} of tile IDs to {@link Tile} objects defining the board's
@@ -80,7 +80,7 @@ public class Canvas extends javafx.scene.canvas.Canvas {
    * @param players     A {@link List} of {@link Player} objects representing the players on the board.
    * @param boardSize   The total number of tiles on the board.
    */
-  public Canvas(Map<Integer, Tile> tileActions, List<Player> players, int boardSize) {
+  public LadderCanvas(Map<Integer, Tile> tileActions, List<Player> players, int boardSize) {
     this.tileSize = 0;
     this.players = new ArrayList<>();
     this.boardSize = boardSize;
@@ -429,30 +429,6 @@ public class Canvas extends javafx.scene.canvas.Canvas {
     }
   }
 
-  /**
-   * Draws all ladders connecting tiles as defined by {@link LadderAction} instances in the tile
-   * actions map.
-   *
-   * @param gc The {@link GraphicsContext} used for drawing.
-   */
-  private void drawAllLadders(GraphicsContext gc) {
-    tileActions.entrySet().stream()
-        .filter(e -> e.getValue().getLandAction() instanceof LadderAction)
-        .forEach(e -> drawLadder(
-            gc,
-            e.getKey() - 1,
-            ((LadderAction) e.getValue().getLandAction()).getDestinationTileId() - 1));
-  }
-
-  /**
-   * Draws a ladder connecting two tiles, including rungs.
-   *
-   * @param gc        The {@link GraphicsContext} used for drawing.
-   * @param startTile The zero-based ID of the strating tile.
-   * @param endTile   The zero-based ID of the ending tile.
-   */
-  private void drawLadder(GraphicsContext gc, int startTile, int endTile) {
-  }
 
   /**
    * Calculates the top-left position of a tile based on its ID.

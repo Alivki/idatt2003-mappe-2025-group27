@@ -1,12 +1,17 @@
 package ntnu.idatt2003.group27.models;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
+import ntnu.idatt2003.group27.models.enums.MathGameType;
 import ntnu.idatt2003.group27.models.interfaces.GameConfiguration;
 
 /**
- * A factory class responsible for creating {@link BoardGame} instances with predefined
+ * A factory class responsible for creating {@link LadderBoardGame} instances with predefined
  * configurations or file-based configurations loaded from JSON files. Utilizes the Factory
  * Pattern to encapsulate game creation logic and promote extensibility.
  *
@@ -28,32 +33,32 @@ public class BoardGameFactory {
   }
 
   /**
-   * Creates a {@link BoardGame} instance based on the specified {@link LadderGameType}. The game is
+   * Creates a {@link LadderBoardGame} instance based on the specified {@link LadderGameType}. The game is
    * configured with a board and dice as defined by the associated {@link GameConfiguration}.
    *
    * @param ladderGameType The {@link LadderGameType} defining the game configuration.
-   * @return A new {@link BoardGame} instance configured with the specified game type.
+   * @return A new {@link LadderBoardGame} instance configured with the specified game type.
    * @throws IllegalArgumentException if the {@code LadderGameType} is unknown.
    */
-  public BoardGame createLadderGame(LadderGameType ladderGameType) throws IOException {
+  public LadderBoardGame createLadderGame(LadderGameType ladderGameType) throws IOException {
     if (ladderGameType.equals(LadderGameType.JSON)) {
       return createLadderGameFromJson("src/main/resources/boards/Board.Json");
     }
 
     GameConfiguration config = new LadderGameConfiguration(ladderGameType);
     Board board = boardFactory.createBoard(config.getTotalTiles(), config.getTileActions());
-    return new BoardGame(board, config.getNumberOfDice(), config.getNumberOfDieSides());
+    return new LadderBoardGame(board, config.getNumberOfDice(), config.getNumberOfDieSides());
   }
 
   /**
-   * Creates a {@link BoardGame} instance based on a configuration loaded from a JSON file. The game
+   * Creates a {@link LadderBoardGame} instance based on a configuration loaded from a JSON file. The game
    * is configured with a board and dice as defined by the associated {@link GameConfiguration}.
    *
    * @param jsonPath The file path to the JSON configuration file.
-   * @return A new {@link BoardGame} instance configured with the specified JSON file.
+   * @return A new {@link LadderBoardGame} instance configured with the specified JSON file.
    * @throws IOException if an error occurs while reading the JSON file.
    */
-  public BoardGame createLadderGameFromJson(String jsonPath) throws IOException {
+  public LadderBoardGame createLadderGameFromJson(String jsonPath) throws IOException {
     JsonLadderGameConfiguration config = null;
 
     try {
@@ -62,6 +67,17 @@ public class BoardGameFactory {
       throw new IOException(e.getMessage());
     }
 
-    return new BoardGame(config.getBoard(), config.getNumberOfDice(), config.getNumberOfDieSides());
+    return new LadderBoardGame(config.getBoard(), config.getNumberOfDice(), config.getNumberOfDieSides());
+  }
+
+  public MathBoardGame createMathGame(MathGameType mathGameType, Player[] players) {
+    GameConfiguration config = new MathGameConfiguration(mathGameType);
+
+    List<Board> boards = new ArrayList<>();
+    IntStream.range(0, players.length).forEach(i -> {
+      Board board = boardFactory.createBoard(config.getTotalTiles(), config.getTileActions());
+      boards.add(board);
+    });
+    return new MathBoardGame(boards, Arrays.stream(players).toList());
   }
 }

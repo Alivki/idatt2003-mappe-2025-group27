@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import ntnu.idatt2003.group27.models.actions.LadderAction;
-import ntnu.idatt2003.group27.models.interfaces.TileAction;
+import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 public class TileTest {
   private Tile tile;
   private Player player;
-  private TileAction action;
+  private LadderTileAction action;
 
   /**
    * Set up the test environment by creating a new tile, player and action.

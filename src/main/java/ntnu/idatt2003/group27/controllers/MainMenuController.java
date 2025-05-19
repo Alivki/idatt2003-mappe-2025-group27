@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
+import ntnu.idatt2003.group27.models.enums.MathGameType;
 import ntnu.idatt2003.group27.utils.filehandler.RandomColor;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileReader;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileWriter;
@@ -59,6 +60,10 @@ public class MainMenuController {
     setCrazyLadderGameBoardButtonHandler();
     setImpossibleLadderGameBoardButtonHandler();
     setJsonLadderGameBoardButtonHandler();
+    setEasyMathGameBoardButtonHandler();
+    setMediumMathGameBoardButtonHandler();
+    setHardMathGameBoardButtonHandler();
+    setJsonLadderGameBoardButtonHandler();
     //Dynamically sets appropritate piece button handlers.
     for(int i = 0; i < mainController.getPieces().size(); i++) {
       setSelectPieceButtonHandler(i);
@@ -102,7 +107,7 @@ public class MainMenuController {
         showNotEnoughPlayersAlert(2);
         return;
       }
-      mainController.switchToBoardGame(LadderGameType.NORMAL);
+      mainController.switchToLadderBoardGame(LadderGameType.NORMAL);
     });
   }
 
@@ -114,7 +119,7 @@ public class MainMenuController {
         showNotEnoughPlayersAlert(2);
         return;
       }
-      mainController.switchToBoardGame(LadderGameType.CRAZY);
+      mainController.switchToLadderBoardGame(LadderGameType.CRAZY);
     });
   }
 
@@ -126,7 +131,7 @@ public class MainMenuController {
         showNotEnoughPlayersAlert(2);
         return;
       }
-      mainController.switchToBoardGame(LadderGameType.IMPOSSIBLE);
+      mainController.switchToLadderBoardGame(LadderGameType.IMPOSSIBLE);
     });
   }
 
@@ -141,7 +146,37 @@ public class MainMenuController {
         showNotEnoughPlayersAlert(2);
         return;
       }
-      mainController.switchToBoardGame(LadderGameType.JSON);
+      mainController.switchToLadderBoardGame(LadderGameType.JSON);
+    });
+  }
+
+  private void setEasyMathGameBoardButtonHandler(){
+    mainMenuView.setEasyMathButtonHandler(e -> {
+      if (mainController.getPlayers().size() < 2) {
+        showNotEnoughPlayersAlert(2);
+        return;
+      }
+      mainController.switchToMathBoardGame(MathGameType.EASY);
+    });
+  }
+
+  private void setMediumMathGameBoardButtonHandler(){
+    mainMenuView.setMediumMathButtonHandler(e -> {
+      if (mainController.getPlayers().size() < 2) {
+        showNotEnoughPlayersAlert(2);
+        return;
+      }
+      mainController.switchToMathBoardGame(MathGameType.MEDIUM);
+    });
+  }
+
+  private void setHardMathGameBoardButtonHandler(){
+    mainMenuView.setHardMathButtonHandler(e -> {
+      if (mainController.getPlayers().size() < 2) {
+        showNotEnoughPlayersAlert(2);
+        return;
+      }
+      mainController.switchToMathBoardGame(MathGameType.HARD);
     });
   }
 
