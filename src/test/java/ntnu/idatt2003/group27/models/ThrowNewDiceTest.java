@@ -2,7 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
+import ntnu.idatt2003.group27.models.actions.ThrowNewDiceActionLadder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +16,8 @@ public class ThrowNewDiceTest {
    */
   @Test
   public void testThrowNewDiceConstructor() {
-    ThrowNewDiceAction
-        throwNewDiceAction = new ThrowNewDiceAction("Throw new dice test description", 1, 6);
+    ThrowNewDiceActionLadder
+        throwNewDiceAction = new ThrowNewDiceActionLadder("Throw new dice test description", 1, 6);
     String expectedDescription = "Throw new dice test description";
     int expectedNumberOfDice = 1;
     int expectedNumberOfSides = 6;
@@ -31,7 +31,7 @@ public class ThrowNewDiceTest {
    */
   @Test
   public void testThrowNewDicePerform() {
-    ThrowNewDiceAction throwNewDiceAction = new ThrowNewDiceAction("Throw new dice test description", 1, 2);
+    ThrowNewDiceActionLadder throwNewDiceAction = new ThrowNewDiceActionLadder("Throw new dice test description", 1, 2);
     Player player = new Player("player");
     Tile tile = new Tile(1);
     Tile tile2 = new Tile(2);

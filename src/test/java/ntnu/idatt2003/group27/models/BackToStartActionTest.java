@@ -2,7 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import ntnu.idatt2003.group27.models.actions.BackToStartAction;
+import ntnu.idatt2003.group27.models.actions.BackToStartActionLadder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ public class BackToStartActionTest {
   @Test
   @DisplayName("Test the initialization of the BoardGame class")
   public void testConstructor() {
-    BackToStartAction backToStartAction = new BackToStartAction("Test back to start");
+    BackToStartActionLadder backToStartAction = new BackToStartActionLadder("Test back to start");
 
     String expectedDescription = "Test back to start";
 
@@ -26,7 +26,7 @@ public class BackToStartActionTest {
   @Test
   @DisplayName("Test the perform method of the LadderAction class")
   public void testPerform() {
-    BackToStartAction backToStartAction = new BackToStartAction("Test back to start action");
+    BackToStartActionLadder backToStartAction = new BackToStartActionLadder("Test back to start action");
     Player player = new Player("player");
     Tile tile = new Tile(1);
     Tile tile2 = new Tile(2);

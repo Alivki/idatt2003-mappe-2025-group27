@@ -1,16 +1,15 @@
 package ntnu.idatt2003.group27.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
-import ntnu.idatt2003.group27.models.BoardFactory;
-import ntnu.idatt2003.group27.models.BoardGame;
-import ntnu.idatt2003.group27.models.BoardGameFactory;
-import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.Tile;
+
+import ntnu.idatt2003.group27.models.*;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
+import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.LadderGameView;
 import ntnu.idatt2003.group27.view.components.Alert;
@@ -21,7 +20,7 @@ import javafx.util.Duration;
 /**
  * A controller class for managing the ladder game, implementing the MVC pattern. It handles game
  * logic, user interactions with the {@link LadderGameView}, and updates the view based on the game
- * event as an observer of the {@link BoardGame}.
+ * event as an observer of the {@link LadderBoardGame}.
  *
  * @author Iver Lindholm, Amadeus Berg
  * @version 1.3
@@ -29,7 +28,7 @@ import javafx.util.Duration;
  */
 public class BoardGameController implements BoardGameObserver {
   /** The game model managing the ladder game logic */
-  private BoardGame game;
+  private LadderBoardGame game;
   /** The view for displaying the ladder game. */
   private LadderGameView ladderGameView;
   /** The last player who made a move */
@@ -70,6 +69,8 @@ public class BoardGameController implements BoardGameObserver {
       game = boardGameFactory.createLadderGame(ladderGameType);
     } catch (IllegalArgumentException e) {
       System.err.println("Error creating game: " + e.getMessage());
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
 
     if (game == null) {
@@ -239,11 +240,10 @@ public class BoardGameController implements BoardGameObserver {
    * Handles the event when the game is set up, initializing the view with the initial game state.
    *
    * @param players The list of players participating in the game.
-   * @param tiles The map of tiles on the board, with tile IDs as keys and {@link Tile} objects as values.
    */
   @Override
-  public void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
-    ladderGameView.createBoard(players, tiles);
+  public void onGameSetup(ArrayList<Player> players, Map<Player, Board> boards) {
+    ladderGameView.createBoard(players, boards.values().stream().findFirst().get().getTiles());
     ladderGameView.populatePlayerList(players);
     ladderGameView.updateCurrentPlayerLabel(players.getFirst().getName());
 
@@ -255,10 +255,9 @@ public class BoardGameController implements BoardGameObserver {
    * Handles the event when the game is restarted, resetting the view to the initial game state.
    *
    * @param players The list of {@link Player} objects in the game.
-   * @param tiles The map of tile IDs to {@link Tile} objects representing the game board.
    */
   @Override
-  public void onGameRestart(ArrayList<Player> players, Map<Integer, Tile> tiles){
+  public void onGameRestart(ArrayList<Player> players, Map<Player, Board> boards){
     ladderGameView.toggleDiceButton(true);
     ladderGameView.updateCurrentPlayerLabel(players.getFirst().getName());
     ladderGameView.updateRoundLabel("1");
