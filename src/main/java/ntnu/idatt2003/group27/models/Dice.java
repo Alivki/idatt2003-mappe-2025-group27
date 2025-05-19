@@ -1,6 +1,7 @@
 package ntnu.idatt2003.group27.models;
 
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -13,6 +14,12 @@ import java.util.stream.IntStream;
  * @since 0.0
  */
 public class Dice {
+  /**
+   * Logger instance for the {@code Dice} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(Dice.class.getName());
+
   /** The list of dice in this set. */
   private final List<Die> dice;
 
@@ -25,7 +32,9 @@ public class Dice {
    *     less than or equal to zero.
    */
   public Dice(int numberOfDice, int numberOfSides) throws IllegalArgumentException {
+    logger.fine("Initializing Dice with numberOfDice: " + numberOfDice + " and numberOfSides: " + numberOfSides);
     if (numberOfDice <= 0 || numberOfSides <= 0) {
+      logger.severe("Illegal argument: Number of dice and sides must be greater than 0");
       throw new IllegalArgumentException("Number of dice and sides must be greater than 0");
     }
 
@@ -40,6 +49,7 @@ public class Dice {
    * @return The total sum of the rolls from all dice.
    */
   public int roll() {
+    logger.fine("Rolling Dice");
     return dice.stream()
         .mapToInt(Die::roll)
         .sum();
@@ -55,9 +65,11 @@ public class Dice {
    *      to the number of dice in the set.
    */
   int getDie(int dieNumber) throws IndexOutOfBoundsException {
+    logger.fine("Getting die number " + dieNumber);
     if (dieNumber >= 0 && dieNumber < dice.size()) {
       return dice.get(dieNumber).getRoll();
     } else {
+      logger.severe("Die index out of bounds!");
       throw new IndexOutOfBoundsException("Die number out of bounds");
     }
   }
