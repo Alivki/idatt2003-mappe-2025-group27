@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
@@ -24,12 +25,16 @@ import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileReader;
  * @version 1.0
  */
 public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
+
+  /** Logger instance for the {@code PlayerCsvFileReader} class. */
+  private static final Logger logger = Logger.getLogger(PlayerCsvFileReader.class.getName());
+
   /** A list of pieces to be used when reading files */
   private Piece[] pieces;
 
   /**
    * Constructor to set pieces
-   * @param pieces
+   * @param pieces The array of {@link Piece} objects available for assignment to players.
    */
   public PlayerCsvFileReader(Piece[] pieces) {
     this.pieces = pieces;
@@ -38,18 +43,20 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
   /**
    * Reads the csv file from filepath and returns a player array containing all players.
    *
-   * @param filePath .
+   * @param filePath The path to the CSV file.
    * @return Returns a Player array containing all players found in the csv file.
-   * @throws IOException
+   * @throws IOException If an I/O error occurs while reading the file.
    */
   @Override
   public Player[] readFile(String filePath) throws IOException {
+    logger.info("Reading player CSV file from: " + filePath);
+
     try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
       List<String[]> contents = reader.readAll();
+      logger.fine("CSV file read successfully. Number of entries: " + contents.size());
 
-      System.out.println(contents.size());
-
-      if (contents.size() == 0) {
+      if (contents.isEmpty()) {
+        logger.warning("CSV file is empty.");
         throw new MissingPlayerException("No players found in the csv file");
       }
 
@@ -57,24 +64,26 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
             String playerName = content[0];
 
             if (playerName.isBlank()) {
+              logger.warning("Encountered blank player name.");
               return null;
             }
 
             if (content.length < 2) {
-              //TODO: throw error for no piece for player
-              System.out.println("Player does not have a piece");
+              logger.severe("Player " + playerName + " does not have a piece.");
               throw new IllegalArgumentException("Player " + playerName + " does not have a piece");
             }
 
             String pieceName = content[1];
-            Color color = null;
+            Color color;
 
             if (content.length < 3 || content[2].isEmpty()) {
               color = RandomColor.generateRandomColor().getColor();
+              logger.fine("Generated random color for player: " + playerName);
             } else {
               try {
                 color = Color.web(content[2]);
               } catch (IllegalArgumentException e) {
+                logger.severe("Invalid color format for player " + playerName + ": " + content[2]);
                 throw new IllegalArgumentException("Invalid color format for player " + playerName + ": " + content[2]);
               }
             }
@@ -85,32 +94,31 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
                 .orElse(null);
 
             if (piece == null) {
-              // TODO: trow custom exception and log it. maybe do not create a new piece?
+              logger.severe("Invalid piece name for player " + playerName);
               throw new IllegalArgumentException("Invalid piece name for player " + playerName);
             }
 
+            logger.fine("Created player: " + playerName);
             return new Player(playerName, piece, color);
           })
           .filter(Objects::nonNull)
           .toList();
 
       Player[] players = playerList.toArray(new Player[0]);
+
       if (players.length > 5) {
+        logger.warning("Exceeded maximum number of players: " + players.length);
         throw new ExceededMaxPlayersException("There are more than the allowed number of players in the csv file!");
       }
 
-      reader.close();
-      System.out.println("Successfully read players csv file from " + filePath);
-
+      logger.info("Successfully parsed " + players.length + " players from CSV.");
       return players;
-    }
 
-    catch (IOException e){
+    } catch (IOException e) {
+      logger.severe("IOException occurred while reading file: " + e.getMessage());
       throw new IOException(e.getMessage());
-    }
-
-    catch (CsvException | ExceededMaxPlayersException e) {
-      e.printStackTrace();
+    } catch (CsvException | ExceededMaxPlayersException e) {
+      logger.severe("Error parsing CSV file: " + e.getMessage());
       throw new RuntimeException(e.getMessage());
     }
   }
