@@ -21,10 +21,11 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  */
 public class LadderGameConfiguration implements GameConfiguration {
   /**
-   * Logger instance for the {@code Board} class.
+   * Logger instance for the {@link LadderGameConfiguration} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(LadderGameConfiguration.class.getName());
+
   /** The type of ladder game to configure */
   private final LadderGameType gameType;
 
@@ -34,26 +35,31 @@ public class LadderGameConfiguration implements GameConfiguration {
    * @param gameType The {@link LadderGameType} defining the game difficulty or style.
    */
   public LadderGameConfiguration(LadderGameType gameType) {
+    logger.fine("Initializing LadderGameConfiguration of LadderGameType: " + gameType);
     this.gameType = gameType;
   }
 
   @Override
   public int getNumberOfDice() {
+    logger.fine("Getting number of dice.");
     return 2;
   }
 
   @Override
   public int getNumberOfDieSides() {
+    logger.fine("Getting number of die sides.");
     return 6;
   }
 
   @Override
   public int getTotalTiles() {
+    logger.fine("Getting number of tiles.");
     return 90;
   }
 
   @Override
   public Map<Integer, TileAction> getTileActions() {
+    logger.fine("Getting tile actions.");
     Map<Integer, TileAction> tileActions = new HashMap<>();
     switch (gameType) {
       case NORMAL:
@@ -93,6 +99,7 @@ public class LadderGameConfiguration implements GameConfiguration {
 
         break;
       default:
+        logger.warning("Unknown gameType: " + gameType);
         throw new IllegalArgumentException("Unknown ladder game type: " + gameType);
     }
     return tileActions;
