@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import java.io.IOException;
 
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.interfaces.GameConfiguration;
 
@@ -15,6 +16,12 @@ import ntnu.idatt2003.group27.models.interfaces.GameConfiguration;
  * @since 1.0
  */
 public class BoardGameFactory {
+  /**
+   * Logger instance for the {@code BoardGameFactory} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(BoardGameFactory.class.getName());
+
   /** The {@link BoardFactory} used to create {@link Board} instances for the games. */
   private final BoardFactory boardFactory;
 
@@ -24,6 +31,7 @@ public class BoardGameFactory {
    * @param boardFactory The {@link BoardFactory} used to create game boards.
    */
   public BoardGameFactory(BoardFactory boardFactory) {
+    logger.finer("Initializing BoardGameFactory");
     this.boardFactory = boardFactory;
   }
 
@@ -36,13 +44,14 @@ public class BoardGameFactory {
    * @throws IllegalArgumentException if the {@code LadderGameType} is unknown.
    */
   public BoardGame createLadderGame(LadderGameType ladderGameType) {
+    logger.fine("Creating LadderGame of type " + ladderGameType);
     GameConfiguration config = null;
     if (ladderGameType.equals(LadderGameType.JSON)){
       try {
         config = new JsonLadderGameConfiguration("src/main/resources/boards/Board.Json");
       }
       catch (IOException e){
-        System.out.println("Error creating JSON LadderGameConfiguration: " + e.getMessage());
+        logger.severe("Error creating JSON LadderGameConfiguration: " + e.getMessage());
       }
     }
     else{
@@ -61,11 +70,13 @@ public class BoardGameFactory {
    * @throws IOException if an error occurs while reading the JSON file.
    */
   public BoardGame createLadderGameFromJson(String jsonPath) throws IOException {
+    logger.fine("Creating LadderGame from Json path " + jsonPath);
     JsonLadderGameConfiguration config = null;
 
     try {
       config = new JsonLadderGameConfiguration(jsonPath);
     } catch (IOException e) {
+      logger.severe("Error creating JSON LadderGameConfiguration: " + e.getMessage());
       throw new IOException(e.getMessage());
     }
 
