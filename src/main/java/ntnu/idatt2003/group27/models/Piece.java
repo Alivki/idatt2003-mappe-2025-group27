@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class Piece {
   /**
-   * Logger instance for the {@code Board} class.
+   * Logger instance for the {@link Piece} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(Piece.class.getName());
@@ -25,15 +25,26 @@ public class Piece {
    * @param iconFilePath
    */
   public Piece(String name, String iconFilePath) {
+    logger.fine("Initializing piece: " + name + " with icon filepath: " + iconFilePath);
     this.name = name;
     this.iconFilePath = iconFilePath;
   }
 
+  /**
+   * Gets the name of the {@link Piece}.
+   * @return The name of the {@link Piece}.
+   */
   public String getName() {
+    logger.fine("Getting piece name.");
     return name;
   }
 
+  /**
+   * Gets the file path for the icon of this {@link Piece}.
+   * @return The file path to the icon of this {@link Piece}.
+   */
   public String getIconFilePath() {
+    logger.fine("Getting icon filepath.");
     return iconFilePath;
   }
 }
