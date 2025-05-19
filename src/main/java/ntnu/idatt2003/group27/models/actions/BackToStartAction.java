@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -19,6 +20,13 @@ import ntnu.idatt2003.group27.view.components.Canvas;
  * @since 1.0
  */
 public class BackToStartAction implements TileAction {
+  /**
+   * Logger instance for the {@code BackToStartAction} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(BackToStartAction.class.getName());
+
+  /** Description for this {@link TileAction} */
   public String description;
 
   /**
