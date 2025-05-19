@@ -46,7 +46,7 @@ public class BackToStartAction implements TileAction {
    */
   @Override
   public void perform(Player player) {
-    logger.fine("Performing BackToStartAction");
+    logger.info("Performing BackToStartAction");
     int currentTile = player.getCurrentTile().getTileId();
 
     int steps = currentTile - 1;
