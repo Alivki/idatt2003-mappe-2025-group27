@@ -15,10 +15,11 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  */
 public class Tile {
   /**
-   * Logger instance for the {@code Tile} class.
+   * Logger instance for the {@link Tile} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(Tile.class.getName());
+
   /** The next tile in the board sequence. */
   public Tile nextTile;
 
@@ -37,6 +38,7 @@ public class Tile {
    * @param tileId The unique ID assigned to this tile.
    */
   public Tile(int tileId) {
+    logger.fine("Initializing tile with id: " + tileId);
     this.tileId = tileId;
   }
 
@@ -46,6 +48,7 @@ public class Tile {
    * @return The tile's ID.
    */
   public int getTileId() {
+    logger.fine("Getting tile id: " + tileId);
     return tileId;
   }
 
@@ -55,6 +58,7 @@ public class Tile {
    * @return The next {@link Tile}, or null if none exists.
    */
   public Tile getNextTile() {
+    logger.fine("Getting next tile: " + nextTile);
     return nextTile;
   }
 
@@ -64,6 +68,7 @@ public class Tile {
    * @return The previous {@link Tile}, or null if none exists.
    */
   public Tile getPreviousTile() {
+    logger.fine("Getting previous tile: " + previousTile);
     return previousTile;
   }
 
@@ -73,6 +78,7 @@ public class Tile {
    * @return The {@link LadderTileAction} for this tile, or null if no action is set.
    */
   public TileAction getLandAction() {
+    logger.fine("Getting land action: " + landAction);
     return landAction;
   }
 
@@ -82,6 +88,7 @@ public class Tile {
    * @param landAction The {@link LadderTileAction} to associate with this tile.
    */
   public void setLandAction(TileAction landAction) {
+    logger.fine("Setting land action: " + landAction);
     this.landAction = landAction;
   }
 
@@ -91,6 +98,7 @@ public class Tile {
    * @param nextTile The {@link Tile} to set as the next tile.
    */
   public void setNextTile(Tile nextTile) {
+    logger.fine("Setting next tile: " + nextTile);
     this.nextTile = nextTile;
   }
 
@@ -100,6 +108,7 @@ public class Tile {
    * @param previousTile The {@link Tile} to set as the previous tile.
    */
   public void setPreviousTile(Tile previousTile) {
+    logger.fine("Setting previous tile: " + previousTile);
     this.previousTile = previousTile;
   }
 
@@ -110,6 +119,7 @@ public class Tile {
    * @param player The {@link Player} landing on this tile.
    */
   public void landPlayer(Player player) {
+    logger.fine("Landing player: " + player + ", on this tile.");
     if (landAction != null) {
       landAction.perform(player);
     } else {
