@@ -18,6 +18,7 @@ import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
+import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.components.*;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
