@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Dice;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
-import ntnu.idatt2003.group27.view.components.Canvas;
+import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
 /**
  * Represents the behavior of a "throw an extra dice" tile on the game board. This class implements the
@@ -66,12 +66,12 @@ public class ThrowNewDiceAction implements LadderTileAction {
   }
 
   @Override
-  public void drawCustom(GraphicsContext gc, int tileId, Canvas canvas) {
+  public void drawCustom(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
     // Custom drawing logic for the action can be implemented here
   }
 
   @Override
-  public void drawDestinationTile(GraphicsContext gc, int tileId, Canvas canvas) {
+  public void drawDestinationTile(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
     // Custom drawing logic for the destination tile can be implemented here
   }
 

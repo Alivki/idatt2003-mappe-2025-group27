@@ -7,7 +7,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
-import ntnu.idatt2003.group27.view.components.Canvas;
+import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
 /**
  * Represents the behavior of a ladder on the game board. This class implements the 
@@ -63,12 +63,12 @@ public class BackToStartAction implements LadderTileAction {
   }
 
   @Override
-  public void drawCustom(GraphicsContext gc, int tileId, Canvas canvas) {
+  public void drawCustom(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
     // No custom drawing needed for this action
   }
 
   @Override
-  public void drawDestinationTile(GraphicsContext gc, int tileId, Canvas canvas) {
+  public void drawDestinationTile(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
     // No custom drawing needed for this action
   }
 
