@@ -163,6 +163,7 @@ public class LadderBoardGame implements BoardGame {
    */
   @Override
   public Player getCurrentPlayer() {
+    logger.fine("Getting current player " + currentPlayer);
     return currentPlayer;
   }
 
@@ -184,6 +185,7 @@ public class LadderBoardGame implements BoardGame {
    */
   @Override
   public Player getWinner() {
+    logger.fine("Getting winner.");
     for (Player player : players) {
       if (player.getCurrentTile().getTileId() == board.getTiles().size()) {
         return player;
@@ -195,6 +197,7 @@ public class LadderBoardGame implements BoardGame {
 
   @Override
   public Map<Player, Board> getBoards() {
+    logger.fine("Getting boards.");
     Map<Player, Board> boards = new LinkedHashMap<>();
     boards.put(null, board);
     return boards;
@@ -206,6 +209,7 @@ public class LadderBoardGame implements BoardGame {
    * @return The dice instance used in the game.
    */
   Dice getDice() {
+    logger.fine("Getting dice.");
     return dice;
   }
 
@@ -216,6 +220,7 @@ public class LadderBoardGame implements BoardGame {
    * @param numberOfSides The number of sides on each dice.
    */
   private void createDice(int numberOfDice, int numberOfSides) {
+    logger.fine("Creating dice: NumberOfDice: " + numberOfDice + "\n NumberOfSides: " + numberOfSides);
     dice = new Dice(numberOfDice, numberOfSides);
   }
 
@@ -251,6 +256,7 @@ public class LadderBoardGame implements BoardGame {
    */
 
   public void notifyRoundPlayed(int roll, TileAction action) {
+    logger.fine("Notifying round played: " + roll + "\n Action: " + action);
     observers.forEach(observer -> observer.onRoundPlayed(players, currentPlayer, roll, action));
   }
 
