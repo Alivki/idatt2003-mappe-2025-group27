@@ -35,61 +35,14 @@ public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
       File playerCsvFile = new File(filePath);
       CSVWriter csvWriter = new CSVWriter(new FileWriter(playerCsvFile, false));
       for (Player player : data) {
-        String[] playerInfo = {player.getName(), player.getPiece().getName(), player.getColor().toString()};
+        String pieceName = player.getPiece() != null? player.getPiece().getName() : "";
+        String colorName = player.getColor() != null? player.getColor().toString() : "#FFFFF";
+        String[] playerInfo = {player.getName(), pieceName, colorName};
         csvWriter.writeNext(playerInfo);
       }
       csvWriter.close();
       System.out.println("Wrote CSV file to " + playerCsvFile.getAbsolutePath());
     } catch (Exception e) {
-      throw new IOException(e);
-    }
-  }
-
-  /**
-   * Write the specified player to the csv file.
-   * @param filepath
-   * @param player
-   * @throws IOException
-   */
-  public void writePlayerToFile(String filepath, Player player) throws IOException{
-    try{
-      File playerCsvFile = new File(filepath);
-      CSVWriter csvWriter = new CSVWriter(new FileWriter(playerCsvFile, true));
-      String[] playerInfo = {player.getName(), player.getPiece().getName()};
-      csvWriter.writeNext(playerInfo);
-      csvWriter.close();
-    }
-    catch (Exception e) {
-      throw new IOException(e);
-    }
-  }
-
-  /**
-   * Removes the specified player from the specified file.
-   * @param filepath
-   * @param player
-   * @throws IOException
-   */
-  public void removePlayerFromFile(String filepath, Player player) throws IOException, FileNotFoundException {
-    File playerCsvFile = new File(filepath);
-    if (!playerCsvFile.exists()) {
-      throw new FileNotFoundException("File not found");
-    }
-
-    try{
-      PlayerCsvFileReader playerCsvFileReader = new PlayerCsvFileReader(null);
-      Player[] players = playerCsvFileReader.readFile(filepath);
-      List<Player> updatedPlayersList = Arrays.stream(players)
-          .filter(p -> !p.getName().equals(player.getName()))
-          .collect(Collectors.toList());
-
-      Player[] updatedPlayers = updatedPlayersList.toArray(new Player[0]);
-      for(Player p : updatedPlayers) {
-        System.out.println(p.getName());
-      }
-      writeFile(filepath, updatedPlayers);
-    }
-    catch (Exception e) {
       throw new IOException(e);
     }
   }

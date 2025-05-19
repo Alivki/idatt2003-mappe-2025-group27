@@ -10,7 +10,8 @@ import java.util.Objects;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.exceptions.ToManyPlayersInGameException;
+import ntnu.idatt2003.group27.models.exceptions.ExceededMaxPlayersException;
+import ntnu.idatt2003.group27.models.exceptions.MissingPlayerException;
 import ntnu.idatt2003.group27.utils.filehandler.RandomColor;
 import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileReader;
 
@@ -46,17 +47,10 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
     try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
       List<String[]> contents = reader.readAll();
 
-      //Loop starts at i = 1 to skip the titles for each column in the csv file.
       System.out.println(contents.size());
 
-      if (contents.size() == 1) {
-        //TODO: custom error
-        throw new IllegalArgumentException("No players found in the csv file");
-      }
-
-      if (contents.size() > 5) {
-        //TODO: custom error
-        throw new ToManyPlayersInGameException("There are over 5 players in the game");
+      if (contents.size() == 0) {
+        throw new MissingPlayerException("No players found in the csv file");
       }
 
       List<Player> playerList = contents.stream().map(content -> {
@@ -81,7 +75,7 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
               try {
                 color = Color.web(content[2]);
               } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid color format for player " + playerName + ": " + content[2], e);
+                throw new IllegalArgumentException("Invalid color format for player " + playerName + ": " + content[2]);
               }
             }
 
@@ -101,6 +95,9 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
           .toList();
 
       Player[] players = playerList.toArray(new Player[0]);
+      if (players.length > 5) {
+        throw new ExceededMaxPlayersException("There are more than the allowed number of players in the csv file!");
+      }
 
       reader.close();
       System.out.println("Successfully read players csv file from " + filePath);
@@ -112,8 +109,9 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
       throw new IOException(e.getMessage());
     }
 
-    catch (CsvException | ToManyPlayersInGameException e) {
-      throw new RuntimeException(e);
+    catch (CsvException | ExceededMaxPlayersException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e.getMessage());
     }
   }
 }
