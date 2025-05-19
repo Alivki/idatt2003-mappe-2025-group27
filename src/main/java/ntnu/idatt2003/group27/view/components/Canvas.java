@@ -13,14 +13,11 @@ import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
-import ntnu.idatt2003.group27.models.actions.BackToStartAction;
 import ntnu.idatt2003.group27.models.actions.LadderAction;
-import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
 /**

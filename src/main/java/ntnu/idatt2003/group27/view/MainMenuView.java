@@ -38,9 +38,6 @@ public class MainMenuView {
   /** The root container for the main menu view. */
   private final StackPane root;
 
-  /** Controller for controlling this view. */
-  private MainMenuController mainMenuController;
-
   /** Button to start the ladder game. */
   private CustomButton ladderGameMainMenuButton;
 

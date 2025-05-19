@@ -28,32 +28,25 @@ public class BoardGameFactory {
   }
 
   /**
-   * Craetes a {@link BoardGame} instace based on the specified {@link LadderGameType}. The game is
+   * Creates a {@link BoardGame} instance based on the specified {@link LadderGameType}. The game is
    * configured with a board and dice as defined by the associated {@link GameConfiguration}.
    *
    * @param ladderGameType The {@link LadderGameType} defining the game configuration.
    * @return A new {@link BoardGame} instance configured with the specified game type.
    * @throws IllegalArgumentException if the {@code LadderGameType} is unknown.
    */
-  public BoardGame createLadderGame(LadderGameType ladderGameType) {
-    GameConfiguration config = null;
-    if (ladderGameType.equals(LadderGameType.JSON)){
-      try {
-        config = new JsonLadderGameConfiguration("src/main/resources/boards/Board.Json");
-      }
-      catch (IOException e){
-        System.out.println("Error creating JSON LadderGameConfiguration: " + e.getMessage());
-      }
+  public BoardGame createLadderGame(LadderGameType ladderGameType) throws IOException {
+    if (ladderGameType.equals(LadderGameType.JSON)) {
+      return createLadderGameFromJson("src/main/resources/boards/Board.Json");
     }
-    else{
-      config = new LadderGameConfiguration(ladderGameType);
-    }
+
+    GameConfiguration config = new LadderGameConfiguration(ladderGameType);
     Board board = boardFactory.createBoard(config.getTotalTiles(), config.getTileActions());
     return new BoardGame(board, config.getNumberOfDice(), config.getNumberOfDieSides());
   }
 
   /**
-   * Creates a {@link BoardGame} instace based on a configuration loaded from a JSON file. The game
+   * Creates a {@link BoardGame} instance based on a configuration loaded from a JSON file. The game
    * is configured with a board and dice as defined by the associated {@link GameConfiguration}.
    *
    * @param jsonPath The file path to the JSON configuration file.

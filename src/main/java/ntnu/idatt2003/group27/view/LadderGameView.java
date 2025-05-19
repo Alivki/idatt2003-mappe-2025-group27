@@ -23,7 +23,7 @@ import ntnu.idatt2003.group27.view.components.*;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
 
 /**
- * A class represeniting the view for the ladder game.
+ * A class representing the view for the ladder game.
  * Displays all necessary GUI for interacting with and playing the ladder game.
  */
 public class LadderGameView {
