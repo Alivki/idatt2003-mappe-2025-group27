@@ -3,6 +3,7 @@ package ntnu.idatt2003.group27.controllers;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.BoardFactory;
 import ntnu.idatt2003.group27.models.BoardGame;
 import ntnu.idatt2003.group27.models.BoardGameFactory;
@@ -28,6 +29,11 @@ import javafx.util.Duration;
  * @since 2.0
  */
 public class BoardGameController implements BoardGameObserver {
+  /**
+   * Logger instance for the {@code BoardGameController} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(BoardGameController.class.getName());
   /** The game model managing the ladder game logic */
   private BoardGame game;
   /** The view for displaying the ladder game. */
@@ -51,6 +57,7 @@ public class BoardGameController implements BoardGameObserver {
    * @param mainController The {@link MainController} for coordinating application-wide actions
    */
   public BoardGameController(MainController mainController) {
+    logger.info("Initializing BoardGameController.");
     this.mainController = mainController;
     this.boardGameFactory = new BoardGameFactory(new BoardFactory());
   }
@@ -98,6 +105,7 @@ public class BoardGameController implements BoardGameObserver {
    * Restarts the current game, resetting the game state and updating the view.
    */
   public void RestartGame(){
+    logger.fine("Restart game.");
     game.restartGame();
   }
 
@@ -107,6 +115,7 @@ public class BoardGameController implements BoardGameObserver {
    */
   private void setupLadderViewEventHandlers() {
     ladderGameView.setRollDiceHandler(e -> {
+      logger.fine("Roll dice button clicked.");
       try {
         game.play();
       } catch (NotEnoughPlayersInGameException error) {
@@ -121,6 +130,7 @@ public class BoardGameController implements BoardGameObserver {
     });
 
     ladderGameView.setRestartButtonHandler(e -> {
+      logger.fine("Restart button clicked.");
       Alert alert = new Alert(
           this.ladderGameView.getRoot(),
           "Bekreft restart",
@@ -137,6 +147,7 @@ public class BoardGameController implements BoardGameObserver {
     });
 
     ladderGameView.setHomeButtonHandler(e -> {
+      logger.fine("Home button clicked.");
       Alert alert = new Alert(
           this.ladderGameView.getRoot(),
           "Bekreft avslutning",
@@ -146,7 +157,6 @@ public class BoardGameController implements BoardGameObserver {
           response -> {
             if (response) {
               //Loads main menu
-              System.out.println("Home button clicked");
               mainController.switchToMainMenu();
             }
           }
@@ -166,6 +176,7 @@ public class BoardGameController implements BoardGameObserver {
    */
   @Override
   public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction tileAction) {
+    logger.fine("On round played.");
     ladderGameView.toggleDiceButton(false);
 
     int round = ladderGameView.getRoundLabel() + 1;
@@ -212,6 +223,7 @@ public class BoardGameController implements BoardGameObserver {
    */
   @Override
   public void onPlayerWon(Player player) {
+    logger.fine("On player won. Player: " + player.getName());
     ladderGameView.toggleDiceButton(false);
     ladderGameView.updateStatusLabel("Avsluttet");
     ladderGameView.showToast(Toast.ToastVariant.SUCCESS, "Spiller vant",
@@ -243,6 +255,7 @@ public class BoardGameController implements BoardGameObserver {
    */
   @Override
   public void onGameSetup(ArrayList<Player> players, Map<Integer, Tile> tiles) {
+    logger.fine("On game setup.");
     ladderGameView.createBoard(players, tiles);
     ladderGameView.populatePlayerList(players);
     ladderGameView.updateCurrentPlayerLabel(players.getFirst().getName());
@@ -259,6 +272,7 @@ public class BoardGameController implements BoardGameObserver {
    */
   @Override
   public void onGameRestart(ArrayList<Player> players, Map<Integer, Tile> tiles){
+    logger.fine("On game restart.");
     ladderGameView.toggleDiceButton(true);
     ladderGameView.updateCurrentPlayerLabel(players.getFirst().getName());
     ladderGameView.updateRoundLabel("1");
@@ -276,6 +290,7 @@ public class BoardGameController implements BoardGameObserver {
    * @return The {@link LadderGameView} instance.
    */
   public LadderGameView getView() {
+    logger.fine("Get view.");
     return ladderGameView;
   }
 }
