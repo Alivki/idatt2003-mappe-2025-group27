@@ -25,9 +25,17 @@ public class ThrowNewDiceAction implements LadderTileAction {
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(ThrowNewDiceAction.class.getName());
+
+  /** The description of this {@link ThrowNewDiceAction}. */
   public String description;
-  //Variables for dice to throw
-  public int numberOfDice, numberOfDieSides;
+
+  /** The number of dice thrown by this {@link ThrowNewDiceAction}.*/
+  public int numberOfDice;
+
+  /** The number of die sides of dice thrown by this {@link ThrowNewDiceAction}*/
+  public int numberOfDieSides;
+
+  /** The total roll value of this {@link ThrowNewDiceAction}. */
   private int roll = 0;
 
   /**
