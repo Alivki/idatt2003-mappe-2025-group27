@@ -39,7 +39,6 @@ public class MainMenuController {
   public MainMenuController(MainController mainController, MainMenuView mainMenuView) {
     this.mainController = mainController;
     this.mainMenuView = mainMenuView;
-    mainMenuView.setMainMenuController(this);
     mainMenuView.initializeLayout(mainController.getPieces());
     setupMenuViewEventHandler();
     mainMenuView.populatePlayerList(mainController.getPlayers());
@@ -54,91 +53,12 @@ public class MainMenuController {
     setAddPlayerButtonHandler();
     setImportPlayerCsvButtonHandler();
     setExportPlayerCsvButtonHandler();
-
-    mainMenuView.setLadderGameButtonHandler(e -> {
-      mainMenuView.switchToGameLadder();
-    });
-
-    mainMenuView.setMathGameButtonHandler(e -> {
-      mainMenuView.switchToGameMath();
-    });
-
-    //Sets handler for normal board button
-    mainMenuView.setNormalBoardButtonHandler(e -> {
-      System.out.println("Normal board button clicked");
-      if (mainController.getPlayers().size() < 2) {
-        System.out.println("Not enough players to start game!");
-        Alert alert = new Alert(
-            this.mainMenuView.getRoot(),
-            "Ikke nok spillere",
-            "Minst 2 spillere trengs for å starte spillet!",
-            "Ok",
-            "Lukk",
-            response -> {}
-        );
-        alert.show();
-        return;
-      }
-      mainController.switchToBoardGame(LadderGameType.NORMAL);
-    });
-
-    //Sets handler for crazy board button
-    mainMenuView.setCrazyBoardButtonHandler(e -> {
-      System.out.println("Crazy board button clicked");
-      if (mainController.getPlayers().size() < 2) {
-        System.out.println("Not enough players to start game!");
-        Alert alert = new Alert(
-            this.mainMenuView.getRoot(),
-            "Ikke nok spillere",
-            "Minst 2 spillere trengs for å starte spillet!",
-            "Ok",
-            "Lukk",
-            response -> {}
-        );
-        alert.show();
-        return;
-      }
-      mainController.switchToBoardGame(LadderGameType.CRAZY);
-    });
-
-    //Sets handler for IMPOSSIBLE board button
-    mainMenuView.setImpossibleBoardButtonHandler(e -> {
-      System.out.println("IMPOSSIBLE board button clicked");
-      if (mainController.getPlayers().size() < 2) {
-        System.out.println("Not enough players to start game!");
-        Alert alert = new Alert(
-            this.mainMenuView.getRoot(),
-            "Ikke nok spillere",
-            "Minst 2 spillere trengs for å starte spillet!",
-            "Ok",
-            "Lukk",
-            response -> {}
-        );
-        alert.show();
-        return;
-      }
-      mainController.switchToBoardGame(LadderGameType.IMPOSSIBLE);
-    });
-
-    //Sets handler for JSON board button
-    mainMenuView.setJsonBoardButtonHandler(e -> {
-      System.out.println("Json board button clicked");
-      if (mainController.getPlayers().size() < 2) {
-        System.out.println("Not enough players to start game!");
-        Alert alert = new Alert(
-            this.mainMenuView.getRoot(),
-            "Ikke nok spillere",
-            "Minst 2 spillere trengs for å starte spillet!",
-            "Ok",
-            "Lukk",
-            response -> {}
-        );
-        alert.show();
-        return;
-      }
-      mainController.switchToBoardGame(LadderGameType.JSON);
-    });
-
+    setLadderGameSelectionMenuButtonHandler();
+    setMathGameSelectionMenuButtonHandler();
+    setNormalLadderGameBoardButtonHandler();
+    setCrazyLadderGameBoardButtonHandler();
+    setImpossibleLadderGameBoardButtonHandler();
+    setJsonLadderGameBoardButtonHandler();
     //Dynamically sets appropritate piece button handlers.
     for(int i = 0; i < mainController.getPieces().size(); i++) {
       setSelectPieceButtonHandler(i);
@@ -146,7 +66,87 @@ public class MainMenuController {
   }
 
   /**
-   * Sets up actionEvent handlers for add player button.
+   * Shows an alert to the user requiring more players to start a game.
+   * @param requiredAmountOfPlayers
+   */
+  private void showNotEnoughPlayersAlert(int requiredAmountOfPlayers){
+    System.out.println("Not enough players to start game!");
+    Alert alert = new Alert(
+        this.mainMenuView.getRoot(),
+        "Ikke nok spillere",
+        String.format("Minst %d spillere trengs for å starte spillet!", requiredAmountOfPlayers),
+        "Ok",
+        "Lukk",
+        response -> {}
+    );
+    alert.show();
+  }
+
+  private void setLadderGameSelectionMenuButtonHandler(){
+    mainMenuView.setLadderGameSelectionMenuButtonHandler(e -> {
+      mainMenuView.switchToGameLadder();
+    });
+  }
+
+  private void setMathGameSelectionMenuButtonHandler(){
+    mainMenuView.setMathGameSelectionMenuButtonHandler(e -> {
+      mainMenuView.switchToGameMath();
+    });
+  }
+
+  private void setNormalLadderGameBoardButtonHandler(){
+    //Sets handler for normal board button
+    mainMenuView.setNormalLadderGameBoardButtonHandler(e -> {
+      System.out.println("Normal board button clicked");
+      if (mainController.getPlayers().size() < 2) {
+        showNotEnoughPlayersAlert(2);
+        return;
+      }
+      mainController.switchToBoardGame(LadderGameType.NORMAL);
+    });
+  }
+
+  private void setCrazyLadderGameBoardButtonHandler(){
+    //Sets handler for crazy board button
+    mainMenuView.setCrazyLadderGameBoardButtonHandler(e -> {
+      System.out.println("Crazy board button clicked");
+      if (mainController.getPlayers().size() < 2) {
+        showNotEnoughPlayersAlert(2);
+        return;
+      }
+      mainController.switchToBoardGame(LadderGameType.CRAZY);
+    });
+  }
+
+  private void setImpossibleLadderGameBoardButtonHandler(){
+    //Sets handler for IMPOSSIBLE board button
+    mainMenuView.setImpossibleLadderGameBoardButtonHandler(e -> {
+      System.out.println("IMPOSSIBLE board button clicked");
+      if (mainController.getPlayers().size() < 2) {
+        showNotEnoughPlayersAlert(2);
+        return;
+      }
+      mainController.switchToBoardGame(LadderGameType.IMPOSSIBLE);
+    });
+  }
+
+  /**
+   * Sets up handlers for Json ladderGame board button.
+   */
+  private void setJsonLadderGameBoardButtonHandler(){
+    //Sets handler for JSON board button
+    mainMenuView.setJsonLadderGameBoardButtonHandler(e -> {
+      System.out.println("Json board button clicked");
+      if (mainController.getPlayers().size() < 2) {
+        showNotEnoughPlayersAlert(2);
+        return;
+      }
+      mainController.switchToBoardGame(LadderGameType.JSON);
+    });
+  }
+
+  /**
+   * Sets up handlers for add player button.
    */
   private void setAddPlayerButtonHandler(){
     mainMenuView.setAddPlayerButtonHandler(e -> {

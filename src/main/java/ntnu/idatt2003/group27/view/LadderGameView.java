@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.CubicCurve;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
@@ -23,25 +22,49 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.components.*;
 import org.fxyz3d.shapes.primitives.CuboidMesh;
 
+/**
+ * A class represeniting the view for the ladder game.
+ * Displays all necessary GUI for interacting with and playing the ladder game.
+ */
 public class LadderGameView {
+
+  /** Root container for the Ladder Game view. */
   private final StackPane root;
 
+  /** Button to return to the home screen. */
   private CustomButton homeButton;
+
+  /** Button to roll the dice. */
   private CustomButton diceButton;
+
+  /** Button to restart the game. */
   private CustomButton restartButton;
 
+  /** Canvas for rendering the game board. */
   private Canvas canvas;
 
+  /** Card displaying the list of players. */
   private PlayerListCard playerListCard;
 
+  /** Container for the canvas and related UI elements. */
   private VBox canvasContainer;
 
+  /** Label showing the current round number. */
   private Label roundInfo;
+
+  /** Label showing the current player's name. */
   private Label currentPlayerInfo;
+
+  /** Label showing the current player's grade. */
   private Label gradeInfo;
+
+  /** Label showing the current game status. */
   private Label statusInfo;
 
+  /** Array representing the 3D dice mesh. */
   private CuboidMesh[] dice;
+
+  /** Predefined 3D rotation values for each dice face. */
   private static final Point3D[] DICE_ROTATION = {
       new Point3D(0, 0, 0),
       new Point3D(90, 0, 0),
@@ -51,13 +74,26 @@ public class LadderGameView {
       new Point3D(0, 180, 90)
   };
 
+  /** Label showing the last player who moved. */
   private Label lastPlayer;
+
+  /** Label showing the tile the player moved to. */
   private Label movedTo;
+
+  /** Label showing the result of the last dice roll. */
   private Label lastRoll;
+
+  /** Label describing the action triggered by the tile. */
   private Label tileAction;
 
+  /** Random number generator for dice rolls. */
   private Random random = new Random();
 
+  /**
+   * Constructs a new {@code LadderGameView} and initializes the root layout.
+   * The root is a {@link StackPane} aligned to the top center and styled with the "root" CSS class.
+   * This constructor sets up the foundational layout for this interface.
+   */
   public LadderGameView() {
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
@@ -66,6 +102,10 @@ public class LadderGameView {
     initializeLayout();
   }
 
+  /**
+   * Initializes the layout of the view.
+   * Creates and organizes the all required UI components.
+   */
   private void initializeLayout() {
     AppLayout layout = new AppLayout();
 
@@ -184,62 +224,129 @@ public class LadderGameView {
     root.getChildren().add(layout);
   }
 
+  /**
+   * Sets the event handler for the home button.
+   *
+   * @param action the action to perform when the button is clicked.
+   */
   public void setHomeButtonHandler(EventHandler<ActionEvent> action) {
     homeButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the roll dice button.
+   *
+   * @param action the action to perform when the button is clicked.
+   */
   public void setRollDiceHandler(EventHandler<ActionEvent> action) {
     diceButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the restart button.
+   *
+   * @param action the action to perform when the button is clicked.
+   */
   public void setRestartButtonHandler(EventHandler<ActionEvent> action) {
     restartButton.setOnAction(action);
   }
 
+  /**
+   * Toggles the dice button to allow of disallow user interaction.
+   * @param enable true allows interaction while false disallows.
+   */
   public void toggleDiceButton(boolean enable) {
     diceButton.setDisable(!enable);
   }
 
+  /**
+   * Sets the round label text.
+   * @param round
+   */
   public void updateRoundLabel(String round) {
     roundInfo.setText(round);
   }
 
+  /**
+   * Sets the text for the currentPlayer label.
+   */
   public void updateCurrentPlayerLabel(String playerName) {
     currentPlayerInfo.setText(playerName);
   }
 
+  /**
+   * Sets the text for the grade label to display the difficulty of the game.
+   * @param grade
+   */
   public void updateGradeLabel(String grade) {
     gradeInfo.setText(grade);
   }
 
+  /**
+   * Sets the text for the status label.
+   * @param status
+   */
   public void updateStatusLabel(String status) {
     statusInfo.setText(status);
   }
 
+  /**
+   * Sets the text for the last player label.
+   * @param playerName
+   */
   public void updateLastPlayerLabel(String playerName) {
     lastPlayer.setText(playerName);
   }
 
+  /**
+   * Sets the text for the moved to label informing the user of which tile the player has moved to.
+   * @param tileName
+   */
   public void updateMovedToLabel(String tileName) {
     movedTo.setText(tileName);
   }
 
+  /**
+   * Sets teh text for the last roll label informing the player the value of the previous roll.
+   * @param roll
+   */
   public void updateLastRollLabel(String roll) {
     lastRoll.setText(roll);
   }
 
+  /**
+   * Sets the tile action label informing the player which tile action was triggered.
+   * @param action
+   */
   public void updateTileActionLabel(String action) {
     tileAction.setText(action);
   }
 
+  /**
+   * Gets the integer value from the round label.
+   * @return Integer value of the round label text
+   */
   public int getRoundLabel() {
     return Integer.parseInt(roundInfo.getText());
   }
 
+  /**
+   * Populates the player list card with the players from the specified player list.
+   * @param players a list of players.
+   */
   public void populatePlayerList(List<Player> players) {
     playerListCard.populatePlayerList(players);
   }
 
+  /**
+   * Animates the movement of a player's piece on the board.
+   * @param player
+   * @param newTileId
+   * @param tileAction
+   * @param roll
+   * @param players
+   * @param onComplete
+   */
   public void animatePlayerMovement(Player player, int newTileId, TileAction tileAction, int roll,
                                     List<Player> players, Runnable onComplete) {
     canvas.animatePlayerMovement(player, newTileId, tileAction, roll, () -> {
@@ -251,6 +358,11 @@ public class LadderGameView {
     });
   }
 
+  /**
+   * Creates a canvas to display the UI of the game board.
+   * @param players
+   * @param tiles
+   */
   public void createBoard(ArrayList<Player> players, Map<Integer, Tile> tiles) {
     canvas = new Canvas(tiles, players, tiles.size());
     canvasContainer.getChildren().add(canvas);
@@ -259,10 +371,20 @@ public class LadderGameView {
     canvas.updateBoard(players);
   }
 
+  /**
+   * Updates the board canvas with a new list of players and redraws the canvas to reflect the changes in
+   * their positions.
+   *
+   * @param players The updated {@link List} of {@link Player} objects.
+   */
   public void updateBoard(List<Player> players) {
     canvas.updateBoard(players);
   }
 
+  /**
+   * Rotates the 3D representation of the game dice.
+   * @param roll
+   */
   public void rotateDice(int roll) {
     List<int[]> possibleRolls = new ArrayList<>();
     for (int roll1 = 1; roll1 <= 6; roll1++) {
@@ -317,11 +439,23 @@ public class LadderGameView {
     timeline.play();
   }
 
+  /**
+   * Displays a toast to the user.
+   * @param variant
+   * @param title
+   * @param message
+   */
   public void showToast(Toast.ToastVariant variant, String title, String message) {
     Toast toast = new Toast(root, variant, title, message);
     toast.show();
   }
 
+  /**
+   * Creates a row for the game info.
+   * @param labelText
+   * @param infoLabel
+   * @return
+   */
   private HBox createGameInfoRow(String labelText, Label infoLabel) {
     Label label = new Label(labelText);
     Region dots = new Region();
@@ -337,6 +471,10 @@ public class LadderGameView {
     return row;
   }
 
+  /**
+   * Gets the root of this view.
+   * @return the root {@link StackPane} of this view.
+   */
   public StackPane getRoot() {
     return root;
   }

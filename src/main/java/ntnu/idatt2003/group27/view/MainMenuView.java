@@ -7,8 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,7 +21,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
 import ntnu.idatt2003.group27.controllers.MainMenuController;
 import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
@@ -34,97 +31,137 @@ import ntnu.idatt2003.group27.view.components.CustomToggleButton;
 import ntnu.idatt2003.group27.view.components.MainMenuBoardButton;
 import ntnu.idatt2003.group27.view.components.PlayerListCardEditable;
 
+/**
+ * A class representing a view for the main menu of the application.
+ */
 public class MainMenuView {
+  /** The root container for the main menu view. */
   private final StackPane root;
 
+  /** Controller for controlling this view. */
   private MainMenuController mainMenuController;
 
-  //Header buttons
+  /** Button to start the ladder game. */
   private CustomButton ladderGameMainMenuButton;
+
+  /** Button to start the math game. */
   private CustomButton mathGameMainMenuButton;
+
+  /** Button to quit the application. */
   private CustomButton applicationQuitButton;
 
-  //title label
+  /** Title label for the main menu. */
   private Label title;
 
-  //Other buttons
+  /** Button to add a new player. */
   private CustomButton addPlayerButton;
+
+  /** Button to export the list of players to a CSV file. */
   private CustomButton exportPlayersCsvButton;
+
+  /** Button to import a list of players from a CSV file. */
   private CustomButton importPlayersCsvButton;
 
-  //Player icon selection buttons
-  private ArrayList<ToggleButton> playerIconButtons = new ArrayList<>();
+  /** List of toggle buttons for selecting player piece icons. */
+  private ArrayList<ToggleButton> playerPieceIconButtons = new ArrayList<>();
+
+  /** Button to open the color picker for selecting player color. */
   private CustomButton colorPicker;
+
+  /** The currently selected color for the player. */
   private Color pickedColor;
 
-  //Game difficulty button grid
+  /** Grid layout for displaying game difficulty selection buttons. */
   private GridPane gameDifficultyGrid;
 
-  //Game difficulty buttons
-  private MainMenuBoardButton normalBoardButton;
-  private MainMenuBoardButton crazyBoardButton;
-  private MainMenuBoardButton impossibleBoardButton;
-  private MainMenuBoardButton jsonBoardButton;
+  /** Button for selecting the normal difficulty in Ladder Game. */
+  private MainMenuBoardButton normalLadderGameBoardButton;
+
+  /** Button for selecting the crazy difficulty in Ladder Game. */
+  private MainMenuBoardButton crazyLadderGameBoardButton;
+
+  /** Button for selecting the impossible difficulty in Ladder Game. */
+  private MainMenuBoardButton impossibleLadderGameBoardButton;
+
+  /** Button for selecting a JSON-defined board in Ladder Game. */
+  private MainMenuBoardButton jsonLadderGameBoardButton;
+
+  /** Button for selecting easy difficulty in Math Game. */
   private MainMenuBoardButton mathEasyButton;
+
+  /** Button for selecting medium difficulty in Math Game. */
   private MainMenuBoardButton mathMediumButton;
+
+  /** Button for selecting hard difficulty in Math Game. */
   private MainMenuBoardButton mathHardButton;
 
-  //Cards
+  /** Editable card component displaying the list of players. */
   private PlayerListCardEditable playerListCardEditable;
+
+  /** Text field for entering a new player's name. */
   private TextField playerNameTextField;
 
+  /**
+   * Constructs a new {@code MainMenuView} and initializes the root layout.
+   * The root is a {@link StackPane} aligned to the top center and styled with the "root" CSS class.
+   * This constructor sets up the foundational layout for this interface.
+   */
   public MainMenuView() {
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
     root.getStyleClass().add("root");
   }
 
+
   public void initializeLayout(List<Piece> pieces) {
+    //Initializes layout.
     AppLayout layout = new AppLayout();
 
-    //Initializes header
+    //Initializes header.
     HBox headerContainer = new HBox(20);
     headerContainer.setAlignment(Pos.CENTER);
 
-    //Initializes header buttons
+    //Initializes header buttons.
     ladderGameMainMenuButton = new CustomButton("Stigespill", CustomButton.ButtonVariant.GHOST, null);
     mathGameMainMenuButton = new CustomButton("Matte spill", CustomButton.ButtonVariant.GHOST, null);
     applicationQuitButton = new CustomButton("Avslutt", CustomButton.ButtonVariant.DESTRUCTIVE,
         actionEvent -> Platform.exit());
 
-    //Initializes main content title
+    //Initializes main content title.
     title = new Label("Stigespill");
     title.getStyleClass().add("h1");
 
-    //Initializes board button grid
+    //Initializes board button grid.
     gameDifficultyGrid = new GridPane(5,5);
     gameDifficultyGrid.setAlignment(Pos.CENTER);
     gameDifficultyGrid.getStyleClass().add("card");
 
-    //Initializes board buttons
+    //Initializes buttons for selecting different boards and difficulties.
     int boardButtonMinSize = 100;
     int boardButtonPrefSize = 170;
     int boardButtonMaxSize = 200;
     int boardButtonImageSize = 120;
     Insets boardButtonInsets = new Insets(5, 5, 5, 5);
 
-    normalBoardButton = new MainMenuBoardButton(
+    //Initializes buttons for selecting the ladder game board type.
+    normalLadderGameBoardButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
         boardButtonInsets, "Vanlig", "Helt vanlig norsk stigespill med 90 ruter",
         new Image("icons/ladder_game_normal_board.png"));
-    crazyBoardButton = new MainMenuBoardButton(
+    crazyLadderGameBoardButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
         boardButtonInsets, "Crazy", "Stigespill med tileAction!",
         new Image("icons/ladder_game_normal_board.png"));
-    impossibleBoardButton = new MainMenuBoardButton(
+    impossibleLadderGameBoardButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
         boardButtonInsets, "Impossible", "Veldig vanskelig stigespill",
         new Image("icons/ladder_game_normal_board.png"));
-    jsonBoardButton = new MainMenuBoardButton(
+    jsonLadderGameBoardButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
         boardButtonInsets, "Vanlig (Json)", "Last inn eget spill fra Json fil",
         new Image("icons/ladder_game_normal_board.png"));
 
+    //Initializes buttons for selecting the math game board type.
     mathEasyButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
         boardButtonInsets, "Enkel", "Matte spill med enkel matte",
@@ -139,10 +176,10 @@ public class MainMenuView {
         new Image("icons/math_game.png"));
 
     //Positions board buttons on grid
-    gameDifficultyGrid.add(normalBoardButton, 0, 0);
-    gameDifficultyGrid.add(crazyBoardButton, 1, 0);
-    gameDifficultyGrid.add(impossibleBoardButton, 0, 1);
-    gameDifficultyGrid.add(jsonBoardButton, 1, 1);
+    gameDifficultyGrid.add(normalLadderGameBoardButton, 0, 0);
+    gameDifficultyGrid.add(crazyLadderGameBoardButton, 1, 0);
+    gameDifficultyGrid.add(impossibleLadderGameBoardButton, 0, 1);
+    gameDifficultyGrid.add(jsonLadderGameBoardButton, 1, 1);
 
     HBox nameAndColorInputContainer = new HBox(10);
 
@@ -174,7 +211,7 @@ public class MainMenuView {
       //CustomButton playerIconButton = new CustomButton(playerIcon, CustomButton.ButtonVariant.ICON, null);
       CustomToggleButton playerIconButton = new CustomToggleButton(playerIcon, 34);
       playerIconButton.setToggleGroup(pieceSelectionButtonGroup);
-      playerIconButtons.add(playerIconButton);
+      playerPieceIconButtons.add(playerIconButton);
     });
 
     //Initializes player csv cards
@@ -196,7 +233,7 @@ public class MainMenuView {
     csvExampleInfoDescriptionLabel.getStyleClass().add("info-text");
 
     //Positions nodes correctly in each container
-    pieceSelectionButtonContainer.getChildren().addAll(playerIconButtons);
+    pieceSelectionButtonContainer.getChildren().addAll(playerPieceIconButtons);
     nameAndColorInputContainer.getChildren().addAll(playerNameTextField, colorPicker);
     playerListCardEditable.getChildren().addAll(pieceSelectionButtonContainer, nameAndColorInputContainer, addPlayerButton);
     playerExportCsvCard.getChildren().addAll(exportPlayersCsvButton);
@@ -211,72 +248,150 @@ public class MainMenuView {
     root.getChildren().add(layout);
   }
 
-  public void setLadderGameButtonHandler(EventHandler<ActionEvent> action) {
+  /**
+   * Sets the event handler for the ladder game menu button.
+   * Displays the available selectable boards when playing a ladder game.
+   *
+   * @param action the action to perform when the button is clicked
+   */
+  public void setLadderGameSelectionMenuButtonHandler(EventHandler<ActionEvent> action) {
     ladderGameMainMenuButton.setOnAction(action);
   }
 
-  public void setMathGameButtonHandler(EventHandler<ActionEvent> action) {
+  /**
+   * Sets the event handler for the math game menu button.
+   * Displays the available selectable boards when playing a math game.
+   *
+   * @param action the action to perform when the button is clicked
+   */
+  public void setMathGameSelectionMenuButtonHandler(EventHandler<ActionEvent> action) {
     mathGameMainMenuButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the add player button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setAddPlayerButtonHandler(EventHandler<ActionEvent> action) {
     addPlayerButton.setOnAction(action);
   }
 
-  public void setNormalBoardButtonHandler(EventHandler<ActionEvent> action) {
-    normalBoardButton.setOnAction(action);
+  /**
+   * Sets the event handler for the normal difficulty ladder game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
+  public void setNormalLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    normalLadderGameBoardButton.setOnAction(action);
   }
 
-  public void setCrazyBoardButtonHandler(EventHandler<ActionEvent> action) {
-    crazyBoardButton.setOnAction(action);
+  /**
+   * Sets the event handler for the crazy difficulty ladder game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
+  public void setCrazyLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    crazyLadderGameBoardButton.setOnAction(action);
   }
 
-  public void setImpossibleBoardButtonHandler(EventHandler<ActionEvent> action) {
-    impossibleBoardButton.setOnAction(action);
+  /**
+   * Sets the event handler for the impossible difficulty ladder game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
+  public void setImpossibleLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    impossibleLadderGameBoardButton.setOnAction(action);
   }
 
-  public void setJsonBoardButtonHandler(EventHandler<ActionEvent> action) {
-    jsonBoardButton.setOnAction(action);
+  /**
+   * Sets the event handler for the json ladder game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
+  public void setJsonLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    jsonLadderGameBoardButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the easy difficulty math game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setEasyMathButtonHandler(EventHandler<ActionEvent> action) {
-    normalBoardButton.setOnAction(action);
+    normalLadderGameBoardButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the medium difficulty math game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setMediumMathButtonHandler(EventHandler<ActionEvent> action) {
-    crazyBoardButton.setOnAction(action);
+    crazyLadderGameBoardButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the hard difficulty math game board button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setHardMathButtonHandler(EventHandler<ActionEvent> action) {
-    impossibleBoardButton.setOnAction(action);
+    impossibleLadderGameBoardButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the export players to csv file button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setExportPlayersCsvButtonHandler(EventHandler<ActionEvent> action) {
     exportPlayersCsvButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the import players from csv file button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setImportPlayersCsvButtonHandler(EventHandler<ActionEvent> action) {
     importPlayersCsvButton.setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the select player piece button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setPlayerPieceButtonHandlers(int buttonIndex, EventHandler<ActionEvent> action) {
-    playerIconButtons.get(buttonIndex).setOnAction(action);
+    playerPieceIconButtons.get(buttonIndex).setOnAction(action);
   }
 
+  /**
+   * Sets the event handler for the remove player button.
+   *
+   * @param action the action to perform when the button is clicked
+   */
   public void setRemovePlayerButtonHandler(Player player, EventHandler<ActionEvent> action) {
     playerListCardEditable.setRemovePlayerButtonHandler(player, action);
   }
 
+  /**
+   * Displays ladder game board difficulty selection buttons in the game difficulty grid.
+   */
   public void switchToGameLadder() {
     title.setText("Stigespill");
 
     gameDifficultyGrid.getChildren().clear();
-    gameDifficultyGrid.add(normalBoardButton, 0, 0);
-    gameDifficultyGrid.add(crazyBoardButton, 1, 0);
-    gameDifficultyGrid.add(impossibleBoardButton, 0, 1);
-    gameDifficultyGrid.add(jsonBoardButton, 1, 1);
+    gameDifficultyGrid.add(normalLadderGameBoardButton, 0, 0);
+    gameDifficultyGrid.add(crazyLadderGameBoardButton, 1, 0);
+    gameDifficultyGrid.add(impossibleLadderGameBoardButton, 0, 1);
+    gameDifficultyGrid.add(jsonLadderGameBoardButton, 1, 1);
   }
 
+  /**
+   * Displays math game difficulty selection buttons in the game difficulty grid.
+   */
   public void switchToGameMath() {
     title.setText("Matte spill");
 
@@ -364,7 +479,7 @@ public class MainMenuView {
    * @param disable
    */
   public void setDisablePlayerPieceButton(int buttonIndex, boolean disable){
-    playerIconButtons.get(buttonIndex).setDisable(disable);
+    playerPieceIconButtons.get(buttonIndex).setDisable(disable);
   }
 
   /**
@@ -372,7 +487,7 @@ public class MainMenuView {
    * @param disable
    */
   public void setDisableAllPlayerPieceButtons(boolean disable){
-    playerIconButtons.forEach(button -> button.setDisable(disable));
+    playerPieceIconButtons.forEach(button -> button.setDisable(disable));
   }
 
   /**
@@ -384,13 +499,9 @@ public class MainMenuView {
   }
 
   /**
-   * Sets the controller of the view in the MVC pattern
-   * @return
+   * Gets the root of this view.
+   * @return the root {@link StackPane} of this view.
    */
-  public void setMainMenuController(MainMenuController mainMenuController) {
-    this.mainMenuController = mainMenuController;
-  }
-
   public StackPane getRoot() {
     return root;
   }
