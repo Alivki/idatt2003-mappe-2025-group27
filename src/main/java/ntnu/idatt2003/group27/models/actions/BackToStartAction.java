@@ -35,6 +35,7 @@ public class BackToStartAction implements TileAction {
    * @param description A textual description of the ladder action.
    */
   public BackToStartAction(String description) {
+    logger.fine("Initializing BackToStartAction");
     this.description = description;
   }
 
@@ -45,15 +46,18 @@ public class BackToStartAction implements TileAction {
    */
   @Override
   public void perform(Player player) {
+    logger.fine("Performing BackToStartAction");
     int currentTile = player.getCurrentTile().getTileId();
 
     int steps = currentTile - 1;
 
+    logger.fine("moving player " + player.getName() + " " + -steps + "steps.");
     player.move(-steps);
   }
 
   @Override
   public List<Integer> getAnimationPath(int startTileId, int actionTileId) {
+    logger.fine("getting animationPath for " + startTileId + " " + actionTileId);
     List<Integer> path = new ArrayList<>();
     IntStream.range(startTileId, actionTileId).forEach(path::add);
     path.add(1);
@@ -62,11 +66,13 @@ public class BackToStartAction implements TileAction {
 
   @Override
   public Color getTileColor(int tileId) {
+    logger.fine("Getting tile color for " + tileId);
     return Color.LIGHTPINK;
   }
 
   @Override
   public String getIconPath() {
+    logger.fine("Getting icon path.");
     return "/icons/home.png";
   }
 
@@ -86,6 +92,7 @@ public class BackToStartAction implements TileAction {
    * @return the description of the ladder action.
    */
   public String getDescription() {
+    logger.fine("Getting description.");
     return description;
   }
 }
