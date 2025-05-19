@@ -7,12 +7,21 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import ntnu.idatt2003.group27.controllers.MainController;
 import ntnu.idatt2003.group27.controllers.MainMenuController;
+import java.util.logging.Logger;
 
 /**
  * A class representing a scene manager and base application. Extends {@link Application}.
  * Implements logic for switching scenes and sets up necessary dependencies to control the application.
  */
 public class SceneManager extends Application {
+
+  /**
+   * Logger instance for the {@code SceneManager} class.
+   * Used for logging informational messages and errors related to scene management operations.
+   */
+  private static final Logger logger = Logger.getLogger(SceneManager.class.getName());
+
+
   /** The root container for the scene manager. */
   private StackPane rootContainer;
 
@@ -29,7 +38,7 @@ public class SceneManager extends Application {
   public void start(Stage primaryStage) throws Exception {
     //Initialized scene manager
     mainController = new MainController(this);
-    System.out.println("Starting SceneManager");
+    logger.info("Starting SceneManager.");
     rootContainer = new StackPane();
     rootContainer.setAlignment(Pos.TOP_CENTER);
     rootContainer.getStyleClass().add("root");
@@ -65,7 +74,6 @@ public class SceneManager extends Application {
    * @param newPane
    */
   public void switchSceneImmediate(StackPane newPane) {
-    System.out.println("switchSceneImmediate");
     rootContainer.getChildren().clear();
     rootContainer.getChildren().add(newPane);
   }
@@ -74,6 +82,7 @@ public class SceneManager extends Application {
    * Instantly switches "scene" to the main menu view.
    */
   public void switchToMainMenu() {
+    logger.info("Switching to main menu.");
     switchSceneImmediate(mainMenuView.getRoot());
   }
 }
