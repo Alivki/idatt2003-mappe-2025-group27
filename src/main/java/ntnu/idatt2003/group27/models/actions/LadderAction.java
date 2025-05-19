@@ -20,7 +20,9 @@ import ntnu.idatt2003.group27.view.components.Canvas;
  * @since 1.0
  */
 public class LadderAction implements TileAction {
+  /** The destination tile id for this {@link LadderAction}. */
   public int destinationTileId;
+  /** The description of this {@link TileAction}*/
   public String description;
 
   /**
