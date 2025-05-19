@@ -3,6 +3,7 @@ package ntnu.idatt2003.group27.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Logger;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
@@ -14,6 +15,7 @@ import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileReader;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileWriter;
 import ntnu.idatt2003.group27.view.MainMenuView;
 import ntnu.idatt2003.group27.view.components.Alert;
+import java.util.logging.Logger;
 
 /**
  * A controller class for managing the main menu of the ladder game application. It handles user
@@ -21,6 +23,12 @@ import ntnu.idatt2003.group27.view.components.Alert;
  * data, and starting games with different difficult levels.
  */
 public class MainMenuController {
+  /**
+   * Logger instance for the {@code MainMenuController} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(MainController.class.getName());
+
   /** The main menu view associated with this controller. */
   private MainMenuView mainMenuView;
 
@@ -37,6 +45,7 @@ public class MainMenuController {
    * @param mainMenuView The {@link MainMenuView} to be controlled.
    */
   public MainMenuController(MainController mainController, MainMenuView mainMenuView) {
+    logger.info("Initializing MainMenuController");
     this.mainController = mainController;
     this.mainMenuView = mainMenuView;
     mainMenuView.initializeLayout(mainController.getPieces());
@@ -49,6 +58,7 @@ public class MainMenuController {
    * importing player data, and starting games with different difficulty levels.
    */
   private void setupMenuViewEventHandler() {
+    logger.fine("Setting up main menu view event handlers.");
     setColorPickerButtonHandler();
     setAddPlayerButtonHandler();
     setImportPlayerCsvButtonHandler();
@@ -70,7 +80,7 @@ public class MainMenuController {
    * @param requiredAmountOfPlayers
    */
   private void showNotEnoughPlayersAlert(int requiredAmountOfPlayers){
-    System.out.println("Not enough players to start game!");
+    logger.warning("Not enough players to start game!");
     Alert alert = new Alert(
         this.mainMenuView.getRoot(),
         "Ikke nok spillere",
@@ -83,21 +93,24 @@ public class MainMenuController {
   }
 
   private void setLadderGameSelectionMenuButtonHandler(){
+    logger.fine("Setting up Ladder Game Selection Menu Button.");
     mainMenuView.setLadderGameSelectionMenuButtonHandler(e -> {
       mainMenuView.switchToGameLadder();
     });
   }
 
   private void setMathGameSelectionMenuButtonHandler(){
+    logger.fine("Setting up Math Game Selection Menu Button.");
     mainMenuView.setMathGameSelectionMenuButtonHandler(e -> {
       mainMenuView.switchToGameMath();
     });
   }
 
   private void setNormalLadderGameBoardButtonHandler(){
+    logger.fine("Setting up Normal Ladder Game Board Button.");
     //Sets handler for normal board button
     mainMenuView.setNormalLadderGameBoardButtonHandler(e -> {
-      System.out.println("Normal board button clicked");
+      logger.fine("Normal board button clicked");
       if (mainController.getPlayers().size() < 2) {
         showNotEnoughPlayersAlert(2);
         return;
@@ -107,9 +120,10 @@ public class MainMenuController {
   }
 
   private void setCrazyLadderGameBoardButtonHandler(){
+    logger.fine("Setting up Crazy Ladder Game Board Button.");
     //Sets handler for crazy board button
     mainMenuView.setCrazyLadderGameBoardButtonHandler(e -> {
-      System.out.println("Crazy board button clicked");
+      logger.fine("Crazy board button clicked");
       if (mainController.getPlayers().size() < 2) {
         showNotEnoughPlayersAlert(2);
         return;
@@ -119,9 +133,10 @@ public class MainMenuController {
   }
 
   private void setImpossibleLadderGameBoardButtonHandler(){
+    logger.fine("Setting up Impossible Ladder Game Board Button.");
     //Sets handler for IMPOSSIBLE board button
     mainMenuView.setImpossibleLadderGameBoardButtonHandler(e -> {
-      System.out.println("IMPOSSIBLE board button clicked");
+      logger.fine("IMPOSSIBLE board button clicked");
       if (mainController.getPlayers().size() < 2) {
         showNotEnoughPlayersAlert(2);
         return;
@@ -134,9 +149,10 @@ public class MainMenuController {
    * Sets up handlers for Json ladderGame board button.
    */
   private void setJsonLadderGameBoardButtonHandler(){
+    logger.fine("Setting up Json Ladder Game Board Button.");
     //Sets handler for JSON board button
     mainMenuView.setJsonLadderGameBoardButtonHandler(e -> {
-      System.out.println("Json board button clicked");
+      logger.fine("Json board button clicked");
       if (mainController.getPlayers().size() < 2) {
         showNotEnoughPlayersAlert(2);
         return;
@@ -149,12 +165,13 @@ public class MainMenuController {
    * Sets up handlers for add player button.
    */
   private void setAddPlayerButtonHandler(){
+    logger.fine("Setting up Add Player Button.");
     mainMenuView.setAddPlayerButtonHandler(e -> {
-      System.out.println("Add player button clicked");
+      logger.fine("Add player button clicked");
 
       //Show alert if adding player crosses player limit.
       if (mainController.getPlayers().size() >= mainController.getMaxPlayers()) {
-        System.out.println("Cannot add player, max player limit reached!");
+        logger.warning("Cannot add player, max player limit reached!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
             "Kan ikke legge til spiller",
@@ -184,7 +201,7 @@ public class MainMenuController {
 
       //Show alert if player with name already exists
       if(mainController.getPlayers().stream().map(Player::getName).anyMatch(playerName::equals)) {
-        System.out.println("Cannot add player, player name already in use!");
+        logger.warning("Cannot add player, player name already in use!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
             "Kan ikke legge til spiller",
@@ -202,7 +219,7 @@ public class MainMenuController {
 
       //Show alert if no piece is selected.
       if (selectedPiece == null) {
-        System.out.println("Cannot add player, no piece selected!");
+        logger.warning("Cannot add player, no piece selected!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
             "Kan ikke legge til spiller",
@@ -218,7 +235,7 @@ public class MainMenuController {
 
       //Show alert if piece is already selected by another player.
       if (mainController.getPlayers().stream().anyMatch(p -> p.getPiece() == piece)){
-        System.out.println("Cannot add player, player piece already in use!");
+        logger.warning("Cannot add player, player piece already in use!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
             "Kan ikke legge til spiller",
@@ -239,7 +256,7 @@ public class MainMenuController {
       }
 
       Player newPlayer = new Player(playerName, piece, color);
-      System.out.println("New player created: " + newPlayer.getColor());
+      logger.fine("New player created: " + newPlayer.getColor());
       mainController.addPlayer(newPlayer);
       UpdatePlayerListDisplay();
       mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(selectedPiece), true);
@@ -252,6 +269,7 @@ public class MainMenuController {
    * Sets up actionEvent handlers for color picker button.
    */
   private void setColorPickerButtonHandler() {
+    logger.fine("Setting up ColorPicker Button.");
     mainMenuView.setColorPickerButtonHandler(event -> {
       mainMenuView.showColorPicker();
     });
@@ -261,11 +279,13 @@ public class MainMenuController {
    * Sets up actionEvent handler for export players button.
    */
   private void setExportPlayerCsvButtonHandler(){
+    logger.fine("Setting up ExportPlayerCsvButton.");
     //Set export players csv file handler
     mainMenuView.setExportPlayersCsvButtonHandler(e -> {
-      System.out.println("Export players csv button clicked");
+      logger.fine("Export players csv button clicked");
 
       if (mainController.getPlayers().isEmpty()) {
+        logger.warning("Cannot export player csv file as player array is empty!");
         Alert alert = new Alert(
             this.mainMenuView.getRoot(),
             "Ingen spillere",
@@ -294,7 +314,7 @@ public class MainMenuController {
           csvFileWriter.writeFile(selectedFile.getAbsolutePath(),
               mainController.getPlayers().toArray(new Player[0]));
         } catch (IOException ex) {
-          System.out.println(ex.getMessage());
+          logger.severe("Problem saving file: " + ex.getMessage());
         }
       }
     });
@@ -304,6 +324,7 @@ public class MainMenuController {
    * Sets up actionEvent handler for import players button.
    */
   private void setImportPlayerCsvButtonHandler(){
+    logger.fine("Setting up ImportPlayerCsvButton.");
     //Set import players csv file handler
     mainMenuView.setImportPlayersCsvButtonHandler(e -> {
       System.out.println("Import players csv button clicked");
@@ -318,7 +339,7 @@ public class MainMenuController {
       Stage stage = (Stage)mainMenuView.getRoot().getScene().getWindow();
       File selectedFile = fileChooser.showOpenDialog(stage);
       if (selectedFile != null) {
-        System.out.println("File selected: " + selectedFile.getAbsolutePath());
+        logger.fine("File selected: " + selectedFile.getAbsolutePath());
 
         //Reads the csv file and adds players
         PlayerCsvFileReader fileReader = new PlayerCsvFileReader(mainController.getPieces().toArray(new Piece[0]));
@@ -333,7 +354,7 @@ public class MainMenuController {
             for(int i = 0; i < players.length; i++) {
               Player player = players[i];
               if (player != null) {
-                System.out.println(
+                logger.fine(
                     "Adding player: " + player.getName() + ", piece: " + player.getPiece());
 
                 Piece piece = player.getPiece();
@@ -348,6 +369,7 @@ public class MainMenuController {
           UpdatePlayerListDisplay();
         }
         catch (Exception ex) {
+          logger.severe("Problem when importing player csv file." + ex.getMessage());
           Alert alert = new Alert(
               this.mainMenuView.getRoot(),
               "Kan ikke legge til spillere",
@@ -369,10 +391,11 @@ public class MainMenuController {
    * @param i The index of the piece in the list of pieces.
    */
   private void setSelectPieceButtonHandler(int i){
+    logger.fine("Setting up SelectPieceButton.");
     Piece piece = mainController.getPieces().get(i);
     mainMenuView.setPlayerPieceButtonHandlers(i, e -> {
-          System.out.println("Selected piece: " + piece.getName());
-          selectedPiece = piece;
+      logger.fine("Selected piece: " + piece.getName());
+      selectedPiece = piece;
         }
     );
   }
@@ -381,9 +404,10 @@ public class MainMenuController {
    * Sets up actionEvent handlers for remove player buttons.
    */
   private void setRemovePlayerButtonHandlers(){
+    logger.fine("Setting up RemovePlayerButton.");
     mainController.getPlayers().forEach(player -> {
       mainMenuView.setRemovePlayerButtonHandler(player, e -> {
-        System.out.println("Remove player button clicked for player: " + player.getName());
+        logger.fine("Remove player button clicked for player: " + player.getName());
         mainController.removePlayer(player);
         UpdatePlayerListDisplay();
         mainMenuView.setDisablePlayerPieceButton(mainController.getPieces().indexOf(player.getPiece()), false);
@@ -395,11 +419,13 @@ public class MainMenuController {
    * Updates the player list to display correct player information.
    */
   private void UpdatePlayerListDisplay(){
+    logger.fine("Setting up UpdatePlayerListDisplay.");
     mainMenuView.populatePlayerList(mainController.getPlayers());
     setRemovePlayerButtonHandlers();
   }
 
   public MainController getMainController(){
+    logger.fine("Getting MainController");
     return mainController;
   }
 }
