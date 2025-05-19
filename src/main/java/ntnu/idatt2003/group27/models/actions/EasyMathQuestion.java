@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models.actions;
 
+import java.util.logging.Logger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Player;
@@ -10,6 +11,12 @@ import java.util.List;
 import java.util.Random;
 
 public class EasyMathQuestion implements MathTileAction {
+  /**
+   * Logger instance for the {@link EasyMathQuestion} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(EasyMathQuestion.class.getName());
+
   private final int num1;
   private final int num2;
   private final int answer;
@@ -29,6 +36,7 @@ public class EasyMathQuestion implements MathTileAction {
 
   @Override
   public void isCorrect(Player player, String answer) {
+    logger.fine("Checking answer from player " + player.getName() + ", answer: " + answer);
     try {
       int userAnswer = Integer.parseInt(answer);
       if (userAnswer == this.answer) {
@@ -36,6 +44,7 @@ public class EasyMathQuestion implements MathTileAction {
         player.move(-1);
       }
     } catch (NumberFormatException e) {
+      logger.warning("Error parsing answer from player " + player.getName() + ", answer: " + answer);
       throw new NumberFormatException();
     }
     perform(player);
@@ -76,6 +85,7 @@ public class EasyMathQuestion implements MathTileAction {
 
   @Override
   public String getQuestion() {
+    logger.fine("Getting question.");
     return num1 + " + " + num2 + " = ?";
   }
 }
