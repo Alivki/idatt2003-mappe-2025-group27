@@ -5,34 +5,29 @@ import java.util.List;
 import java.util.stream.IntStream;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import ntnu.idatt2003.group27.models.Dice;
 import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.interfaces.TileAction;
+import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
 import ntnu.idatt2003.group27.view.components.Canvas;
 
 /**
- * Represents the behavior of a "throw an extra dice" tile on the game board. This class implements the
- * {@link TileAction} interface to define an action with custom behaviour.
+ * Represents the behavior of a ladder on the game board. This class implements the 
+ * {@link LadderTileAction} interface to define an action that moves a player to a specified
+ * destination tile when triggered.
  *
- * @author Amadeus Berg
+ * @author Iver Lindholm
  * @version 1.0
  * @since 1.0
  */
-public class ThrowNewDiceAction implements TileAction {
+public class BackToStartAction implements LadderTileAction {
   public String description;
-  //Variables for dice to throw
-  public int numberOfDice, numberOfDieSides;
-  private int roll = 0;
 
   /**
    * Constructs a ladder action with the specified destination tile and description.
    *
    * @param description A textual description of the ladder action.
    */
-  public ThrowNewDiceAction(String description, int numberOfDice, int numberOfDieSides) {
+  public BackToStartAction(String description) {
     this.description = description;
-    this.numberOfDice = numberOfDice;
-    this.numberOfDieSides = numberOfDieSides;
   }
 
   /**
@@ -42,55 +37,39 @@ public class ThrowNewDiceAction implements TileAction {
    */
   @Override
   public void perform(Player player) {
-    Dice dice = new Dice(numberOfDice, numberOfDieSides);
-    int steps = dice.roll();
-    roll += steps;
-    player.move(steps);
+    int currentTile = player.getCurrentTile().getTileId();
+
+    int steps = currentTile - 1;
+
+    player.move(-steps);
   }
 
   @Override
   public List<Integer> getAnimationPath(int startTileId, int actionTileId) {
     List<Integer> path = new ArrayList<>();
-    IntStream.range(startTileId, actionTileId + roll).forEach(path::add);
+    IntStream.range(startTileId, actionTileId).forEach(path::add);
+    path.add(1);
     return path;
   }
 
   @Override
   public Color getTileColor(int tileId) {
-    return Color.BLUE;
+    return Color.LIGHTPINK;
   }
 
   @Override
   public String getIconPath() {
-    return "/icons/reroll-white.png";
+    return "/icons/home.png";
   }
 
   @Override
   public void drawCustom(GraphicsContext gc, int tileId, Canvas canvas) {
-    // Custom drawing logic for the action can be implemented here
+    // No custom drawing needed for this action
   }
 
   @Override
   public void drawDestinationTile(GraphicsContext gc, int tileId, Canvas canvas) {
-    // Custom drawing logic for the destination tile can be implemented here
-  }
-
-  /**
-   * Retrieves the tile id of the destination tile for this ladder action.
-   *
-   * @return the ID of the destination tile.
-   */
-  public int getNumberOfSides() {
-    return numberOfDieSides;
-  }
-
-  /**
-   * Retrieves the number of dice to throw for this ladder action.
-   *
-   * @return the number of dice to throw.
-   */
-  public int getNumberOfDice() {
-    return numberOfDice;
+    // No custom drawing needed for this action
   }
 
   /**

@@ -19,7 +19,7 @@ import ntnu.idatt2003.group27.view.components.Canvas;
  * @version 1.0
  * @since 1.0
  */
-public class LadderActionLadder implements LadderTileAction {
+public class LadderAction implements LadderTileAction {
   public int destinationTileId;
   public String description;
 
@@ -29,7 +29,7 @@ public class LadderActionLadder implements LadderTileAction {
    * @param destinationTileId The ID of the tile where the player will be moved.
    * @param description       A textual description of the ladder action.
    */
-  public LadderActionLadder(int destinationTileId, String description) {
+  public LadderAction(int destinationTileId, String description) {
     this.destinationTileId = destinationTileId;
     this.description = description;
   }
