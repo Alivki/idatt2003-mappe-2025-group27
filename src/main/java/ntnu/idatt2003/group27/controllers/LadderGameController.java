@@ -9,7 +9,6 @@ import ntnu.idatt2003.group27.models.*;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
-import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.LadderGameView;
 import ntnu.idatt2003.group27.view.components.Alert;
@@ -26,7 +25,7 @@ import javafx.util.Duration;
  * @version 1.3
  * @since 2.0
  */
-public class BoardGameController implements BoardGameObserver {
+public class LadderGameController implements BoardGameObserver {
   /** The game model managing the ladder game logic */
   private LadderBoardGame game;
   /** The view for displaying the ladder game. */
@@ -45,11 +44,11 @@ public class BoardGameController implements BoardGameObserver {
   private final BoardGameFactory boardGameFactory;
 
   /**
-   * Constructs a {@link BoardGameController} with the specified {@link MainController}
+   * Constructs a {@link LadderGameController} with the specified {@link MainController}
    *
    * @param mainController The {@link MainController} for coordinating application-wide actions
    */
-  public BoardGameController(MainController mainController) {
+  public LadderGameController(MainController mainController) {
     this.mainController = mainController;
     this.boardGameFactory = new BoardGameFactory(new BoardFactory());
   }

@@ -35,9 +35,9 @@ public interface GameConfiguration {
 
   /**
    * Retrieves a map of tile actions for the game board, where keys are tile IDs and values are
-   * {@link TileAction} objects.
+   * {@link LadderTileAction} objects.
    *
-   * @return A map of tile IDs to their corresponding {@link TileAction} objects.
+   * @return A map of tile IDs to their corresponding {@link LadderTileAction} objects.
    */
   Map<Integer, TileAction> getTileActions();
 }
