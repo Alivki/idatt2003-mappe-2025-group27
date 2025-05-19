@@ -179,7 +179,16 @@ public class MathGameController implements BoardGameObserver {
 
     int currentPlayerIndex = players.indexOf(currentPlayer);
     int lastPlayerIndex = (currentPlayerIndex - 1 + players.size()) % players.size();
+    Player lastPlayer = players.get(lastPlayerIndex);
 
+    mathGameView.animatePlayerMovement(
+        lastPlayer,
+        lastPlayer.getCurrentTile().getTileId() + 1,
+        players,
+        () -> {
+          mathGameView.updateRoundLabel(String.valueOf(round));
+          mathGameView.populatePlayerList(players);
+        });
     mathGameView.updateCurrentPlayerLabel(currentPlayer.getName());
   }
 
@@ -219,6 +228,7 @@ public class MathGameController implements BoardGameObserver {
    */
   @Override
   public void onGameSetup(ArrayList<Player> players, Map<Player, Board> boards) {
+    mathGameView.createBoard(players, boards);
     mathGameView.populatePlayerList(players);
     mathGameView.updateCurrentPlayerLabel(players.getFirst().getName());
 
@@ -236,6 +246,7 @@ public class MathGameController implements BoardGameObserver {
     mathGameView.updateRoundLabel("1");
     mathGameView.populatePlayerList(players);
     mathGameView.updateStatusLabel("Pågående");
+    mathGameView.updateBoard(players);
   }
 
   /**

@@ -1,5 +1,7 @@
 package ntnu.idatt2003.group27.view;
 
+import java.util.ArrayList;
+import java.util.Map;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -8,10 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
+import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.models.Tile;
+import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.components.*;
 
-import javax.swing.*;
 import java.util.List;
 
 /**
@@ -20,42 +24,77 @@ import java.util.List;
  */
 public class MathGameView {
 
-  /** Root container for the Ladder Game view. */
+  /**
+   * Root container for the Ladder Game view.
+   */
   private final StackPane root;
 
-  /** Button to return to the home screen. */
+  /**
+   * Button to return to the home screen.
+   */
   private CustomButton homeButton;
 
-  private VBox playBox;
-  /** Button to play the round. */
+  /**
+   * Canvas for rendering the game board.
+   */
+  private MathCanvas mathCanvas;
+
+  /**
+   * VBox for showing playing buttons and input field
+   */
+  private VBox playMenuBox;
+
+  /**
+   * Button to play the round.
+   */
   private CustomButton playButton;
 
-  /** Text field to input math answer */
+  /**
+   * Text field to input math answer
+   */
   private TextField answerField;
 
-  /** Button to submit answer. */
+  /**
+   * Button to submit answer.
+   */
   private CustomButton answerButton;
 
-  /** Button to restart the game. */
+  /**
+   * Button to restart the game.
+   */
   private CustomButton restartButton;
 
-  /** Card displaying the list of players. */
+  /**
+   * Card displaying the list of players.
+   */
   private PlayerListCard playerListCard;
 
-  /** Container for the canvas and related UI elements. */
+  /**
+   * Container for the canvas and related UI elements.
+   */
   private VBox canvasContainer;
 
-  /** Label showing the current round number. */
+  /**
+   * Label showing the current round number.
+   */
   private Label roundInfo;
 
-  /** Label showing the current player's name. */
+  /**
+   * Label showing the current player's name.
+   */
   private Label currentPlayerInfo;
 
-  /** Label showing the current player's grade. */
+  /**
+   * Label showing the current player's grade.
+   */
   private Label gradeInfo;
 
-  /** Label showing the current game status. */
+  /**
+   * Label showing the current game status.
+   */
   private Label statusInfo;
+
+  private int playerAmount;
 
   /**
    * Constructs a new {@code MathGameView} and initializes the root layout.
@@ -96,6 +135,12 @@ public class MathGameView {
     layout.getMainContainer().getChildren().addAll(title, canvasContainer);
 
     layout.getMainContainer().widthProperty().addListener((obs, oldWidth, newWidth) -> {
+      double availableWidth = newWidth.doubleValue() - 60;
+      double tileSize = (availableWidth - 90) / 5;
+      double height = tileSize * playerAmount + 70 + ((playerAmount - 1) *  20);
+      mathCanvas.setWidth(availableWidth);
+      mathCanvas.setHeight(height);
+      mathCanvas.resizeBoard(tileSize);
     });
 
     Card rightCard = new Card("Spill info", null, 350);
@@ -112,7 +157,7 @@ public class MathGameView {
 
     playButton = new CustomButton("Start runden", CustomButton.ButtonVariant.PRIMARY, null);
 
-    playBox = new VBox(5);
+    playMenuBox = new VBox(5);
     answerField = new TextField();
     answerField.setPromptText("Skriv inn svaret her");
     answerButton = new CustomButton("Send svar", CustomButton.ButtonVariant.PRIMARY, null);
@@ -129,9 +174,9 @@ public class MathGameView {
         createGameInfoRow("Vanskelighetsgrad  :", gradeInfo),
         createGameInfoRow("Status:", statusInfo)
     );
-    playBox.getChildren().add(playButton);
+    playMenuBox.getChildren().add(playButton);
     rightCard.getChildren()
-        .addAll(gameInfo, separator, playBox);
+        .addAll(gameInfo, separator, playMenuBox);
     layout.getRightContainer().getChildren().addAll(rightCard);
 
     root.getChildren().add(layout);
@@ -143,15 +188,15 @@ public class MathGameView {
 
   public void roundPlay(String question) {
     clearTextField();
-    playBox.getChildren().clear();
+    playMenuBox.getChildren().clear();
     Label questionLabel = new Label("Spørsmål: " + question);
     questionLabel.getStyleClass().add("h2");
-    playBox.getChildren().addAll(questionLabel, answerField, answerButton);
+    playMenuBox.getChildren().addAll(questionLabel, answerField, answerButton);
   }
 
   public void betweenRounds() {
-    playBox.getChildren().clear();
-    playBox.getChildren().addAll(playButton);
+    playMenuBox.getChildren().clear();
+    playMenuBox.getChildren().addAll(playButton);
   }
 
   public String getAnswer() {
@@ -191,6 +236,7 @@ public class MathGameView {
 
   /**
    * Sets the round label text.
+   *
    * @param round
    */
   public void updateRoundLabel(String round) {
@@ -206,6 +252,7 @@ public class MathGameView {
 
   /**
    * Sets the text for the grade label to display the difficulty of the game.
+   *
    * @param grade
    */
   public void updateGradeLabel(String grade) {
@@ -214,6 +261,7 @@ public class MathGameView {
 
   /**
    * Sets the text for the status label.
+   *
    * @param status
    */
   public void updateStatusLabel(String status) {
@@ -222,6 +270,7 @@ public class MathGameView {
 
   /**
    * Gets the integer value from the round label.
+   *
    * @return Integer value of the round label text
    */
   public int getRoundLabel() {
@@ -230,14 +279,58 @@ public class MathGameView {
 
   /**
    * Populates the player list card with the players from the specified player list.
+   *
    * @param players a list of players.
    */
   public void populatePlayerList(List<Player> players) {
     playerListCard.populatePlayerList(players);
+    playerAmount = players.size();
+  }
+
+  /**
+   * Animates the movement of a player's piece on the board.
+   *
+   * @param player
+   * @param newTileId
+   * @param players
+   * @param onComplete
+   */
+  public void animatePlayerMovement(Player player, int newTileId, List<Player> players,
+                                    Runnable onComplete) {
+    mathCanvas.animatePlayerMovement(player, newTileId, () -> {
+      updateBoard(players);
+      if (onComplete != null) {
+        onComplete.run();
+      }
+    });
+  }
+
+  /**
+   * Creates a canvas to display the UI of the game board.
+   *
+   * @param players
+   */
+  public void createBoard(ArrayList<Player> players, Map<Player, Board> boards) {
+    mathCanvas = new MathCanvas(players, boards);
+    canvasContainer.getChildren().add(mathCanvas);
+
+    mathCanvas.redrawBoard();
+    mathCanvas.updateBoard(players);
+  }
+
+  /**
+   * Updates the board canvas with a new list of players and redraws the canvas to reflect the changes in
+   * their positions.
+   *
+   * @param players The updated {@link List} of {@link Player} objects.
+   */
+  public void updateBoard(List<Player> players) {
+    mathCanvas.updateBoard(players);
   }
 
   /**
    * Displays a toast to the user.
+   *
    * @param variant
    * @param title
    * @param message
@@ -249,6 +342,7 @@ public class MathGameView {
 
   /**
    * Creates a row for the game info.
+   *
    * @param labelText
    * @param infoLabel
    * @return
@@ -270,6 +364,7 @@ public class MathGameView {
 
   /**
    * Gets the root of this view.
+   *
    * @return the root {@link StackPane} of this view.
    */
   public StackPane getRoot() {

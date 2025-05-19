@@ -1,6 +1,8 @@
 package ntnu.idatt2003.group27.models;
 
 import ntnu.idatt2003.group27.models.actions.EasyMathQuestion;
+import ntnu.idatt2003.group27.models.actions.HardMathQuestion;
+import ntnu.idatt2003.group27.models.actions.MediumMathQuestion;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.enums.MathGameType;
 import ntnu.idatt2003.group27.models.interfaces.GameConfiguration;
@@ -43,7 +45,7 @@ public class MathGameConfiguration implements GameConfiguration {
 
   @Override
   public int getTotalTiles() {
-    return 4;
+    return 5;
   }
 
   @Override
@@ -51,22 +53,25 @@ public class MathGameConfiguration implements GameConfiguration {
     Map<Integer, TileAction> tileActions = new HashMap<>();
     switch (gameType) {
       case EASY:
-        tileActions.put(1, new EasyMathQuestion());
+        tileActions.put(1, null);
         tileActions.put(2, new EasyMathQuestion());
         tileActions.put(3, new EasyMathQuestion());
         tileActions.put(4, new EasyMathQuestion());
+        tileActions.put(5, new EasyMathQuestion());
         break;
       case MEDIUM:
-        tileActions.put(1, new EasyMathQuestion());
-        tileActions.put(2, new EasyMathQuestion());
-        tileActions.put(3, new EasyMathQuestion());
-        tileActions.put(4, new EasyMathQuestion());
+        tileActions.put(1, null);
+        tileActions.put(2, new MediumMathQuestion());
+        tileActions.put(3, new MediumMathQuestion());
+        tileActions.put(4, new MediumMathQuestion());
+        tileActions.put(5, new MediumMathQuestion());
         break;
       case HARD:
-        tileActions.put(1, new EasyMathQuestion());
-        tileActions.put(2, new EasyMathQuestion());
-        tileActions.put(3, new EasyMathQuestion());
-        tileActions.put(4, new EasyMathQuestion());
+        tileActions.put(1, null);
+        tileActions.put(2, new HardMathQuestion());
+        tileActions.put(3, new HardMathQuestion());
+        tileActions.put(4, new HardMathQuestion());
+        tileActions.put(5, new HardMathQuestion());
         break;
       default:
         throw new IllegalArgumentException("Unknown ladder game type: " + gameType);

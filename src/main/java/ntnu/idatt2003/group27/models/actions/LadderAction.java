@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.StrokeLineCap;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
-import ntnu.idatt2003.group27.view.components.Canvas;
+import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
 /**
  * Represents the behavior of a ladder on the game board. This class implements the 
@@ -63,16 +63,16 @@ public class LadderAction implements LadderTileAction {
   }
 
   @Override
-  public void drawCustom(GraphicsContext gc, int tileId, Canvas canvas) {
-    double[] start = canvas.getTileCenter(tileId - 1);
-    double[] end = canvas.getTileCenter(destinationTileId - 1);
+  public void drawCustom(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
+    double[] start = ladderCanvas.getTileCenter(tileId - 1);
+    double[] end = ladderCanvas.getTileCenter(destinationTileId - 1);
 
     double dx = end[0] - start[0];
     double dy = end[1] - start[1];
     double angle = Math.atan2(dy, dx);
     double length = Math.sqrt(dx * dx + dy * dy);
 
-    double radius = canvas.getTileSize() / 4;
+    double radius = ladderCanvas.getTileSize() / 4;
     double[] offset = {radius * Math.sin(angle), radius * Math.cos(angle)};
 
     gc.setStroke(Color.BLACK);
@@ -83,7 +83,7 @@ public class LadderAction implements LadderTileAction {
     gc.lineTo(end[0] + offset[0], end[1] - offset[1]);
     gc.stroke();
 
-    int numSteps = (int) (length / (canvas.getTileSize() / 2));
+    int numSteps = (int) (length / (ladderCanvas.getTileSize() / 2));
     double stepDx = dx / (numSteps + 1);
     double stepDy = dy / (numSteps + 1);
     double stepRadius = radius - 2;
@@ -125,10 +125,10 @@ public class LadderAction implements LadderTileAction {
   }
 
   @Override
-  public void drawDestinationTile(GraphicsContext gc, int tileId, Canvas canvas) {
-    double[] tileLandPosition = canvas.getTilePos(destinationTileId - 1);
+  public void drawDestinationTile(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
+    double[] tileLandPosition = ladderCanvas.getTilePos(destinationTileId - 1);
     gc.setFill(tileId + 1 < destinationTileId ? Color.LIGHTGREEN : Color.RED);
-    gc.fillRect(tileLandPosition[0], tileLandPosition[1], canvas.getTileSize(), canvas.getTileSize());
+    gc.fillRect(tileLandPosition[0], tileLandPosition[1], ladderCanvas.getTileSize(), ladderCanvas.getTileSize());
   }
 
   /**

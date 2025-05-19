@@ -4,7 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.interfaces.MathTileAction;
-import ntnu.idatt2003.group27.view.components.Canvas;
+import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
 import java.util.List;
 import java.util.Random;
@@ -13,7 +13,6 @@ public class EasyMathQuestion implements MathTileAction {
   private final int num1;
   private final int num2;
   private final int answer;
-  private boolean correctAnswer;
   private final Random random = new Random();
 
   public EasyMathQuestion() {
@@ -25,6 +24,7 @@ public class EasyMathQuestion implements MathTileAction {
 
   @Override
   public void perform(Player player) {
+    // Not needed for this action
   }
 
   @Override
@@ -32,9 +32,7 @@ public class EasyMathQuestion implements MathTileAction {
     try {
       int userAnswer = Integer.parseInt(answer);
       if (userAnswer == this.answer) {
-        correctAnswer = true;
       } else {
-        correctAnswer = false;
         player.move(-1);
       }
     } catch (NumberFormatException e) {
@@ -67,12 +65,12 @@ public class EasyMathQuestion implements MathTileAction {
   }
 
   @Override
-  public void drawCustom(GraphicsContext gc, int tileId, Canvas canvas) {
+  public void drawCustom(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
     // Custom drawing logic for the action can be implemented here
   }
 
   @Override
-  public void drawDestinationTile(GraphicsContext gc, int tileId, Canvas canvas) {
+  public void drawDestinationTile(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
     // Custom drawing logic for the destination tile can be implemented here
   }
 

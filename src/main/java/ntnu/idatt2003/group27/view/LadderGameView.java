@@ -42,7 +42,7 @@ public class LadderGameView {
   private CustomButton restartButton;
 
   /** Canvas for rendering the game board. */
-  private Canvas canvas;
+  private LadderCanvas ladderCanvas;
 
   /** Card displaying the list of players. */
   private PlayerListCard playerListCard;
@@ -129,10 +129,10 @@ public class LadderGameView {
     layout.getMainContainer().getChildren().addAll(title, canvasContainer);
 
     layout.getMainContainer().widthProperty().addListener((obs, oldWidth, newWidth) -> {
-      double tileSize = (newWidth.doubleValue() - 120) / ((double) canvas.getBoardSize() / 9);
-      canvas.setWidth(newWidth.doubleValue() - 60);
-      canvas.setHeight(tileSize * 9 + 18);
-      canvas.resizeBoard(tileSize);
+      double tileSize = (newWidth.doubleValue() - 120) / ((double) ladderCanvas.getBoardSize() / 9);
+      ladderCanvas.setWidth(newWidth.doubleValue() - 60);
+      ladderCanvas.setHeight(tileSize * 9 + 18);
+      ladderCanvas.resizeBoard(tileSize);
     });
 
     Card rightCard = new Card("Spill info", null, 350);
@@ -350,7 +350,7 @@ public class LadderGameView {
    */
   public void animatePlayerMovement(Player player, int newTileId, TileAction tileAction, int roll,
                                     List<Player> players, Runnable onComplete) {
-    canvas.animatePlayerMovement(player, newTileId, tileAction, roll, () -> {
+    ladderCanvas.animatePlayerMovement(player, newTileId, tileAction, roll, () -> {
       updateBoard(players);
       toggleDiceButton(true);
       if (onComplete != null) {
@@ -365,11 +365,11 @@ public class LadderGameView {
    * @param tiles
    */
   public void createBoard(ArrayList<Player> players, Map<Integer, Tile> tiles) {
-    canvas = new Canvas(tiles, players, tiles.size());
-    canvasContainer.getChildren().add(canvas);
+    ladderCanvas = new LadderCanvas(tiles, players, tiles.size());
+    canvasContainer.getChildren().add(ladderCanvas);
 
-    canvas.redrawBoard();
-    canvas.updateBoard(players);
+    ladderCanvas.redrawBoard();
+    ladderCanvas.updateBoard(players);
   }
 
   /**
@@ -379,7 +379,7 @@ public class LadderGameView {
    * @param players The updated {@link List} of {@link Player} objects.
    */
   public void updateBoard(List<Player> players) {
-    canvas.updateBoard(players);
+    ladderCanvas.updateBoard(players);
   }
 
   /**
