@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.view.components;
 
+import java.util.logging.Logger;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -12,7 +13,11 @@ import javafx.scene.layout.VBox;
  * @since 2.0
  */
 public class Card extends VBox {
-
+  /**
+   * Logger instance for the {@code Card} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(Card.class.getName());
   /**
    * Constructs a {@link Card} with the specified title, description and height.
    *

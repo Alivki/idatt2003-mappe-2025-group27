@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.view;
 
 import java.util.*;
 
+import java.util.logging.Logger;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,6 +28,11 @@ import org.fxyz3d.shapes.primitives.CuboidMesh;
  * Displays all necessary GUI for interacting with and playing the ladder game.
  */
 public class LadderGameView {
+  /**
+   * Logger instance for the {@code } class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(LadderGameView.class.getName());
 
   /** Root container for the Ladder Game view. */
   private final StackPane root;

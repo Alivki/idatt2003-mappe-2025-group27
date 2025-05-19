@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javafx.animation.KeyFrame;
@@ -33,6 +34,11 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  * @since 2.0
  */
 public class Canvas extends javafx.scene.canvas.Canvas {
+  /**
+   * Logger instance for the {@code } class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(Canvas.class.getName());
   /**
    * The total number of tiles on the board
    */

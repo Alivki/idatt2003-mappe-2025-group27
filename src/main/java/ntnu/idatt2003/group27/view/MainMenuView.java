@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,6 +36,11 @@ import ntnu.idatt2003.group27.view.components.PlayerListCardEditable;
  * A class representing a view for the main menu of the application.
  */
 public class MainMenuView {
+  /**
+   * Logger instance for the {@code } class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(MainMenuView.class.getName());
   /** The root container for the main menu view. */
   private final StackPane root;
 

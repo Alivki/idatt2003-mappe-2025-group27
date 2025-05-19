@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
 import ntnu.idatt2003.group27.models.actions.LadderAction;
 import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
@@ -19,6 +20,11 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  * @since 2.0
  */
 public class LadderGameConfiguration implements GameConfiguration {
+  /**
+   * Logger instance for the {@code Board} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(LadderGameConfiguration.class.getName());
   /** The type of ladder game to configure */
   private final LadderGameType gameType;
 

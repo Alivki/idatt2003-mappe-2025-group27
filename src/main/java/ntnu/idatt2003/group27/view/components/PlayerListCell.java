@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.view.components;
 
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -17,6 +18,11 @@ import ntnu.idatt2003.group27.models.Player;
  * A class representing an HBox displaying player information.
  */
 public class PlayerListCell extends HBox {
+  /**
+   * Logger instance for the {@code } class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(PlayerListCell.class.getName());
   private final CustomButton removePlayerButton;
 
   public PlayerListCell(Player player, double spacing) {

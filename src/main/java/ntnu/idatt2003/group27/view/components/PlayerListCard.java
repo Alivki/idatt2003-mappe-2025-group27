@@ -1,6 +1,7 @@
 package ntnu.idatt2003.group27.view.components;
 
 import java.util.List;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -23,6 +24,11 @@ import ntnu.idatt2003.group27.models.Tile;
  * @author Amadeus Berg
  */
 public class PlayerListCard extends Card {
+  /**
+   * Logger instance for the {@code } class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(PlayerListCard.class.getName());
 
   private final ScrollPane playerList;
 

@@ -7,6 +7,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.util.Comparator;
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
@@ -23,6 +24,11 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  * @since 2.0
  */
 public class BoardSerializer implements JsonSerializer<Board> {
+  /**
+   * Logger instance for the {@code } class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(BoardSerializer.class.getName());
   @Override
   public JsonElement serialize(Board board, Type typeOfSrc, JsonSerializationContext context) {
     JsonObject boardJson = new JsonObject();

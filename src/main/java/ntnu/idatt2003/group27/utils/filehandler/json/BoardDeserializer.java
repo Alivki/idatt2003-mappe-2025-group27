@@ -9,6 +9,7 @@ import com.google.gson.JsonParseException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
 import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.models.actions.LadderAction;
@@ -25,6 +26,11 @@ import ntnu.idatt2003.group27.models.Tile;
  * @since 1.0
  */
 public class BoardDeserializer implements JsonDeserializer<Board> {
+  /**
+   * Logger instance for the {@code BoardDeserializer} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(BoardDeserializer.class.getName());
 
   /**
    * Deserializes a JSON object into a {@link Board} object. The JSON is expected to contain an

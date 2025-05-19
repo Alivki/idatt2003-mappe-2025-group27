@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models;
 
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
 /**
@@ -12,6 +13,11 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  * @since 1.0
  */
 public class Tile {
+  /**
+   * Logger instance for the {@code Board} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(Tile.class.getName());
   /** The next tile in the board sequence. */
   public Tile nextTile;
 

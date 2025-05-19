@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.view.components;
 
+import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -17,6 +18,11 @@ import javafx.scene.image.ImageView;
  * @since 2.0
  */
 public class CustomButton extends Button {
+  /**
+   * Logger instance for the {@code } class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(CustomButton.class.getName());
   /** Enum defining the available button style variants */
   public enum ButtonVariant {
     PRIMARY,

@@ -57,7 +57,7 @@ public class BackToStartAction implements TileAction {
 
   @Override
   public List<Integer> getAnimationPath(int startTileId, int actionTileId) {
-    logger.fine("getting animationPath for " + startTileId + " " + actionTileId);
+    logger.fine("Getting Animation Path for " + startTileId + " and " + actionTileId);
     List<Integer> path = new ArrayList<>();
     IntStream.range(startTileId, actionTileId).forEach(path::add);
     path.add(1);

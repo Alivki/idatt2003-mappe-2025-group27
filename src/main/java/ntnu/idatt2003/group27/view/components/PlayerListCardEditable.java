@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -20,6 +21,11 @@ import ntnu.idatt2003.group27.models.Player;
  * @author Amadeus Berg
  */
 public class PlayerListCardEditable extends Card {
+  /**
+   * Logger instance for the {@code } class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(PlayerListCardEditable.class.getName());
 
   private final ScrollPane playerList;
 

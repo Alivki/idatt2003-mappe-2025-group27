@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.view.components;
 
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
@@ -17,6 +18,11 @@ import javafx.scene.layout.VBox;
  * @since 2.0
  */
 public class AppLayout extends VBox {
+  /**
+   * Logger instance for the {@code } class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(AppLayout.class.getName());
   /** The container for the header's main content, centered within the header. */
   private final HBox headerMainContainer;
   /** The container for the left container area in the main section. */

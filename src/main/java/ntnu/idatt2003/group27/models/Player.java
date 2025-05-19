@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models;
 
+import java.util.logging.Logger;
 import javafx.scene.paint.Color;
 
 /**
@@ -11,6 +12,11 @@ import javafx.scene.paint.Color;
  * @since 0.0
  */
 public class Player {
+  /**
+   * Logger instance for the {@code Board} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(Player.class.getName());
   /** The name of the player. */
   private final String name;
 

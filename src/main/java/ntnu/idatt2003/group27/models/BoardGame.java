@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class BoardGame {
   /**
-   * Logger instance for the {@code Board} class.
+   * Logger instance for the {@code BoardGame} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(BoardGame.class.getName());

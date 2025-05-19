@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.view.components;
 
 import java.util.function.Consumer;
 
+import java.util.logging.Logger;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
@@ -22,6 +23,11 @@ import javafx.stage.StageStyle;
  * @since 2.0
  */
 public class Alert {
+  /**
+   * Logger instance for the {@code } class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(Alert.class.getName());
   /** The stage to display the alert dialog. */
   private final Stage alertStage;
   /** The title of the alert dialog. */
