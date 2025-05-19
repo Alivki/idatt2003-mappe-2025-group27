@@ -124,21 +124,6 @@ public class MainController {
   }
 
   /**
-   * Returns the first available piece that is not currently used by any player.
-   * If all pieces are taken, returns {@code null}.
-   *
-   * @return the first unused {@link Piece}, or {@code null} if none are available
-   */
-  public Piece getAvailablePiece() {
-    return pieces.stream()
-        .filter(piece -> players.stream()
-            .noneMatch(player -> player.getPiece().equals(piece)))
-        .findFirst()
-        .orElse(null);
-  }
-
-
-  /**
    * Returns the maximum number of players allowed.
    *
    * @return the maximum number of players
