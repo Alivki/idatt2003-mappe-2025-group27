@@ -32,7 +32,7 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  */
 public class LadderCanvas extends javafx.scene.canvas.Canvas {
   /**
-   * Logger instance for the {@code LadderCanvas} class.
+   * Logger instance for the {@link LadderCanvas} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(LadderCanvas.class.getName());
@@ -87,6 +87,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @param boardSize   The total number of tiles on the board.
    */
   public LadderCanvas(Map<Integer, Tile> tileActions, List<Player> players, int boardSize) {
+    logger.fine("Initializing LadderCanvas with players: " + players + " and board size: " + boardSize);
     this.tileSize = 0;
     this.players = new ArrayList<>();
     this.boardSize = boardSize;
@@ -106,6 +107,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @return The board size as an integer.
    */
   public int getBoardSize() {
+    logger.fine("Getting board size");
     return boardSize;
   }
 
@@ -115,6 +117,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @return The size of the tile as a double.
    */
   public double getTileSize() {
+    logger.fine("Getting tile size");
     return tileSize;
   }
 
@@ -125,6 +128,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @param players The updated {@link List} of {@link Player} objects.
    */
   public void updateBoard(List<Player> players) {
+    logger.fine("Updating board with players: " + players);
     this.players = new ArrayList<>(players);
     this.playerPositions = this.players.stream()
         .collect(Collectors.toMap(
@@ -140,6 +144,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @param tileSize The new size of each tile in pixels.
    */
   public void resizeBoard(double tileSize) {
+    logger.fine("Resizing board with tile size: " + tileSize);
     this.tileSize = tileSize;
     redrawBoard();
   }
@@ -148,6 +153,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * Redraws the entire board, including tiles, players, tile actions, and visual indicators.
    */
   public void redrawBoard() {
+    logger.fine("Redrawing board");
     GraphicsContext gc = getGraphicsContext2D();
     gc.clearRect(0, 0, getWidth(), getHeight());
 
@@ -166,6 +172,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawTiles(GraphicsContext gc) {
+    logger.fine("Drawing tiles");
     IntStream.range(0, (columns * rows)).forEach(i -> {
       double[] tilePosition = getTilePos(i);
 
@@ -186,6 +193,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @return A map of {@link Player} to their respective offset values.
    */
   private Map<Player, Double> calculatePlayerOffset(List<Player> playersOnTile) {
+    logger.fine("Calculating player offset for players: " + playersOnTile);
     Map<Player, Double> offsets = new HashMap<>();
     int count = playersOnTile.size();
 
@@ -209,6 +217,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawPlayers(GraphicsContext gc) {
+    logger.fine("Drawing players.");
     Map<Integer, List<Player>> playersByTile = players.stream()
         .collect(Collectors.groupingBy(player -> playerPositions.getOrDefault(player, 1)));
 
@@ -246,6 +255,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    */
   public void animatePlayerMovement(Player player, int newTileId, TileAction tileAction, int roll,
                                     Runnable onComplete) {
+    logger.fine("Animating player movement for player: " + player + ", new tile id: " + newTileId + ", tileAction: " + tileAction + ", roll: " + roll);
     int currentTileId = playerPositions.getOrDefault(player, 1);
 
     List<Integer> path = tileAction != null
@@ -304,6 +314,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @return A list of tile IDs representing the path from start to end.
    */
   private List<Integer> calculatePath(int startTileId, int endTileId, int roll) {
+    logger.fine("Calculating path for startTile: " + startTileId + ", endTile: " + endTileId + ", roll: " + roll);
     List<Integer> path = new ArrayList<>();
     if (startTileId + roll > boardSize) {
       for (int i = startTileId; i <= boardSize; i++) {
@@ -334,6 +345,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawTileActions(GraphicsContext gc) {
+    logger.fine("Drawing tile actions.");
     gc.setFill(Color.YELLOW);
     gc.fillRect(30, (rows - 1) * tileSize + 9, tileSize, tileSize);
     gc.fillRect((columns - 1) * tileSize + 30, 9, tileSize, tileSize);
@@ -356,6 +368,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawAllIcons(GraphicsContext gc) {
+    logger.fine("Drawing all icons.");
     tileActions.entrySet().stream()
         .filter(e -> e.getValue().getLandAction() != null && e.getValue()
             .getLandAction().getIconPath() != null).forEach(e -> {
@@ -372,6 +385,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @param iconPath The resource path to the icon image file.
    */
   private void drawIcon(GraphicsContext gc, int tileId, String iconPath) {
+    logger.fine("Drawing icon for tile: " + tileId + ", icon file path: " + iconPath);
     double[] tilePosition = getTileCenter(tileId);
 
     InputStream stream = getClass().getResourceAsStream(iconPath);
@@ -397,6 +411,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawAllCustom(GraphicsContext gc) {
+    logger.fine("Drawing all custom tiles.");
     tileActions.forEach((tileId, tileAction) -> {
       if (tileAction.getLandAction() != null) {
         tileAction.getLandAction().drawCustom(gc, tileId, this);
@@ -410,6 +425,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawArrows(GraphicsContext gc) {
+    logger.fine("Drawing arrows.");
     double yPos = (tileSize * rows) + tileSize + 9;
 
     for (int i = 1; i < rows + 1; i++) {
@@ -443,6 +459,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @return A double array containing the x and y coordinates of the tile's top-left corner.
    */
   public double[] getTilePos(int tileId) {
+    logger.fine("Getting tile position: " + tileId);
     double yPos = (tileSize * rows) - tileSize;
 
     int col = tileId % columns;
@@ -462,6 +479,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @return A double array containing the x and y coordinates of the tile's center.
    */
   public double[] getTileCenter(int tileId) {
+    logger.fine("Getting tile center position: " + tileId);
     double yPos = (tileSize * rows) - tileSize;
 
     int col = tileId % columns;
