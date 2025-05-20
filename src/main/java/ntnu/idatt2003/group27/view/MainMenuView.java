@@ -36,10 +36,11 @@ import ntnu.idatt2003.group27.view.components.PlayerListCardEditable;
  */
 public class MainMenuView {
   /**
-   * Logger instance for the {@code } class.
+   * Logger instance for the {@link MainMenuView} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(MainMenuView.class.getName());
+
   /** The root container for the main menu view. */
   private final StackPane root;
 
@@ -109,6 +110,7 @@ public class MainMenuView {
    * This constructor sets up the foundational layout for this interface.
    */
   public MainMenuView() {
+    logger.fine("Initializing main menu view.");
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
     root.getStyleClass().add("root");
@@ -116,6 +118,8 @@ public class MainMenuView {
 
 
   public void initializeLayout(List<Piece> pieces) {
+    logger.fine("Initializing layout with pieces: " + pieces);
+
     //Initializes layout.
     AppLayout layout = new AppLayout();
 
@@ -257,6 +261,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setLadderGameSelectionMenuButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting ladder game selection menu button handler.");
     ladderGameMainMenuButton.setOnAction(action);
   }
 
@@ -267,6 +272,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setMathGameSelectionMenuButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting math game selection menu button handler.");
     mathGameMainMenuButton.setOnAction(action);
   }
 
@@ -276,6 +282,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setAddPlayerButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting add player button handler.");
     addPlayerButton.setOnAction(action);
   }
 
@@ -285,6 +292,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setNormalLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting normal ladder game board button handler.");
     normalLadderGameBoardButton.setOnAction(action);
   }
 
@@ -294,6 +302,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setCrazyLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting crazy ladder game board button handler.");
     crazyLadderGameBoardButton.setOnAction(action);
   }
 
@@ -303,6 +312,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setImpossibleLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting impossible ladder game board button handler.");
     impossibleLadderGameBoardButton.setOnAction(action);
   }
 
@@ -312,6 +322,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setJsonLadderGameBoardButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting json ladder game board button handler.");
     jsonLadderGameBoardButton.setOnAction(action);
   }
 
@@ -321,6 +332,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setEasyMathButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting easy math button handler.");
     mathEasyButton.setOnAction(action);
   }
 
@@ -330,6 +342,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setMediumMathButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting medium math button handler.");
     mathMediumButton.setOnAction(action);
   }
 
@@ -339,6 +352,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setHardMathButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting hard math button handler.");
     mathHardButton.setOnAction(action);
   }
 
@@ -348,6 +362,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setExportPlayersCsvButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting export players csv button handler.");
     exportPlayersCsvButton.setOnAction(action);
   }
 
@@ -357,6 +372,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setImportPlayersCsvButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting import player csv button handler.");
     importPlayersCsvButton.setOnAction(action);
   }
 
@@ -366,6 +382,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setPlayerPieceButtonHandlers(int buttonIndex, EventHandler<ActionEvent> action) {
+    logger.fine("Setting player piece button handlers.");
     playerPieceIconButtons.get(buttonIndex).setOnAction(action);
   }
 
@@ -375,6 +392,7 @@ public class MainMenuView {
    * @param action the action to perform when the button is clicked
    */
   public void setRemovePlayerButtonHandler(Player player, EventHandler<ActionEvent> action) {
+    logger.fine("Setting remove player button handler.");
     playerListCardEditable.setRemovePlayerButtonHandler(player, action);
   }
 
@@ -382,6 +400,7 @@ public class MainMenuView {
    * Displays ladder game board difficulty selection buttons in the game difficulty grid.
    */
   public void switchToGameLadder() {
+    logger.fine("Switching to game ladder.");
     title.setText("Stigespill");
 
     gameDifficultyGrid.getChildren().clear();
@@ -395,6 +414,7 @@ public class MainMenuView {
    * Displays math game difficulty selection buttons in the game difficulty grid.
    */
   public void switchToGameMath() {
+    logger.fine("Switching to game math.");
     title.setText("Mattespill");
 
     gameDifficultyGrid.getChildren().clear();
@@ -409,6 +429,7 @@ public class MainMenuView {
    * @param color The {@link Color} object representing the color to be displayed.
    */
   public void showPickedColor(Color color) {
+    logger.fine("Showing picked color: " + color);
     Circle colorCircle = new Circle(10);
     colorCircle.setFill(color);
     colorPicker.setGraphic(colorCircle);
@@ -418,6 +439,7 @@ public class MainMenuView {
    * Resets the icon back to the default color picker icon when a player has been added.
    */
   public void removePickedColor() {
+    logger.fine("Removing picked color.");
     ImageView colorPickerIcon = new ImageView("icons/picker-button.png");
     colorPickerIcon.setFitWidth(20);
     colorPickerIcon.setFitHeight(20);
@@ -428,6 +450,7 @@ public class MainMenuView {
    * Displays the color picker for the user to select a color.
    */
   public void showColorPicker() {
+    logger.fine("Showing color picker.");
     ColorPicker tempColorPicker = new ColorPicker(pickedColor != null ? pickedColor : Color.WHITE);
     tempColorPicker.setStyle("-fx-color-label-visible: false; -fx-background-color: transparent; -fx-pref-width: 0; -fx-pref-height: 0;");
     tempColorPicker.setOnAction(colorPickEvent -> {
@@ -450,6 +473,7 @@ public class MainMenuView {
    * @param color the {@link Color} object representing the color to be set.
    */
   public void setPickedColor(Color color) {
+    logger.fine("Setting picked color to: " + color);
     this.pickedColor = color;
   }
 
@@ -459,6 +483,7 @@ public class MainMenuView {
    * @return the {@link Color} object representing the picked color.
    */
   public Color getPickedColor() {
+    logger.fine("Getting picked color.");
     return pickedColor;
   }
 
@@ -468,10 +493,12 @@ public class MainMenuView {
    * @param action the action to set.
    */
   public void setColorPickerButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting color picker button handler.");
     colorPicker.setOnAction(action);
   }
 
   public void populatePlayerList(List<Player> players){
+    logger.fine("Populating player list with players: " + players);
     playerListCardEditable.populatePlayerList(players);
   }
 
@@ -481,6 +508,7 @@ public class MainMenuView {
    * @param disable
    */
   public void setDisablePlayerPieceButton(int buttonIndex, boolean disable){
+    logger.fine("Disabling player piece button. ButtonIndex: " + buttonIndex + ", Disable: " + disable);
     playerPieceIconButtons.get(buttonIndex).setDisable(disable);
   }
 
@@ -489,6 +517,7 @@ public class MainMenuView {
    * @param disable
    */
   public void setDisableAllPlayerPieceButtons(boolean disable){
+    logger.fine("Disabling all player piece buttons. Disable: " + disable);
     playerPieceIconButtons.forEach(button -> button.setDisable(disable));
   }
 
@@ -497,6 +526,7 @@ public class MainMenuView {
    * @return
    */
   public String getPlayerNameTextFieldValue() {
+    logger.fine("Getting player name text field value.");
     return playerNameTextField.getText();
   }
 
@@ -505,6 +535,7 @@ public class MainMenuView {
    * @return the root {@link StackPane} of this view.
    */
   public StackPane getRoot() {
+    logger.fine("Getting root.");
     return root;
   }
 }
