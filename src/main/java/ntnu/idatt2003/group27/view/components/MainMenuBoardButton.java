@@ -19,7 +19,7 @@ import javax.swing.Icon;
  */
 public class MainMenuBoardButton extends Button {
   /**
-   * Logger instance for the {@code } class.
+   * Logger instance for the {@link MainMenuBoardButton} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(MainMenuBoardButton.class.getName());
@@ -36,6 +36,7 @@ public class MainMenuBoardButton extends Button {
    */
   public MainMenuBoardButton(int prefSize, int minSize, int maxSize, int imageSize, Insets insets, String title, String description, Image image) {
     super();
+    logger.fine("Initializing MainMenuBoardButton with prefSize " + prefSize + ", minSize: " + minSize + ", maxSize: " + maxSize + ", imageSize: " + imageSize + ", title: " + title + ", description: " + description + ", image: " + image);
 
     //Creates button content to display button information correctly.
     VBox buttonContent = new VBox(5);
