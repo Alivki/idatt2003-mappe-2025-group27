@@ -3,6 +3,7 @@ package ntnu.idatt2003.group27.models;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
+import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
 /**
@@ -21,7 +22,7 @@ public class BoardFactory {
    * linked sequentially, and actions are assigned to tiles based on the provided map.
    *
    * @param totalTiles The total number of tiles on the board.
-   * @param tileActions A map of tiles IDs to their corresponding {@link TileAction} objects.
+   * @param tileActions A map of tiles IDs to their corresponding {@link LadderTileAction} objects.
    * @return A new {@link Board} instance configured with the specified tiles and actions.
    */
   public Board createBoard(int totalTiles, Map<Integer, TileAction> tileActions) {

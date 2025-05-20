@@ -7,18 +7,18 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Dice;
 import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.interfaces.TileAction;
-import ntnu.idatt2003.group27.view.components.Canvas;
+import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
+import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
 /**
  * Represents the behavior of a "throw an extra dice" tile on the game board. This class implements the
- * {@link TileAction} interface to define an action with custom behaviour.
+ * {@link LadderTileAction} interface to define an action with custom behaviour.
  *
  * @author Amadeus Berg
  * @version 1.0
  * @since 1.0
  */
-public class ThrowNewDiceAction implements TileAction {
+public class ThrowNewDiceAction implements LadderTileAction {
   public String description;
   //Variables for dice to throw
   public int numberOfDice, numberOfDieSides;
@@ -66,12 +66,12 @@ public class ThrowNewDiceAction implements TileAction {
   }
 
   @Override
-  public void drawCustom(GraphicsContext gc, int tileId, Canvas canvas) {
+  public void drawCustom(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
     // Custom drawing logic for the action can be implemented here
   }
 
   @Override
-  public void drawDestinationTile(GraphicsContext gc, int tileId, Canvas canvas) {
+  public void drawDestinationTile(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
     // Custom drawing logic for the destination tile can be implemented here
   }
 

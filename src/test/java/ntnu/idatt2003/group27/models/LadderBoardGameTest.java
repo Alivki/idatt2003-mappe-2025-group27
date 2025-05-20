@@ -26,8 +26,8 @@ import org.junit.jupiter.api.Test;
  * Moving the player the correct amount of steps,<br>
  * Testing winner detection</p>
  */
-public class BoardGameTest {
-  BoardGame gameDefault;
+public class LadderBoardGameTest {
+  LadderBoardGame gameDefault;
   Board board;
 
   /**
@@ -52,13 +52,13 @@ public class BoardGameTest {
 
     board = new Board(tiles);
 
-    gameDefault = new BoardGame(board, 1, 6);
+    gameDefault = new LadderBoardGame(board, 1, 6);
   }
 
   @Test
   @DisplayName("Test the initialization of the BoardGame class")
   public void testBoardGameDefaultInitialization() {
-    BoardGame game = new BoardGame(board, 1, 6);
+    LadderBoardGame game = new LadderBoardGame(board, 1, 6);
     assertNotNull(game.getBoard(), "The board should exist when board game is initialized");
     assertEquals(3, game.getBoard().getTiles().size(), "There should be 3 tiles on this board");
   }
@@ -90,7 +90,7 @@ public class BoardGameTest {
   @Test
   @DisplayName("test that dice roll produces valid numbers")
   public void testDiceRoll() {
-    BoardGame game = new BoardGame(board, 1, 6);
+    LadderBoardGame game = new LadderBoardGame(board, 1, 6);
     int roll = game.getDice().roll();
 
     assertTrue(roll >= 1 && roll <= 6, "Roll should be within the valid range for 1 six-sided die");
@@ -112,7 +112,7 @@ public class BoardGameTest {
   @Test
   @DisplayName("test the game set up method")
   public void testGameSetUp() throws NotEnoughPlayersInGameException {
-    BoardGame game = new BoardGame(board, 1, 6);
+    LadderBoardGame game = new LadderBoardGame(board, 1, 6);
     Player player = new Player("player");
 
     game.addPlayer(player);
@@ -127,7 +127,7 @@ public class BoardGameTest {
   @Test
   @DisplayName("test that set up method throws error when no players are in the game")
   public void testGameSetUpThrows() {
-    BoardGame game = new BoardGame(board, 1, 6);
+    LadderBoardGame game = new LadderBoardGame(board, 1, 6);
 
     assertThrows(NotEnoughPlayersInGameException.class, game::setUpGame, "Should throw error as no players are in the game");
   }
@@ -143,7 +143,7 @@ public class BoardGameTest {
       e.printStackTrace();
     }
 
-    BoardGame game = new BoardGame(board, 1, 6);
+    LadderBoardGame game = new LadderBoardGame(board, 1, 6);
 
     Player player1 = new Player("player1");
     Player player2 = new Player("player2");
@@ -173,7 +173,7 @@ public class BoardGameTest {
   @Test
   @DisplayName("test if game throws error with to few players when starting")
   public void testStartingGameThrowsError() {
-    BoardGame game = new BoardGame(board, 1, 6);
+    LadderBoardGame game = new LadderBoardGame(board, 1, 6);
     Player player = new Player("player");
 
     game.addPlayer(player);
