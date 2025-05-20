@@ -22,11 +22,12 @@ import ntnu.idatt2003.group27.models.Player;
  */
 public class PlayerListCardEditable extends Card {
   /**
-   * Logger instance for the {@code } class.
+   * Logger instance for the {@link PlayerListCardEditable} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(PlayerListCardEditable.class.getName());
 
+  /** The scrollpane for the player list. */
   private final ScrollPane playerList;
 
   /** An arrayList storing all player used by this list*/
@@ -45,6 +46,7 @@ public class PlayerListCardEditable extends Card {
    */
   public PlayerListCardEditable(String title, String description, double height) {
     super(title, description, height);
+    logger.fine("Initializing player list card with title: " + title + ", description: " + description + ", height: " + height);
 
     //Initializes playerList scrollpane
     playerList = new ScrollPane();
@@ -63,6 +65,7 @@ public class PlayerListCardEditable extends Card {
    * @param players
    */
   public void populatePlayerList(List<Player> players) {
+    logger.fine("Populating player list with players: " + players);
     VBox playerContainer = new VBox(5);
 
     playerListCellMap.clear();
@@ -91,6 +94,7 @@ public class PlayerListCardEditable extends Card {
   }
 
   public void setRemovePlayerButtonHandler(Player player, EventHandler<ActionEvent> action) {
+    logger.fine("Setting remove player button handler for player: " + player);
     playerListCellMap.get(player).setRemovePlayerButtonHandler(action);
   }
 
