@@ -30,10 +30,11 @@ public class PlayerListCard extends Card {
    */
   private static final Logger logger = Logger.getLogger(PlayerListCard.class.getName());
 
+  /** The {@link ScrollPane} for the {@link Player} list. */
   private final ScrollPane playerList;
 
   /**
-   * Constructs a {@link Card} with the specified title, description and height.
+   * Constructs a {@link PlayerListCard} with the specified title, description and height.
    *
    * @param title       The title text to display on the card.
    * @param description The description text to display on the card, or null if no
@@ -100,5 +101,4 @@ public class PlayerListCard extends Card {
 
     playerList.setContent(playerContainer);
   }
-
 }
