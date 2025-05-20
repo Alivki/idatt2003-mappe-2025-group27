@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.view;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -23,6 +24,11 @@ import java.util.List;
  * Displays all necessary GUI for interacting with and playing the ladder game.
  */
 public class MathGameView {
+  /**
+   * Logger instance for the {@link MathGameView} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(MathGameView.class.getName());
 
   /**
    * Root container for the Ladder Game view.
@@ -102,6 +108,7 @@ public class MathGameView {
    * This constructor sets up the foundational layout for this interface.
    */
   public MathGameView() {
+    logger.fine("Initializing MathGameView.");
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
     root.getStyleClass().add("root");
@@ -114,6 +121,7 @@ public class MathGameView {
    * Creates and organizes the all required UI components.
    */
   private void initializeLayout() {
+    logger.fine("Initialize layout.");
     AppLayout layout = new AppLayout();
 
     homeButton = new CustomButton("Avlutt spill/hjem", CustomButton.ButtonVariant.GHOST, null);
@@ -183,10 +191,12 @@ public class MathGameView {
   }
 
   public void clearTextField() {
+    logger.fine("Clearing text field.");
     answerField.clear();
   }
 
   public void roundPlay(String question) {
+    logger.fine("Playing round with question: " + question);
     clearTextField();
     playMenuBox.getChildren().clear();
     Label questionLabel = new Label("Spørsmål: " + question);
@@ -195,6 +205,7 @@ public class MathGameView {
   }
 
   public void betweenRounds() {
+    logger.fine("Executing between round logic.");
     playMenuBox.getChildren().clear();
     playMenuBox.getChildren().addAll(playButton);
   }
@@ -204,6 +215,7 @@ public class MathGameView {
   }
 
   public void setAnswerButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting answer button handler.");
     answerButton.setOnAction(action);
   }
 
@@ -213,6 +225,7 @@ public class MathGameView {
    * @param action the action to perform when the button is clicked.
    */
   public void setHomeButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting home button handler.");
     homeButton.setOnAction(action);
   }
 
@@ -222,6 +235,7 @@ public class MathGameView {
    * @param action the action to perform when the button is clicked.
    */
   public void setPlayButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting play button handler.");
     playButton.setOnAction(action);
   }
 
@@ -231,6 +245,7 @@ public class MathGameView {
    * @param action the action to perform when the button is clicked.
    */
   public void setRestartButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting restart button handler.");
     restartButton.setOnAction(action);
   }
 
@@ -240,6 +255,7 @@ public class MathGameView {
    * @param round
    */
   public void updateRoundLabel(String round) {
+    logger.fine("Updating round label to: " + round);
     roundInfo.setText(round);
   }
 
@@ -247,6 +263,7 @@ public class MathGameView {
    * Sets the text for the currentPlayer label.
    */
   public void updateCurrentPlayerLabel(String playerName) {
+    logger.fine("Updating current player label to: " + playerName);
     currentPlayerInfo.setText(playerName);
   }
 
@@ -256,6 +273,7 @@ public class MathGameView {
    * @param grade
    */
   public void updateGradeLabel(String grade) {
+    logger.fine("Updating grade label to: " + grade);
     gradeInfo.setText(grade);
   }
 
@@ -265,6 +283,7 @@ public class MathGameView {
    * @param status
    */
   public void updateStatusLabel(String status) {
+    logger.fine("Updating status label to: " + status);
     statusInfo.setText(status);
   }
 
@@ -274,6 +293,7 @@ public class MathGameView {
    * @return Integer value of the round label text
    */
   public int getRoundLabel() {
+    logger.fine("Getting round label value.");
     return Integer.parseInt(roundInfo.getText());
   }
 
@@ -283,6 +303,7 @@ public class MathGameView {
    * @param players a list of players.
    */
   public void populatePlayerList(List<Player> players) {
+    logger.fine("Populating player list with players: " + players);
     playerListCard.populatePlayerList(players);
     playerAmount = players.size();
   }
@@ -297,6 +318,7 @@ public class MathGameView {
    */
   public void animatePlayerMovement(Player player, int newTileId, List<Player> players,
                                     Runnable onComplete) {
+    logger.fine("Animating player movement for player: " + player.getName() + ", tile ID: " + newTileId + ", players: " + players);
     mathCanvas.animatePlayerMovement(player, newTileId, () -> {
       updateBoard(players);
       if (onComplete != null) {
@@ -311,6 +333,7 @@ public class MathGameView {
    * @param players
    */
   public void createBoard(ArrayList<Player> players, Map<Player, Board> boards) {
+    logger.fine("Creating board with players: " + players + ", boards: " + boards);
     mathCanvas = new MathCanvas(players, boards);
     canvasContainer.getChildren().add(mathCanvas);
 
@@ -325,6 +348,7 @@ public class MathGameView {
    * @param players The updated {@link List} of {@link Player} objects.
    */
   public void updateBoard(List<Player> players) {
+    logger.fine("Updating board.");
     mathCanvas.updateBoard(players);
   }
 
@@ -336,6 +360,7 @@ public class MathGameView {
    * @param message
    */
   public void showToast(Toast.ToastVariant variant, String title, String message) {
+    logger.fine("Showing toast of variant: " + variant + ", title: " + title + ", message: " + message);
     Toast toast = new Toast(root, variant, title, message);
     toast.show();
   }
@@ -348,6 +373,7 @@ public class MathGameView {
    * @return
    */
   private HBox createGameInfoRow(String labelText, Label infoLabel) {
+    logger.fine("Creating game info row with labelText: " + labelText + ", infoLabel: " + infoLabel);
     Label label = new Label(labelText);
     Region dots = new Region();
 
@@ -368,6 +394,7 @@ public class MathGameView {
    * @return the root {@link StackPane} of this view.
    */
   public StackPane getRoot() {
+    logger.fine("Getting root.");
     return root;
   }
 }
