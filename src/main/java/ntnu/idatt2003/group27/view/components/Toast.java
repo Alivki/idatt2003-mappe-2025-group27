@@ -21,11 +21,12 @@ import javafx.stage.StageStyle;
  */
 public class Toast {
   /**
-   * Logger instance for the {@code } class.
+   * Logger instance for the {@link Toast} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(Toast.class.getName());
-  /** Enum defining the available toast notification variants. */
+
+  /** Enum defining the available {@link Toast} notification variants. */
   public enum ToastVariant {
     DEFAULT,
     ERROR,
@@ -61,6 +62,7 @@ public class Toast {
    * @param message The message text to display in the toast.
    */
   public Toast(StackPane owner, ToastVariant type, String title, String message) {
+    logger.fine("Initializing Toast with owner: " + owner + ", type: " + type + ", title: " + title + ", message: " + message);
     this.owner = owner;
     this.title = title;
     this.message = message;
@@ -83,6 +85,7 @@ public class Toast {
    * @param type The {@link ToastVariant} defining the toast's style.
    */
   private void setupUI(ToastVariant type) {
+    logger.fine("Setting up UI for toast with type: " + type);
     VBox layout = new VBox(0);
     layout.getStyleClass().add("toast");
     layout.setFillWidth(true);
@@ -132,6 +135,7 @@ public class Toast {
    * remains visible for 3.5 seconds before automatically closing.
    */
   public void show() {
+    logger.fine("Showing Toast.");
     double ownerWidth = owner.getScene().getWidth();
     double ownerHeight = owner.getScene().getHeight();
     double ownerX = owner.getScene().getWindow().getX();
