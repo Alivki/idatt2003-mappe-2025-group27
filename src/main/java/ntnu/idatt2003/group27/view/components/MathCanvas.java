@@ -133,9 +133,9 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
     GraphicsContext gc = getGraphicsContext2D();
     gc.clearRect(0, 0, getWidth(), getHeight());
 
+    drawFlag(gc);
     drawTiles(gc);
     drawPlayers(gc);
-    drawFlag(gc);
   }
 
   /**
