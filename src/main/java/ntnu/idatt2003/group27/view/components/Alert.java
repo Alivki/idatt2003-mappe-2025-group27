@@ -24,7 +24,7 @@ import javafx.stage.StageStyle;
  */
 public class Alert {
   /**
-   * Logger instance for the {@code Alert} class.
+   * Logger instance for the {@link Alert} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(Alert.class.getName());
@@ -62,6 +62,7 @@ public class Alert {
    *                   (true for confirmation, false for dney).
    */
   public Alert(StackPane owner, String title, String message, String confirmationText, String denyText, Consumer<Boolean> onResponse) {
+    logger.fine("Initializing alert : " + title + " : " + message + " : " + confirmationText + " : " + denyText + " : " + owner);
     this.owner = owner;
     this.title = title;
     this.message = message;
@@ -87,6 +88,7 @@ public class Alert {
    * The UI is styled using external CSS stylesheets.
    */
   private void setupUI() {
+    logger.fine("Setting up alert UI.");
     VBox layout = new VBox(0);
     layout.getStyleClass().add("alert");
     layout.setFillWidth(true);
@@ -137,6 +139,7 @@ public class Alert {
    * size is bound to the owner's dimensions.
    */
   private void setupOverlay() {
+    logger.fine("Setting up overlay.");
     overlay = new Rectangle(owner.getWidth(), owner.getHeight(), Color.rgb(0, 0, 0, 0.5));
     overlay.setMouseTransparent(true);
     overlay.widthProperty().bind(owner.widthProperty());
@@ -148,6 +151,7 @@ public class Alert {
    */
   private void addOverlay() {
     if (!owner.getChildren().contains(overlay)) {
+      logger.fine("Adding overlay to owner stackpane.");
       owner.getChildren().add(overlay);
     }
   }
@@ -156,6 +160,7 @@ public class Alert {
    * Removes the overlay from the owner StackPane.
    */
   private void removeOverlay() {
+    logger.fine("Removing overlay.");
     owner.getChildren().remove(overlay);
   }
 
@@ -164,6 +169,7 @@ public class Alert {
    * background. The dialog remains open until the user clicks a button.
    */
   public void show() {
+    logger.fine("Showing alert.");
     addOverlay();
 
     double ownerWidth = owner.getScene().getWidth();
