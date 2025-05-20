@@ -19,7 +19,7 @@ import javafx.scene.image.ImageView;
  */
 public class CustomButton extends Button {
   /**
-   * Logger instance for the {@code CustomButton} class.
+   * Logger instance for the {@link CustomButton} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(CustomButton.class.getName());
@@ -45,6 +45,7 @@ public class CustomButton extends Button {
    */
   public CustomButton(String text, ButtonVariant type, EventHandler<ActionEvent> action) {
     super(text);
+    logger.fine("Initializing CustomButton with text " + text + " and type " + type.name());
     initialize(type, null, action);
   }
 
@@ -59,6 +60,7 @@ public class CustomButton extends Button {
    */
   public CustomButton(String text, ButtonVariant type, Node icon, EventHandler<ActionEvent> action) {
     super(text);
+    logger.fine("Initializing CustomButton with text " + text + " and type " + type.name());
     initialize(type, icon, action);
   }
 
@@ -72,6 +74,7 @@ public class CustomButton extends Button {
    */
   public CustomButton(Node icon, ButtonVariant type, EventHandler<ActionEvent> action) {
     super();
+    logger.fine("Initializing CustomButton with icon " + icon + " and type " + type.name());
     initialize(type, icon, action);
   }
 
@@ -85,6 +88,7 @@ public class CustomButton extends Button {
    * @param action The {@link EventHandler} to handle button click events.
    */
   private void initialize(ButtonVariant variant, Node icon, EventHandler<ActionEvent> action) {
+    logger.fine("Initializing");
     getStyleClass().add("button");
 
     if (variant != ButtonVariant.ICON) {
@@ -156,6 +160,7 @@ public class CustomButton extends Button {
    * @param icon The {@link Node} to yse as the button's icon.
    */
   public void setIcon(Node icon) {
+    logger.fine("Setting icon " + icon);
     setGraphic(icon);
   }
 }
