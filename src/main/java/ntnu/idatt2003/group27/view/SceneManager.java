@@ -16,11 +16,10 @@ import java.util.logging.Logger;
 public class SceneManager extends Application {
 
   /**
-   * Logger instance for the {@code SceneManager} class.
+   * Logger instance for the {@link SceneManager} class.
    * Used for logging informational messages and errors related to scene management operations.
    */
   private static final Logger logger = Logger.getLogger(SceneManager.class.getName());
-
 
   /** The root container for the scene manager. */
   private StackPane rootContainer;
@@ -66,6 +65,7 @@ public class SceneManager extends Application {
    * @param args
    */
   public static void launchGui(String[] args) {
+    logger.fine("Launching GUI.");
     launch(args);
   }
 
@@ -74,6 +74,7 @@ public class SceneManager extends Application {
    * @param newPane
    */
   public void switchSceneImmediate(StackPane newPane) {
+    logger.fine("Switching scene immediately to " + newPane.getClass().getSimpleName());
     rootContainer.getChildren().clear();
     rootContainer.getChildren().add(newPane);
   }
