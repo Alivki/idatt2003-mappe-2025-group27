@@ -27,7 +27,7 @@ import javafx.util.Duration;
  */
 public class LadderGameController implements BoardGameObserver {
   /**
-   * Logger instance for the {@code BoardGameController} class.
+   * Logger instance for the {@link BoardGameController} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(LadderGameController.class.getName());

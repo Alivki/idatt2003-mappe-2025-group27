@@ -3,7 +3,7 @@ package ntnu.idatt2003.group27.models;
 import java.util.logging.Logger;
 
 /**
- * A class representing a player piece on the board
+ * A class representing a player {@link Piece} on the board
  *
  * @author Amadeus Berg
  */
@@ -14,8 +14,10 @@ public class Piece {
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(Piece.class.getName());
+
   /* The name of the piece */
   private final String name;
+
   /* The filepath to the piece's icon */
   private final String iconFilePath;
 

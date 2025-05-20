@@ -18,7 +18,7 @@ import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileWriter;
  */
 public class PlayerCsvFileWriter implements CustomFileWriter<Player[]> {
 
-  /** Logger instance for the {@code PlayerCsvFileWriter} class. */
+  /** Logger instance for the {@link PlayerCsvFileWriter} class. */
   private static final Logger logger = Logger.getLogger(PlayerCsvFileWriter.class.getName());
 
   /**

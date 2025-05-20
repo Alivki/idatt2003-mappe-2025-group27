@@ -13,10 +13,11 @@ import java.util.logging.Logger;
  */
 public class Die {
   /**
-   * Logger instance for the {@code Die} class.
+   * Logger instance for the {@link Die} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(Die.class.getName());
+
   /** The value of the most recent roll. */
   private int lastRollValue;
 

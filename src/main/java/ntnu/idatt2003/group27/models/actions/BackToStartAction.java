@@ -21,7 +21,7 @@ import ntnu.idatt2003.group27.view.components.LadderCanvas;
  */
 public class BackToStartAction implements LadderTileAction {
   /**
-   * Logger instance for the {@code BackToStartAction} class.
+   * Logger instance for the {@link BackToStartAction} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(BackToStartAction.class.getName());

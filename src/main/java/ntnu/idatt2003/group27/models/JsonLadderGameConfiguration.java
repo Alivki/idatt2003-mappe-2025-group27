@@ -19,7 +19,7 @@ import ntnu.idatt2003.group27.utils.filehandler.json.JsonFileReader;
  */
 public class JsonLadderGameConfiguration implements GameConfiguration {
   /**
-   * Logger instance for the {@code JsonLadderGameConfiguration} class.
+   * Logger instance for the {@link JsonLadderGameConfiguration} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(JsonLadderGameConfiguration.class.getName());

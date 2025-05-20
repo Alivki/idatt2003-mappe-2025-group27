@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class MainMenuController {
   /**
-   * Logger instance for the {@code MainMenuController} class.
+   * Logger instance for the {@link MainMenuController} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(MainController.class.getName());

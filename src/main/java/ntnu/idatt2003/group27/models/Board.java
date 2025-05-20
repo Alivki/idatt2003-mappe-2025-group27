@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class Board {
   /**
-   * Logger instance for the {@code Board} class.
+   * Logger instance for the {@link Board} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(Board.class.getName());

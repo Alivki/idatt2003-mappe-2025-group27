@@ -20,7 +20,7 @@ import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileReader;
 
 public class JsonFileReader implements CustomFileReader<Board> {
   /**
-   * Logger instance for the {@code } class.
+   * Logger instance for the {@code JsonFileReader} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(JsonFileReader.class.getName());

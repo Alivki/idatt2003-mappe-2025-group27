@@ -24,10 +24,10 @@ import java.util.List;
  */
 public class LadderBoardGame implements BoardGame {
   /**
-   * Logger instance for the {@code BoardGame} class.
+   * Logger instance for the {@link LadderBoardGame} class.
    * Used for logging informational messages and errors related to class operations.
    */
-  private static final Logger logger = Logger.getLogger(BoardGame.class.getName());
+  private static final Logger logger = Logger.getLogger(LadderBoardGame.class.getName());
 
   /**
    * List of observers monitoring game events .

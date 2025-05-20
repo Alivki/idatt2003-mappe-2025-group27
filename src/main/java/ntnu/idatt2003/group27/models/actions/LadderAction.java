@@ -22,13 +22,15 @@ import ntnu.idatt2003.group27.view.components.LadderCanvas;
  */
 public class LadderAction implements LadderTileAction {
   /**
-   * Logger instance for the {@code LadderAction} class.
+   * Logger instance for the {@link LadderAction} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(LadderAction.class.getName());
+
   /** The destination tile id for this {@link LadderAction}. */
   public int destinationTileId;
-  /** The description of this {@link TileAction}*/
+
+  /** The description of this {@link LadderAction}*/
   public String description;
 
   /**

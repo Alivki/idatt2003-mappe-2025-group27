@@ -19,7 +19,7 @@ import javafx.scene.image.ImageView;
  */
 public class CustomButton extends Button {
   /**
-   * Logger instance for the {@code } class.
+   * Logger instance for the {@code CustomButton} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(CustomButton.class.getName());

@@ -22,7 +22,7 @@ import ntnu.idatt2003.group27.models.interfaces.GameConfiguration;
  */
 public class BoardGameFactory {
   /**
-   * Logger instance for the {@code BoardGameFactory} class.
+   * Logger instance for the {@link BoardGameFactory} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(BoardGameFactory.class.getName());

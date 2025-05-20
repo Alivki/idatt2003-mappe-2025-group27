@@ -26,7 +26,7 @@ import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileReader;
  */
 public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
 
-  /** Logger instance for the {@code PlayerCsvFileReader} class. */
+  /** Logger instance for the {@link PlayerCsvFileReader} class. */
   private static final Logger logger = Logger.getLogger(PlayerCsvFileReader.class.getName());
 
   /** A list of pieces to be used when reading files */
@@ -37,6 +37,7 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
    * @param pieces The array of {@link Piece} objects available for assignment to players.
    */
   public PlayerCsvFileReader(Piece[] pieces) {
+    logger.fine("Initializing PlayerCsvFileReader with pieces: " + Arrays.toString(pieces));
     this.pieces = pieces;
   }
 

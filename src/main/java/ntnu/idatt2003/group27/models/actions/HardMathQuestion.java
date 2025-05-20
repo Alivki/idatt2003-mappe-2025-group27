@@ -56,7 +56,7 @@ public class HardMathQuestion implements MathTileAction {
         this.answer = num1 * num1;
         break;
       default:
-        logger.severe("Invalid operator: " + op);
+        logger.warning("Invalid operator: " + op);
         throw new IllegalStateException("Invalid operator");
     }
   }

@@ -25,12 +25,14 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  */
 public class BoardSerializer implements JsonSerializer<Board> {
   /**
-   * Logger instance for the {@code } class.
+   * Logger instance for the {@link BoardSerializer} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(BoardSerializer.class.getName());
+
   @Override
   public JsonElement serialize(Board board, Type typeOfSrc, JsonSerializationContext context) {
+    logger.fine("Serializing Board: " + board);
     JsonObject boardJson = new JsonObject();
     JsonArray tilesArray = new JsonArray();
 

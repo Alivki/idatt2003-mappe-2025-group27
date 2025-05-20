@@ -18,7 +18,7 @@ import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileWriter;
  */
 public class JsonFileWriter implements CustomFileWriter<Board> {
   /**
-   * Logger instance for the {@code } class.
+   * Logger instance for the {@code JsonFileWriter} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(JsonFileWriter.class.getName());

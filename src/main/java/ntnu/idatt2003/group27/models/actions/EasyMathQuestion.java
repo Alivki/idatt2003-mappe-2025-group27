@@ -23,6 +23,7 @@ public class EasyMathQuestion implements MathTileAction {
   private final Random random = new Random();
 
   public EasyMathQuestion() {
+    logger.fine("Initializing EasyMathQuestion");
     this.num1 = random.nextInt(10) + 1;
     this.num2 = random.nextInt(10) + 1;
 

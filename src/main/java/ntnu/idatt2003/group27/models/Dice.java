@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
  */
 public class Dice {
   /**
-   * Logger instance for the {@code Dice} class.
+   * Logger instance for the {@link Dice} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(Dice.class.getName());

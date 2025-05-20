@@ -18,7 +18,7 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  */
 public class BoardFactory {
   /**
-   * Logger instance for the {@code BoardFactory} class.
+   * Logger instance for the {@link BoardFactory} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(BoardFactory.class.getName());
