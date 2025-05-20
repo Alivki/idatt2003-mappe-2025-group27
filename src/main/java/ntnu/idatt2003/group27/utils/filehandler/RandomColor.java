@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class RandomColor {
   /**
-   * Logger instance for the {@code } class.
+   * Logger instance for the {@link RandomColor} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(RandomColor.class.getName());
