@@ -40,9 +40,12 @@ public class MathGameView {
   private MathCanvas mathCanvas;
 
   /**
-   * VBox for showing playing buttons and input field
+   * VBox for showing playing buttons and input field.
    */
   private VBox playMenuBox;
+
+  /** Info label for player understanding how to start round. */
+  private Label playInfoLabel;
 
   /**
    * Button to play the round.
@@ -135,7 +138,7 @@ public class MathGameView {
     layout.getMainContainer().getChildren().addAll(title, canvasContainer);
 
     layout.getMainContainer().widthProperty().addListener((obs, oldWidth, newWidth) -> {
-      double availableWidth = newWidth.doubleValue() - 60;
+      double availableWidth = newWidth.doubleValue() - 150;
       double tileSize = (availableWidth - 90) / 5;
       double height = tileSize * playerAmount + 70 + ((playerAmount - 1) *  20);
       mathCanvas.setWidth(availableWidth);
@@ -155,9 +158,16 @@ public class MathGameView {
 
     Separator separator = new Separator();
 
+    playInfoLabel = new Label("Trykk på \"Start runden\" for å begynne");
+    playInfoLabel.setWrapText(true);
+    playInfoLabel.getStyleClass().add("h3");
+
     playButton = new CustomButton("Start runden", CustomButton.ButtonVariant.PRIMARY, null);
 
-    playMenuBox = new VBox(5);
+    playMenuBox = new VBox(10);
+    playMenuBox.setMinHeight(200);
+    playMenuBox.setAlignment(Pos.CENTER);
+
     answerField = new TextField();
     answerField.setPromptText("Skriv inn svaret her");
     answerButton = new CustomButton("Send svar", CustomButton.ButtonVariant.PRIMARY, null);
@@ -174,7 +184,7 @@ public class MathGameView {
         createGameInfoRow("Vanskelighetsgrad  :", gradeInfo),
         createGameInfoRow("Status:", statusInfo)
     );
-    playMenuBox.getChildren().add(playButton);
+    playMenuBox.getChildren().addAll(playInfoLabel, playButton);
     rightCard.getChildren()
         .addAll(gameInfo, separator, playMenuBox);
     layout.getRightContainer().getChildren().addAll(rightCard);
@@ -196,7 +206,7 @@ public class MathGameView {
 
   public void betweenRounds() {
     playMenuBox.getChildren().clear();
-    playMenuBox.getChildren().addAll(playButton);
+    playMenuBox.getChildren().addAll(playInfoLabel, playButton);
   }
 
   public String getAnswer() {
