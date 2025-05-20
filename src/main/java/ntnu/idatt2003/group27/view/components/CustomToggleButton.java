@@ -10,12 +10,14 @@ import javafx.scene.image.ImageView;
  */
 public class CustomToggleButton extends ToggleButton {
   /**
-   * Logger instance for the {@code CustomToggleButton} class.
+   * Logger instance for the {@link CustomToggleButton} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(CustomToggleButton.class.getName());
+
   public CustomToggleButton(ImageView icon, double size) {
     super();
+    logger.fine("Initializing CustomToggleButton with icon: " + icon + " size: " + size);
     getStyleClass().add("button");
     getStyleClass().add("icon-button");
     icon.setFitWidth(size * .5f);
