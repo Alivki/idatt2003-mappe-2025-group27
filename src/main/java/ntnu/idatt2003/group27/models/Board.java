@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * A class representing the game board in a tile-based game.
@@ -55,6 +56,9 @@ public class Board {
    *      or {@code null} if no tile with the specified ID exists.
    */
   public Tile getTile(int tileId) {
+    if (!tiles.containsKey(tileId)) {
+      throw new NoSuchElementException("Tile with ID " + tileId + " does not exist");
+    }
     return tiles.get(tileId);
   }
 
