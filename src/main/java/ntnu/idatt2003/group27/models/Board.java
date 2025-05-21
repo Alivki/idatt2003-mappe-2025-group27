@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * A class representing the game board in a tile-based game.
@@ -13,6 +14,12 @@ import java.util.Map;
  * @version 1.1
  */
 public class Board {
+  /**
+   * Logger instance for the {@link Board} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(Board.class.getName());
+
   /**
    * The map storing the tiles on the board,
    * with tile IDs as keys and {@link Tile} objects as values.
@@ -28,7 +35,9 @@ public class Board {
    * @throws IllegalArgumentException if {@code inputTiles} is null.
    */
   public Board(Map<Integer, Tile> inputTiles) throws IllegalArgumentException {
+    logger.fine("Creating board.");
     if (inputTiles == null) {
+      logger.warning("Input tiles is null.");
       throw new IllegalArgumentException("Input tiles cannot be null");
     }
 
@@ -44,6 +53,7 @@ public class Board {
    *     objects as values.
    */
   public Map<Integer, Tile> getTiles() {
+    logger.fine("Getting tiles.");
     return new HashMap<>(tiles);
   }
 
@@ -55,6 +65,7 @@ public class Board {
    *      or {@code null} if no tile with the specified ID exists.
    */
   public Tile getTile(int tileId) {
+    logger.fine("Getting tile " + tileId);
     return tiles.get(tileId);
   }
 
@@ -64,6 +75,7 @@ public class Board {
    * @param tile The tile to add to the board.
    */
   public void addTile(Tile tile) {
+    logger.fine("Adding tile " + tile);
     tiles.put(tile.getTileId(), tile);
   }
 }

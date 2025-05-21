@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -20,7 +21,16 @@ import ntnu.idatt2003.group27.view.components.LadderCanvas;
  * @since 1.0
  */
 public class LadderAction implements LadderTileAction {
+  /**
+   * Logger instance for the {@link LadderAction} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(LadderAction.class.getName());
+
+  /** The destination tile id for this {@link LadderAction}. */
   public int destinationTileId;
+
+  /** The description of this {@link LadderAction}*/
   public String description;
 
   /**
@@ -30,6 +40,7 @@ public class LadderAction implements LadderTileAction {
    * @param description       A textual description of the ladder action.
    */
   public LadderAction(int destinationTileId, String description) {
+    logger.fine("Initializing LadderAction.");
     this.destinationTileId = destinationTileId;
     this.description = description;
   }
@@ -41,11 +52,13 @@ public class LadderAction implements LadderTileAction {
    */
   @Override
   public void perform(Player player) {
+    logger.info("Performing LadderAction on player " + player.getName());
     player.move(destinationTileId - player.getCurrentTile().getTileId());
   }
 
   @Override
   public List<Integer> getAnimationPath(int startTileId, int actionTileId) {
+    logger.fine("Getting Animation Path for " + startTileId + " and " + actionTileId);
     List<Integer> path = new ArrayList<>();
     IntStream.range(startTileId, actionTileId).forEach(path::add);
     path.add(destinationTileId);
@@ -54,16 +67,19 @@ public class LadderAction implements LadderTileAction {
 
   @Override
   public Color getTileColor(int tileId) {
+    logger.fine("Getting tile color for tileId " + tileId);
     return destinationTileId > tileId ? Color.GREEN : Color.DARKRED;
   }
 
   @Override
   public String getIconPath() {
+    logger.fine("Getting icon path.");
     return null;
   }
 
   @Override
   public void drawCustom(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
+    logger.fine("Drawing custom tile " + tileId);
     double[] start = ladderCanvas.getTileCenter(tileId - 1);
     double[] end = ladderCanvas.getTileCenter(destinationTileId - 1);
 
@@ -126,6 +142,7 @@ public class LadderAction implements LadderTileAction {
 
   @Override
   public void drawDestinationTile(GraphicsContext gc, int tileId, LadderCanvas ladderCanvas) {
+    logger.fine("Drawing destination tile " + tileId);
     double[] tileLandPosition = ladderCanvas.getTilePos(destinationTileId - 1);
     gc.setFill(tileId + 1 < destinationTileId ? Color.LIGHTGREEN : Color.RED);
     gc.fillRect(tileLandPosition[0], tileLandPosition[1], ladderCanvas.getTileSize(), ladderCanvas.getTileSize());
@@ -137,6 +154,7 @@ public class LadderAction implements LadderTileAction {
    * @return the ID of the destination tile.
    */
   public int getDestinationTileId() {
+    logger.fine("Getting destination tile id.");
     return destinationTileId;
   }
 
@@ -146,6 +164,7 @@ public class LadderAction implements LadderTileAction {
    * @return the description of the ladder action.
    */
   public String getDescription() {
+    logger.fine("Getting description.");
     return description;
   }
 }

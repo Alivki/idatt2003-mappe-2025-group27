@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -20,7 +21,13 @@ import ntnu.idatt2003.group27.models.Player;
  * @author Amadeus Berg
  */
 public class PlayerListCardEditable extends Card {
+  /**
+   * Logger instance for the {@link PlayerListCardEditable} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(PlayerListCardEditable.class.getName());
 
+  /** The {@link ScrollPane} for the {@link Player} list. */
   private final ScrollPane playerList;
 
   /** An arrayList storing all player used by this list*/
@@ -30,7 +37,7 @@ public class PlayerListCardEditable extends Card {
   private Map<Player, PlayerListCell> playerListCellMap = new HashMap<>();
 
   /**
-   * Constructs a {@link Card} with the specified title, description and height.
+   * Constructs a {@link PlayerListCardEditable} with the specified title, description and height.
    *
    * @param title       The title text to display on the card.
    * @param description The description text to display on the card, or null if no
@@ -39,6 +46,7 @@ public class PlayerListCardEditable extends Card {
    */
   public PlayerListCardEditable(String title, String description, double height) {
     super(title, description, height);
+    logger.fine("Initializing player list card with title: " + title + ", description: " + description + ", height: " + height);
 
     //Initializes playerList scrollpane
     playerList = new ScrollPane();
@@ -57,6 +65,7 @@ public class PlayerListCardEditable extends Card {
    * @param players
    */
   public void populatePlayerList(List<Player> players) {
+    logger.fine("Populating player list with players: " + players);
     VBox playerContainer = new VBox(5);
 
     playerListCellMap.clear();
@@ -84,7 +93,13 @@ public class PlayerListCardEditable extends Card {
     playerList.setContent(playerContainer);
   }
 
+  /**
+   * Sets the action for the remove player button for the specified {@link Player}.
+   * @param player
+   * @param action The action for the button.
+   */
   public void setRemovePlayerButtonHandler(Player player, EventHandler<ActionEvent> action) {
+    logger.fine("Setting remove player button handler for player: " + player);
     playerListCellMap.get(player).setRemovePlayerButtonHandler(action);
   }
 
