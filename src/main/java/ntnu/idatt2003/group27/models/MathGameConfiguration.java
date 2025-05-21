@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models;
 
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.actions.EasyMathQuestion;
 import ntnu.idatt2003.group27.models.actions.HardMathQuestion;
 import ntnu.idatt2003.group27.models.actions.MediumMathQuestion;
@@ -21,6 +22,12 @@ import java.util.Map;
  * @since 2.0
  */
 public class MathGameConfiguration implements GameConfiguration {
+  /**
+   * Logger instance for the {@link MathGameConfiguration} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(MathGameConfiguration.class.getName());
+
   /** The type of ladder game to configure */
   private final MathGameType gameType;
 
@@ -30,26 +37,31 @@ public class MathGameConfiguration implements GameConfiguration {
    * @param gameType The {@link LadderGameType} defining the game difficulty or style.
    */
   public MathGameConfiguration(MathGameType gameType) {
+    logger.fine("Initializing MathGameConfiguration of MathGameType: " + gameType);
     this.gameType = gameType;
   }
 
   @Override
   public int getNumberOfDice() {
+    logger.fine("Getting number of dice.");
     return 0;
   }
 
   @Override
   public int getNumberOfDieSides() {
+    logger.fine("Getting number of die sides.");
     return 0;
   }
 
   @Override
   public int getTotalTiles() {
+    logger.fine("Getting total tiles.");
     return 5;
   }
 
   @Override
   public Map<Integer, TileAction> getTileActions() {
+    logger.fine("Getting tile actions.");
     Map<Integer, TileAction> tileActions = new HashMap<>();
     switch (gameType) {
       case EASY:

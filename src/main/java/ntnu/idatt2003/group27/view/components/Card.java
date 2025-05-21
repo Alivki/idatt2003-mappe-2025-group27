@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.view.components;
 
+import java.util.logging.Logger;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
@@ -12,7 +13,11 @@ import javafx.scene.layout.VBox;
  * @since 2.0
  */
 public class Card extends VBox {
-
+  /**
+   * Logger instance for the {@link Card} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(Card.class.getName());
   /**
    * Constructs a {@link Card} with the specified title, description and height.
    *
@@ -22,6 +27,7 @@ public class Card extends VBox {
    * @param height The minimum height of the card in pixels.
    */
   public Card(String title, String description, double height) {
+    logger.fine("Creating Card.");
     initialize(title, description, height);
   }
 
@@ -34,6 +40,7 @@ public class Card extends VBox {
    * @param height The minimum height of the card in pixels.
    */
   public void initialize(String title, String description, double height) {
+    logger.fine("Initializing Card with title: " + title + ", description: " + description + ", height: " + height);
     Label titleLabel = new Label(title);
     titleLabel.getStyleClass().add("h3");
     getChildren().addAll(titleLabel);

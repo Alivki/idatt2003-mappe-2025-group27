@@ -3,6 +3,7 @@ package ntnu.idatt2003.group27.models;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGame;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
@@ -22,6 +23,12 @@ import java.util.List;
  * @since 0.0
  */
 public class LadderBoardGame implements BoardGame {
+  /**
+   * Logger instance for the {@link LadderBoardGame} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(LadderBoardGame.class.getName());
+
   /**
    * List of observers monitoring game events .
    */
@@ -57,6 +64,7 @@ public class LadderBoardGame implements BoardGame {
    * @param numberOfSides The number of sides on each dice.
    */
   public LadderBoardGame(Board board, int numberOfDice, int numberOfSides) {
+    logger.fine("Initializing BoardGame");
     this.board = board;
     createDice(numberOfDice, numberOfSides);
   }
@@ -68,6 +76,7 @@ public class LadderBoardGame implements BoardGame {
    */
   @Override
   public void addObserver(BoardGameObserver observer) {
+    logger.fine("Adding observer " + observer + " to BoardGame" + this);
     observers.add(observer);
   }
 
@@ -78,7 +87,9 @@ public class LadderBoardGame implements BoardGame {
    * @throws IllegalArgumentException if the player already exists in the game.
    */
   public void addPlayer(Player player) throws IllegalArgumentException {
+    logger.fine("Adding player " + player);
     if (players.contains(player)) {
+      logger.warning("Player " + player + " already exists");
       throw new IllegalArgumentException("Player already exists");
     }
 
@@ -93,7 +104,9 @@ public class LadderBoardGame implements BoardGame {
    */
   @Override
   public void setUpGame() throws NotEnoughPlayersInGameException {
+    logger.fine("Setting up game");
     if (players.isEmpty()) {
+      logger.severe("No players in game");
       throw new NotEnoughPlayersInGameException("Not enough players in the game to start!");
     }
 
@@ -109,6 +122,7 @@ public class LadderBoardGame implements BoardGame {
    */
   @Override
   public void restartGame(){
+    logger.fine("Restarting game");
     players.forEach(player -> player.placeOnTile(board.getTile(1)));
     currentPlayer = players.getFirst();
     notifyGameRestart();
@@ -121,7 +135,9 @@ public class LadderBoardGame implements BoardGame {
    */
   @Override
   public void play() throws NotEnoughPlayersInGameException {
+    logger.fine("Playing game.");
     if (players.size() < 2) {
+      logger.warning("Not enough players to start the game!");
       throw new NotEnoughPlayersInGameException("Must be two players to start the game");
     }
 
@@ -147,6 +163,7 @@ public class LadderBoardGame implements BoardGame {
    */
   @Override
   public Player getCurrentPlayer() {
+    logger.fine("Getting current player " + currentPlayer);
     return currentPlayer;
   }
 
@@ -168,6 +185,7 @@ public class LadderBoardGame implements BoardGame {
    */
   @Override
   public Player getWinner() {
+    logger.fine("Getting winner.");
     for (Player player : players) {
       if (player.getCurrentTile().getTileId() == board.getTiles().size()) {
         return player;
@@ -179,6 +197,7 @@ public class LadderBoardGame implements BoardGame {
 
   @Override
   public Map<Player, Board> getBoards() {
+    logger.fine("Getting boards.");
     Map<Player, Board> boards = new LinkedHashMap<>();
     boards.put(null, board);
     return boards;
@@ -190,6 +209,7 @@ public class LadderBoardGame implements BoardGame {
    * @return The dice instance used in the game.
    */
   Dice getDice() {
+    logger.fine("Getting dice.");
     return dice;
   }
 
@@ -200,6 +220,7 @@ public class LadderBoardGame implements BoardGame {
    * @param numberOfSides The number of sides on each dice.
    */
   private void createDice(int numberOfDice, int numberOfSides) {
+    logger.fine("Creating dice: NumberOfDice: " + numberOfDice + "\n NumberOfSides: " + numberOfSides);
     dice = new Dice(numberOfDice, numberOfSides);
   }
 
@@ -211,6 +232,7 @@ public class LadderBoardGame implements BoardGame {
    * @return The relative movement distance for the player.
    */
   private int getNextPlayerPosition(int roll) {
+    logger.fine("Getting Next player position for roll " + roll);
     int lastTileIndex = board.getTiles().size();
     int currentPosition = currentPlayer.getCurrentTile().getTileId();
     int newPosition = currentPosition + roll;
@@ -234,6 +256,7 @@ public class LadderBoardGame implements BoardGame {
    */
 
   public void notifyRoundPlayed(int roll, TileAction action) {
+    logger.fine("Notifying round played: " + roll + "\n Action: " + action);
     observers.forEach(observer -> observer.onRoundPlayed(players, currentPlayer, roll, action));
   }
 
@@ -243,6 +266,7 @@ public class LadderBoardGame implements BoardGame {
    * @param player The player that has won.
    */
   public void notifyPlayerWon(Player player) {
+    logger.fine("Notifying player won: " + player.getName());
     observers.forEach(observer -> observer.onPlayerWon(player));
   }
 
@@ -250,6 +274,7 @@ public class LadderBoardGame implements BoardGame {
    * Notifies all observers that the game has been set up and is ready to start.
    */
   public void notifyGameSetup() {
+    logger.fine("Notifying game setup.");
     observers.forEach(observer -> observer.onGameSetup(players, getBoards()));
   }
 
@@ -257,6 +282,7 @@ public class LadderBoardGame implements BoardGame {
    * Notifies all observers that the game has been restarted.
    */
   public void notifyGameRestart() {
+    logger.fine("Notifying game restart.");
     observers.forEach(observer -> observer.onGameRestart(players, getBoards()));
   }
 }

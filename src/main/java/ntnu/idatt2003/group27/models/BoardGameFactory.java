@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.enums.MathGameType;
 import ntnu.idatt2003.group27.models.interfaces.GameConfiguration;
@@ -20,6 +21,12 @@ import ntnu.idatt2003.group27.models.interfaces.GameConfiguration;
  * @since 1.0
  */
 public class BoardGameFactory {
+  /**
+   * Logger instance for the {@link BoardGameFactory} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(BoardGameFactory.class.getName());
+
   /** The {@link BoardFactory} used to create {@link Board} instances for the games. */
   private final BoardFactory boardFactory;
 
@@ -29,6 +36,7 @@ public class BoardGameFactory {
    * @param boardFactory The {@link BoardFactory} used to create game boards.
    */
   public BoardGameFactory(BoardFactory boardFactory) {
+    logger.finer("Initializing BoardGameFactory");
     this.boardFactory = boardFactory;
   }
 
@@ -41,6 +49,7 @@ public class BoardGameFactory {
    * @throws IllegalArgumentException if the {@code LadderGameType} is unknown.
    */
   public LadderBoardGame createLadderGame(LadderGameType ladderGameType) throws IOException {
+    logger.fine("Creating LadderGame of type " + ladderGameType);
     if (ladderGameType.equals(LadderGameType.JSON)) {
       return createLadderGameFromJson("src/main/resources/boards/Board.Json");
     }
@@ -64,6 +73,7 @@ public class BoardGameFactory {
     try {
       config = new JsonLadderGameConfiguration(jsonPath);
     } catch (IOException e) {
+      logger.severe("Error creating JSON LadderGameConfiguration: " + e.getMessage());
       throw new IOException(e.getMessage());
     }
 

@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.view.components;
 
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +18,11 @@ import javax.swing.Icon;
  * @since 2.0
  */
 public class MainMenuBoardButton extends Button {
+  /**
+   * Logger instance for the {@link MainMenuBoardButton} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(MainMenuBoardButton.class.getName());
 
   /**
    * Constructs a {@link MainMenuBoardButton} with the specified size, padding, title, description
@@ -30,6 +36,7 @@ public class MainMenuBoardButton extends Button {
    */
   public MainMenuBoardButton(int prefSize, int minSize, int maxSize, int imageSize, Insets insets, String title, String description, Image image) {
     super();
+    logger.fine("Initializing MainMenuBoardButton with prefSize " + prefSize + ", minSize: " + minSize + ", maxSize: " + maxSize + ", imageSize: " + imageSize + ", title: " + title + ", description: " + description + ", image: " + image);
 
     //Creates button content to display button information correctly.
     VBox buttonContent = new VBox(5);

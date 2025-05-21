@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.utils.filehandler;
 
+import java.util.logging.Logger;
 import javafx.scene.paint.Color;
 import java.util.Random;
 
@@ -12,6 +13,11 @@ import java.util.Random;
  * @since 2.0
  */
 public class RandomColor {
+  /**
+   * Logger instance for the {@link RandomColor} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(RandomColor.class.getName());
   /** The color that will be used. */
   private final Color color;
   /** The instance of the random object that will generate random doubles. */
