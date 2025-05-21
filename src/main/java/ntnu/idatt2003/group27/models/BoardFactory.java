@@ -40,7 +40,7 @@ public class BoardFactory {
         currentTile.setPreviousTile(tiles.get(currentTile.getTileId() - 1));
       }
 
-      if (tileActions.containsKey(index)) {
+      if (tileActions != null && tileActions.containsKey(index)) {
         currentTile.setLandAction(tileActions.get(index));
       }
     });
