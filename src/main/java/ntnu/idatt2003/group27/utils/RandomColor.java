@@ -1,4 +1,4 @@
-package ntnu.idatt2003.group27.models;
+package ntnu.idatt2003.group27.utils;
 
 import java.util.logging.Logger;
 import javafx.scene.paint.Color;
