@@ -67,7 +67,7 @@ public class PlayerTest {
     game.addPlayer(player);
     game.setUpGame();
 
-    assertSame(player.getCurrentTile(), game.getBoard().getTile(1));
+    assertSame(player.getCurrentTile(), game.getBoards().get(0).getTile(1));
   }
 
   @Test
@@ -88,6 +88,6 @@ public class PlayerTest {
     game.setUpGame();
     player.move(1);
 
-    assertSame(player.getCurrentTile(), game.getBoard().getTile(2));
+    assertSame(player.getCurrentTile(), game.getBoards().get(0).getTile(2));
   }
 }
