@@ -19,6 +19,8 @@ public class Player {
 
   /** The tile currently occupied by the player. */
   private Tile currentTile;
+
+  /** The piece representing the player on the board. */
   private Piece piece;
 
   /**
@@ -131,5 +133,13 @@ public class Player {
     }
 
     currentTile.landPlayer(this);
+  }
+
+  /**
+   * Sets the current tile of the {@link Player}.
+   * @param tile  the tile to set as the .
+   */
+  public void setCurrentTile(Tile tile) {
+    this.currentTile = tile;
   }
 }
