@@ -163,7 +163,7 @@ public class LadderBoardGameTest {
 
     // Simulate the player reaching the last tile
     Tile lastTile = board.getTiles().get(board.getTiles().size());
-    player.setCurrentTile(lastTile);
+    player.placeOnTile(lastTile);
 
     assertEquals(player, game.getWinner(), "getWinner should return the player who reached the last tile");
   }
@@ -188,7 +188,7 @@ public class LadderBoardGameTest {
 
     // Simulate the player being on the first tile
     Tile firstTile = board.getTiles().get(1);
-    player.setCurrentTile(firstTile);
+    player.placeOnTile(firstTile);
 
     assertNull(game.getWinner(), "getWinner should return null when no player has reached the last tile");
   }

@@ -151,13 +151,4 @@ public class Player {
 
     currentTile.landPlayer(this);
   }
-
-  /**
-   * Sets the current tile of the {@link Player}.
-   * @param tile  the tile to set as the .
-   */
-  public void setCurrentTile(Tile tile) {
-    logger.fine("Setting current tile of player to tile: " + tile.getTileId());
-    this.currentTile = tile;
-  }
 }
