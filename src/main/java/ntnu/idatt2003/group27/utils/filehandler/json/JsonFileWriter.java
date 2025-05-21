@@ -16,7 +16,12 @@ import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileWriter;
  * @version 1.1
  */
 public class JsonFileWriter implements CustomFileWriter<Board> {
-  private final Gson gson;
+  /**
+   * The Gson instance used for serializing the {@link Board} object to JSON.
+   * Public to allow access to the Gson instance for testing purposes.
+   * Prioritizing testability over encapsulation.
+   */
+  public final Gson gson;
 
   /**
    * Constructs a {@link JsonFileWriter} instance with a configured Gson object. The Gson instance
