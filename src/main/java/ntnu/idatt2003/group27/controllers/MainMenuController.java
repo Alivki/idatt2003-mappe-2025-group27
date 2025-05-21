@@ -10,7 +10,7 @@ import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.enums.MathGameType;
-import ntnu.idatt2003.group27.utils.filehandler.RandomColor;
+import ntnu.idatt2003.group27.models.RandomColor;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileReader;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileWriter;
 import ntnu.idatt2003.group27.view.MainMenuView;

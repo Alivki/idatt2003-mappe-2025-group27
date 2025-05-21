@@ -1,4 +1,4 @@
-package ntnu.idatt2003.group27.utils.filehandler;
+package ntnu.idatt2003.group27.models;
 
 import javafx.scene.paint.Color;
 import java.util.Random;

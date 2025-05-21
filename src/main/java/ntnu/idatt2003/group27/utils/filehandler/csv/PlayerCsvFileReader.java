@@ -12,7 +12,7 @@ import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.exceptions.ExceededMaxPlayersException;
 import ntnu.idatt2003.group27.models.exceptions.MissingPlayerException;
-import ntnu.idatt2003.group27.utils.filehandler.RandomColor;
+import ntnu.idatt2003.group27.models.RandomColor;
 import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileReader;
 
 /**
