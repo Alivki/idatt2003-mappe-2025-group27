@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.controllers;
 
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.*;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.enums.MathGameType;
@@ -26,6 +27,11 @@ import java.util.Map;
  * @since 2.0
  */
 public class MathGameController implements BoardGameObserver {
+  /**
+   * Logger instance for the {@link MathGameController} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(MathGameController.class.getName());
   /** The game model managing the ladder game logic */
   private MathBoardGame game;
   /** The view for displaying the ladder game. */
@@ -45,6 +51,7 @@ public class MathGameController implements BoardGameObserver {
    * @param mainController The {@link MainController} for coordinating application-wide actions
    */
   public MathGameController(MainController mainController) {
+    logger.info("Initializing MathGameController.");
     this.mainController = mainController;
     this.boardGameFactory = new BoardGameFactory(new BoardFactory());
   }
@@ -57,16 +64,18 @@ public class MathGameController implements BoardGameObserver {
    * @param players An array of {@link Player} objects participating in the game.
    */
   public void InitializeGame(MathGameType mathGameType, Player[] players) {
+    logger.fine("Initializing Game. MathGameType = " + mathGameType + ", players = " + Arrays.toString(players));
     this.mathGameType = mathGameType;
     // initializes mvc pattern
     game = null;
     try {
       game = boardGameFactory.createMathGame(mathGameType, players);
     } catch (IllegalArgumentException e) {
-      System.err.println("Error creating game: " + e.getMessage());
+      logger.severe("Error creating game: " + e.getMessage());
     }
 
     if (game == null) {
+      logger.warning("Game is null!");
       return;
     }
 
@@ -83,7 +92,7 @@ public class MathGameController implements BoardGameObserver {
     try {
       game.setUpGame();
     } catch (NotEnoughPlayersInGameException e) {
-      System.err.println(e.getMessage());
+      logger.severe("Error setting up game: " + e.getMessage());
     }
   }
 
@@ -91,6 +100,7 @@ public class MathGameController implements BoardGameObserver {
    * Restarts the current game, resetting the game state and updating the view.
    */
   public void RestartGame(){
+    logger.fine("Restarting game.");
     game.restartGame();
   }
 
@@ -99,10 +109,12 @@ public class MathGameController implements BoardGameObserver {
    * restarting the game, and returning to the main menu.
    */
   private void setupMathViewEventHandlers() {
+    logger.fine("Setting up MathGameView event handlers.");
     mathGameView.setPlayButtonHandler(e -> {
       try {
         game.play();
       } catch (NotEnoughPlayersInGameException error) {
+        logger.severe("Error playing game: " + error.getMessage());
         mathGameView.showToast(
             Toast.ToastVariant.ERROR,
             "Feil",
@@ -118,6 +130,7 @@ public class MathGameController implements BoardGameObserver {
       try {
         Integer.parseInt(answer);
       } catch (NumberFormatException error) {
+        logger.severe("Error parsing answer: " + error.getMessage());
         mathGameView.showToast(
             Toast.ToastVariant.ERROR,
             "Feil",
@@ -130,6 +143,7 @@ public class MathGameController implements BoardGameObserver {
     });
 
     mathGameView.setRestartButtonHandler(e -> {
+      logger.fine("Restart game button clicked.");
       Alert alert = new Alert(
           this.mathGameView.getRoot(),
           "Bekreft restart",
@@ -146,6 +160,7 @@ public class MathGameController implements BoardGameObserver {
     });
 
     mathGameView.setHomeButtonHandler(e -> {
+      logger.fine("Home button clicked.");
       Alert alert = new Alert(
           this.mathGameView.getRoot(),
           "Bekreft avslutning",
@@ -175,6 +190,7 @@ public class MathGameController implements BoardGameObserver {
    */
   @Override
   public void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction tileAction) {
+    logger.fine("On round played. Current player: " + currentPlayer + ", roll: " + roll + ", tileAction: " + tileAction);
     int round = mathGameView.getRoundLabel() + 1;
 
     int currentPlayerIndex = players.indexOf(currentPlayer);
@@ -199,6 +215,7 @@ public class MathGameController implements BoardGameObserver {
    */
   @Override
   public void onPlayerWon(Player player) {
+    logger.fine("On player won. Current player: " + player);
     mathGameView.updateStatusLabel("Avsluttet");
     mathGameView.showToast(Toast.ToastVariant.SUCCESS, "Spiller vant",
         player.getName() + " vant spillet! Gratulerer!");
@@ -228,6 +245,7 @@ public class MathGameController implements BoardGameObserver {
    */
   @Override
   public void onGameSetup(ArrayList<Player> players, Map<Player, Board> boards) {
+    logger.fine("On game setup. players: " + players + ", boards: " + boards);
     mathGameView.createBoard(players, boards);
     mathGameView.populatePlayerList(players);
     mathGameView.updateCurrentPlayerLabel(players.getFirst().getName());
@@ -242,6 +260,7 @@ public class MathGameController implements BoardGameObserver {
    */
   @Override
   public void onGameRestart(ArrayList<Player> players, Map<Player, Board> boards){
+    logger.fine("On game restart: players: " + players + ", boards: " + boards);
     mathGameView.updateCurrentPlayerLabel(players.getFirst().getName());
     mathGameView.updateRoundLabel("1");
     mathGameView.populatePlayerList(players);
@@ -255,6 +274,7 @@ public class MathGameController implements BoardGameObserver {
    * @return The {@link LadderGameView} instance.
    */
   public MathGameView getView() {
+    logger.fine("Getting MathGameView.");
     return mathGameView;
   }
 }

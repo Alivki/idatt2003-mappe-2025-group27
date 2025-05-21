@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.view.components;
 
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -17,9 +18,23 @@ import ntnu.idatt2003.group27.models.Player;
  * A class representing an HBox displaying player information.
  */
 public class PlayerListCell extends HBox {
+  /**
+   * Logger instance for the {@link PlayerListCell} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(PlayerListCell.class.getName());
+
+  /** The button to remove this {@link Player} from the {@link Player} list. */
   private final CustomButton removePlayerButton;
 
+  /**
+   * Constructs a player cell to display {@link Player} information in a {@link PlayerListCard}.
+   * @param player The {@link Player} to display.
+   * @param spacing The horizontal spacing of the elements within the {@link PlayerListCell}.
+   */
   public PlayerListCell(Player player, double spacing) {
+    logger.fine("Initializing player list cell for player: " + player + ", with spacing: " + spacing);
+
     //Initializes base HBox
     setSpacing(spacing);
     getStyleClass().add("player-row");
@@ -37,24 +52,22 @@ public class PlayerListCell extends HBox {
     ImageView removePlayerIcon = new ImageView(new Image(getClass().getResourceAsStream("/icons/delete.png")));
     this.removePlayerButton = new CustomButton(removePlayerIcon, CustomButton.ButtonVariant.GHOST_ICON, null);
 
-    StackPane playerIconStack = new StackPane();
-
     //Initializes player icon
+    StackPane playerIconStack = new StackPane();
     ImageView playerIcon = new ImageView();
     if (player.getPiece() != null) {
-      System.out.println(player.getPiece().getIconFilePath());
       try {
         playerIcon.setImage(
             new Image(getClass().getResourceAsStream(player.getPiece().getIconFilePath())));
       }
       catch (Exception e) {
-        System.out.println("Icon could not be loaded.");
-        System.out.println(e);
+        logger.severe("Issue loading player icon: Icon could not be loaded from path: " + player.getPiece().getIconFilePath() + "\nError message: "  + e.getMessage());
       }
     }
     playerIcon.setFitHeight(20);
     playerIcon.setFitWidth(20);
 
+    //Initializing color circle
     Circle colorCircle = new Circle(18);
     colorCircle.setFill(player.getColor());
 
@@ -63,7 +76,12 @@ public class PlayerListCell extends HBox {
     getChildren().addAll(playerIconStack, playerName, spacer, removePlayerButton);
   }
 
+  /**
+   * Sets the action for the remove player button of this {@link PlayerListCell}
+   * @param action The action for the button.
+   */
   public void setRemovePlayerButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting remove player button handler.");
     removePlayerButton.setOnAction(action);
   }
 

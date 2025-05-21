@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models.actions;
 
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Player;
@@ -9,6 +10,11 @@ import ntnu.idatt2003.group27.models.interfaces.MathTileAction;
 import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
 public class MediumMathQuestion implements MathTileAction {
+  /**
+   * Logger instance for the {@link MediumMathQuestion} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(MediumMathQuestion.class.getName());
   private final int num1;
   private final int num2;
   private final int answer;
@@ -16,6 +22,7 @@ public class MediumMathQuestion implements MathTileAction {
   private final Random random = new Random();
 
   public MediumMathQuestion() {
+    logger.fine("Initializing MediumMathQuestion.");
     this.num1 = random.nextInt(50) + 1;
     this.num2 = random.nextInt(50) + 1;
 
@@ -34,6 +41,7 @@ public class MediumMathQuestion implements MathTileAction {
         this.answer = num1 * num2;
         break;
       default:
+        logger.warning("Invalid operator: " + op);
         throw new IllegalStateException("Invalid operator");
     }
   }
@@ -45,6 +53,7 @@ public class MediumMathQuestion implements MathTileAction {
 
   @Override
   public void isCorrect(Player player, String answer) {
+    logger.fine("Checking answer from player " + player.getName() + ", answer: " + answer);
     try {
       int userAnswer = Integer.parseInt(answer);
       if (userAnswer == this.answer) {
@@ -52,6 +61,7 @@ public class MediumMathQuestion implements MathTileAction {
         player.move(-1);
       }
     } catch (NumberFormatException e) {
+      logger.warning("Error parsing answer from player " + player.getName() + ", answer: " + answer);
       throw new NumberFormatException();
     }
     perform(player);
@@ -92,6 +102,7 @@ public class MediumMathQuestion implements MathTileAction {
 
   @Override
   public String getQuestion() {
+    logger.fine("Getting question.");
     if (operator.equals("^")) {
       return num1 + " ^ " + num2 + " = ?";
     }

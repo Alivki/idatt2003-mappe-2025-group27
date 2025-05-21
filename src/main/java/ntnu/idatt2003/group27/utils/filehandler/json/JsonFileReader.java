@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileReader;
 
@@ -18,6 +19,11 @@ import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileReader;
  */
 
 public class JsonFileReader implements CustomFileReader<Board> {
+  /**
+   * Logger instance for the {@link JsonFileReader} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(JsonFileReader.class.getName());
   private final Gson gson;
 
   /**

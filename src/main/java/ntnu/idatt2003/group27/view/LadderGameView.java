@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.view;
 
 import java.util.*;
 
+import java.util.logging.Logger;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,6 +29,11 @@ import org.fxyz3d.shapes.primitives.CuboidMesh;
  * Displays all necessary GUI for interacting with and playing the ladder game.
  */
 public class LadderGameView {
+  /**
+   * Logger instance for the {@link LadderGameView} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(LadderGameView.class.getName());
 
   /** Root container for the Ladder Game view. */
   private final StackPane root;
@@ -96,6 +102,7 @@ public class LadderGameView {
    * This constructor sets up the foundational layout for this interface.
    */
   public LadderGameView() {
+    logger.info("Initializing LadderGameView");
     root = new StackPane();
     root.setAlignment(Pos.TOP_CENTER);
     root.getStyleClass().add("root");
@@ -108,6 +115,7 @@ public class LadderGameView {
    * Creates and organizes the all required UI components.
    */
   private void initializeLayout() {
+    logger.fine("Initializing layout.");
     AppLayout layout = new AppLayout();
 
     homeButton = new CustomButton("Avlutt spill/hjem", CustomButton.ButtonVariant.GHOST, null);
@@ -231,6 +239,7 @@ public class LadderGameView {
    * @param action the action to perform when the button is clicked.
    */
   public void setHomeButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting home button handler.");
     homeButton.setOnAction(action);
   }
 
@@ -240,6 +249,7 @@ public class LadderGameView {
    * @param action the action to perform when the button is clicked.
    */
   public void setRollDiceHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting roll dice handler.");
     diceButton.setOnAction(action);
   }
 
@@ -249,6 +259,7 @@ public class LadderGameView {
    * @param action the action to perform when the button is clicked.
    */
   public void setRestartButtonHandler(EventHandler<ActionEvent> action) {
+    logger.fine("Setting restart button handler.");
     restartButton.setOnAction(action);
   }
 
@@ -257,6 +268,7 @@ public class LadderGameView {
    * @param enable true allows interaction while false disallows.
    */
   public void toggleDiceButton(boolean enable) {
+    logger.fine("Toggle dice button. Enable: " + enable);
     diceButton.setDisable(!enable);
   }
 
@@ -265,6 +277,7 @@ public class LadderGameView {
    * @param round
    */
   public void updateRoundLabel(String round) {
+    logger.fine("Updating round label to: " + round);
     roundInfo.setText(round);
   }
 
@@ -272,6 +285,7 @@ public class LadderGameView {
    * Sets the text for the currentPlayer label.
    */
   public void updateCurrentPlayerLabel(String playerName) {
+    logger.fine("Updating current player label to: " + playerName);
     currentPlayerInfo.setText(playerName);
   }
 
@@ -280,6 +294,7 @@ public class LadderGameView {
    * @param grade
    */
   public void updateGradeLabel(String grade) {
+    logger.fine("Updating grade label to: " + grade);
     gradeInfo.setText(grade);
   }
 
@@ -288,6 +303,7 @@ public class LadderGameView {
    * @param status
    */
   public void updateStatusLabel(String status) {
+    logger.fine("Updating status label to: " + status);
     statusInfo.setText(status);
   }
 
@@ -296,6 +312,7 @@ public class LadderGameView {
    * @param playerName
    */
   public void updateLastPlayerLabel(String playerName) {
+    logger.fine("Updating last player label to: " + playerName);
     lastPlayer.setText(playerName);
   }
 
@@ -304,6 +321,7 @@ public class LadderGameView {
    * @param tileName
    */
   public void updateMovedToLabel(String tileName) {
+    logger.fine("Updating moved to label to: " + tileName);
     movedTo.setText(tileName);
   }
 
@@ -312,6 +330,7 @@ public class LadderGameView {
    * @param roll
    */
   public void updateLastRollLabel(String roll) {
+    logger.fine("Updating last roll label to: " + roll);
     lastRoll.setText(roll);
   }
 
@@ -320,6 +339,7 @@ public class LadderGameView {
    * @param action
    */
   public void updateTileActionLabel(String action) {
+    logger.fine("Updating tile action to: " + action);
     tileAction.setText(action);
   }
 
@@ -328,6 +348,7 @@ public class LadderGameView {
    * @return Integer value of the round label text
    */
   public int getRoundLabel() {
+    logger.fine("Getting round label integer value.");
     return Integer.parseInt(roundInfo.getText());
   }
 
@@ -336,6 +357,7 @@ public class LadderGameView {
    * @param players a list of players.
    */
   public void populatePlayerList(List<Player> players) {
+    logger.fine("Populating player list with players: " + players);
     playerListCard.populatePlayerList(players);
   }
 
@@ -350,6 +372,7 @@ public class LadderGameView {
    */
   public void animatePlayerMovement(Player player, int newTileId, TileAction tileAction, int roll,
                                     List<Player> players, Runnable onComplete) {
+    logger.fine("Animating player movement for player " + player + ", with tile: " + newTileId + ", and tileAction:" + tileAction + ", roll: " + roll + ", players: " + players);
     ladderCanvas.animatePlayerMovement(player, newTileId, tileAction, roll, () -> {
       updateBoard(players);
       toggleDiceButton(true);
@@ -365,6 +388,7 @@ public class LadderGameView {
    * @param tiles
    */
   public void createBoard(ArrayList<Player> players, Map<Integer, Tile> tiles) {
+    logger.fine("Creating board with players: " + players + ", tiles: " + tiles);
     ladderCanvas = new LadderCanvas(tiles, players, tiles.size());
     canvasContainer.getChildren().add(ladderCanvas);
 
@@ -379,6 +403,7 @@ public class LadderGameView {
    * @param players The updated {@link List} of {@link Player} objects.
    */
   public void updateBoard(List<Player> players) {
+    logger.fine("Updating board with players: " + players);
     ladderCanvas.updateBoard(players);
   }
 
@@ -387,6 +412,7 @@ public class LadderGameView {
    * @param roll
    */
   public void rotateDice(int roll) {
+    logger.fine("Rotating dice for roll: " + roll);
     List<int[]> possibleRolls = new ArrayList<>();
     for (int roll1 = 1; roll1 <= 6; roll1++) {
       int roll2 = roll - roll1;
@@ -447,6 +473,7 @@ public class LadderGameView {
    * @param message
    */
   public void showToast(Toast.ToastVariant variant, String title, String message) {
+    logger.fine("Showing toast with variant: " + variant + ", title: " + title + ", message: " + message);
     Toast toast = new Toast(root, variant, title, message);
     toast.show();
   }
@@ -458,6 +485,7 @@ public class LadderGameView {
    * @return
    */
   private HBox createGameInfoRow(String labelText, Label infoLabel) {
+    logger.fine("Creating game info row for label: " + labelText + ", infoLabel: " + infoLabel);
     Label label = new Label(labelText);
     Region dots = new Region();
 
@@ -477,6 +505,7 @@ public class LadderGameView {
    * @return the root {@link StackPane} of this view.
    */
   public StackPane getRoot() {
+    logger.fine("Getting root pane.");
     return root;
   }
 }

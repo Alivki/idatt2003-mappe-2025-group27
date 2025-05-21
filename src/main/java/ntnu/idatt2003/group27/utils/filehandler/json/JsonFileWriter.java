@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileWriter;
 
@@ -16,6 +17,11 @@ import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileWriter;
  * @version 1.1
  */
 public class JsonFileWriter implements CustomFileWriter<Board> {
+  /**
+   * Logger instance for the {@link JsonFileWriter} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(JsonFileWriter.class.getName());
   private final Gson gson;
 
   /**

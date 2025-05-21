@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import ntnu.idatt2003.group27.models.interfaces.LadderTileAction;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
@@ -16,6 +17,11 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  * @since 2.0
  */
 public class BoardFactory {
+  /**
+   * Logger instance for the {@link BoardFactory} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(BoardFactory.class.getName());
 
   /**
    * Creates a {@link Board} instance with the specified number of tiles and tile actions. Tiles are
@@ -26,6 +32,7 @@ public class BoardFactory {
    * @return A new {@link Board} instance configured with the specified tiles and actions.
    */
   public Board createBoard(int totalTiles, Map<Integer, TileAction> tileActions) {
+    logger.finer("Creating new Board");
     Map<Integer, Tile> tiles = new HashMap<>();
 
     IntStream.rangeClosed(1, totalTiles).forEach(index -> {

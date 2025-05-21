@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -19,6 +20,13 @@ import ntnu.idatt2003.group27.view.components.LadderCanvas;
  * @since 1.0
  */
 public class BackToStartAction implements LadderTileAction {
+  /**
+   * Logger instance for the {@link BackToStartAction} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(BackToStartAction.class.getName());
+
+  /** Description for this {@link LadderTileAction} */
   public String description;
 
   /**
@@ -27,6 +35,7 @@ public class BackToStartAction implements LadderTileAction {
    * @param description A textual description of the ladder action.
    */
   public BackToStartAction(String description) {
+    logger.fine("Initializing BackToStartAction");
     this.description = description;
   }
 
@@ -37,15 +46,18 @@ public class BackToStartAction implements LadderTileAction {
    */
   @Override
   public void perform(Player player) {
+    logger.info("Performing BackToStartAction on player: " + player.getName());
     int currentTile = player.getCurrentTile().getTileId();
 
     int steps = currentTile - 1;
 
+    logger.fine("moving player " + player.getName() + " " + -steps + "steps.");
     player.move(-steps);
   }
 
   @Override
   public List<Integer> getAnimationPath(int startTileId, int actionTileId) {
+    logger.fine("Getting Animation Path for " + startTileId + " and " + actionTileId);
     List<Integer> path = new ArrayList<>();
     IntStream.range(startTileId, actionTileId).forEach(path::add);
     path.add(1);
@@ -54,11 +66,13 @@ public class BackToStartAction implements LadderTileAction {
 
   @Override
   public Color getTileColor(int tileId) {
+    logger.fine("Getting tile color for " + tileId);
     return Color.LIGHTPINK;
   }
 
   @Override
   public String getIconPath() {
+    logger.fine("Getting icon path.");
     return "/icons/home.png";
   }
 
@@ -78,6 +92,7 @@ public class BackToStartAction implements LadderTileAction {
    * @return the description of the ladder action.
    */
   public String getDescription() {
+    logger.fine("Getting description.");
     return description;
   }
 }

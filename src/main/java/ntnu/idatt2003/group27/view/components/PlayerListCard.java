@@ -1,6 +1,7 @@
 package ntnu.idatt2003.group27.view.components;
 
 import java.util.List;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -23,11 +24,17 @@ import ntnu.idatt2003.group27.models.Tile;
  * @author Amadeus Berg
  */
 public class PlayerListCard extends Card {
+  /**
+   * Logger instance for the {@link PlayerListCard} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(PlayerListCard.class.getName());
 
+  /** The {@link ScrollPane} for the {@link Player} list. */
   private final ScrollPane playerList;
 
   /**
-   * Constructs a {@link Card} with the specified title, description and height.
+   * Constructs a {@link PlayerListCard} with the specified title, description and height.
    *
    * @param title       The title text to display on the card.
    * @param description The description text to display on the card, or null if no
@@ -36,6 +43,7 @@ public class PlayerListCard extends Card {
    */
   public PlayerListCard(String title, String description, double height) {
     super(title, description, height);
+    logger.fine("Initializing player list card with title: " + title + ", description: " + description + ", height: " + height);
 
     //Initializes playerList scrollpane
     playerList = new ScrollPane();
@@ -55,6 +63,7 @@ public class PlayerListCard extends Card {
    * @param players The list of players to display in the player list.
    */
   public void populatePlayerList(List<Player> players) {
+    logger.fine("Populating player list with players: " + players);
     VBox playerContainer = new VBox(5);
 
     players.forEach(player -> {
@@ -92,5 +101,4 @@ public class PlayerListCard extends Card {
 
     playerList.setContent(playerContainer);
   }
-
 }

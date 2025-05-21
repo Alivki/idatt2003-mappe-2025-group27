@@ -1,12 +1,11 @@
 package ntnu.idatt2003.group27.view.components;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import javafx.animation.KeyFrame;
@@ -14,13 +13,9 @@ import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.util.Duration;
 import ntnu.idatt2003.group27.models.Board;
 import ntnu.idatt2003.group27.models.Player;
-import ntnu.idatt2003.group27.models.Tile;
-import ntnu.idatt2003.group27.models.actions.LadderAction;
-import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
 /**
  * A JavaFX canvas component for rendering a tile-based game board. The canvas displays tiles,
@@ -32,6 +27,12 @@ import ntnu.idatt2003.group27.models.interfaces.TileAction;
  * @since 2.0
  */
 public class MathCanvas extends javafx.scene.canvas.Canvas {
+  /**
+   * Logger instance for the {@link MathCanvas} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(MathCanvas.class.getName());
+
   /**
    * The total number of tiles on the board
    */
@@ -77,6 +78,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * @param players     A {@link List} of {@link Player} objects representing the players on the board.
    */
   public MathCanvas(List<Player> players, Map<Player, Board> boards) {
+    logger.fine("Initializing MathCanvas with players: " + players + " and boards: " + boards);
     this.tileSize = 0;
     this.players = new ArrayList<>(players);
     this.playersBoard = new LinkedHashMap<>(boards);
@@ -97,6 +99,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * @return The board size as an integer.
    */
   public int getBoardSize() {
+    logger.fine("Getting board size.");
     return boardSize;
   }
 
@@ -107,6 +110,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * @param players The updated {@link List} of {@link Player} objects.
    */
   public void updateBoard(List<Player> players) {
+    logger.fine("Updating board with players: " + players);
     this.players = new ArrayList<>(players);
     this.playerPositions = this.players.stream()
         .collect(Collectors.toMap(
@@ -122,6 +126,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * @param tileSize The new size of each tile in pixels.
    */
   public void resizeBoard(double tileSize) {
+    logger.fine("Resizing board with tile size: " + tileSize);
     this.tileSize = tileSize;
     redrawBoard();
   }
@@ -130,6 +135,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * Redraws the entire board, including tiles, players, tile actions, and visual indicators.
    */
   public void redrawBoard() {
+    logger.fine("Redrawing board");
     GraphicsContext gc = getGraphicsContext2D();
     gc.clearRect(0, 0, getWidth(), getHeight());
 
@@ -144,6 +150,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawFlag(GraphicsContext gc) {
+    logger.fine("Drawing flag.");
     double flagSize = tileSize / 4.3;
     int numberOfFlag = (int) ((getHeight() - 35) / flagSize) + 1;
     double [] tilePos  = getTilePos(1, 4);
@@ -162,6 +169,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawTiles(GraphicsContext gc) {
+    logger.fine("Drawing tiles.");
     List<Player> playerList =  new ArrayList<>(playersBoard.keySet());
 
     playersBoard.entrySet().stream().toList().forEach(entry -> {
@@ -187,6 +195,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * @param gc The {@link GraphicsContext} used for drawing.
    */
   private void drawPlayers(GraphicsContext gc) {
+    logger.fine("Drawing players.");
     players.forEach(player -> {
       double[] tileCenter;
       if (player.equals(animatingPlayer) && animatingPlayerPosition != null) {
@@ -219,6 +228,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    */
   public void animatePlayerMovement(Player player, int newTileId,
                                     Runnable onComplete) {
+    logger.fine("Animating player movement for player: " + player + ", tile: " + newTileId);
     int currentTileId = playerPositions.getOrDefault(player, 1);
     List<Integer> path = calculatePath(currentTileId, newTileId);
     int playerIndex = playerPositions.keySet().stream().toList().indexOf(player);
@@ -254,6 +264,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
     }
 
     timeline.setOnFinished(e -> {
+      logger.fine("timeline finished.");
       animatingPlayer = null;
       animatingPlayerPosition = null;
       playerPositions.put(player, newTileId);
@@ -274,6 +285,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * @return A list of tile IDs representing the path from start to end.
    */
   private List<Integer> calculatePath(int startTileId, int endTileId) {
+    logger.fine("Calculating path for startTile: " + startTileId + ", endTile: " + endTileId);
     List<Integer> path = new ArrayList<>();
 
     if (startTileId <= endTileId) {
@@ -296,6 +308,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * @return A double array containing the x and y coordinates of the tile's top-left corner.
    */
   public double[] getTilePos(int playerIndex, int tileId) {
+    logger.fine("Getting tile position for player: " + playerIndex + ", tile: " + tileId);
     double xPos = 20 + (tileId % columns) * tileSize;
     double yPos = 35 + (playerIndex * tileSize + (playerIndex * 20));
 
@@ -309,6 +322,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * @return A double array containing the x and y coordinates of the tile's center.
    */
   public double[] getTileCenter(int playerIndex, int tileId) {
+    logger.fine("Getting tile center for player: " + playerIndex + ", tile: " + tileId);
     double[] tilePos = getTilePos(playerIndex, tileId);
 
     if (tileId == 4) {

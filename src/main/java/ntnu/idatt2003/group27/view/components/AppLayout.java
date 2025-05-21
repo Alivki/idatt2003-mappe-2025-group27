@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.view.components;
 
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
@@ -17,6 +18,11 @@ import javafx.scene.layout.VBox;
  * @since 2.0
  */
 public class AppLayout extends VBox {
+  /**
+   * Logger instance for the {@link AppLayout} class.
+   * Used for logging informational messages and errors related to class operations.
+   */
+  private static final Logger logger = Logger.getLogger(AppLayout.class.getName());
   /** The container for the header's main content, centered within the header. */
   private final HBox headerMainContainer;
   /** The container for the left container area in the main section. */
@@ -32,6 +38,7 @@ public class AppLayout extends VBox {
    * left, center, and right containers. The layout is styled and configured for flexible resizing.
    */
   public AppLayout() {
+    logger.fine("Initialising AppLayout.");
     this.setAlignment(Pos.TOP_CENTER);
 
     HBox header = new HBox();
@@ -83,6 +90,7 @@ public class AppLayout extends VBox {
    * @return the {@link HBox} representing the header's main content container.
    */
   public HBox getHeader() {
+    logger.fine("Getting header.");
     return headerMainContainer;
   }
 
@@ -92,6 +100,7 @@ public class AppLayout extends VBox {
    * @return the {@link VBox} representing the left content container.
    */
   public VBox getLeftContainer() {
+    logger.fine("Getting left container.");
     return leftContainer;
   }
 
@@ -101,6 +110,7 @@ public class AppLayout extends VBox {
    * @return the {@link VBox} representing the central content container.
    */
   public VBox getMainContainer() {
+    logger.fine("Getting main container.");
     return mainContainer;
   }
 
@@ -110,6 +120,7 @@ public class AppLayout extends VBox {
    * @return the {@link VBox} representing the right content container.
    */
   public VBox getRightContainer() {
+    logger.fine("Getting right container.");
     return rightContainer;
   }
 }
