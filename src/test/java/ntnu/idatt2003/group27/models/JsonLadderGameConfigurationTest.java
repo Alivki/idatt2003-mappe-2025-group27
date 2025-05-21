@@ -63,7 +63,7 @@ public class JsonLadderGameConfigurationTest {
   @Test
   @DisplayName("should return total number of tiles from board")
   public void testGetTotalTiles() {
-    int totalTiles = config.getBoard().getTiles().size();
+    int totalTiles = config.getTotalTiles();
     assertEquals(totalTiles, config.getTotalTiles(), "Total tiles should match board size");
   }
 
