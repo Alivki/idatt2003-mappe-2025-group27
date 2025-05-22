@@ -127,7 +127,7 @@ public class MathGameView {
     logger.fine("Initialize layout.");
     AppLayout layout = new AppLayout();
 
-    homeButton = new CustomButton("Avlutt spill/hjem", CustomButton.ButtonVariant.GHOST, null);
+    homeButton = new CustomButton("Avslutt spill / Hjem", CustomButton.ButtonVariant.GHOST, null);
 
     playerListCard = new PlayerListCard("Spillere", "Spillerne i spillet", 382);
 
