@@ -69,8 +69,7 @@ public class LadderGameConfigurationTest {
   @Test
   @DisplayName("NORMAL CONFIG: should return total number of tiles from board")
   public void testNormalGetTotalTiles() {
-    int totalTiles = normalConfig.getTotalTiles();
-    assertEquals(totalTiles, normalConfig.getTotalTiles(), "Total tiles should match board size");
+    assertEquals(90, normalConfig.getTotalTiles(), "Total tiles should match board size");
   }
 
   /**
@@ -79,8 +78,7 @@ public class LadderGameConfigurationTest {
   @Test
   @DisplayName("NORMAL CONFIG: should return non-null tile actions map")
   public void testNormalGetTileActions() {
-    Map<Integer, TileAction> tileActions = normalConfig.getTileActions();
-    assertNotNull(tileActions, "Tile actions map should not be null");
+    assertNotNull(normalConfig.getTileActions(), "Tile actions map should not be null");
   }
 
   /// Tests for CRAZY board configuration
@@ -109,8 +107,7 @@ public class LadderGameConfigurationTest {
   @Test
   @DisplayName("CRAZY CONFIG: should return total number of tiles from board")
   public void testCrazyGetTotalTiles() {
-    int totalTiles = crazyConfig.getTotalTiles();
-    assertEquals(totalTiles, crazyConfig.getTotalTiles(), "Total tiles should match board size");
+    assertEquals(90, crazyConfig.getTotalTiles(), "Total tiles should match board size");
   }
 
   /**
@@ -149,8 +146,7 @@ public class LadderGameConfigurationTest {
   @Test
   @DisplayName("IMPOSSIBLE CONFIG: should return total number of tiles from board")
   public void testImpossibleGetTotalTiles() {
-    int totalTiles = impossibleConfig.getTotalTiles();
-    assertEquals(totalTiles, impossibleConfig.getTotalTiles(), "Total tiles should match board size");
+    assertEquals(90, impossibleConfig.getTotalTiles(), "Total tiles should match board size");
   }
 
   /**
@@ -159,8 +155,7 @@ public class LadderGameConfigurationTest {
   @Test
   @DisplayName("IMPOSSIBLE CONFIG: should return non-null tile actions map")
   public void testImpossibleGetTileActions() {
-    Map<Integer, TileAction> tileActions = impossibleConfig.getTileActions();
-    assertNotNull(tileActions, "Tile actions map should not be null");
+    assertNotNull(impossibleConfig.getTileActions(), "Tile actions map should not be null");
   }
 
 }
