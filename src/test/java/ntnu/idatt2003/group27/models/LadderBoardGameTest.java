@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
  * Moving the player the correct amount of steps,<br>
  * Testing winner detection</p>
  *
- * @author Iver Lindholm
+ * @author Iver Lindholm, Amadeus Berg
  */
 public class LadderBoardGameTest {
   
