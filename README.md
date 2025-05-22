@@ -3,7 +3,7 @@ Repository for exam submission in the subject IDATT2003
 
 ## 📚 About
 
-This project was developed as part of the coursework for the **IDATT2003** course at the **Norwegian University of Science and Technology (NTNU)**. The objective of the project is to develop a JavaFX-based board game application that includes multiple games, playable by up to five players.
+This project was developed as part of the **IDATT2003** course at the **Norwegian University of Science and Technology (NTNU)**. The objective of the project was to develop a JavaFX-based board game application that includes multiple games, playable by up to five players.
 
 ---
 
