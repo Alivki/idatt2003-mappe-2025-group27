@@ -1,53 +1,109 @@
 package ntnu.idatt2003.group27.models;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import javafx.scene.paint.Color;
+import ntnu.idatt2003.group27.models.actions.LadderAction;
 import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
- * A test class for the ThrowNewDice TileAction.
- * @author Amadeus Berg
+ * Unit test for the {@link ThrowNewDiceAction} class.
+ *
+ * <p>Verifies initialization, action execution, and animation path</p>
+ * @author Amadeus Berg & Iver Lindholm
  */
 public class ThrowNewDiceTest {
+  private ThrowNewDiceAction action;
+  private Player player;
+  private List<Tile> tiles;
+
   /**
-   * Test the constructor
+   * Sets up the test environment with a ThrowNewDice and sample player and tiles.
    */
-  @Test
-  public void testThrowNewDiceConstructor() {
-    ThrowNewDiceAction
-        throwNewDiceAction = new ThrowNewDiceAction("Throw new dice test description", 1, 6);
-    String expectedDescription = "Throw new dice test description";
-    int expectedNumberOfDice = 1;
-    int expectedNumberOfSides = 6;
-    Assertions.assertEquals(expectedDescription, throwNewDiceAction.description, "Description does not match expected value!");
-    Assertions.assertEquals(expectedNumberOfDice, throwNewDiceAction.numberOfDice, "Number of dice does not match expected value!");
-    Assertions.assertEquals(expectedNumberOfSides, throwNewDiceAction.numberOfDieSides, " Number of sides does not match expected value!");
+  @BeforeEach
+  void setUp() {
+    action = new ThrowNewDiceAction("Roll again", 1,3);
+    player = new Player("Player 1");
+    tiles = new ArrayList<>();
+    for (int i = 0; i <= 20; i++) {
+      Tile tile = new Tile(i);
+      tiles.add(tile);
+      if (i > 1) {
+        tiles.get(i - 1).setNextTile(tile);
+        tile.setPreviousTile(tiles.get(i - 1));
+      }
+    }
+    player.placeOnTile(tiles.get(2));
   }
 
   /**
-   * Tests the perform method of the ThrowNewDice TileAction.
+   * Verifies that the action is correctly initialized with description, number of dice and number of die sides.
    */
   @Test
-  public void testThrowNewDicePerform() {
-    ThrowNewDiceAction throwNewDiceAction = new ThrowNewDiceAction("Throw new dice test description", 1, 2);
-    Player player = new Player("player");
-    Tile tile = new Tile(1);
-    Tile tile2 = new Tile(2);
-    Tile tile3 = new Tile(3);
+  @DisplayName("test initializing of ThrowNewDiceAction")
+  void testInitializeThrowNewDiceAction() {
+    assertEquals(1, action.numberOfDice, "The number of dice should be 1");
+    assertEquals(3, action.numberOfDieSides, "The number of die sides should be 3");
+    assertEquals("Roll again", action.description, "The description should be 'Roll again'");
+  }
 
-    tile.setNextTile(tile2);
-    tile2.setNextTile(tile3);
+  /**
+   * Verifies that perform moves the player based on dice roll.
+   */
+  @Test
+  @DisplayName("")
+  void testPerformAction() {
+    action.perform(player);
 
-    tile3.setPreviousTile(tile2);
-    tile2.setPreviousTile(tile);
+    int newPosition = player.getCurrentTile().getTileId();
+    assertTrue(newPosition >= 2 && newPosition <= 6,
+        "Player should be on tile between 2 and 6 after action");
+  }
 
-    player.placeOnTile(tile);
+  /**
+   *  Verifies that getAnimationPath return correct path including roll.
+   */
+  @Test
+  @DisplayName("test animation path includes rolled steps")
+  void testGetAnimationPath() {
+    player.placeOnTile(tiles.get(3));
+    System.out.println("tset");
+    action.perform(player);
+    int roll = action.getNumberOfDice() * action.getNumberOfSides();
 
-    System.out.println();
-    throwNewDiceAction.perform(player);
+    List<Integer> path = action.getAnimationPath(2, 4);
 
-    System.out.println("Player landed on tile " + player.getCurrentTile().getTileId());
+    assertFalse(path.isEmpty(), "Path should not be empty");
+    assertEquals(2, path.getFirst(), "path should start at tile 3");
+    assertTrue(path.size() <= roll + 2, "path length should account for roll");
+  }
+
+  /**
+   * Verifies that getTileColor return BLUE.
+   */
+  @Test
+  @DisplayName("test tile color return BLUE")
+  void testGetTileColor() {
+    int tileId = 4;
+
+    Color color = action.getTileColor(tileId);
+
+    assertEquals(Color.BLUE, color, "Tile color should be BLUE for ThrowNewDiceAction");
+  }
+
+  /**
+   * Verifies that perform with null player throws an exception.
+   */
+  @Test
+  @DisplayName("should throw exception with null player")
+  void testPerformWithNullPlayer() {
+    assertThrows(NullPointerException.class, () -> action.perform(null));
   }
 }
