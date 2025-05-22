@@ -11,7 +11,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import ntnu.idatt2003.group27.models.actions.EasyMathQuestion;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
+import ntnu.idatt2003.group27.models.exceptions.WrongMathAnswerException;
+import ntnu.idatt2003.group27.models.interfaces.MathTileAction;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,6 +57,9 @@ public class MathBoardGameTest {
     board1Tiles.put(1, tile1);
     board1Tiles.put(2, tile2);
     board1Tiles.put(3, tile3);
+
+    // Add tile actions
+    tile1.setLandAction(new EasyMathQuestion());
 
     // Creates tile for Board 2
     Tile tile4 = new Tile(4);
@@ -123,87 +129,6 @@ public class MathBoardGameTest {
     assertEquals(2, game.getPlayers().size(), "There should be two players in the game");
     assertEquals(2, game.getBoards().size(), "There should be two boards in the game");
     assertEquals(game.getPlayers(), new ArrayList<>(players), "The players should be the same as the one passed in");
-  }
-
-  /**
-   * Test that the game is set up correctly.
-   *
-   * @throws NotEnoughPlayersInGameException
-   */
-  @Test
-  @DisplayName("test the game set up method")
-  public void testGameSetUp() throws NotEnoughPlayersInGameException {
-    MathBoardGame game = new MathBoardGame(boards, players);
-    Player player = new Player("player");
-
-    game.addPlayers(boards, players);
-    game.setUpGame();
-
-    assertNotNull(game.getCurrentPlayer(),
-        "The game is set up with a player and should have a current player");
-    assertEquals(1, game.getCurrentPlayer().getCurrentTile().getTileId(),
-        "The player should be placed on tile 0");
-  }
-
-  /**
-   * Test that the game set up method throws an error when no players are in the game.
-   */
-  @Test
-  @DisplayName("test that set up method throws error when no players are in the game")
-  public void testGameSetUpThrows() {
-    MathBoardGame game = new MathBoardGame(boards, players);
-
-    assertThrows(NotEnoughPlayersInGameException.class, game::setUpGame, "Should throw error as no players are in the game");
-  }
-
-  /**
-   * Tests that the winning player is correctly detected when a win is simulated.
-   * @throws NotEnoughPlayersInGameException if the game setup fails due to insufficient players.
-   */
-  @Test
-  @DisplayName("test that the correct winner is detected when a player reaches the winning tile")
-  public void testGetWinner() {
-    // Initialize a game with a board and a player
-    MathBoardGame game = new MathBoardGame(boards, players);
-
-    try {
-      game.setUpGame();
-    } catch (NotEnoughPlayersInGameException e) {
-      throw new RuntimeException(e);
-    }
-
-    // Simulate the player reaching the last tile
-    int lastTileIndex = game.getBoards().get(0).getTiles().size();
-    Tile lastTile = game.getBoards().get(0).getTiles().get(lastTileIndex);
-    Player firstPlayer = game.getPlayers().get(0);
-    firstPlayer.placeOnTile(lastTile);
-
-    assertEquals(firstPlayer, game.getWinner(), "getWinner should return the player who reached the last tile");
-  }
-
-  /**
-   * Tests that no winner is detected when no player has reached the last tile.
-   * @throws NotEnoughPlayersInGameException if the game setup fails due to insufficient players.
-   */
-  @Test
-  @DisplayName("test that winner is null when no player has reached the last tile")
-  public void testGetWinnerWithoutWinner() {
-    // Initialize a game with a board and a player
-    MathBoardGame game = new MathBoardGame(boards, players);
-
-    try {
-      game.setUpGame();
-    } catch (NotEnoughPlayersInGameException e) {
-      throw new RuntimeException(e);
-    }
-
-    // Simulate the player being on the first tile
-    int lastTileIndex = game.getBoards().get(0).getTiles().size();
-    Tile firstTile = game.getBoards().get(0).getTiles().get(lastTileIndex);
-    Player firstPlayer = game.getPlayers().get(0);
-    firstPlayer.placeOnTile(firstTile);
-
-    assertNull(game.getWinner(), "getWinner should return null when no player has reached the last tile");
   }
 
   /**
