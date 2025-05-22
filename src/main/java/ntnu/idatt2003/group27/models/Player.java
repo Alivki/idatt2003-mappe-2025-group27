@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import java.util.logging.Logger;
 import javafx.scene.paint.Color;
+import ntnu.idatt2003.group27.models.exceptions.InvalidPlayerMoveException;
 
 /**
  * Represents a player in a board game, tracking their name and current position on the board. This
@@ -136,19 +137,39 @@ public class Player {
    *              values move the player backward.
    */
   public void move(int steps) {
+    // Ensure the current tile is not null before moving
+    if (currentTile == null) {
+      logger.warning("Invalid move: current tile is null.");
+      throw new InvalidPlayerMoveException("Trying to move from a null tile!");
+    }
+
     logger.fine("Moving player " + steps + " steps.");
     int newPosition = currentTile.getTileId() + steps;
 
+    // Handles backward movement
     if (steps < 0) {
       while (currentTile.getTileId() > newPosition) {
-        currentTile = currentTile.getPreviousTile();
+        if (currentTile.getPreviousTile() == null) {
+          logger.warning("Invalid move: previous tile is null.");
+          throw new InvalidPlayerMoveException("Trying to move to a null tile!");
+        }
+        logger.fine("Moving player from " + currentTile.getTileId() + " to " + currentTile.getPreviousTile().getTileId());
+        placeOnTile(currentTile.getPreviousTile());
       }
     }
 
+    // Handles forward movement
     while (currentTile.getTileId() < newPosition) {
-      currentTile = currentTile.getNextTile();
+      if (currentTile.getNextTile() == null) {
+        logger.warning("Invalid move: next tile is null.");
+        throw new InvalidPlayerMoveException("Trying to move to a null tile!");
+      }
+      logger.fine("Moving player from " + currentTile.getTileId() + " to " + currentTile.getNextTile().getTileId());
+      placeOnTile(currentTile.getNextTile());
     }
 
+    // Places the player on the new tile
     currentTile.landPlayer(this);
   }
+
 }
