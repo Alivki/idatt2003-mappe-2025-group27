@@ -1,12 +1,6 @@
 # idatt2003-mappe-2025-group27
 Repository for exam submission in the subject IDATT2003
 
-# 🎓 NTNU Class Project – JavaFX BoardGame
-
-> JavaFX Maven project developed as part of the idatt2003 programming course at NTNU.
-
----
-
 ## 📚 About
 
 This project was developed as part of the coursework for the course **idatt2003** at the **Norwegian University of Science and Technology (NTNU)**. The goal of the project is to develop a board game JavaFX application featuring multiple board games playable with with up to 5 players. 
