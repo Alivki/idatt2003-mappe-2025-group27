@@ -76,6 +76,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * players, and board size.
    *
    * @param players     A {@link List} of {@link Player} objects representing the players on the board.
+   * @param boards      A {@link Map} of {@link Player} to {@link Board} objects representing the players' boards.
    */
   public MathCanvas(List<Player> players, Map<Player, Board> boards) {
     logger.fine("Initializing MathCanvas with players: " + players + " and boards: " + boards);
@@ -304,6 +305,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
   /**
    * Calculates the top-left position of a tile based on its ID.
    *
+   * @param playerIndex The index of the player.
    * @param tileId The zero-based ID of the tile.
    * @return A double array containing the x and y coordinates of the tile's top-left corner.
    */
@@ -319,6 +321,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * Calculates the center position of a tile based on its ID.
    *
    * @param tileId The zero-based ID of the tile.
+   * @param playerIndex The index of the player.
    * @return A double array containing the x and y coordinates of the tile's center.
    */
   public double[] getTileCenter(int playerIndex, int tileId) {

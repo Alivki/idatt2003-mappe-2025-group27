@@ -293,6 +293,7 @@ public class MathGameView {
 
   /**
    * Sets the text for the currentPlayer label.
+   * @param playerName the name of the current player.
    */
   public void updateCurrentPlayerLabel(String playerName) {
     logger.fine("Updating current player label to: " + playerName);
@@ -363,6 +364,7 @@ public class MathGameView {
    * Creates a canvas to display the UI of the game board.
    *
    * @param players The list of players in the game.
+   * @param boards The map of players to their respective boards.
    */
   public void createBoard(ArrayList<Player> players, Map<Player, Board> boards) {
     logger.fine("Creating board with players: " + players + ", boards: " + boards);

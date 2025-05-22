@@ -36,6 +36,7 @@ public interface TileAction {
   /**
    * Return the color to use when drawing the tile associated with this action.
    *
+   * @param tileId The zero based ID of the tile.
    * @return The {@link Color} for the tile.
    */
   Color getTileColor(int tileId);

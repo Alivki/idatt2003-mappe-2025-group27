@@ -48,7 +48,7 @@ public class BoardGameFactory {
    *
    * @param ladderGameType The {@link LadderGameType} defining the game configuration.
    * @return A new {@link LadderBoardGame} instance configured with the specified game type.
-   * @throws IllegalArgumentException if the {@code LadderGameType} is unknown.
+   * @throws IOException if the {@code LadderGameType} is unknown.
    */
   public LadderBoardGame createLadderGame(LadderGameType ladderGameType) throws IOException {
     logger.fine("Creating LadderGame of type " + ladderGameType);

@@ -42,6 +42,8 @@ public class ThrowNewDiceAction implements LadderTileAction {
    * Constructs a ladder action with the specified destination tile and description.
    *
    * @param description A textual description of the ladder action.
+   * @param numberOfDice The number of dice to throw.
+   * @param numberOfDieSides The number of sides on each die.
    */
   public ThrowNewDiceAction(String description, int numberOfDice, int numberOfDieSides) {
     logger.fine("Initializing ThrowNewDiceAction for description: " + description + "\n numberOfDice: " + numberOfDice + "\n numberOfDieSides: " + numberOfDieSides);

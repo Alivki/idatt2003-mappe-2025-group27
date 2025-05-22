@@ -66,7 +66,7 @@ public class MainMenuView {
   private CustomButton importPlayersCsvButton;
 
   /** List of toggle buttons for selecting player piece icons. */
-  private ArrayList<ToggleButton> playerPieceIconButtons = new ArrayList<>();
+  private final ArrayList<ToggleButton> playerPieceIconButtons = new ArrayList<>();
 
   /** Button to open the color picker for selecting player color. */
   private CustomButton colorPicker;

@@ -62,7 +62,7 @@ public class PlayerListCardEditable extends Card {
 
   /**
    * Populates this {@link Card}'s {@link ScrollPane} with players.
-   * @param players
+   * @param players The list of {@link Player} objects to populate the card with.
    */
   public void populatePlayerList(List<Player> players) {
     logger.fine("Populating player list with players: " + players);
