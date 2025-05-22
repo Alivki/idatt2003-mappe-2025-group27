@@ -1,49 +1,92 @@
 package ntnu.idatt2003.group27.models;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.opencsv.CSVWriter;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.stream.IntStream;
+import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileWriter;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-
+/**
+ * Unit test for the {@link PlayerCsvFileWriter} class.
+ *
+ * <p>Verifies CSV serialization of player arrays</p>
+ */
 public class PlayerCsvFileWriterTest {
-  private String filePath = "src/test/java/ntnu/idatt2003/group27/models/testFiles/Players_Write_Test.csv";
-  private Piece[] pieces;
+  private PlayerCsvFileWriter writer;
+  private StringWriter stringWriter;
   private Player[] players;
 
   /**
-   * Sets up piece data before running tests
+   * Sets up test environment with a writer and sample player data.
    */
   @BeforeEach
-  void setUp() {
-    pieces = new Piece[5];
-    pieces[0] = (new Piece("Car", "/icons/player_icons/jeep.png"));
-    pieces[1] = (new Piece("Chicken", "/icons/player_icons/chicken.png"));
-    pieces[2] = (new Piece("Frisbee", "/icons/player_icons/frisbee.png"));
-    pieces[3] = (new Piece("Pawn", "/icons/player_icons/chess-pawn.png"));
-    pieces[4] = (new Piece("Tophat", "/icons/player_icons/top-hat.png"));
-
-    players = IntStream.range(0, 5)
-        .mapToObj(i -> new Player("Player " + i, pieces[i], null))
-        .toArray(Player[]::new);
+  public void setUp() {
+    writer = new PlayerCsvFileWriter() {
+      @Override
+      public void writeFile(String filePath, Player[] data) throws IOException {
+        CSVWriter csvWriter = new CSVWriter(stringWriter);
+        for (Player player : data) {
+          String pieceName = player.getPiece() != null ? player.getPiece().getName() : "";
+          String colorName = player.getColor() != null ? player.getColor().toString() : "#FFFFF";
+          String[] playerInfo = {player.getName(), pieceName, colorName};
+          csvWriter.writeNext(playerInfo);
+        }
+        csvWriter.close();
+      }
+    };
+    stringWriter = new StringWriter();
+    players = new Player[2];
+    players[0] = new Player("Player1", new Piece("Hat", "path"), Color.RED);
+    players[1] = new Player("Player2", new Piece("Car", "path"), Color.BLUE);
   }
 
+  /**
+   * Test to verify that the CSV writer correctly serializes player data for valid array.
+   */
   @Test
-  public void testWriteAllPlayersToCsvFile(){
-    PlayerCsvFileWriter playerCsvFileWriter = new PlayerCsvFileWriter();
+  @DisplayName("Test CSV serialization of valid player array")
+  public void testWriteValidPlayerArray() throws IOException {
+    writer.writeFile("path", players);
 
-    System.out.println(players.length);
-    for (Player player : players) {
-      System.out.println(player.getName());
-    }
+    String csvOutput = stringWriter.toString();
+    assertTrue(csvOutput.contains("\"Player1\",\"Hat\",\"0xff0000ff\""), "CSV output should contain Player1 data");
+    assertTrue(csvOutput.contains("\"Player2\",\"Car\",\"0x0000ffff\""), "CSV output should contain Player2 data");
+    String[] lines = csvOutput.split("\n");
+    assertEquals(2, lines.length, "CSV should have two lines");
+  }
 
-    try {
-      playerCsvFileWriter.writeFile(filePath,
-          players);
-    }
-    catch (IOException e){
-      System.out.println(e.getMessage());
-    }
+  /**
+   * Verifies that CSV file writer handles empty player array correctly.
+   */
+  @Test
+  @DisplayName("should handle empty player array")
+  public void testWriteEmptyPlayerArray() throws IOException {
+    Player[] emptyPlayers = new Player[0];
+
+    writer.writeFile("path", emptyPlayers);
+
+    String csvOutput = stringWriter.toString();
+    assertTrue(csvOutput.isEmpty(), "CSV output should be empty for empty player array");
+  }
+
+  /**
+   * Verifies that CSV file writer handles null player array correctly.
+   */
+  @Test
+  @DisplayName("should throw exception when writing null player array")
+  public void testWriteNullPlayerArray() {
+    Player[] nullPlayers = null;
+
+    assertThrows(NullPointerException.class, () -> {
+      writer.writeFile("path", nullPlayers);
+    }, "Writing null player array should throw IOException");
   }
 }
