@@ -41,6 +41,16 @@ public class MathGameConfiguration implements GameConfiguration {
     this.gameType = gameType;
   }
 
+  /**
+   * Returns the type of ladder game for this configuration.
+   * Package-private for testing purposes.
+   *
+   * @return MathGameType The type of ladder game.
+   */
+  MathGameType getGameType() {
+    return gameType;
+  }
+
   @Override
   public int getNumberOfDice() {
     logger.fine("Getting number of dice.");
