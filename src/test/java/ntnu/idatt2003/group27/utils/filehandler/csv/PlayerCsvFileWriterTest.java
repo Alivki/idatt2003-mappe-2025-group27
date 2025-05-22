@@ -1,4 +1,4 @@
-package ntnu.idatt2003.group27.models;
+package ntnu.idatt2003.group27.utils.filehandler.csv;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -7,9 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.opencsv.CSVWriter;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.stream.IntStream;
 import javafx.scene.paint.Color;
-import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileWriter;
+import ntnu.idatt2003.group27.models.Piece;
+import ntnu.idatt2003.group27.models.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

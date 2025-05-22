@@ -1,4 +1,4 @@
-package ntnu.idatt2003.group27.models;
+package ntnu.idatt2003.group27.utils.filehandler.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -11,10 +11,11 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.lang.reflect.Type;
+import ntnu.idatt2003.group27.models.Board;
+import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
 import ntnu.idatt2003.group27.models.actions.LadderAction;
 import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
-import ntnu.idatt2003.group27.utils.filehandler.json.BoardDeserializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

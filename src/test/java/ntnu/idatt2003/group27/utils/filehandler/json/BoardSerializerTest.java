@@ -1,14 +1,15 @@
-package ntnu.idatt2003.group27.models;
+package ntnu.idatt2003.group27.utils.filehandler.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.gson.JsonArray;
+import ntnu.idatt2003.group27.models.Board;
+import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.actions.BackToStartAction;
 import ntnu.idatt2003.group27.models.actions.LadderAction;
 import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
-import ntnu.idatt2003.group27.utils.filehandler.json.BoardSerializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
