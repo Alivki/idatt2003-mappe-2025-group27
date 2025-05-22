@@ -11,7 +11,12 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Test class for the {@link Piece} class.
- * Testing initialization,
+ * Testing the constructor,
+ * testing the getName method,
+ * testing the getIconFilePath method,
+ * testing creating a piece with null values,
+ * testing creating a piece with empty strings,
+ * testing that two pieces with the same data are not the same object.
  */
 public class PieceTest {
 
