@@ -174,11 +174,11 @@ public class MainMenuView {
         new Image("icons/math_game.png"));
     mathMediumButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
-        boardButtonInsets, "Medium", "Matte spill med litt vanskligere matte",
+        boardButtonInsets, "Medium", "Matte spill med litt vanskeligere matte",
         new Image("icons/math_game.png"));
     mathHardButton = new MainMenuBoardButton(
         boardButtonPrefSize, boardButtonMinSize, boardButtonMaxSize, boardButtonImageSize,
-        boardButtonInsets, "Vansklig", "Matte spill med vansklig matte",
+        boardButtonInsets, "Vanskelig", "Matte spill med vanskelig matte",
         new Image("icons/math_game.png"));
 
     //Positions board buttons on grid
