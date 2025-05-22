@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import java.util.logging.Logger;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
+import ntnu.idatt2003.group27.models.exceptions.WrongMathAnswerException;
 import ntnu.idatt2003.group27.models.interfaces.*;
 
 import java.util.ArrayList;
@@ -113,12 +114,17 @@ public class MathBoardGame implements BoardGame {
 
   /**
    * Checks the answer provided by the current player.
-   * @param answer
+   * @param answer the provided answer
+   * @throws WrongMathAnswerException when the math answer is wrong
    */
-  public void checkAnswer(String answer) {
+  public void checkAnswer(String answer) throws WrongMathAnswerException {
     logger.fine("Checking answer: " + answer);
     if (action instanceof MathTileAction mathAction) {
-      mathAction.isCorrect(currentPlayer, answer);
+      try {
+        mathAction.isCorrect(currentPlayer, answer);
+      } catch (WrongMathAnswerException e) {
+        throw new WrongMathAnswerException(e.getMessage());
+      }
     }
     currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
     notifyRoundPlayed();

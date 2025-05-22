@@ -5,6 +5,7 @@ import ntnu.idatt2003.group27.models.*;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.enums.MathGameType;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
+import ntnu.idatt2003.group27.models.exceptions.WrongMathAnswerException;
 import ntnu.idatt2003.group27.models.interfaces.BoardGameObserver;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.LadderGameView;
@@ -138,7 +139,15 @@ public class MathGameController implements BoardGameObserver {
         );
         return;
       }
-      game.checkAnswer(answer);
+      try {
+        game.checkAnswer(answer);
+      } catch (WrongMathAnswerException ex) {
+        mathGameView.showToast(
+          Toast.ToastVariant.ERROR,
+          "Feil svar",
+          "Prøv igjen neste runde."
+        );
+      }
       mathGameView.betweenRounds();
     });
 

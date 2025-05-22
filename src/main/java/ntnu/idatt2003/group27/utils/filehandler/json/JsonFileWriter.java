@@ -18,11 +18,17 @@ import ntnu.idatt2003.group27.utils.filehandler.interfaces.CustomFileWriter;
  */
 public class JsonFileWriter implements CustomFileWriter<Board> {
   /**
+   * The Gson instance used for serializing the {@link Board} object to JSON.
+   * Public to allow access to the Gson instance for testing purposes.
+   * Prioritizing testability over encapsulation.
+   */
+  public final Gson gson;
+  
+ /**
    * Logger instance for the {@link JsonFileWriter} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(JsonFileWriter.class.getName());
-  private final Gson gson;
 
   /**
    * Constructs a {@link JsonFileWriter} instance with a configured Gson object. The Gson instance

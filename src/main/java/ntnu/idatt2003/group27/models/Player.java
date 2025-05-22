@@ -36,7 +36,6 @@ public class Player {
    *
    * @param name The name of the player.
    */
-  // TODO: remove if not needed in the csv reader after new constructor is added.
   public Player(String name) {
     logger.fine("Initializing player with name: " + name + ", piece: null, color: null.");
     this.name = name;
