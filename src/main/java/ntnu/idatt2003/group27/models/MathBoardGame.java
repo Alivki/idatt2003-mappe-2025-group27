@@ -180,6 +180,15 @@ public class MathBoardGame implements BoardGame {
    * @throws IllegalArgumentException if the number of players does not match the number of boards.
    */
   public void addPlayers(List<Board> boards, List<Player> players) throws IllegalArgumentException {
+    if (players == null){
+      logger.warning("Players list is null.");
+      throw new IllegalArgumentException("Players list cannot be null");
+    }
+    if (boards == null){
+      logger.warning("Boards list is null.");
+      throw new IllegalArgumentException("Boards list cannot be null");
+    }
+
     logger.fine("Adding players: " + players + ", boards:" + boards);
     this.players = new ArrayList<>(players);
     for (int i = 0; i < players.size(); i++) {
