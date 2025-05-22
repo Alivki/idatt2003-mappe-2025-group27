@@ -21,22 +21,26 @@ public class MainController {
   private static final Logger logger = Logger.getLogger(MainController.class.getName());
 
   /** The lost of players in the game. */
-  private ArrayList<Player> players = new ArrayList<>();
+  private final ArrayList<Player> players = new ArrayList<>();
 
   /** A list of all pieces available in the application*/
-  private ArrayList<Piece> pieces = new ArrayList<>();
+  private final ArrayList<Piece> pieces = new ArrayList<>();
 
   /** The scene manager responsible for handling screen transitions */
-  private SceneManager sceneManager;
-  /** The controller for the board game. */
+  private final SceneManager sceneManager;
+  /** The controller for the snakes and ladder board game. */
   private LadderGameController ladderGameController;
+
+  /** The controller for the math game. */
   private MathGameController mathGameController;
 
   /** The max players for the game. */
-  private int maxPlayers = 5;
+  private final int maxPlayers = 5;
 
   /**
    * Constructs a {@link MainController} and initializes it as the singleton instance of nine exists.
+   *
+   * @param sceneManager The {@link SceneManager} instance used for managing scene transitions.
    */
   public MainController(SceneManager sceneManager) {
     logger.info("Initializing Main Controller");
@@ -56,6 +60,11 @@ public class MainController {
     sceneManager.switchSceneImmediate(ladderGameController.getView().getRoot());
   }
 
+  /**
+   * Switches the application to a math board game scene with the specified game type and players.
+   *
+   * @param mathGameType The {@link MathGameType} defining the type of game to be initialized.
+   */
   public void switchToMathBoardGame(MathGameType mathGameType) {
     logger.info("Switching to math board game.");
     mathGameController = new MathGameController(this);
@@ -114,7 +123,11 @@ public class MainController {
     players.remove(player);
   }
 
-
+  /**
+   * Retrieves the list of pieces available in the game.
+   *
+   * @return An {@link ArrayList} of {@link Piece} objects.
+   */
   public ArrayList<Piece> getPieces(){
     logger.fine("Getting pieces.");
     return pieces;

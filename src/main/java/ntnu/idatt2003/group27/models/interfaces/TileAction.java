@@ -7,6 +7,15 @@ import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
 import java.util.List;
 
+/**
+ * Defines a contract for custom actions that can be executed when a player interacts with a
+ * tile on the game board. Implementations of this interface specify behavior triggered by
+ * a player's presence on a tile.
+ *
+ * @author Iver Lindholm, Amadeus Berg
+ * @version 1.0
+ * @since 2.0
+ */
 public interface TileAction {
   /**
    * Executes the custom action associated with a tile, affecting the specified player.

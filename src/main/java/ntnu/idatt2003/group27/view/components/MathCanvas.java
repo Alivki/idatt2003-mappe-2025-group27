@@ -53,7 +53,7 @@ public class MathCanvas extends javafx.scene.canvas.Canvas {
    * The list of players currently on the board.
    */
   private List<Player> players;
-  private Map<Player, Board> playersBoard;
+  private final Map<Player, Board> playersBoard;
   /**
    * The positions of players on the board, mapped to their respective tile IDs.
    */

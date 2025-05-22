@@ -6,11 +6,21 @@ import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.exceptions.WrongMathAnswerException;
 import ntnu.idatt2003.group27.models.interfaces.MathTileAction;
+import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Generates a easy math question. This class implements the
+ * {@link TileAction} interface to define an action that moves a player to a specified
+ * destination tile when triggered.
+ *
+ * @author Iver Lindholm
+ * @version 1.1
+ * @since 1.0
+ */
 public class EasyMathQuestion implements MathTileAction {
   /**
    * Logger instance for the {@link EasyMathQuestion} class.
@@ -18,11 +28,29 @@ public class EasyMathQuestion implements MathTileAction {
    */
   private static final Logger logger = Logger.getLogger(EasyMathQuestion.class.getName());
 
+  /**
+   * The first number in the math question.
+   */
   private final int num1;
+
+  /**
+   * The second number in the math question.
+   */
   private final int num2;
+
+  /**
+   * The answer to the math question.
+   */
   private final int answer;
+
+  /**
+   * Random number generator used to generate the math question.
+   */
   private final Random random = new Random();
 
+  /**
+   * Constructs a math question with two random numbers between 1 and 10.
+   */
   public EasyMathQuestion() {
     logger.fine("Initializing EasyMathQuestion");
     this.num1 = random.nextInt(10) + 1;
@@ -44,7 +72,8 @@ public class EasyMathQuestion implements MathTileAction {
     try {
       userAnswer = Integer.parseInt(answer);
     } catch (NumberFormatException e) {
-      logger.warning("Error parsing answer from player " + player.getName() + ", answer: " + answer);
+      logger.warning(
+          "Error parsing answer from player " + player.getName() + ", answer: " + answer);
       throw new NumberFormatException();
     }
 

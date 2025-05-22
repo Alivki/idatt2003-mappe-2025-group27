@@ -24,7 +24,7 @@ import java.util.Map;
  * event as an observer of the {@link LadderBoardGame}.
  *
  * @author Iver Lindholm, Amadeus Berg
- * @version 1.3
+ * @version 1.4
  * @since 2.0
  */
 public class MathGameController implements BoardGameObserver {
@@ -44,6 +44,9 @@ public class MathGameController implements BoardGameObserver {
   /** The type of ladder game being played */
   private MathGameType mathGameType;
 
+  /**
+   * Factory for creating board games.
+   */
   private final BoardGameFactory boardGameFactory;
 
   /**

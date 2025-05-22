@@ -274,7 +274,7 @@ public class LadderGameView {
 
   /**
    * Sets the round label text.
-   * @param round
+   * @param round the round number to display.
    */
   public void updateRoundLabel(String round) {
     logger.fine("Updating round label to: " + round);
@@ -291,7 +291,7 @@ public class LadderGameView {
 
   /**
    * Sets the text for the grade label to display the difficulty of the game.
-   * @param grade
+   * @param grade the difficulty of the game.
    */
   public void updateGradeLabel(String grade) {
     logger.fine("Updating grade label to: " + grade);
@@ -300,7 +300,7 @@ public class LadderGameView {
 
   /**
    * Sets the text for the status label.
-   * @param status
+   * @param status the status of the game.
    */
   public void updateStatusLabel(String status) {
     logger.fine("Updating status label to: " + status);
@@ -309,7 +309,7 @@ public class LadderGameView {
 
   /**
    * Sets the text for the last player label.
-   * @param playerName
+   * @param playerName the name of the last player who moved.
    */
   public void updateLastPlayerLabel(String playerName) {
     logger.fine("Updating last player label to: " + playerName);
@@ -318,7 +318,7 @@ public class LadderGameView {
 
   /**
    * Sets the text for the moved to label informing the user of which tile the player has moved to.
-   * @param tileName
+   * @param tileName the name of the tile the player has moved to.
    */
   public void updateMovedToLabel(String tileName) {
     logger.fine("Updating moved to label to: " + tileName);
@@ -327,7 +327,7 @@ public class LadderGameView {
 
   /**
    * Sets teh text for the last roll label informing the player the value of the previous roll.
-   * @param roll
+   * @param roll the value of the last roll.
    */
   public void updateLastRollLabel(String roll) {
     logger.fine("Updating last roll label to: " + roll);
@@ -336,7 +336,7 @@ public class LadderGameView {
 
   /**
    * Sets the tile action label informing the player which tile action was triggered.
-   * @param action
+   * @param action the action triggered by the tile.
    */
   public void updateTileActionLabel(String action) {
     logger.fine("Updating tile action to: " + action);
@@ -363,12 +363,12 @@ public class LadderGameView {
 
   /**
    * Animates the movement of a player's piece on the board.
-   * @param player
-   * @param newTileId
-   * @param tileAction
-   * @param roll
-   * @param players
-   * @param onComplete
+   * @param player the player whose piece is being moved.
+   * @param newTileId the ID of the tile to which the player is moving.
+   * @param tileAction the action triggered by the tile.
+   * @param roll the value of the dice roll.
+   * @param players the list of players in the game.
+   * @param onComplete a callback to be executed after the animation is complete.
    */
   public void animatePlayerMovement(Player player, int newTileId, TileAction tileAction, int roll,
                                     List<Player> players, Runnable onComplete) {
@@ -384,8 +384,8 @@ public class LadderGameView {
 
   /**
    * Creates a canvas to display the UI of the game board.
-   * @param players
-   * @param tiles
+   * @param players the list of players in the game.
+   * @param tiles the map of tiles in the game.
    */
   public void createBoard(ArrayList<Player> players, Map<Integer, Tile> tiles) {
     logger.fine("Creating board with players: " + players + ", tiles: " + tiles);
@@ -409,7 +409,7 @@ public class LadderGameView {
 
   /**
    * Rotates the 3D representation of the game dice.
-   * @param roll
+   * @param roll the value of the dice roll.
    */
   public void rotateDice(int roll) {
     logger.fine("Rotating dice for roll: " + roll);
@@ -468,9 +468,9 @@ public class LadderGameView {
 
   /**
    * Displays a toast to the user.
-   * @param variant
-   * @param title
-   * @param message
+   * @param variant the variant of the toast (success, error, etc.)
+   * @param title the title of the toast
+   * @param message the message to display in the toast
    */
   public void showToast(Toast.ToastVariant variant, String title, String message) {
     logger.fine("Showing toast with variant: " + variant + ", title: " + title + ", message: " + message);
@@ -480,9 +480,9 @@ public class LadderGameView {
 
   /**
    * Creates a row for the game info.
-   * @param labelText
-   * @param infoLabel
-   * @return
+   * @param labelText the text for the label
+   * @param infoLabel the label to display the info
+   * @return a HBox containing the label, separator, and info label
    */
   private HBox createGameInfoRow(String labelText, Label infoLabel) {
     logger.fine("Creating game info row for label: " + labelText + ", infoLabel: " + infoLabel);

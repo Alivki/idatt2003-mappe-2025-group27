@@ -30,7 +30,7 @@ public class MathBoardGame implements BoardGame {
   private final List<BoardGameObserver> observers = new ArrayList<>();
 
   /** The map of players and their corresponding boards. */
-  private Map<Player, Board> playerBoards = new HashMap<>();
+  private final Map<Player, Board> playerBoards = new HashMap<>();
 
   /** The current player in the game. */
   private Player currentPlayer;
@@ -46,8 +46,8 @@ public class MathBoardGame implements BoardGame {
 
   /**
    * Constructor for MathBoardGame.
-   * @param boards
-   * @param players
+   * @param boards The list of boards for each player.
+   * @param players The list of players to add to the game.
    */
   public MathBoardGame(List<Board> boards, List<Player> players) {
     logger.fine("Initializing MathBoardGame.");
@@ -56,7 +56,7 @@ public class MathBoardGame implements BoardGame {
 
   /**
    *  Adds an observer to the list of observers.
-   * @param observer
+   * @param observer The observer to be added.
    */
   @Override
   public void addObserver(BoardGameObserver observer) {
@@ -66,7 +66,7 @@ public class MathBoardGame implements BoardGame {
 
   /**
    * Sets up the game.
-   * @throws NotEnoughPlayersInGameException
+   * @throws NotEnoughPlayersInGameException if there are not enough players to start the game.
    */
   @Override
   public void setUpGame() throws NotEnoughPlayersInGameException {
@@ -94,7 +94,7 @@ public class MathBoardGame implements BoardGame {
   /**
    * Plays a round of the game.
    * Moves the current player and performs the action associated with the tile they land on.
-   * @throws NotEnoughPlayersInGameException
+   * @throws NotEnoughPlayersInGameException if there are not enough players to play the game.
    */
   @Override
   public void play() throws NotEnoughPlayersInGameException {
@@ -242,6 +242,11 @@ public class MathBoardGame implements BoardGame {
     observers.forEach(observer -> observer.onGameRestart(players, playerBoards));
   }
 
+  /**
+   * Returns the question associated with the current tile.
+   *
+   * @return A string representing the question.
+   */
   public String getMathQuestion() {
     logger.fine("Getting math question.");
     return mathQuestion;

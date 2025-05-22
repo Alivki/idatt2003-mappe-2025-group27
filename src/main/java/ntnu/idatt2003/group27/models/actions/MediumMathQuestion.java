@@ -8,20 +8,54 @@ import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.exceptions.WrongMathAnswerException;
 import ntnu.idatt2003.group27.models.interfaces.MathTileAction;
+import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
+/**
+ * Generates a medium math question. This class implements the
+ * {@link TileAction} interface to define an action that moves a player to a specified
+ * destination tile when triggered.
+ *
+ * @author Iver Lindholm
+ * @version 1.1
+ * @since 1.0
+ */
 public class MediumMathQuestion implements MathTileAction {
   /**
    * Logger instance for the {@link MediumMathQuestion} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(MediumMathQuestion.class.getName());
+
+  /**
+   * The first number in the math question.
+   */
   private final int num1;
+
+  /**
+   * The second number in the math question.
+   */
   private final int num2;
+
+  /**
+   * The answer to the math question.
+   */
   private final int answer;
+
+  /**
+   * The operator used in the math question.
+   */
   private final String operator;
+
+  /**
+   * Random number generator used to generate the math question.
+   */
   private final Random random = new Random();
 
+  /**
+   * Constructs a math question with two random numbers between 1 and 50.
+   * The operator is randomly chosen from addition, subtraction, or multiplication.
+   */
   public MediumMathQuestion() {
     logger.fine("Initializing MediumMathQuestion.");
     this.num1 = random.nextInt(50) + 1;
