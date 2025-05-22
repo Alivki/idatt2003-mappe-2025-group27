@@ -8,66 +8,159 @@ import java.io.IOException;
 import java.util.Map;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Unit tests for the {@link JsonLadderGameConfiguration} class.
+ * Unit tests for the {@link LadderGameConfiguration} class.
  *
- * <p>Verifies config initialization.</p>
+ * <p>Verifies initialization of all non-json {@link LadderGameConfiguration}s</p>
  *
  * @author Amadeus Berg
  */
 public class LadderGameConfigurationTest {
 
-  /** Instance of the JsonLadderGameConfiguration to be tested. */
-  private LadderGameConfiguration config;
+  /** Instance of the NORMAL LadderGameConfiguration to be tested. */
+  private static LadderGameConfiguration normalConfig;
+  
+  /** Instance of the CRAZY LadderGameConfiguration to be tested. */
+  private static LadderGameConfiguration crazyConfig;
+
+  /** Instance of the IMPOSSIBLE LadderGameConfiguration to be tested. */
+  private static LadderGameConfiguration impossibleConfig;
 
   /**
-   * Sets up the test environment by initializing the JsonLadderGameConfiguration with a valid JSON
+   * Sets up the test environment by initializing the LadderGameConfiguration with a valid JSON
    * path.
    */
-  @BeforeEach
-  public void setUp() {
-    config = new LadderGameConfiguration(LadderGameType.NORMAL);
+  @BeforeAll
+  public static void setUp() {
+    normalConfig = new LadderGameConfiguration(LadderGameType.NORMAL);
+    crazyConfig = new LadderGameConfiguration(LadderGameType.CRAZY);
+    impossibleConfig = new LadderGameConfiguration(LadderGameType.IMPOSSIBLE);
   }
+
+
+  /// Tests for NORMAL board configuration
 
   /**
    * Verifies that the number of initialized dice matches the expected output.
    */
   @Test
-  @DisplayName("should return correct number of dice")
-  public void testGetNumberOfDice() {
-    assertEquals(2, config.getNumberOfDice(), "Expected 1 die");
+  @DisplayName("NORMAL CONFIG: should return correct number of dice")
+  public void testNormalGetNumberOfDice() {
+    assertEquals(2, normalConfig.getNumberOfDice(), "Expected 1 die");
   }
 
   /**
    * Verifies that the number of initialized die sides matches the expected output.
    */
   @Test
-  @DisplayName("should return correct number of die sides")
-  public void testGetNumberOfDieSides() {
-    assertEquals(6, config.getNumberOfDieSides(), "Expected 6 sides per die");
+  @DisplayName("NORMAL CONFIG: should return correct number of die sides")
+  public void testNormalGetNumberOfDieSides() {
+    assertEquals(6, normalConfig.getNumberOfDieSides(), "Expected 6 sides per die");
   }
 
   /**
    * Verifies that the number of initialized tiles matches the expected output.
    */
   @Test
-  @DisplayName("should return total number of tiles from board")
-  public void testGetTotalTiles() {
-    int totalTiles = config.getTotalTiles();
-    assertEquals(totalTiles, config.getTotalTiles(), "Total tiles should match board size");
+  @DisplayName("NORMAL CONFIG: should return total number of tiles from board")
+  public void testNormalGetTotalTiles() {
+    int totalTiles = normalConfig.getTotalTiles();
+    assertEquals(totalTiles, normalConfig.getTotalTiles(), "Total tiles should match board size");
   }
 
   /**
-   * Verifies that the number of initialized tile actions of the config is not null.
+   * Verifies that the number of initialized tile actions of the normalConfig is not null.
    */
   @Test
-  @DisplayName("should return non-null tile actions map")
-  public void testGetTileActions() {
-    Map<Integer, TileAction> tileActions = config.getTileActions();
+  @DisplayName("NORMAL CONFIG: should return non-null tile actions map")
+  public void testNormalGetTileActions() {
+    Map<Integer, TileAction> tileActions = normalConfig.getTileActions();
     assertNotNull(tileActions, "Tile actions map should not be null");
   }
+
+  /// Tests for CRAZY board configuration
+
+  /**
+   * Verifies that the number of initialized dice matches the expected output.
+   */
+  @Test
+  @DisplayName("CRAZY CONFIG: should return correct number of dice")
+  public void testCrazyGetNumberOfDice() {
+    assertEquals(2, crazyConfig.getNumberOfDice(), "Expected 1 die");
+  }
+
+  /**
+   * Verifies that the number of initialized die sides matches the expected output.
+   */
+  @Test
+  @DisplayName("CRAZY CONFIG: should return correct number of die sides")
+  public void testCrazyGetNumberOfDieSides() {
+    assertEquals(6, crazyConfig.getNumberOfDieSides(), "Expected 6 sides per die");
+  }
+
+  /**
+   * Verifies that the number of initialized tiles matches the expected output.
+   */
+  @Test
+  @DisplayName("CRAZY CONFIG: should return total number of tiles from board")
+  public void testCrazyGetTotalTiles() {
+    int totalTiles = crazyConfig.getTotalTiles();
+    assertEquals(totalTiles, crazyConfig.getTotalTiles(), "Total tiles should match board size");
+  }
+
+  /**
+   * Verifies that the number of initialized tile actions of the crazyConfig is not null.
+   */
+  @Test
+  @DisplayName("CRAZY CONFIG: should return non-null tile actions map")
+  public void testCrazyGetTileActions() {
+    Map<Integer, TileAction> tileActions = crazyConfig.getTileActions();
+    assertNotNull(tileActions, "Tile actions map should not be null");
+  }
+
+  /// Tests for IMPOSSIBLE board configuration
+
+  /**
+   * Verifies that the number of initialized dice matches the expected output.
+   */
+  @Test
+  @DisplayName("IMPOSSIBLE CONFIG: should return correct number of dice")
+  public void testImpossibleGetNumberOfDice() {
+    assertEquals(2, impossibleConfig.getNumberOfDice(), "Expected 1 die");
+  }
+
+  /**
+   * Verifies that the number of initialized die sides matches the expected output.
+   */
+  @Test
+  @DisplayName("IMPOSSIBLE CONFIG: should return correct number of die sides")
+  public void testImpossibleGetNumberOfDieSides() {
+    assertEquals(6, impossibleConfig.getNumberOfDieSides(), "Expected 6 sides per die");
+  }
+
+  /**
+   * Verifies that the number of initialized tiles matches the expected output.
+   */
+  @Test
+  @DisplayName("IMPOSSIBLE CONFIG: should return total number of tiles from board")
+  public void testImpossibleGetTotalTiles() {
+    int totalTiles = impossibleConfig.getTotalTiles();
+    assertEquals(totalTiles, impossibleConfig.getTotalTiles(), "Total tiles should match board size");
+  }
+
+  /**
+   * Verifies that the number of initialized tile actions of the impossibleConfig is not null.
+   */
+  @Test
+  @DisplayName("IMPOSSIBLE CONFIG: should return non-null tile actions map")
+  public void testImpossibleGetTileActions() {
+    Map<Integer, TileAction> tileActions = impossibleConfig.getTileActions();
+    assertNotNull(tileActions, "Tile actions map should not be null");
+  }
+
 }
