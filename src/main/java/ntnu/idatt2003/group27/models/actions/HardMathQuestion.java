@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.models.exceptions.WrongMathAnswerException;
 import ntnu.idatt2003.group27.models.interfaces.MathTileAction;
 import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
@@ -67,19 +68,20 @@ public class HardMathQuestion implements MathTileAction {
   }
 
   @Override
-  public void isCorrect(Player player, String answer) {
-    logger.fine("Checking answer from player " + player.getName() + ", answer: " + answer);
+  public void isCorrect(Player player, String answer) throws WrongMathAnswerException {
+    int userAnswer = 0;
+
     try {
-      int userAnswer = Integer.parseInt(answer);
-      if (userAnswer == this.answer) {
-      } else {
-        player.move(-1);
-      }
+      userAnswer = Integer.parseInt(answer);
     } catch (NumberFormatException e) {
       logger.warning("Error parsing answer from player " + player.getName() + ", answer: " + answer);
       throw new NumberFormatException();
     }
-    perform(player);
+
+    if (userAnswer == this.answer) {
+      player.move(-1);
+      throw new WrongMathAnswerException("Wrong answer, try again next round.");
+    }
   }
 
   @Override
