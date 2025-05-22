@@ -49,6 +49,10 @@ public class BackToStartAction implements LadderTileAction {
     logger.info("Performing BackToStartAction on player: " + player.getName());
     int currentTile = player.getCurrentTile().getTileId();
 
+    if (currentTile <= 1) {
+      return;
+    }
+
     int steps = currentTile - 1;
 
     logger.fine("moving player " + player.getName() + " " + -steps + "steps.");
