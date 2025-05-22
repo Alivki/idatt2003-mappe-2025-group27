@@ -73,4 +73,12 @@ public class Dice {
       throw new IndexOutOfBoundsException("Die number out of bounds");
     }
   }
+
+  /**
+   * Returns the number of dice in this set.
+   * @return The number of dice in the set.
+   */
+  public int getNumberOfDice() {
+    return dice.size();
+  }
 }

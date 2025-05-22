@@ -1,4 +1,4 @@
-package ntnu.idatt2003.group27.utils.filehandler;
+package ntnu.idatt2003.group27.utils;
 
 import static org.junit.jupiter.api.Assertions.*;
 

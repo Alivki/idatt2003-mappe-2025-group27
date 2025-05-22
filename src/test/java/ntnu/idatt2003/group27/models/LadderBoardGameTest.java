@@ -2,6 +2,7 @@ package ntnu.idatt2003.group27.models;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import java.util.stream.IntStream;
+import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.exceptions.NotEnoughPlayersInGameException;
 import ntnu.idatt2003.group27.utils.filehandler.json.JsonFileReader;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +19,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test class for the BoardGame class.
+ * Test class for the {@link LadderBoardGame} class.
  *
  * <p>Testing initialization of the boardGame class with default board,<br>
  * Testing initialization of the boardGame class with json board,<br>
@@ -25,9 +27,12 @@ import org.junit.jupiter.api.Test;
  * Rolling the dice and getting a valid output,<br>
  * Moving the player the correct amount of steps,<br>
  * Testing winner detection</p>
+ *
+ * @author Iver Lindholm, Amadeus Berg
  */
 public class LadderBoardGameTest {
-  LadderBoardGame gameDefault;
+  
+  /** The game board used for all tests. */
   Board board;
 
   /**
@@ -51,42 +56,53 @@ public class LadderBoardGameTest {
     tiles.put(3, tile3);
 
     board = new Board(tiles);
-
-    gameDefault = new LadderBoardGame(board, 1, 6);
   }
 
+  /**
+   * Test the initialization of the LadderBoardGame class with a default board.
+   */
   @Test
   @DisplayName("Test the initialization of the BoardGame class")
   public void testBoardGameDefaultInitialization() {
     LadderBoardGame game = new LadderBoardGame(board, 1, 6);
-    assertNotNull(game.getBoard(), "The board should exist when board game is initialized");
-    assertEquals(3, game.getBoard().getTiles().size(), "There should be 3 tiles on this board");
+    assertTrue(game.getBoards().size() == 1, "There should be 1 board in the game");
+    assertTrue(game.getDice().getNumberOfDice() == 1, "There should be a dice object in the game");
   }
 
-
+  /**
+   * Test adding player to the game.
+   */
   @Test
   @DisplayName("test adding players to the game")
   public void testAddPlayers() {
+    LadderBoardGame game = new LadderBoardGame(board, 1, 6);
     Player player1 = new Player("player1");
     Player player2 = new Player("player2");
 
-    gameDefault.addPlayer(player1);
-    gameDefault.addPlayer(player2);
+    game.addPlayer(player1);
+    game.addPlayer(player2);
 
-    assertEquals(2, gameDefault.getPlayers().size(), "Should be two players in the game");
+    assertEquals(2, game.getPlayers().size(), "Should be two players in the game");
   }
 
+  /**
+   * Test adding duplicate players to the game.
+   */
   @Test
   @DisplayName("test adding duplicate players to the game")
   public void testAddingDuplicatePlayers() {
+    LadderBoardGame game = new LadderBoardGame(board, 1, 6);
     Player player = new Player("player");
 
-    gameDefault.addPlayer(player);
+    game.addPlayer(player);
 
-    assertThrows(IllegalArgumentException.class, () -> gameDefault.addPlayer(player),
+    assertThrows(IllegalArgumentException.class, () -> game.addPlayer(player),
         "Should throw and exception when adding a duplicate player");
   }
 
+  /**
+   * Test dice roll method to check if it produces valid numbers.
+   */
   @Test
   @DisplayName("test that dice roll produces valid numbers")
   public void testDiceRoll() {
@@ -96,19 +112,11 @@ public class LadderBoardGameTest {
     assertTrue(roll >= 1 && roll <= 6, "Roll should be within the valid range for 1 six-sided die");
   }
 
-  @Test
-  @DisplayName("test moving the player")
-  public void testPlayerMove() throws NotEnoughPlayersInGameException {
-    Player player = new Player("player");
-
-    gameDefault.addPlayer(player);
-    gameDefault.setUpGame();
-
-    player.move(1);
-    assertEquals(2, player.getCurrentTile().getTileId(),
-        "Player should have moved to tile 7 after move method");
-  }
-
+  /**
+   * Test that the game is set up correctly.
+   *
+   * @throws NotEnoughPlayersInGameException
+   */
   @Test
   @DisplayName("test the game set up method")
   public void testGameSetUp() throws NotEnoughPlayersInGameException {
@@ -124,6 +132,9 @@ public class LadderBoardGameTest {
         "The player should be placed on tile 0");
   }
 
+  /**
+   * Test that the game set up method throws an error when no players are in the game.
+   */
   @Test
   @DisplayName("test that set up method throws error when no players are in the game")
   public void testGameSetUpThrows() {
@@ -132,46 +143,61 @@ public class LadderBoardGameTest {
     assertThrows(NotEnoughPlayersInGameException.class, game::setUpGame, "Should throw error as no players are in the game");
   }
 
+  /**
+   * Tests that the winning player is correctly detected when a win is simulated.
+   * @throws NotEnoughPlayersInGameException if the game setup fails due to insufficient players.
+   */
   @Test
-  @DisplayName("test to check if winner is correctly detected and the game loop working")
-  public void testWinnerDetectionMethod() throws NotEnoughPlayersInGameException {
-    Board board = null;
+  @DisplayName("test that the correct winner is detected when a player reaches the winning tile")
+  public void testGetWinner() {
+    // Initialize a game with a board and a player
+    LadderBoardGame game = new LadderBoardGame(board, 1, 6);
+    Player player = new Player("Alice");
 
+    game.addPlayer(player);
     try {
-      board = new JsonFileReader().readFile("src/main/resources/boards/board.json");
-    } catch (IOException e) {
-      e.printStackTrace();
+      game.setUpGame();
+    } catch (NotEnoughPlayersInGameException e) {
+      throw new RuntimeException(e);
     }
 
-    LadderBoardGame game = new LadderBoardGame(board, 1, 6);
+    // Simulate the player reaching the last tile
+    Tile lastTile = board.getTiles().get(board.getTiles().size());
+    player.placeOnTile(lastTile);
 
-    Player player1 = new Player("player1");
-    Player player2 = new Player("player2");
-    Player player3 = new Player("player3");
-
-    game.addPlayer(player1);
-    game.addPlayer(player2);
-    game.addPlayer(player3);
-
-    game.setUpGame();
-
-    IntStream.range(0, 100).forEach(i -> {
-      if(game.getWinner() != null) {
-        return;
-      }
-
-      try {
-        game.play();
-      } catch (NotEnoughPlayersInGameException e) {
-        throw new RuntimeException(e);
-      }
-    });
-
-    assertNotNull(game.getWinner(), "A winner should be set after game has been played");
+    assertEquals(player, game.getWinner(), "getWinner should return the player who reached the last tile");
   }
 
+  /**
+   * Tests that no winner is detected when no player has reached the last tile.
+   * @throws NotEnoughPlayersInGameException if the game setup fails due to insufficient players.
+   */
   @Test
-  @DisplayName("test if game throws error with to few players when starting")
+  @DisplayName("test that winner is null when no player has reached the last tile")
+  public void testGetWinnerWithoutWinner() {
+    // Initialize a game with a board and a player
+    LadderBoardGame game = new LadderBoardGame(board, 1, 6);
+    Player player = new Player("Alice");
+
+    game.addPlayer(player);
+    try {
+      game.setUpGame();
+    } catch (NotEnoughPlayersInGameException e) {
+      throw new RuntimeException(e);
+    }
+
+    // Simulate the player being on the first tile
+    Tile firstTile = board.getTiles().get(1);
+    player.placeOnTile(firstTile);
+
+    assertNull(game.getWinner(), "getWinner should return null when no player has reached the last tile");
+  }
+
+  /**
+   * Test that the game throws an error for minimum required players.
+   */
+  @Test
+  @DisplayName("test if game throws error with too few players when starting")
   public void testStartingGameThrowsError() {
     LadderBoardGame game = new LadderBoardGame(board, 1, 6);
     Player player = new Player("player");

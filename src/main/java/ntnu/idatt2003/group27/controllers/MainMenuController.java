@@ -11,12 +11,11 @@ import ntnu.idatt2003.group27.models.Piece;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.enums.LadderGameType;
 import ntnu.idatt2003.group27.models.enums.MathGameType;
-import ntnu.idatt2003.group27.utils.filehandler.RandomColor;
+import ntnu.idatt2003.group27.utils.RandomColor;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileReader;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileWriter;
 import ntnu.idatt2003.group27.view.MainMenuView;
 import ntnu.idatt2003.group27.view.components.Alert;
-import java.util.logging.Logger;
 
 /**
  * A controller class for managing the main menu of the ladder game application. It handles user

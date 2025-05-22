@@ -11,7 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test class for the Tile class.
+ * Test class for the {@link Tile} class.
  *
  * <p>Testing the constructor,<br>
  * testing setting and getting next tile,<br>

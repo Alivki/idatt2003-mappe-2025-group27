@@ -1,4 +1,4 @@
-package ntnu.idatt2003.group27.models;
+package ntnu.idatt2003.group27.utils.filehandler.json;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,8 +8,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import ntnu.idatt2003.group27.models.Board;
+import ntnu.idatt2003.group27.models.Tile;
 import ntnu.idatt2003.group27.models.actions.LadderAction;
-import ntnu.idatt2003.group27.utils.filehandler.json.JsonFileWriter;
 import org.junit.jupiter.api.BeforeEach;
 import java.io.StringWriter;
 import org.junit.jupiter.api.Test;

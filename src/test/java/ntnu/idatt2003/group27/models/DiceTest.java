@@ -1,5 +1,6 @@
 package ntnu.idatt2003.group27.models;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -9,11 +10,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 /**
- * Test class for the Dice class.
+ * Unit tests for the {@link Dice} class.
  *
- * <p>Testing the roll method,<br>
- * testing the constructor with zero inputs,<br>
- * testing the getDie method</p>
+ * <p>Verifies roll method, constructor, and getDie method.</p>
+ *
+ * @author Iver Lindholm
  */
 class DiceTest {
   Dice dice;
@@ -49,6 +50,19 @@ class DiceTest {
     assertTrue(dieValue >= 1 && dieValue <= 6, "Die value should be between 1 and 6");
     assertFalse(dieValue < 1 || dieValue > 6, "Die value should be between 1 and 6");
   }
+
+  @Test
+  @DisplayName("Test that getNumberOfDice returns the correct number of dice")
+  public void testGetNumberOfDice() {
+    int expectedNumberOfDice = 2;
+    int numberOfSides = 6;
+
+    Dice dice = new Dice(expectedNumberOfDice, numberOfSides);
+
+    assertEquals(expectedNumberOfDice, dice.getNumberOfDice(),
+        "getNumberOfDice should return the correct number of dice");
+  }
+
 
   @Test
   @DisplayName("Test that getDie throws an exception for an invalid die number")

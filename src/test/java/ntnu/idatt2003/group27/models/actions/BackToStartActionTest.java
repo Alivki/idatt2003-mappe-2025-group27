@@ -1,10 +1,11 @@
-package ntnu.idatt2003.group27.models;
+package ntnu.idatt2003.group27.models.actions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javafx.scene.paint.Color;
-import ntnu.idatt2003.group27.models.actions.BackToStartAction;
+import ntnu.idatt2003.group27.models.Player;
+import ntnu.idatt2003.group27.models.Tile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
