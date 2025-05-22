@@ -63,7 +63,7 @@ public class MediumMathQuestion implements MathTileAction {
       throw new NumberFormatException();
     }
 
-    if (userAnswer == this.answer) {
+    if (userAnswer != this.answer) {
       player.move(-1);
       throw new WrongMathAnswerException("Wrong answer, try again next round.");
     }
