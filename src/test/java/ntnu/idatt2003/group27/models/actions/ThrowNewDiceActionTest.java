@@ -3,9 +3,6 @@ package ntnu.idatt2003.group27.models.actions;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
-import ntnu.idatt2003.group27.models.actions.LadderAction;
-import ntnu.idatt2003.group27.models.actions.ThrowNewDiceAction;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * <p>Verifies initialization, action execution, and animation path</p>
  * @author Amadeus Berg & Iver Lindholm
  */
-class ThrowNewDiceTest {
+class ThrowNewDiceActionTest {
   private ThrowNewDiceAction action;
   private Player player;
   private List<Tile> tiles;
