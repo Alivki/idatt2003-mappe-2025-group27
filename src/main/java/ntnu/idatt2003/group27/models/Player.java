@@ -8,7 +8,7 @@ import ntnu.idatt2003.group27.models.exceptions.InvalidPlayerMoveException;
  * Represents a player in a board game, tracking their name and current position on the board. This
  * class provides methods to manage the player's location and movement across tiles.
  *
- * @author Iver Lindholm
+ * @author Iver Lindholm, Amadeus Berg
  * @version 1.2
  * @since 0.0
  */
