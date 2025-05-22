@@ -123,9 +123,12 @@ public class MathBoardGame implements BoardGame {
       try {
         mathAction.isCorrect(currentPlayer, answer);
       } catch (WrongMathAnswerException e) {
+        currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
+        notifyRoundPlayed();
         throw new WrongMathAnswerException(e.getMessage());
       }
     }
+
     currentPlayer = players.get((players.indexOf(currentPlayer) + 1) % players.size());
     notifyRoundPlayed();
 

@@ -48,7 +48,7 @@ public class EasyMathQuestion implements MathTileAction {
       throw new NumberFormatException();
     }
 
-    if (userAnswer != this.answer) {
+    if (this.answer != userAnswer) {
       player.move(-1);
       throw new WrongMathAnswerException("Wrong answer, try again next round.");
     }
