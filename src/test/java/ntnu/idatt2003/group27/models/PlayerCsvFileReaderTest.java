@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.exceptions.ExceededMaxPlayersException;
 import ntnu.idatt2003.group27.models.exceptions.MissingPlayerException;
-import ntnu.idatt2003.group27.utils.filehandler.RandomColor;
+import ntnu.idatt2003.group27.utils.RandomColor;
 import ntnu.idatt2003.group27.utils.filehandler.csv.PlayerCsvFileReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
