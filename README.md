@@ -27,12 +27,14 @@ This project was developed as part of the **IDATT2003** course at the **Norwegia
 ### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-username/your-repo-name.git
+#Jar File 
+#Make sure you have Java installed on the system. Then download the latest Jar file from the GitHub repository and run it: 
+https://github.com/Alivki/idatt2003-mappe-2025-group27.git 
 
-# Navigate into the project directory
-cd your-repo-name
+#Running the program locally
+#To run the our game the end user has to make sure they have both Java and Maven installed and set up on their system. Then to use our application the user has clone or fork the GitHub repository: 
+https://github.com/Alivki/idatt2003-mappe-2025-group27.git 
 
-# Build the project
-mvn clean install
+#After that navigate to the location they cloned the repository and run the application with command 
+mvn javafx:run
 
