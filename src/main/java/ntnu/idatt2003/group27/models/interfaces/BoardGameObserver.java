@@ -23,6 +23,7 @@ public interface BoardGameObserver {
    * @param players List of all {@link Player} in the game.
    * @param currentPlayer The {@link Player} next player to play.
    * @param roll The result of the dice roll for the round.
+   * @param tileAction The action performed on the tile.
    */
   void onRoundPlayed(ArrayList<Player> players, Player currentPlayer, int roll, TileAction tileAction);
 
@@ -37,12 +38,14 @@ public interface BoardGameObserver {
    * Invoked when the game is set up and ready to start.
    *
    * @param players The list of players participating in the game.
+   * @param boards The list of boards for each player.
    */
   void onGameSetup(ArrayList<Player> players, Map<Player, Board> boards);
 
   /**
    * Invoked when the game is restarted.
-   * @param players
+   * @param players The list of players participating in the game.
+   * @param boards The list of boards for each player.
    */
   void onGameRestart(ArrayList<Player> players, Map<Player, Board> boards);
 }

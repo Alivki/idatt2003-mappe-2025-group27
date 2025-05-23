@@ -27,7 +27,9 @@ public class BoardGameFactory {
    */
   private static final Logger logger = Logger.getLogger(BoardGameFactory.class.getName());
 
-  /** The {@link BoardFactory} used to create {@link Board} instances for the games. */
+  /**
+   * The {@link BoardFactory} used to create {@link Board} instances for the games.
+   */
   private final BoardFactory boardFactory;
 
   /**
@@ -46,7 +48,7 @@ public class BoardGameFactory {
    *
    * @param ladderGameType The {@link LadderGameType} defining the game configuration.
    * @return A new {@link LadderBoardGame} instance configured with the specified game type.
-   * @throws IllegalArgumentException if the {@code LadderGameType} is unknown.
+   * @throws IOException if the {@code LadderGameType} is unknown.
    */
   public LadderBoardGame createLadderGame(LadderGameType ladderGameType) throws IOException {
     logger.fine("Creating LadderGame of type " + ladderGameType);
@@ -77,9 +79,17 @@ public class BoardGameFactory {
       throw new IOException(e.getMessage());
     }
 
-    return new LadderBoardGame(config.getBoard(), config.getNumberOfDice(), config.getNumberOfDieSides());
+    return new LadderBoardGame(config.getBoard(), config.getNumberOfDice(),
+        config.getNumberOfDieSides());
   }
 
+  /**
+   * Creates a {@link MathBoardGame} instance based on the specified {@link MathGameType}. The game is
+   *
+   * @param mathGameType The {@link MathGameType} defining the game configuration.
+   * @param players      The players participating in the game.
+   * @return A new {@link MathBoardGame} instance configured with the specified game type and players.
+   */
   public MathBoardGame createMathGame(MathGameType mathGameType, Player[] players) {
     GameConfiguration config = new MathGameConfiguration(mathGameType);
 

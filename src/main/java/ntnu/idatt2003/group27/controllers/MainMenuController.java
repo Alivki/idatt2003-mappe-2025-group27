@@ -30,7 +30,7 @@ public class MainMenuController {
   private static final Logger logger = Logger.getLogger(MainController.class.getName());
 
   /** The main menu view associated with this controller. */
-  private MainMenuView mainMenuView;
+  private final MainMenuView mainMenuView;
 
   /** A reference to the mainController */
   private final MainController mainController;
@@ -43,6 +43,7 @@ public class MainMenuController {
    * events handlers for menu interactions.
    *
    * @param mainMenuView The {@link MainMenuView} to be controlled.
+   * @param mainController The {@link MainController} to be used for game logic.
    */
   public MainMenuController(MainController mainController, MainMenuView mainMenuView) {
     logger.info("Initializing MainMenuController");
@@ -81,7 +82,8 @@ public class MainMenuController {
 
   /**
    * Shows an alert to the user requiring more players to start a game.
-   * @param requiredAmountOfPlayers
+   *
+   * @param requiredAmountOfPlayers The minimum number of players required to start the game.
    */
   private void showNotEnoughPlayersAlert(int requiredAmountOfPlayers){
     logger.warning("Not enough players to start game!");
@@ -96,6 +98,9 @@ public class MainMenuController {
     alert.show();
   }
 
+  /**
+   * Sets up actionEvent handlers for ladder game selection menu button.
+   */
   private void setLadderGameSelectionMenuButtonHandler(){
     logger.fine("Setting up Ladder Game Selection Menu Button.");
     mainMenuView.setLadderGameSelectionMenuButtonHandler(e -> {
@@ -103,6 +108,9 @@ public class MainMenuController {
     });
   }
 
+  /**
+   * Sets up actionEvent handlers for math game selection menu button.
+   */
   private void setMathGameSelectionMenuButtonHandler(){
     logger.fine("Setting up Math Game Selection Menu Button.");
     mainMenuView.setMathGameSelectionMenuButtonHandler(e -> {
@@ -110,9 +118,11 @@ public class MainMenuController {
     });
   }
 
+  /**
+   * Sets up actionEvent handlers for normal ladder game board button.
+   */
   private void setNormalLadderGameBoardButtonHandler(){
     logger.fine("Setting up Normal Ladder Game Board Button.");
-    //Sets handler for normal board button
     mainMenuView.setNormalLadderGameBoardButtonHandler(e -> {
       logger.fine("Normal board button clicked");
       if (mainController.getPlayers().size() < 2) {
@@ -123,9 +133,11 @@ public class MainMenuController {
     });
   }
 
+  /**
+   * Sets up actionEvent handlers for crazy ladder game board button.
+   */
   private void setCrazyLadderGameBoardButtonHandler(){
     logger.fine("Setting up Crazy Ladder Game Board Button.");
-    //Sets handler for crazy board button
     mainMenuView.setCrazyLadderGameBoardButtonHandler(e -> {
       logger.fine("Crazy board button clicked");
       if (mainController.getPlayers().size() < 2) {
@@ -136,9 +148,11 @@ public class MainMenuController {
     });
   }
 
+  /**
+   * Sets up actionEvent handlers for impossible ladder game board button.
+   */
   private void setImpossibleLadderGameBoardButtonHandler(){
     logger.fine("Setting up Impossible Ladder Game Board Button.");
-    //Sets handler for IMPOSSIBLE board button
     mainMenuView.setImpossibleLadderGameBoardButtonHandler(e -> {
       logger.fine("IMPOSSIBLE board button clicked");
       if (mainController.getPlayers().size() < 2) {
@@ -165,6 +179,9 @@ public class MainMenuController {
     });
   }
 
+  /**
+   * Sets up handlers for easy math game board button.
+   */
   private void setEasyMathGameBoardButtonHandler(){
     mainMenuView.setEasyMathButtonHandler(e -> {
       if (mainController.getPlayers().size() < 2) {
@@ -175,6 +192,9 @@ public class MainMenuController {
     });
   }
 
+  /**
+   * Sets up handlers for medium math game board button.
+   */
   private void setMediumMathGameBoardButtonHandler(){
     mainMenuView.setMediumMathButtonHandler(e -> {
       if (mainController.getPlayers().size() < 2) {
@@ -185,6 +205,9 @@ public class MainMenuController {
     });
   }
 
+  /**
+   * Sets up handlers for hard math game board button.
+   */
   private void setHardMathGameBoardButtonHandler(){
     mainMenuView.setHardMathButtonHandler(e -> {
       if (mainController.getPlayers().size() < 2) {

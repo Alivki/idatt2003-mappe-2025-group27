@@ -62,7 +62,7 @@ public class SceneManager extends Application {
 
   /**
    * Launches the application GUI.
-   * @param args
+   * @param args Command line arguments.
    */
   public static void launchGui(String[] args) {
     logger.fine("Launching GUI.");
@@ -71,7 +71,7 @@ public class SceneManager extends Application {
 
   /**
    * Instantly switches "scene" to the specified {@link StackPane}
-   * @param newPane
+   * @param newPane The new pane to switch to.
    */
   public void switchSceneImmediate(StackPane newPane) {
     logger.fine("Switching scene immediately to " + newPane.getClass().getSimpleName());

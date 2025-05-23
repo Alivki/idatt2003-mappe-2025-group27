@@ -200,11 +200,19 @@ public class MathGameView {
     root.getChildren().add(layout);
   }
 
+  /**
+   * Clears the text field for user input.
+   */
   public void clearTextField() {
     logger.fine("Clearing text field.");
     answerField.clear();
   }
 
+  /**
+   * Displays the round play menu with the given question.
+   *
+   * @param question the question to be displayed.
+   */
   public void roundPlay(String question) {
     logger.fine("Playing round with question: " + question);
     clearTextField();
@@ -214,16 +222,30 @@ public class MathGameView {
     playMenuBox.getChildren().addAll(questionLabel, answerField, answerButton);
   }
 
+  /**
+   * Displays the between rounds menu with the play button.
+   * This is shown when the game is waiting for the next round to start.
+   */
   public void betweenRounds() {
     logger.fine("Executing between round logic.");
     playMenuBox.getChildren().clear();
     playMenuBox.getChildren().addAll(playInfoLabel, playButton);
   }
 
+  /**
+   * Sets the text for the play info label.
+   *
+   * @return the text of the play info label.
+   */
   public String getAnswer() {
     return answerField.getText();
   }
 
+  /**
+   * Sets the event handler for the answer button.
+   *
+   * @param action the action to perform when the button is clicked.
+   */
   public void setAnswerButtonHandler(EventHandler<ActionEvent> action) {
     logger.fine("Setting answer button handler.");
     answerButton.setOnAction(action);
@@ -262,7 +284,7 @@ public class MathGameView {
   /**
    * Sets the round label text.
    *
-   * @param round
+   * @param round the round number to display.
    */
   public void updateRoundLabel(String round) {
     logger.fine("Updating round label to: " + round);
@@ -271,6 +293,7 @@ public class MathGameView {
 
   /**
    * Sets the text for the currentPlayer label.
+   * @param playerName the name of the current player.
    */
   public void updateCurrentPlayerLabel(String playerName) {
     logger.fine("Updating current player label to: " + playerName);
@@ -280,7 +303,7 @@ public class MathGameView {
   /**
    * Sets the text for the grade label to display the difficulty of the game.
    *
-   * @param grade
+   * @param grade the grade to display.
    */
   public void updateGradeLabel(String grade) {
     logger.fine("Updating grade label to: " + grade);
@@ -290,7 +313,7 @@ public class MathGameView {
   /**
    * Sets the text for the status label.
    *
-   * @param status
+   * @param status the status to display.
    */
   public void updateStatusLabel(String status) {
     logger.fine("Updating status label to: " + status);
@@ -321,10 +344,10 @@ public class MathGameView {
   /**
    * Animates the movement of a player's piece on the board.
    *
-   * @param player
-   * @param newTileId
-   * @param players
-   * @param onComplete
+   * @param player the player whose piece is being moved.
+   * @param newTileId the ID of the tile to move to.
+   * @param players the list of players to update the board for.
+   * @param onComplete a callback to execute when the animation is complete.
    */
   public void animatePlayerMovement(Player player, int newTileId, List<Player> players,
                                     Runnable onComplete) {
@@ -340,7 +363,8 @@ public class MathGameView {
   /**
    * Creates a canvas to display the UI of the game board.
    *
-   * @param players
+   * @param players The list of players in the game.
+   * @param boards The map of players to their respective boards.
    */
   public void createBoard(ArrayList<Player> players, Map<Player, Board> boards) {
     logger.fine("Creating board with players: " + players + ", boards: " + boards);
@@ -365,9 +389,9 @@ public class MathGameView {
   /**
    * Displays a toast to the user.
    *
-   * @param variant
-   * @param title
-   * @param message
+   * @param variant the variant of the toast to display.
+   * @param title the title of the toast.
+   * @param message the message to display in the toast.
    */
   public void showToast(Toast.ToastVariant variant, String title, String message) {
     logger.fine("Showing toast of variant: " + variant + ", title: " + title + ", message: " + message);
@@ -378,9 +402,9 @@ public class MathGameView {
   /**
    * Creates a row for the game info.
    *
-   * @param labelText
-   * @param infoLabel
-   * @return
+   * @param labelText the text to display in the label.
+   * @param infoLabel the label to display the info.
+   * @return a {@link HBox} containing the label and info label.
    */
   private HBox createGameInfoRow(String labelText, Label infoLabel) {
     logger.fine("Creating game info row with labelText: " + labelText + ", infoLabel: " + infoLabel);

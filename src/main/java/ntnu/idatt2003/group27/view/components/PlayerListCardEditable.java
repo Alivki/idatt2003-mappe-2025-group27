@@ -31,10 +31,10 @@ public class PlayerListCardEditable extends Card {
   private final ScrollPane playerList;
 
   /** An arrayList storing all player used by this list*/
-  private ArrayList<PlayerListCell> playerListCells = new ArrayList<>();
+  private final ArrayList<PlayerListCell> playerListCells = new ArrayList<>();
 
   /** A map connecting a player to their corresponding playerHBox */
-  private Map<Player, PlayerListCell> playerListCellMap = new HashMap<>();
+  private final Map<Player, PlayerListCell> playerListCellMap = new HashMap<>();
 
   /**
    * Constructs a {@link PlayerListCardEditable} with the specified title, description and height.
@@ -62,7 +62,7 @@ public class PlayerListCardEditable extends Card {
 
   /**
    * Populates this {@link Card}'s {@link ScrollPane} with players.
-   * @param players
+   * @param players The list of {@link Player} objects to populate the card with.
    */
   public void populatePlayerList(List<Player> players) {
     logger.fine("Populating player list with players: " + players);
@@ -95,7 +95,7 @@ public class PlayerListCardEditable extends Card {
 
   /**
    * Sets the action for the remove player button for the specified {@link Player}.
-   * @param player
+   * @param player The {@link Player} for which to set the action.
    * @param action The action for the button.
    */
   public void setRemovePlayerButtonHandler(Player player, EventHandler<ActionEvent> action) {

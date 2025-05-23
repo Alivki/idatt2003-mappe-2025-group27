@@ -66,7 +66,7 @@ public class MainMenuView {
   private CustomButton importPlayersCsvButton;
 
   /** List of toggle buttons for selecting player piece icons. */
-  private ArrayList<ToggleButton> playerPieceIconButtons = new ArrayList<>();
+  private final ArrayList<ToggleButton> playerPieceIconButtons = new ArrayList<>();
 
   /** Button to open the color picker for selecting player color. */
   private CustomButton colorPicker;
@@ -116,7 +116,11 @@ public class MainMenuView {
     root.getStyleClass().add("root");
   }
 
-
+  /**
+   * Initializes the layout of the main menu view with the given list of pieces.
+   *
+   * @param pieces the list of pieces to be displayed in the player piece selection buttons
+   */
   public void initializeLayout(List<Piece> pieces) {
     logger.fine("Initializing layout with pieces: " + pieces);
 
@@ -504,8 +508,8 @@ public class MainMenuView {
 
   /**
    * Set the state of the selection button to enabled or disabled. Updates the display and prevents / allows button interaction.
-   * @param buttonIndex
-   * @param disable
+   * @param buttonIndex the index of the button to set the state for.
+   * @param disable true to disable the button, false to enable it.
    */
   public void setDisablePlayerPieceButton(int buttonIndex, boolean disable){
     logger.fine("Disabling player piece button. ButtonIndex: " + buttonIndex + ", Disable: " + disable);
@@ -514,7 +518,7 @@ public class MainMenuView {
 
   /**
    * Set the state of all player piece selection buttons.
-   * @param disable
+   * @param disable true to disable all buttons, false to enable all buttons.
    */
   public void setDisableAllPlayerPieceButtons(boolean disable){
     logger.fine("Disabling all player piece buttons. Disable: " + disable);
@@ -523,7 +527,7 @@ public class MainMenuView {
 
   /**
    * Get the name from the player name text input field.
-   * @return
+   * @return the name of the player as a String.
    */
   public String getPlayerNameTextFieldValue() {
     logger.fine("Getting player name text field value.");

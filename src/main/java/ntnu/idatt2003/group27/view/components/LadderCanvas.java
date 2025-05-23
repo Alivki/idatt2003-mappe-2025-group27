@@ -18,7 +18,6 @@ import javafx.scene.text.Font;
 import javafx.util.Duration;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.Tile;
-import ntnu.idatt2003.group27.models.actions.LadderAction;
 import ntnu.idatt2003.group27.models.interfaces.TileAction;
 
 /**
@@ -252,6 +251,7 @@ public class LadderCanvas extends javafx.scene.canvas.Canvas {
    * @param player     The {@link Player} to animate.
    * @param newTileId  The ID of the tile to move the player to.
    * @param onComplete A {@link Runnable} callback to execute when the animation is complete.
+   * @param roll       The result of the player's dice roll.
    */
   public void animatePlayerMovement(Player player, int newTileId, TileAction tileAction, int roll,
                                     Runnable onComplete) {

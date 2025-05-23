@@ -17,7 +17,7 @@ import ntnu.idatt2003.group27.view.components.LadderCanvas;
  * destination tile when triggered.
  *
  * @author Iver Lindholm
- * @version 1.0
+ * @version 1.1
  * @since 1.0
  */
 public class LadderAction implements LadderTileAction {

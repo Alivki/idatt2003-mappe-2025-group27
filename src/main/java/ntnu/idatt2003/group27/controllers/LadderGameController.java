@@ -46,6 +46,9 @@ public class LadderGameController implements BoardGameObserver {
   /** The type of ladder game being played */
   private LadderGameType ladderGameType;
 
+  /**
+   * The factory for creating board games.
+   */
   private final BoardGameFactory boardGameFactory;
 
   /**

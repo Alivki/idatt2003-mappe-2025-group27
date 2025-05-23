@@ -15,16 +15,16 @@ public class Piece {
    */
   private static final Logger logger = Logger.getLogger(Piece.class.getName());
 
-  /* The name of the piece */
+  /** The name of the piece */
   private final String name;
 
-  /* The filepath to the piece's icon */
+  /** The filepath to the piece's icon */
   private final String iconFilePath;
 
   /**
    * Constructs a piece with the specified name and icon filepath.
-   * @param name
-   * @param iconFilePath
+   * @param name The name of the {@link Piece}.
+   * @param iconFilePath The file path to the icon of this {@link Piece}.
    */
   public Piece(String name, String iconFilePath) {
     logger.fine("Initializing piece: " + name + " with icon filepath: " + iconFilePath);

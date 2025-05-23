@@ -33,6 +33,9 @@ public class MainMenuBoardButton extends Button {
    * @param title The title text to display on the button.
    * @param description The description text to display on the button.
    * @param image The {@link Image} to display as a preview of the board.
+   * @param imageSize The size of the image in pixels.
+   * @param minSize The minimum size (width and height) for the button in pixels.
+   * @param maxSize The maximum size (width and height) for the button in pixels.
    */
   public MainMenuBoardButton(int prefSize, int minSize, int maxSize, int imageSize, Insets insets, String title, String description, Image image) {
     super();

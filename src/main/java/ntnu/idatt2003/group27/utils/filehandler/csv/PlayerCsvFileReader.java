@@ -30,7 +30,7 @@ public class PlayerCsvFileReader implements CustomFileReader<Player[]> {
   private static final Logger logger = Logger.getLogger(PlayerCsvFileReader.class.getName());
 
   /** A list of pieces to be used when reading files */
-  private Piece[] pieces;
+  private final Piece[] pieces;
 
   /**
    * Constructor to set pieces

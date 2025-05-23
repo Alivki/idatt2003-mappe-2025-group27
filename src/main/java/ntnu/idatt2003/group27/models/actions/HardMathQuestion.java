@@ -8,20 +8,54 @@ import javafx.scene.paint.Color;
 import ntnu.idatt2003.group27.models.Player;
 import ntnu.idatt2003.group27.models.exceptions.WrongMathAnswerException;
 import ntnu.idatt2003.group27.models.interfaces.MathTileAction;
+import ntnu.idatt2003.group27.models.interfaces.TileAction;
 import ntnu.idatt2003.group27.view.components.LadderCanvas;
 
+/**
+ * Generates a hard math question. This class implements the
+ * {@link TileAction} interface to define an action that moves a player to a specified
+ * destination tile when triggered.
+ *
+ * @author Iver Lindholm
+ * @version 1.1
+ * @since 1.0
+ */
 public class HardMathQuestion implements MathTileAction {
   /**
    * Logger instance for the {@link HardMathQuestion} class.
    * Used for logging informational messages and errors related to class operations.
    */
   private static final Logger logger = Logger.getLogger(HardMathQuestion.class.getName());
+
+  /**
+   * The number of the first operand in the math question.
+   */
   private final int num1;
+
+  /**
+   * The number of the second operand in the math question.
+   */
   private final int num2;
+
+  /**
+   * The answer to the math question.
+   */
   private final int answer;
+
+  /**
+   * The operator used in the math question.
+   */
   private final String operator;
+
+  /**
+   * Random number generator used to generate random numbers for the math question.
+   */
   private final Random random = new Random();
 
+  /**
+   * Constructor for the HardMathQuestion class.
+   * Initializes the math question with random numbers and an operator.
+   */
   public HardMathQuestion() {
     logger.fine("Initializing HardMathQuestion.");
     int op = random.nextInt(5);

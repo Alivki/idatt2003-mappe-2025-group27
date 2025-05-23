@@ -6,7 +6,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
 
 /**
- * A customizable togglebutton component extending the JavaFX ToggleButton class.
+ * A customizable toggle button component extending the JavaFX ToggleButton class.
  */
 public class CustomToggleButton extends ToggleButton {
   /**
