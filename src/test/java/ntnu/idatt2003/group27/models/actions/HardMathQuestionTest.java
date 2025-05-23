@@ -51,8 +51,6 @@ class HardMathQuestionTest {
   @DisplayName("test correct answer does not throw exception")
   void testCorrectAnswer() {
     int answer = extractAnswer(question.getQuestion());
-    System.out.println(answer);
-    System.out.println(question.getQuestion());
 
     assertDoesNotThrow(() -> question.isCorrect(player, String.valueOf(answer)),
         "Expected no exception for correct answer");
@@ -98,7 +96,7 @@ class HardMathQuestionTest {
       case "+" -> a + b;
       case "-" -> a - b;
       case "*" -> a * b;
-      case "^" -> a * b;
+      case "^" -> a * a;
       case "/" -> a / b;
       default -> throw new IllegalArgumentException("Invalid operator: " + parts[1]);
     };
